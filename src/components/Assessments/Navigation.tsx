@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Stack, Paper, Typography, Grid } from "../common";
-import { ASSESSMENT_CONFIG } from "@/constants";
+import { SAMPLE_QUESTIONS } from "@/constants";
 import { CommonObjectType } from "@/types";
 
 function QuestionNoBox({
@@ -11,6 +11,7 @@ function QuestionNoBox({
   questionStatus: number;
 }) {
   const statusLegendArr = ["green", "blue", "red", "grey"];
+  // console.log(currentQuestionIndex, " : currentQuestionIndex");
   return (
     <>
       <Paper
@@ -18,6 +19,8 @@ function QuestionNoBox({
           sx: {
             padding: 4,
             background: statusLegendArr[questionStatus] || "white",
+            // border:
+            //   currentQuestionIndex === questionNo ? "2px solid black" : "",
           },
         }}
       >
@@ -92,15 +95,25 @@ export default function AssessmentNavigation({
   assessmentSection,
 }: AssessmentNavigationProps) {
   const questionArr = useMemo(() => {
-    return Array.from(
-      { length: ASSESSMENT_CONFIG.MAX_NO_OF_QUESTION },
-      (_, i) => i + 1
-    );
+    return SAMPLE_QUESTIONS;
   }, []);
 
   return (
     <>
       <AssessmentStatusLegend />
+      <Typography
+        typographyProps={{
+          variant: "h5",
+          children: "Choose a Questions",
+          sx: {
+            pt: 2,
+            pb: 1,
+            px: 2,
+            color: "white",
+            backgroundColor: "#007AFF",
+          },
+        }}
+      />
       <Grid
         gridProps={{
           container: true,
@@ -110,7 +123,7 @@ export default function AssessmentNavigation({
       >
         {questionArr.map((questionNo, index) => {
           const questionDetails = userAssessmentDetails?.[
-            `${assessmentSection}_${questionNo}`
+            `${assessmentSection}_${index + 1}`
           ] as CommonObjectType;
 
           return (
@@ -118,11 +131,11 @@ export default function AssessmentNavigation({
               key={`${questionNo}-${index}-questionNo`}
               gridProps={{
                 size: 3,
-                onClick: () => setCurrentQIndex(questionNo),
+                onClick: () => setCurrentQIndex(index + 1),
               }}
             >
               <QuestionNoBox
-                questionNo={questionNo}
+                questionNo={index + 1}
                 questionStatus={questionDetails?.status as number}
               />
             </Grid>

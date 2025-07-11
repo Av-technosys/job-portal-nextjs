@@ -1,13 +1,41 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowForwardOutlinedIcon } from "@/assets";
-import { AssessmentNavigation, Button, Grid, Stack, Tabs } from "@/components";
-import { ASSESSMENT_CONFIG } from "@/constants";
-import { ButtonVariantEnum } from "@/types";
+import {
+  AssessmentNavigation,
+  Button,
+  Grid,
+  Stack,
+  Tabs,
+  Typography,
+} from "@/components";
+import { ASSESSMENT_CONFIG, SAMPLE_QUESTIONS } from "@/constants";
+import { ButtonVariantEnum, TypographyVariantEnum } from "@/types";
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 
 export default function MainAssessmentContainer() {
+  type AnsweredData = {
+    [key: string]: {
+      answer: string;
+      status: number;
+    };
+  };
+
   const [currentQIndex, setCurrentQIndex] = useState(1);
   const [currentTabIndex, setCurrentTabIndex] = useState("0");
-  const [userAnsweredData, setUserAnsweredData] = useState({});
+  const [currentSelectedOption, setCurrentSelectedOption] = useState("0");
+  const [userAnsweredData, setUserAnsweredData] = useState<AnsweredData>({});
+
+  useEffect(() => {
+    setCurrentSelectedOption(
+      userAnsweredData?.[`${currentTabIndex}_${currentQIndex}`]?.answer ||
+        ("0" as string)
+    );
+  }, [currentTabIndex, currentQIndex]);
 
   const tabItems = useMemo(() => {
     return [
@@ -36,24 +64,34 @@ export default function MainAssessmentContainer() {
     }
   }
 
-  function handleMarkForReviewAndNext() {
+  function handleMarkForReviewAndNext(answeredValue: string) {
     setUserAnsweredData({
       ...userAnsweredData,
       [`${currentTabIndex}_${currentQIndex}`]: {
-        answer: 0,
+        answer: answeredValue,
         status: 1,
       },
     });
     moveToNextQuestion();
   }
 
-  function handleClearResponse() {}
-
-  function handleSaveAndNext() {
+  function handleClearResponse() {
+    setCurrentSelectedOption("0");
     setUserAnsweredData({
       ...userAnsweredData,
       [`${currentTabIndex}_${currentQIndex}`]: {
-        answer: 0,
+        answer: "0",
+        status: 2,
+      },
+    });
+  }
+
+  function handleSaveAndNext(answeredValue: string) {
+    if (!answeredValue || answeredValue === "0") return;
+    setUserAnsweredData({
+      ...userAnsweredData,
+      [`${currentTabIndex}_${currentQIndex}`]: {
+        answer: answeredValue,
         status: 0,
       },
     });
@@ -114,7 +152,21 @@ export default function MainAssessmentContainer() {
                   handleTabChange={setCurrentTabIndex}
                 />
               </Stack>
-              Question Answer
+
+              <Typography
+                typographyProps={{
+                  children: SAMPLE_QUESTIONS[currentQIndex - 1].question,
+                  variant: TypographyVariantEnum.H6,
+                  color: "text.secondary",
+                  className: "text-center mt-4",
+                }}
+              />
+
+              <QuestionOptions
+                questionData={SAMPLE_QUESTIONS[currentQIndex - 1].options}
+                selectedValue={currentSelectedOption}
+                onChange={setCurrentSelectedOption}
+              />
             </div>
             <Stack
               stackProps={{
@@ -127,7 +179,9 @@ export default function MainAssessmentContainer() {
                   children: "Mark For Review & Next",
                   variant: ButtonVariantEnum.CONTAINED,
                 }}
-                onClick={handleMarkForReviewAndNext}
+                onClick={() =>
+                  handleMarkForReviewAndNext(currentSelectedOption)
+                }
               />
               <Button
                 buttonProps={{
@@ -142,7 +196,7 @@ export default function MainAssessmentContainer() {
                   variant: ButtonVariantEnum.CONTAINED,
                   endIcon: <ArrowForwardOutlinedIcon />,
                 }}
-                onClick={handleSaveAndNext}
+                onClick={() => handleSaveAndNext(currentSelectedOption)}
               />
             </Stack>
           </Stack>
@@ -162,3 +216,27 @@ export default function MainAssessmentContainer() {
     </>
   );
 }
+
+const QuestionOptions = ({ questionData, selectedValue, onChange }: any) => {
+  return (
+    <FormControl>
+      <RadioGroup
+        aria-labelledby="demo-radio-buttons-group-label"
+        name="radio-buttons-group"
+        value={selectedValue}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {Object.entries(questionData).map(([key, value]: any) => {
+          return (
+            <FormControlLabel
+              key={`${key}-${value}`}
+              value={key}
+              control={<Radio />}
+              label={value}
+            />
+          );
+        })}
+      </RadioGroup>
+    </FormControl>
+  );
+};

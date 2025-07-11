@@ -937,3 +937,210 @@ export const FORCE_USER_LOGIN_MODAL = {
 export const ASSESSMENT_CONFIG = {
   MAX_NO_OF_QUESTION: 20,
 };
+
+export const SAMPLE_QUESTIONS = [
+  {
+    question: "Which number should come next in the series? 2, 4, 8, 16, ?",
+    options: {
+      A: "20",
+      B: "24",
+      C: "30",
+      D: "32",
+    },
+    answer: "D",
+  },
+  {
+    question: "If 'TABLE' is coded as 'GZOVI', how is 'CHAIR' coded?",
+    options: {
+      A: "XSRZI",
+      B: "XSZRI",
+      C: "XSRIZ",
+      D: "YSRZH",
+    },
+    answer: "B",
+  },
+  {
+    question:
+      "Pointing to a woman, Raj said, “She is the daughter of my mother’s only son.” Who is the woman to Raj?",
+    options: {
+      A: "Mother",
+      B: "Aunt",
+      C: "Sister",
+      D: "Niece",
+    },
+    answer: "C",
+  },
+  {
+    question: "Which word does NOT belong with the others?",
+    options: {
+      A: "Apple",
+      B: "Banana",
+      C: "Carrot",
+      D: "Grapes",
+    },
+    answer: "C",
+  },
+  {
+    question: "Find the missing number: 3, 6, 11, 18, ?",
+    options: {
+      A: "25",
+      B: "27",
+      C: "28",
+      D: "29",
+    },
+    answer: "B",
+  },
+  {
+    question:
+      "If in a code language, CLOCK is written as DMPDL, how is WATCH written?",
+    options: {
+      A: "XBUDI",
+      B: "XBTDI",
+      C: "XBVGI",
+      D: "XCVGI",
+    },
+    answer: "B",
+  },
+  {
+    question: "Which one is the odd one out?",
+    options: {
+      A: "Pen",
+      B: "Pencil",
+      C: "Eraser",
+      D: "Paper",
+    },
+    answer: "C",
+  },
+  {
+    question: "If ALL = 39 and BALL = 57, then CALL = ?",
+    options: {
+      A: "72",
+      B: "75",
+      C: "60",
+      D: "66",
+    },
+    answer: "D",
+  },
+  {
+    question: "Which of the following is a prime number?",
+    options: {
+      A: "21",
+      B: "27",
+      C: "31",
+      D: "33",
+    },
+    answer: "C",
+  },
+  {
+    question: "Which word does not belong with the others?",
+    options: {
+      A: "Tulip",
+      B: "Rose",
+      C: "Lily",
+      D: "Mango",
+    },
+    answer: "D",
+  },
+  {
+    question: "Choose the number that is 1/4 of 64.",
+    options: {
+      A: "16",
+      B: "20",
+      C: "18",
+      D: "12",
+    },
+    answer: "A",
+  },
+  {
+    question: "If ‘EARTH’ is written as ‘HZVIG’, how is ‘MOON’ written?",
+    options: {
+      A: "NLLM",
+      B: "NLLZ",
+      C: "NLLO",
+      D: "NLLX",
+    },
+    answer: "D",
+  },
+  {
+    question: "Which number is missing? 121, 144, 169, ?, 225",
+    options: {
+      A: "185",
+      B: "196",
+      C: "210",
+      D: "205",
+    },
+    answer: "B",
+  },
+  {
+    question: "Choose the odd pair:",
+    options: {
+      A: "Dog – Bark",
+      B: "Cat – Meow",
+      C: "Lion – Roar",
+      D: "Duck – Squeak",
+    },
+    answer: "D",
+  },
+  {
+    question: "Which number will come next in the series: 5, 10, 17, 26, ?",
+    options: {
+      A: "35",
+      B: "37",
+      C: "38",
+      D: "41",
+    },
+    answer: "B",
+  },
+  {
+    question: "If A=1, B=2, ..., Z=26, then what is the value of 'FACE'?",
+    options: {
+      A: "20",
+      B: "25",
+      C: "27",
+      D: "30",
+    },
+    answer: "D",
+  },
+  {
+    question: "What comes next in the series: 1, 4, 9, 16, ?",
+    options: {
+      A: "20",
+      B: "25",
+      C: "30",
+      D: "36",
+    },
+    answer: "B",
+  },
+  {
+    question:
+      "Which direction will you face if you start facing North and turn 270° clockwise?",
+    options: {
+      A: "East",
+      B: "South",
+      C: "West",
+      D: "North",
+    },
+    answer: "C",
+  },
+  {
+    question:
+      "If 3 cats can catch 3 mice in 3 minutes, how many cats are needed to catch 100 mice in 100 minutes?",
+    options: {
+      A: "3",
+      B: "10",
+      C: "30",
+      D: "100",
+    },
+    answer: "3",
+  },
+  {
+    question: "Find the odd one out: 2, 3, 5, 7, 8, 11, 13",
+    options: {
+      A: "3",
+      B: "5",
+      C: "7",
+      D: "8",
+    },
+    answer: "D",
+  },
+];
