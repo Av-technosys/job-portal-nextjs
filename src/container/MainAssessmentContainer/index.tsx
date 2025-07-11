@@ -32,10 +32,9 @@ export default function MainAssessmentContainer() {
 
   useEffect(() => {
     setCurrentSelectedOption(
-      userAnsweredData?.[`${currentTabIndex}_${currentQIndex}`]?.answer ||
-        ("0" as string)
+      userAnsweredData?.[`${currentTabIndex}_${currentQIndex}`]?.answer || "0"
     );
-  }, [currentTabIndex, currentQIndex]);
+  }, [currentTabIndex, currentQIndex, userAnsweredData]);
 
   const tabItems = useMemo(() => {
     return [
@@ -217,7 +216,17 @@ export default function MainAssessmentContainer() {
   );
 }
 
-const QuestionOptions = ({ questionData, selectedValue, onChange }: any) => {
+type QuestionOptionsProps = {
+  questionData: Record<string, string>;
+  selectedValue: string;
+  onChange: (value: string) => void;
+};
+
+const QuestionOptions = ({
+  questionData,
+  selectedValue,
+  onChange,
+}: QuestionOptionsProps) => {
   return (
     <FormControl>
       <RadioGroup
@@ -226,7 +235,7 @@ const QuestionOptions = ({ questionData, selectedValue, onChange }: any) => {
         value={selectedValue}
         onChange={(e) => onChange(e.target.value)}
       >
-        {Object.entries(questionData).map(([key, value]: any) => {
+        {Object.entries(questionData).map(([key, value]) => {
           return (
             <FormControlLabel
               key={`${key}-${value}`}
