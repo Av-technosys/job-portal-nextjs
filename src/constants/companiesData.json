@@ -1,0 +1,84 @@
+{
+  "companies": [
+    {
+      "companyName": "Google",
+      "location": "Mumbai, India",
+      "jobRole": "Data Analyst",
+      "logo": "https://dummyimage.com/32x32/000/fff&text=G",
+      "backgroundImage": "https://dummyimage.com/286x286/000/fff&text=Google+Background",
+      "jobDetailLink": "/job-details/google-data-analyst"
+    },
+    {
+      "companyName": "Amazon",
+      "location": "Seattle, USA",
+      "jobRole": "Software Engineer",
+      "logo": "https://dummyimage.com/32x32/ff9900/fff&text=A",
+      "backgroundImage": "https://dummyimage.com/286x286/ff9900/fff&text=Amazon+Background",
+      "jobDetailLink": "/job-details/amazon-software-engineer"
+    },
+    {
+      "companyName": "Facebook",
+      "location": "Menlo Park, USA",
+      "jobRole": "Product Manager",
+      "logo": "https://dummyimage.com/32x32/3b5998/fff&text=F",
+      "backgroundImage": "https://dummyimage.com/286x286/3b5998/fff&text=Facebook+Background",
+      "jobDetailLink": "/job-details/facebook-product-manager"
+    },
+    {
+      "companyName": "Microsoft",
+      "location": "Redmond, USA",
+      "jobRole": "Data Scientist",
+      "logo": "https://dummyimage.com/32x32/00a4ef/fff&text=M",
+      "backgroundImage": "https://dummyimage.com/286x286/00a4ef/fff&text=Microsoft+Background",
+      "jobDetailLink": "/job-details/microsoft-data-scientist"
+    },
+    {
+      "companyName": "Apple",
+      "location": "Cupertino, USA",
+      "jobRole": "UI/UX Designer",
+      "logo": "https://dummyimage.com/32x32/999/fff&text=A",
+      "backgroundImage": "https://dummyimage.com/286x286/999/fff&text=Apple+Background",
+      "jobDetailLink": "/job-details/apple-uiux-designer"
+    },
+    {
+      "companyName": "Netflix",
+      "location": "Los Gatos, USA",
+      "jobRole": "Content Writer",
+      "logo": "https://dummyimage.com/32x32/e50914/fff&text=N",
+      "backgroundImage": "https://dummyimage.com/286x286/e50914/fff&text=Netflix+Background",
+      "jobDetailLink": "/job-details/netflix-content-writer"
+    },
+    {
+      "companyName": "Twitter",
+      "location": "San Francisco, USA",
+      "jobRole": "Marketing Specialist",
+      "logo": "https://dummyimage.com/32x32/1da1f2/fff&text=T",
+      "backgroundImage": "https://dummyimage.com/286x286/1da1f2/fff&text=Twitter+Background",
+      "jobDetailLink": "/job-details/twitter-marketing-specialist"
+    },
+    {
+      "companyName": "Spotify",
+      "location": "Stockholm, Sweden",
+      "jobRole": "Data Engineer",
+      "logo": "https://dummyimage.com/32x32/1db954/fff&text=S",
+      "backgroundImage": "https://dummyimage.com/286x286/1db954/fff&text=Spotify+Background",
+      "jobDetailLink": "/job-details/spotify-data-engineer"
+    },
+    {
+      "companyName": "Uber",
+      "location": "San Francisco, USA",
+      "jobRole": "Operations Manager",
+      "logo": "https://dummyimage.com/32x32/000/fff&text=U",
+      "backgroundImage": "https://dummyimage.com/286x286/000/fff&text=Uber+Background",
+      "jobDetailLink": "/job-details/uber-operations-manager"
+    },
+    {
+      "companyName": "Adobe",
+      "location": "San Jose, USA",
+      "jobRole": "Graphic Designer",
+      "logo": "https://dummyimage.com/32x32/ff0000/fff&text=AD",
+      "backgroundImage": "https://dummyimage.com/286x286/ff0000/fff&text=Adobe+Background",
+      "jobDetailLink": "/job-details/adobe-graphic-designer"
+    }
+  ]
+}

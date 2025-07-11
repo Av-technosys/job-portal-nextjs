@@ -1,0 +1,65 @@
+[
+  {
+    "JOB_SEEKER_ASSESSMENT": {
+      "planId": "ja_basic",
+      "amount": 999,
+      "planType": "Premium"
+    },
+    "RECRUITER_SUBSCRIPTION": {
+      "BASIC_PLAN_CARD_CONFIG": {
+        "title": "BASIC",
+        "subTitle": "Praesent eget pulvinar orci. Duis ut pellentesque ligula convalis.",
+        "price": 199,
+        "features": [
+          "Post 1 Job",
+          "Urgents & Featured Jobs",
+          "Highlights Job with Colors",
+          "Access & Saved 5 Candidates",
+          "10 Days Resume Visibility",
+          "24/7 Critical Support"
+        ],
+        "planConfig": {
+          "planId": "r_basic",
+          "amount": 199,
+          "planType": "BASIC"
+        }
+      },
+      "STANDARD_PLAN_CARD_CONFIG": {
+        "title": "STANDARD",
+        "subTitle": "Praesent eget pulvinar orci. Duis ut pellentesque ligula convalis.",
+        "price": 339,
+        "features": [
+          "3 Active Jobs",
+          "Urgents & Featured Jobs",
+          "Highlights Job with Colors",
+          "Access & Saved 10 Candidates",
+          "20 Days Resume Visibility",
+          "24/7 Critical Support"
+        ],
+        "planConfig": {
+          "planId": "r_standard",
+          "amount": 339,
+          "planType": "STANDARD"
+        }
+      },
+      "PREMIUM_PLAN_CARD_CONFIG": {
+        "title": "PREMIUM",
+        "subTitle": "Praesent eget pulvinar orci. Duis ut pellentesque ligula convalis.",
+        "price": 559,
+        "features": [
+          "6 Active Jobs",
+          "Urgents & Featured Jobs",
+          "Highlights Job with Colors",
+          "Access & Saved 20 Candidates",
+          "30 Days Resume Visibility",
+          "24/7 Critical Support"
+        ],
+        "planConfig": {
+          "planId": "r_premium",
+          "amount": 559,
+          "planType": "PREMIUM"
+        }
+      }
+    }
+  }
+]
