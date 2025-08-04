@@ -4,6 +4,7 @@ import { Dayjs } from "dayjs";
 export enum UserType {
   JOB_SEEKER_TYPE = "1",
   RECUITER_TYPE = "2",
+  ADMIN_TYPE = "3",
 }
 
 export enum AccessType {

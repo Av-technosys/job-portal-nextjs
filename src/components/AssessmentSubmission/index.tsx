@@ -3,6 +3,7 @@ import { Button, Divider, NextImage, Stack, Typography } from "../common";
 import { ASSESSMENT_SUBMISSION_PAGE_CONFIG } from "@/constants";
 import { colorStyles } from "@/styles";
 import { JA_LOGO } from "@/assets";
+import { useRouter } from "next/navigation";
 const sectionData = [
   {
     sectionName: "Numerical Reasoning",
@@ -51,6 +52,15 @@ function AssessmentSubmission() {
     welcome_text: "welcome user",
     time: "4:59",
   }; // Define the job variable
+
+  const router = useRouter();
+
+  function handleBackToTestClick() {
+    router.push("/assessment");
+  }
+  function handleSubmitClick() {
+    router.push("/assessment-summary");
+  }
 
   return (
     <>
@@ -143,8 +153,8 @@ function AssessmentSubmission() {
               justifyContent: "space-between",
             }}
           >
-            <Button {...BACK_TO_TEST} />
-            <Button {...SUBMIT_BUTTON} />
+            <Button onClick={handleBackToTestClick} {...BACK_TO_TEST} />
+            <Button onClick={handleSubmitClick} {...SUBMIT_BUTTON} />
           </Stack>
         </Stack>
       </Stack>

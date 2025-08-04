@@ -31,3 +31,4 @@ export * from "./planCard";
 export * from "./assessmentScore";
 export * from "./topCompaniesCard";
 export * from "./aboutUs";
+export * from "./admin";

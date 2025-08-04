@@ -2,6 +2,7 @@ import { ASSESSMENT_SUMMARY, CheckCircleIcon, JA_LOGO } from "@/assets";
 import { Button, Divider, NextImage, Stack, Typography } from "../common";
 import { ASSESSMENT_SUMMARY_PAGE_CONFIG } from "@/constants/assessmentSummary";
 import { colorStyles } from "@/styles";
+import { useRouter } from "next/navigation";
 
 function AssessmentSummary() {
   const {
@@ -21,6 +22,14 @@ function AssessmentSummary() {
     GIVE_FEEDBACK,
     SHOW_SCORE,
   } = ASSESSMENT_SUMMARY_PAGE_CONFIG;
+  const router = useRouter();
+  function handleGiveFeedbackClick() {
+    router.push("/assessment-feedback");
+  }
+
+  function handleShowScoreClick() {
+    router.push("/assessment-score");
+  }
   return (
     <>
       <Stack>
@@ -142,8 +151,8 @@ function AssessmentSummary() {
                   justifyContent: "space-between",
                 }}
               >
-                <Button {...GIVE_FEEDBACK} />
-                <Button {...SHOW_SCORE} />
+                <Button onClick={handleGiveFeedbackClick} {...GIVE_FEEDBACK} />
+                <Button onClick={handleShowScoreClick} {...SHOW_SCORE} />
               </Stack>
             </Stack>
           </Stack>

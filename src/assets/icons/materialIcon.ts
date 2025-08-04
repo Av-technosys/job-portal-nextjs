@@ -64,3 +64,7 @@ export { default as PhoneInTalkRoundedIcon } from "@mui/icons-material/PhoneInTa
 export { default as CakeIcon } from "@mui/icons-material/Cake";
 export { default as FlagIcon } from "@mui/icons-material/Flag";
 export { default as LinkedInIcon } from "@mui/icons-material/LinkedIn";
+export { default as PersonIcon } from "@mui/icons-material/Person";
+export { default as BusinessIcon } from "@mui/icons-material/Business";
+export { default as SchoolIcon } from "@mui/icons-material/School";
+export { default as AccountBalanceIcon } from "@mui/icons-material/AccountBalance";

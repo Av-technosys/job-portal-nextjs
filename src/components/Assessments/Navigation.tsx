@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Stack, Paper, Typography, Grid } from "../common";
+import { Stack, Paper, Typography, Grid, IconButton } from "../common";
 import { SAMPLE_QUESTIONS } from "@/constants";
 import { CommonObjectType } from "@/types";
 
@@ -11,30 +11,25 @@ function QuestionNoBox({
   questionStatus: number;
 }) {
   const statusLegendArr = ["green", "blue", "red", "grey"];
-  // console.log(currentQuestionIndex, " : currentQuestionIndex");
   return (
-    <>
-      <Paper
-        paperProps={{
-          sx: {
-            padding: 4,
-            background: statusLegendArr[questionStatus] || "white",
-            // border:
-            //   currentQuestionIndex === questionNo ? "2px solid black" : "",
-          },
+    <Paper
+      paperProps={{
+        sx: {
+          padding: 4,
+          background: statusLegendArr[questionStatus] || "white",
+        },
+      }}
+    >
+      <Stack
+        stackProps={{
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
         }}
       >
-        <Stack
-          stackProps={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          {questionNo}
-        </Stack>
-      </Paper>
-    </>
+        {questionNo}
+      </Stack>
+    </Paper>
   );
 }
 

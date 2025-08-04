@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  ASSESSMENT_URL,
+  // ASSESSMENT_URL,
   CANDIATE_APPLICATIONS_PARTIAL_URL,
   DASHBOARD_URL,
   JOB_DETAILS_PARTIAL_URL,
@@ -9,12 +9,12 @@ import {
   LOGIN_URL,
   MY_POSTED_JOBS_URL,
   NO_PERMISSION_URL,
-  SUBSCRIPTION_URL,
+  // SUBSCRIPTION_URL,
 } from "./constants";
 import {
   checkIfRouteAllowedForCurrentUserType,
-  isLoggedInUserJobSeeker,
-  isLoggedInUserRecruiter,
+  // isLoggedInUserJobSeeker,
+  // isLoggedInUserRecruiter,
   isNonPrivateRoute,
   isPrivateRoute,
 } from "./helper";
@@ -53,18 +53,18 @@ export function middleware(request: NextRequest) {
     (isPrivateRoute(request.nextUrl.pathname) ||
       isNonPrivateRoute(request.nextUrl.pathname))
   ) {
-    if (
-      ![ASSESSMENT_URL, SUBSCRIPTION_URL].includes(request.nextUrl.pathname)
-    ) {
-      routeObj = {
-        isRedirect: true,
-        redirectUrl: isLoggedInUserJobSeeker({ userType: currentUserType })
-          ? ASSESSMENT_URL
-          : isLoggedInUserRecruiter({ userType: currentUserType })
-          ? SUBSCRIPTION_URL
-          : DASHBOARD_URL,
-      };
-    }
+    // if (
+    //   ![ASSESSMENT_URL, SUBSCRIPTION_URL].includes(request.nextUrl.pathname)
+    // ) {
+    //   routeObj = {
+    //     isRedirect: true,
+    //     redirectUrl: isLoggedInUserJobSeeker({ userType: currentUserType })
+    //       ? ASSESSMENT_URL
+    //       : isLoggedInUserRecruiter({ userType: currentUserType })
+    //       ? SUBSCRIPTION_URL
+    //       : DASHBOARD_URL,
+    //   };
+    // }
   } else if (accessToken && isNonPrivateRoute(request.nextUrl.pathname)) {
     // Logged in but routed non-private route.
     // Redirect it to the dashboard overview

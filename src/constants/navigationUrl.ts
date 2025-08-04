@@ -2,6 +2,7 @@ export const LANDING_URL: string = "/";
 export const LOGIN_URL: string = "/login";
 export const REGISTER_URL: string = "/register";
 export const PROFILE_URL: string = "/dashboard/profile";
+export const ADMIN_PROFILE_URL: string = "/admin/profile";
 export const FORGOT_PASSWORD: string = "/forgot-password";
 export const RESET_PASSWORD: string = "/reset-password";
 export const ENTER_OTP: string = "/otp";

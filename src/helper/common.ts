@@ -152,6 +152,10 @@ export function isLoggedInUserRecruiter({ userType }: { userType: UserType }) {
   return userType === UserType.RECUITER_TYPE;
 }
 
+export function isLoggedInUserAdmin({ userType }: { userType: UserType }) {
+  return userType === UserType.ADMIN_TYPE;
+}
+
 export function checkIfNumberValueExistElseReturnUndefined(
   value: CommonAllDataType
 ) {
