@@ -429,7 +429,345 @@ function Personal() {
   );
 }
 function StudentProfile() {
-  return <>StudentProfile</>;
+  const [selectedSort, setSelectedSort] = useState<RecruiterListSortEnum[]>([
+    RecruiterListSortEnum.CREATED_DATE_ASC,
+  ]);
+
+  const findRecruiterAPIData = useGetFindRecruiterList({
+    queryFnParams: {
+      pageLimit: PAGIANTION_LIMIT,
+      sort: selectedSort,
+    },
+  });
+
+  const handleSortChange = (event: SelectChangeEvent<unknown>) => {
+    const newSort = event.target.value;
+    setSelectedSort([newSort] as RecruiterListSortEnum[]);
+  };
+
+  const { paginatedInfoData, hasMore, totalLength } = usePagination({
+    paginatedAPIData: findRecruiterAPIData,
+  });
+
+  const { TITLE_COUNT, TITLE_HEADER, RECRUITER_LISTING_SORT_DROPDOWN } =
+    FIND_RECRUITER_PAGE_CONFIG;
+
+  const [searchString, setSearchString] = useState<string>("");
+
+  const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
+    searchString,
+  });
+
+  return (
+    <>
+      <When condition={true}>
+        <Stack
+          stackProps={{
+            direction: "row",
+            gap: 1,
+            alignItems: "baseline",
+            justifyContent: "space-between", // Ensures space between text and dropdown
+            width: "100%",
+          }}
+        >
+          <Stack
+            stackProps={{
+              direction: "row",
+              gap: 1,
+              alignItems: "baseline",
+            }}
+          >
+            <Typography {...TITLE_COUNT(totalLength)} />
+            <Typography {...TITLE_HEADER(totalLength)} />
+          </Stack>
+
+          <Stack
+            stackProps={{
+              direction: "row",
+              gap: 4,
+              alignItems: "center",
+            }}
+          >
+            <AutoComplete
+              // {...(searchProps.autoComplete as CommonObjectType)}
+              // searchOptions={searchString?.length > 2 ? searchOptions : undefined}
+              // handleDebouncedInputChange={(debouncedSearchValue: string = "") => {
+              //   setSearchString(debouncedSearchValue);
+              // }}
+              // getOptionLabel={(option: AutoCompleteListItem) => {
+              //   return option.title as string;
+              // }}
+              textfieldProps={{
+                ...(searchProps.input as CommonObjectType),
+                slotProps: {
+                  input: {
+                    startAdornment: <SearchIcon color={"primary"} />,
+                  },
+                },
+              }}
+              styles={{
+                autocompleteStyles: {
+                  minWidth: "252px",
+                  "& .MuiOutlinedInput-root": {
+                    height: "50px",
+                    // "& fieldset": {
+                    //   borderColor: "transparent",
+                    // },
+                    // "&:hover fieldset": {
+                    //   borderColor: "transparent",
+                    // },
+                    // "&.Mui-focused:not(.Mui-error) fieldset": {
+                    //   borderColor: "transparent",
+                    // },
+                  },
+                },
+              }}
+              // isLoading={apiData?.isLoading || apiData?.isFetchingNextPage}
+            />
+
+            <Dropdown
+              {...RECRUITER_LISTING_SORT_DROPDOWN}
+              onChange={handleSortChange}
+              value={selectedSort?.[0]}
+            />
+          </Stack>
+        </Stack>
+      </When>
+
+      <InfinitePagination
+        dataLength={paginatedInfoData?.length}
+        next={findRecruiterAPIData?.fetchNextPage}
+        hasMore={hasMore}
+        isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
+      >
+        <Table
+          // data={paginatedInfoData}
+          // Temporary added this data for doing task:-
+          data={[
+            {
+              first_name: "Veer Choudhary",
+              email: "veerchoudhary@gmail.com",
+              dob: "22-03-2000",
+              gender: "male",
+              experience: "2+ years",
+              user: 182,
+            },
+            {
+              first_name: "Isha Sharma",
+              email: "ishasharma@gmail.com",
+              dob: "05-02-1999",
+              gender: "female",
+              experience: "1+ years",
+              user: 183,
+            },
+            {
+              first_name: "Rohan Singh",
+              email: "rohansingh@gmail.com",
+              dob: "12-11-1997",
+              gender: "male",
+              experience: "4+ years",
+              user: 184,
+            },
+            {
+              first_name: "Priya Nair",
+              email: "priyanair@gmail.com",
+              dob: "23-09-2001",
+              gender: "female",
+              experience: "2 years",
+              user: 185,
+            },
+            {
+              first_name: "Aditya Verma",
+              email: "adityaverma@gmail.com",
+              dob: "18-06-1996",
+              gender: "male",
+              experience: "5+ years",
+              user: 186,
+            },
+            {
+              first_name: "Sneha Iyer",
+              email: "sneha.iyer@gmail.com",
+              dob: "08-01-2000",
+              gender: "female",
+              experience: "2+ years",
+              user: 187,
+            },
+            {
+              first_name: "Karan Patel",
+              email: "karanpatel@gmail.com",
+              dob: "30-04-1995",
+              gender: "male",
+              experience: "6+ years",
+              user: 188,
+            },
+            {
+              first_name: "Ananya Das",
+              email: "ananyadas@gmail.com",
+              dob: "17-08-1999",
+              gender: "female",
+              experience: "3 years",
+              user: 189,
+            },
+            {
+              first_name: "Vikram Reddy",
+              email: "vikramreddy@gmail.com",
+              dob: "25-05-1997",
+              gender: "male",
+              experience: "4+ years",
+              user: 190,
+            },
+            {
+              first_name: "Ritika Kapoor",
+              email: "ritikakapoor@gmail.com",
+              dob: "02-12-1998",
+              gender: "female",
+              experience: "2 years",
+              user: 191,
+            },
+            {
+              first_name: "Siddharth Malhotra",
+              email: "siddharthmalhotra@gmail.com",
+              dob: "11-03-1996",
+              gender: "male",
+              experience: "5+ years",
+              user: 192,
+            },
+            {
+              first_name: "Neha Bansal",
+              email: "nehabansal@gmail.com",
+              dob: "09-07-2000",
+              gender: "female",
+              experience: "2 years",
+              user: 193,
+            },
+            {
+              first_name: "Manish Gupta",
+              email: "manishgupta@gmail.com",
+              dob: "14-01-1995",
+              gender: "male",
+              experience: "7 years",
+              user: 194,
+            },
+            {
+              first_name: "Pooja Kulkarni",
+              email: "poojakulkarni@gmail.com",
+              dob: "19-09-1999",
+              gender: "female",
+              experience: "3 years",
+              user: 195,
+            },
+            {
+              first_name: "Arjun Yadav",
+              email: "arjunyadav@gmail.com",
+              dob: "27-02-1998",
+              gender: "male",
+              experience: "4+ years",
+              user: 196,
+            },
+            {
+              first_name: "Meera Joshi",
+              email: "meerajoshi@gmail.com",
+              dob: "04-06-2001",
+              gender: "female",
+              experience: "1+ years",
+              user: 197,
+            },
+            {
+              first_name: "Rahul Chatterjee",
+              email: "rahulchatterjee@gmail.com",
+              dob: "21-10-1997",
+              gender: "male",
+              experience: "4+ years",
+              user: 198,
+            },
+            {
+              first_name: "Kavya Menon",
+              email: "kavyamenon@gmail.com",
+              dob: "13-08-1998",
+              gender: "female",
+              experience: "3 years",
+              user: 199,
+            },
+            {
+              first_name: "Amitabh Sinha",
+              email: "amitabhsinha@gmail.com",
+              dob: "29-11-1995",
+              gender: "male",
+              experience: "6 years",
+              user: 200,
+            },
+            {
+              first_name: "Shreya Ghosh",
+              email: "shreyaghosh@gmail.com",
+              dob: "06-05-1999",
+              gender: "female",
+              experience: "2+ years",
+              user: 201,
+            },
+            {
+              first_name: "Ravi Prasad",
+              email: "raviprasad@gmail.com",
+              dob: "10-04-1996",
+              gender: "male",
+              experience: "5+ years",
+              user: 202,
+            },
+            {
+              first_name: "Tanvi Chauhan",
+              email: "tanvichauhan@gmail.com",
+              dob: "01-12-1998",
+              gender: "female",
+              experience: "3 years",
+              user: 203,
+            },
+            {
+              first_name: "Harsh Vardhan",
+              email: "harshvardhan@gmail.com",
+              dob: "16-02-1997",
+              gender: "male",
+              experience: "4+ years",
+              user: 204,
+            },
+            {
+              first_name: "Divya Saxena",
+              email: "divyasaxena@gmail.com",
+              dob: "28-07-2000",
+              gender: "female",
+              experience: "2 years",
+              user: 205,
+            },
+          ]}
+          // }
+          columns={[
+            {
+              field: "user",
+              headerName: "Id",
+            },
+            {
+              field: "first_name",
+              headerName: "Name",
+            },
+            {
+              field: "email",
+              headerName: "Email",
+            },
+            {
+              field: "dob",
+              headerName: "DOB",
+            },
+            {
+              field: "gender",
+              headerName: "Gender",
+            },
+            {
+              field: "experience",
+              headerName: "Experience",
+            },
+          ]}
+        />
+      </InfinitePagination>
+    </>
+  );
 }
 function AdditonalInformation() {
   return <>AdditonalInformation</>;

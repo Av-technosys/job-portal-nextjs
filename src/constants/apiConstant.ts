@@ -25,6 +25,7 @@ export const apiConstantsURL = {
     storeFCMToken: `user_profiles/store_fcm_token/`,
     candidateSearch: `user_profiles/filter_job_seeker`,
     findRecruiter: `user_profiles/list_all_recruiter/`,
+    deleteUser:`user_profiles/deleteUser/`,
     companyProfile: `user_profiles/company_profile/`,
     recruiterFounding: `user_profiles/recruiter_founding/`,
     saveCandidate: `accounts/save_candidate/`,

@@ -5,11 +5,19 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { UseDeleteRecruiterOrStudent } from "@/services/useDeleteRecruiterOrStudent";
 
-export default function AlertDialog({ open, setOpen }: any) {
+export default function AlertDialog({ open, setOpen, user }: any) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const deletehandler = () => {
+    const response = UseDeleteRecruiterOrStudent({ user });
+    alert(response.msg);
+    setOpen(false);
+  };
+
   return (
     <React.Fragment>
       <Dialog
@@ -30,7 +38,7 @@ export default function AlertDialog({ open, setOpen }: any) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button className="text-red-500" onClick={handleClose} autoFocus>
+          <Button className="text-red-500" onClick={deletehandler} autoFocus>
             Delete
           </Button>
         </DialogActions>
