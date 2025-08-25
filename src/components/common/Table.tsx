@@ -32,9 +32,11 @@ function Table({ columns, data }: TableProps) {
     setSelectedUser(userValue);
   };
 
-  const handlemenuclick = () => {
-    setOpen(true);
-    setAnchorEl(null);
+  const handlemenuclick = (key: string) => {
+    if (key === "delete") {
+      setOpen(true);
+      setAnchorEl(null);
+    }
   };
 
   return (

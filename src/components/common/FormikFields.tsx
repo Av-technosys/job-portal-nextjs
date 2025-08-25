@@ -24,6 +24,7 @@ import { Stack, UploadDocument } from ".";
 import { FormControl, FormHelperText } from "@mui/material";
 import SocialLinksInput from "./SocialLinksInput";
 import CheckBox from "./Checkbox";
+import UploadQuestionPic from "./UploadQuestionPic";
 
 function FormikFields({
   fieldType = FormikFieldsEnum.TEXT_FIELD,
@@ -75,6 +76,9 @@ function FormikFields({
       <When condition={fieldType === FormikFieldsEnum.UPLOAD_PROFILE_IMAGE}>
         <UploadProfilePic />
       </When>
+      <When condition={fieldType === FormikFieldsEnum.UPLOAD_QUESTION_IMAGE}>
+        <UploadQuestionPic />
+      </When>
       <When condition={fieldType === FormikFieldsEnum.MULTI_SELECT_DROPDOWN}>
         <MultiSelectDropdown
           {...rest}
@@ -118,7 +122,7 @@ function FormikFields({
                     stackProps={{
                       className: constructClassName([
                         (arrayFormItemParentClassName as string) || "",
-                        "w-full gap-12 flex-col flex-wrap items-center md:flex-row md:gap-12",
+                        "w-full gap-6 flex-col flex-wrap items-center md:flex-row md:gap-6",
                       ]),
                     }}
                   >

@@ -15,6 +15,7 @@ export interface LoadingButtonProps extends ButtonProps {
 export enum ButtonVariantEnum {
   CONTAINED = "contained",
   OUTLINED = "outlined",
+  TEXT="text"
 }
 
 export enum ButtonColorEnum {

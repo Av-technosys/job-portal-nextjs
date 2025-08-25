@@ -8,6 +8,7 @@ import {
 } from "@/assets";
 import {
   AutoComplete,
+  Button,
   Dropdown,
   InfinitePagination,
   Paper,
@@ -17,24 +18,39 @@ import {
   Typography,
   When,
 } from "@/components";
+import AssessmentContent from "@/components/Assessments/AssessmentContent";
+
 import {
   ADMIN_PAGE_BODY_CONFIG,
+  ASSESSMENT_CONFIG,
+  ASSESSMENT_SCORE_PAGE_CONFIG,
   FIND_RECRUITER_PAGE_CONFIG,
   PAGIANTION_LIMIT,
+  RECRUITER_LISTING_DROPDOWN_SORT_OPTIONS,
 } from "@/constants";
+import { FIND_STUDENT_PAGE_CONFIG } from "@/constants/findstudent";
+
 import {
   useCommonDetails,
   useGetFindRecruiterList,
   useGetSearchDetailsAsPerURLOrUserType,
   usePagination,
 } from "@/services";
+import { useGetFindStudentList } from "@/services/useGetFindStudent";
+import {
+  getFindSubjectList,
+  useGetSubjectList,
+} from "@/services/useGetFindSubject";
 import {
   AutoCompleteListItem,
+  CommonAllDataType,
   CommonObjectType,
+  ElementRenderType,
   RecruiterListSortEnum,
+  StudentListSortEnum,
 } from "@/types";
 import { SelectChangeEvent } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 function AdminContainer() {
   const { userType } = useCommonDetails();
@@ -83,7 +99,7 @@ function AdminContainer() {
         children: <Personal />,
       },
       {
-        label: "Students",
+        label: "Job Seekers",
         value: "profile",
         key: "job-seeker-profile",
         children: <StudentProfile />,
@@ -92,7 +108,7 @@ function AdminContainer() {
         label: "Assessments",
         value: "additionalInformation",
         key: "additionalInformation",
-        children: <AdditonalInformation />,
+        children: <AssessemntProfile />,
       },
     ];
   }, []);
@@ -204,6 +220,13 @@ function Personal() {
     searchString,
   });
 
+  const newData =
+    paginatedInfoData.length > 0
+      ? paginatedInfoData.map((item: any) => {
+          return { ...item, user: item.user.recruiter_profile_id };
+        })
+      : [];
+
   return (
     <>
       <When condition={true}>
@@ -212,7 +235,7 @@ function Personal() {
             direction: "row",
             gap: 1,
             alignItems: "baseline",
-            justifyContent: "space-between", // Ensures space between text and dropdown
+            justifyContent: "space-between",
             width: "100%",
           }}
         >
@@ -287,120 +310,7 @@ function Personal() {
         isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
       >
         <Table
-          // data={paginatedInfoData}
-          // Temporary added this data for doing task:-
-          data={[
-            {
-              first_name: "ViP Recruiter",
-              industry_type: "Information Technology",
-              city: "mumbai",
-              state: "maharashtra",
-              country: "India",
-              profile_image: null,
-              user: 150,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "Healthcare",
-              city: "Los Angeles",
-              state: "CA",
-              country: "USA",
-              profile_image: null,
-              user: 157,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "IT",
-              city: "Chicago",
-              state: "NY",
-              country: "USA",
-              profile_image: null,
-              user: 169,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "Healthcare",
-              city: "Chicago",
-              state: "NY",
-              country: "Canada",
-              profile_image: null,
-              user: 170,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "Healthcare",
-              city: "New York",
-              state: "NY",
-              country: "Canada",
-              profile_image: null,
-              user: 171,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "Healthcare",
-              city: "Los Angeles",
-              state: "CA",
-              country: "Canada",
-              profile_image: null,
-              user: 172,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "IT",
-              city: "Los Angeles",
-              state: "NY",
-              country: "USA",
-              profile_image: null,
-              user: 173,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "Finance",
-              city: "Los Angeles",
-              state: "NY",
-              country: "Canada",
-              profile_image: null,
-              user: 174,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "IT",
-              city: "New York",
-              state: "NY",
-              country: "USA",
-              profile_image: null,
-              user: 175,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "Healthcare",
-              city: "Chicago",
-              state: "NY",
-              country: "Canada",
-              profile_image: null,
-              user: 176,
-            },
-            {
-              first_name: "Ram",
-              industry_type: "Finance",
-              city: "Los Angeles",
-              state: "CA",
-              country: "Canada",
-              profile_image: null,
-              user: 177,
-            },
-            {
-              first_name: "Avtechnosys",
-              industry_type: "Information Technology",
-              city: "mumbai",
-              state: "rajasthan",
-              country: "India",
-              profile_image:
-                "https://job-assured.s3.amazonaws.com/documents/profile_image/1739511575.338781.png",
-              user: 181,
-            },
-          ]}
-          // }
+          data={newData}
           columns={[
             {
               field: "user",
@@ -429,11 +339,11 @@ function Personal() {
   );
 }
 function StudentProfile() {
-  const [selectedSort, setSelectedSort] = useState<RecruiterListSortEnum[]>([
-    RecruiterListSortEnum.CREATED_DATE_ASC,
+  const [selectedSort, setSelectedSort] = useState<StudentListSortEnum[]>([
+    StudentListSortEnum.CREATED_DATE_ASC,
   ]);
 
-  const findRecruiterAPIData = useGetFindRecruiterList({
+  const findStudentAPIData = useGetFindStudentList({
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
@@ -442,21 +352,28 @@ function StudentProfile() {
 
   const handleSortChange = (event: SelectChangeEvent<unknown>) => {
     const newSort = event.target.value;
-    setSelectedSort([newSort] as RecruiterListSortEnum[]);
+    setSelectedSort([newSort] as StudentListSortEnum[]);
   };
 
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
-    paginatedAPIData: findRecruiterAPIData,
+    paginatedAPIData: findStudentAPIData,
   });
 
-  const { TITLE_COUNT, TITLE_HEADER, RECRUITER_LISTING_SORT_DROPDOWN } =
-    FIND_RECRUITER_PAGE_CONFIG;
+  const { TITLE_COUNT, TITLE_HEADER, STUDENT_LISTING_SORT_DROPDOWN } =
+    FIND_STUDENT_PAGE_CONFIG;
 
   const [searchString, setSearchString] = useState<string>("");
 
   const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
     searchString,
   });
+
+  const newData =
+    paginatedInfoData.length > 0
+      ? paginatedInfoData.map((item: any) => {
+          return { ...item, user: item.user };
+        })
+      : [];
 
   return (
     <>
@@ -466,7 +383,7 @@ function StudentProfile() {
             direction: "row",
             gap: 1,
             alignItems: "baseline",
-            justifyContent: "space-between", // Ensures space between text and dropdown
+            justifyContent: "space-between",
             width: "100%",
           }}
         >
@@ -526,7 +443,7 @@ function StudentProfile() {
             />
 
             <Dropdown
-              {...RECRUITER_LISTING_SORT_DROPDOWN}
+              {...STUDENT_LISTING_SORT_DROPDOWN}
               onChange={handleSortChange}
               value={selectedSort?.[0]}
             />
@@ -536,208 +453,12 @@ function StudentProfile() {
 
       <InfinitePagination
         dataLength={paginatedInfoData?.length}
-        next={findRecruiterAPIData?.fetchNextPage}
+        next={findStudentAPIData?.fetchNextPage}
         hasMore={hasMore}
-        isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
+        isFetchingMore={findStudentAPIData?.isFetchingNextPage}
       >
         <Table
-          // data={paginatedInfoData}
-          // Temporary added this data for doing task:-
-          data={[
-            {
-              first_name: "Veer Choudhary",
-              email: "veerchoudhary@gmail.com",
-              dob: "22-03-2000",
-              gender: "male",
-              experience: "2+ years",
-              user: 182,
-            },
-            {
-              first_name: "Isha Sharma",
-              email: "ishasharma@gmail.com",
-              dob: "05-02-1999",
-              gender: "female",
-              experience: "1+ years",
-              user: 183,
-            },
-            {
-              first_name: "Rohan Singh",
-              email: "rohansingh@gmail.com",
-              dob: "12-11-1997",
-              gender: "male",
-              experience: "4+ years",
-              user: 184,
-            },
-            {
-              first_name: "Priya Nair",
-              email: "priyanair@gmail.com",
-              dob: "23-09-2001",
-              gender: "female",
-              experience: "2 years",
-              user: 185,
-            },
-            {
-              first_name: "Aditya Verma",
-              email: "adityaverma@gmail.com",
-              dob: "18-06-1996",
-              gender: "male",
-              experience: "5+ years",
-              user: 186,
-            },
-            {
-              first_name: "Sneha Iyer",
-              email: "sneha.iyer@gmail.com",
-              dob: "08-01-2000",
-              gender: "female",
-              experience: "2+ years",
-              user: 187,
-            },
-            {
-              first_name: "Karan Patel",
-              email: "karanpatel@gmail.com",
-              dob: "30-04-1995",
-              gender: "male",
-              experience: "6+ years",
-              user: 188,
-            },
-            {
-              first_name: "Ananya Das",
-              email: "ananyadas@gmail.com",
-              dob: "17-08-1999",
-              gender: "female",
-              experience: "3 years",
-              user: 189,
-            },
-            {
-              first_name: "Vikram Reddy",
-              email: "vikramreddy@gmail.com",
-              dob: "25-05-1997",
-              gender: "male",
-              experience: "4+ years",
-              user: 190,
-            },
-            {
-              first_name: "Ritika Kapoor",
-              email: "ritikakapoor@gmail.com",
-              dob: "02-12-1998",
-              gender: "female",
-              experience: "2 years",
-              user: 191,
-            },
-            {
-              first_name: "Siddharth Malhotra",
-              email: "siddharthmalhotra@gmail.com",
-              dob: "11-03-1996",
-              gender: "male",
-              experience: "5+ years",
-              user: 192,
-            },
-            {
-              first_name: "Neha Bansal",
-              email: "nehabansal@gmail.com",
-              dob: "09-07-2000",
-              gender: "female",
-              experience: "2 years",
-              user: 193,
-            },
-            {
-              first_name: "Manish Gupta",
-              email: "manishgupta@gmail.com",
-              dob: "14-01-1995",
-              gender: "male",
-              experience: "7 years",
-              user: 194,
-            },
-            {
-              first_name: "Pooja Kulkarni",
-              email: "poojakulkarni@gmail.com",
-              dob: "19-09-1999",
-              gender: "female",
-              experience: "3 years",
-              user: 195,
-            },
-            {
-              first_name: "Arjun Yadav",
-              email: "arjunyadav@gmail.com",
-              dob: "27-02-1998",
-              gender: "male",
-              experience: "4+ years",
-              user: 196,
-            },
-            {
-              first_name: "Meera Joshi",
-              email: "meerajoshi@gmail.com",
-              dob: "04-06-2001",
-              gender: "female",
-              experience: "1+ years",
-              user: 197,
-            },
-            {
-              first_name: "Rahul Chatterjee",
-              email: "rahulchatterjee@gmail.com",
-              dob: "21-10-1997",
-              gender: "male",
-              experience: "4+ years",
-              user: 198,
-            },
-            {
-              first_name: "Kavya Menon",
-              email: "kavyamenon@gmail.com",
-              dob: "13-08-1998",
-              gender: "female",
-              experience: "3 years",
-              user: 199,
-            },
-            {
-              first_name: "Amitabh Sinha",
-              email: "amitabhsinha@gmail.com",
-              dob: "29-11-1995",
-              gender: "male",
-              experience: "6 years",
-              user: 200,
-            },
-            {
-              first_name: "Shreya Ghosh",
-              email: "shreyaghosh@gmail.com",
-              dob: "06-05-1999",
-              gender: "female",
-              experience: "2+ years",
-              user: 201,
-            },
-            {
-              first_name: "Ravi Prasad",
-              email: "raviprasad@gmail.com",
-              dob: "10-04-1996",
-              gender: "male",
-              experience: "5+ years",
-              user: 202,
-            },
-            {
-              first_name: "Tanvi Chauhan",
-              email: "tanvichauhan@gmail.com",
-              dob: "01-12-1998",
-              gender: "female",
-              experience: "3 years",
-              user: 203,
-            },
-            {
-              first_name: "Harsh Vardhan",
-              email: "harshvardhan@gmail.com",
-              dob: "16-02-1997",
-              gender: "male",
-              experience: "4+ years",
-              user: 204,
-            },
-            {
-              first_name: "Divya Saxena",
-              email: "divyasaxena@gmail.com",
-              dob: "28-07-2000",
-              gender: "female",
-              experience: "2 years",
-              user: 205,
-            },
-          ]}
-          // }
+          data={newData}
           columns={[
             {
               field: "user",
@@ -752,7 +473,7 @@ function StudentProfile() {
               headerName: "Email",
             },
             {
-              field: "dob",
+              field: "date_of_birth",
               headerName: "DOB",
             },
             {
@@ -769,6 +490,41 @@ function StudentProfile() {
     </>
   );
 }
-function AdditonalInformation() {
-  return <>AdditonalInformation</>;
+function AssessemntProfile() {
+  const { ASSESSMENT_FREE, ASSESSMENT_PAID } = ASSESSMENT_SCORE_PAGE_CONFIG;
+
+  const allSubjectList = useGetSubjectList();
+  const subdata = allSubjectList.data?.data;
+
+  const paiddata = subdata?.filter((item: any) => {
+    if (item?.is_paid == true) {
+      return item;
+    }
+  });
+  const freedata = subdata?.filter((item: any) => {
+    if (item?.is_paid == false) {
+      return item;
+    }
+  });
+
+  return (
+    <>
+      {subdata ? (
+        <>
+          <AssessmentContent
+            AssessmentContent={ASSESSMENT_PAID}
+            PaidAssessment={paiddata}
+            btntype={true}
+          />
+          <AssessmentContent
+            AssessmentContent={ASSESSMENT_FREE}
+            PaidAssessment={freedata}
+            btntype={false}
+          />
+        </>
+      ) : (
+        <Stack>Loading...</Stack>
+      )}
+    </>
+  );
 }

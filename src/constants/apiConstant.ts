@@ -25,13 +25,16 @@ export const apiConstantsURL = {
     storeFCMToken: `user_profiles/store_fcm_token/`,
     candidateSearch: `user_profiles/filter_job_seeker`,
     findRecruiter: `user_profiles/list_all_recruiter/`,
-    deleteUser:`user_profiles/deleteUser/`,
+    findStudent: `user_profiles/list_all_job_seeker/`,
+    deleteUser: `accounts/remove_user/`,
+    // deletejobseeker: `user_profiles/remove_job_seeker/`,
     companyProfile: `user_profiles/company_profile/`,
     recruiterFounding: `user_profiles/recruiter_founding/`,
     saveCandidate: `accounts/save_candidate/`,
     socialUrlsRecruiter: `user_profiles/social_urls_recruiter/`,
     socialUrlsJobSeeker: `user_profiles/social_urls_job_seeker/`,
     profileImage: `user_profiles/upload_profile_image/`,
+    questionImage: `user_profiles/upload_question_image/`,
     updateCandidateStatus: `jobs/application_status/`,
   },
   jobs: {
@@ -55,5 +58,15 @@ export const apiConstantsURL = {
   payment: {
     orderId: `payment/create_order/`,
     captureTransaction: `payment/capture_transaction/`,
+  },
+  assessment: {
+    getAllSubjects: `assessment/list_all_subjects/`,
+    getSubjectById: `assessment/get_subject_by_id/`,
+    updateSubject: `assessment/update_subject/`,
+    createSubject: `assessment/create_Subject/`,
+    subjectInfo: `assessment/get_subjectInfo/`,
+    updateQuestion: `assessment/update_question/`,
+    questionInfo: `assessment/get_questionInfo/`,
+    deleteSubject: `assessment/delete_subject/`,
   },
 };

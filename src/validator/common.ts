@@ -75,6 +75,14 @@ export const scoreValidationSchema = yup
   .positive("Score must be a positive number")
   .typeError("Score must be a valid number");
 
+  export const examTimeValidationSchema = yup
+  .number()
+  .required("Exam Time is required")
+  .min(1, "Exam Time must be at least 1")
+  .max(60, "Exam Time must be at most 100")
+  .positive("Exam Time must be a positive number")
+  .typeError("Exam Time must be a valid number");
+
 export const skillsValidationSchema = () =>
   yup.array().required("Skills are required");
 
