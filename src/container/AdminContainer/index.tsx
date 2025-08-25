@@ -28,11 +28,7 @@ import {
   useGetSearchDetailsAsPerURLOrUserType,
   usePagination,
 } from "@/services";
-import {
-  AutoCompleteListItem,
-  CommonObjectType,
-  RecruiterListSortEnum,
-} from "@/types";
+import { CommonObjectType, RecruiterListSortEnum } from "@/types";
 import { SelectChangeEvent } from "@mui/material";
 import React, { useMemo, useState } from "react";
 
@@ -198,7 +194,7 @@ function Personal() {
   const { TITLE_COUNT, TITLE_HEADER, RECRUITER_LISTING_SORT_DROPDOWN } =
     FIND_RECRUITER_PAGE_CONFIG;
 
-  const [searchString, setSearchString] = useState<string>("");
+  const [searchString] = useState<string>("");
 
   const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
     searchString,

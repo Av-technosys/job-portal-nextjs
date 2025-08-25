@@ -26,7 +26,7 @@ interface AdminQuestionCardProps {
 
 const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
   questionData,
-  index, // <-- Receive index
+  index,
   onEdit,
   onDelete,
 }) => {
@@ -37,8 +37,6 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
       ? questionData.answer.replace("option_", "")
       : questionData.answer;
   }, [questionData.answer]);
-  const [selectedOption, setSelectedOption] =
-    React.useState<string>(normalizeAnswer);
   const { showNotification } = useNotification();
   const deleteMutation = useDeleteAssessmentQuestion({
     onSuccess: () => {
@@ -57,12 +55,8 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const {
-    QUESTION_ID,
-    QUESTION_TEXT, // <-- Import QUESTION_TEXT
-    QUESTION_ID_TEXT,
-    QUESTION,
-  } = ADMIN_QUESTION_CARD_CONFIG;
+  const { QUESTION_ID, QUESTION_TEXT, QUESTION_ID_TEXT, QUESTION } =
+    ADMIN_QUESTION_CARD_CONFIG;
 
   const handleMenuClick = (key: string) => {
     if (key === "delete") {
@@ -75,10 +69,6 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
       onEdit?.();
     }
     handleClose();
-  };
-
-  const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(event.target.value);
   };
 
   const menuItems = [
@@ -131,7 +121,7 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
           sx: { width: "100%", marginTop: 2 },
         }}
       >
-        <Typography {...QUESTION_TEXT(index)} /> {/* <-- Use constant here */}
+        <Typography {...QUESTION_TEXT(index)} />
         <Typography {...QUESTION(questionData)} />
       </Stack>
       {/* Options */}

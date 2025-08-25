@@ -1,7 +1,5 @@
-import { CommonObjectType } from "./common";
-
 export type SubjectQuestionDetails = {
-  question_id: number;  
+  question_id: number;
   question: string;
   options: string[];
   correct_answer: string;
@@ -9,4 +7,3 @@ export type SubjectQuestionDetails = {
   created_at: string;
   updated_at: string;
 };
-

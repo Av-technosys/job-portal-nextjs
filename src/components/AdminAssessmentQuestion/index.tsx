@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { ADMIN_QUESTION_CARD_CONFIG, PAGIANTION_LIMIT } from "@/constants";
 import {
   AutoComplete,
@@ -28,14 +28,14 @@ function AdminAssessmentSubject({ subjectId }: { subjectId: number }) {
       sort: selectedSort,
     },
   });
-  const { paginatedInfoData, hasMore, totalLength } = usePagination({
+  const { paginatedInfoData, hasMore } = usePagination({
     paginatedAPIData: subjectInfoAPIData,
   });
 
   //  http:  127.0.0.1:8000/assessment/get_question_by_subject_id/5/
-  const { SEARCHBAR_TEXT, ADD_QUESTION_BUTTON, JOB_LISTING_SORT_DROPDOWN } =
+  const { ADD_QUESTION_BUTTON, JOB_LISTING_SORT_DROPDOWN } =
     ADMIN_QUESTION_CARD_CONFIG;
-  const [searchString, setSearchString] = useState("");
+  const [searchString] = useState(""); // Remove setSearchString
   const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
     searchString,
   });
@@ -114,49 +114,27 @@ function AdminAssessmentSubject({ subjectId }: { subjectId: number }) {
         hasMore={hasMore}
         isFetchingMore={subjectInfoAPIData?.isFetchingNextPage}
       >
-        {/* <Stack>
-          <AdminQuestionCard />
-        </Stack> */}
         <Stack>
-          {paginatedInfoData.map((question, idx) => {
-            // Ensure question has the required properties
-            const formattedQuestion = {
-              id: String(question?.id ?? idx),
-              question: String(question?.question ?? ""),
-              options:
-                typeof question?.options === "object"
-                  ? Object.fromEntries(
-                      Object.entries(question?.options ?? {}).map(
-                        ([key, value]) => [key, String(value)]
-                      )
-                    )
-                  : {},
-              answer:
-                question?.answer !== undefined
-                  ? String(question?.answer)
-                  : undefined,
-            };
-            return (
-              <AdminQuestionCard
-                key={formattedQuestion.id}
-                index={idx}
-                questionData={{
-                  id: question.id.toString(),
-                  question: String(question.question_text),
-                  options: {
-                    "1": String(question.option_1),
-                    "2": String(question.option_2),
-                    "3": String(question.option_3),
-                    "4": String(question.option_4),
-                  },
-                  answer:
-                    question.correct_option !== undefined
-                      ? String(question.correct_option)
-                      : undefined,
-                }}
-              />
-            );
-          })}
+          {paginatedInfoData.map((question, idx) => (
+            <AdminQuestionCard
+              key={question.id ? String(question.id) : undefined}
+              index={idx}
+              questionData={{
+                id: question.id.toString(),
+                question: String(question.question_text),
+                options: {
+                  "1": String(question.option_1),
+                  "2": String(question.option_2),
+                  "3": String(question.option_3),
+                  "4": String(question.option_4),
+                },
+                answer:
+                  question.correct_option !== undefined
+                    ? String(question.correct_option)
+                    : undefined,
+              }}
+            />
+          ))}
         </Stack>
       </InfinitePagination>
     </>
