@@ -15,3 +15,4 @@ export * from "./subscriptionAvatar";
 export * from "./detailJob";
 export * from "./paymentModal";
 export * from "./companyHomePage";
+export * from "./assessmentSubjectQuestion";

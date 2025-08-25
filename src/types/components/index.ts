@@ -34,3 +34,4 @@ export * from "./TextWithIcon";
 export * from "./MultiSelectDropdown";
 export * from "./TextAndSubtextWithIcon";
 export * from "./Grid";
+export * from "./Radio";
