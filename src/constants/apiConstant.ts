@@ -55,4 +55,7 @@ export const apiConstantsURL = {
     orderId: `payment/create_order/`,
     captureTransaction: `payment/capture_transaction/`,
   },
+  assessment: {
+    getQuestionsBySubjectId: `assessment/get_test_by_subject_id/`,
+  },
 };

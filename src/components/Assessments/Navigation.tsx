@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Stack, Paper, Typography, Grid, IconButton } from "../common";
-import { SAMPLE_QUESTIONS } from "@/constants";
 import { CommonObjectType } from "@/types";
+import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
 
 function QuestionNoBox({
   questionNo,
@@ -81,7 +81,7 @@ function AssessmentStatusLegend() {
 export interface AssessmentNavigationProps {
   setCurrentQIndex: (questionNo: number) => void;
   userAssessmentDetails: CommonObjectType;
-  assessmentSection: string;
+  assessmentSection: number | null | string;
 }
 
 export default function AssessmentNavigation({
@@ -89,10 +89,11 @@ export default function AssessmentNavigation({
   userAssessmentDetails,
   assessmentSection,
 }: AssessmentNavigationProps) {
+  const { data } = useGetStudentAssessmentQuestions();
+  const questions = data?.data.questions;
   const questionArr = useMemo(() => {
-    return SAMPLE_QUESTIONS;
-  }, []);
-
+    return questions ?? [];
+  }, [questions]);
   return (
     <>
       <AssessmentStatusLegend />
@@ -114,16 +115,22 @@ export default function AssessmentNavigation({
           container: true,
           rowSpacing: 1,
           columnSpacing: 2,
+          sx: {
+            overflowX: "hidden",
+            overflowY: "scroll",
+            height: "283px",
+          },
         }}
       >
-        {questionArr.map((questionNo, index) => {
+        {questionArr?.map((question: any, index: any) => {
+          const questionId = question.id;
           const questionDetails = userAssessmentDetails?.[
-            `${assessmentSection}_${index + 1}`
+            `${questionId}_${index + 1}`
           ] as CommonObjectType;
 
           return (
             <Grid
-              key={`${questionNo}-${index}-questionNo`}
+              key={`${questionId}-${index}-questionNo`}
               gridProps={{
                 size: 3,
                 onClick: () => setCurrentQIndex(index + 1),
@@ -140,3 +147,26 @@ export default function AssessmentNavigation({
     </>
   );
 }
+
+//  {questionArr.map((questionNo, index) => {
+//           const questionDetails = userAssessmentDetails?.[
+//             `${assessmentSection}_${index + 1}`
+//           ] as CommonObjectType;
+
+//           console.log("questionDetails", questionDetails);
+
+//           return (
+//             <Grid
+//               key={`${questionNo}-${index}-questionNo`}
+//               gridProps={{
+//                 size: 3,
+//                 onClick: () => setCurrentQIndex(index + 1),
+//               }}
+//             >
+//               <QuestionNoBox
+//                 questionNo={index + 1}
+//                 questionStatus={questionDetails?.status as number}
+//               />
+//             </Grid>
+//           );
+//         })}

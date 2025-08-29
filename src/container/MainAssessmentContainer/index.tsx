@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from "@/components";
-import { ASSESSMENT_CONFIG, SAMPLE_QUESTIONS } from "@/constants";
+
 import { ButtonVariantEnum, TypographyVariantEnum } from "@/types";
 import {
   FormControl,
@@ -16,8 +16,9 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { colorStyles } from "@/styles";
 import { useRouter } from "next/navigation";
+import StopWatchHandler from "@/components/Assessments/StopWatchHandler";
+import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
 
 export default function MainAssessmentContainer() {
   type AnsweredData = {
@@ -27,14 +28,21 @@ export default function MainAssessmentContainer() {
     };
   };
 
+  const [assessmentSectionValue, setAssessmentSectionValue] = useState<
+    number | null
+  >(0);
   const [currentQIndex, setCurrentQIndex] = useState(1);
   const [currentTabIndex, setCurrentTabIndex] = useState("0");
   const [currentSelectedOption, setCurrentSelectedOption] = useState("0");
   const [userAnsweredData, setUserAnsweredData] = useState<AnsweredData>({});
-  const [stopwatchTime, setStopwatchTime] = useState(MAX_TIME);
-
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const prevTypeRef = useRef<"blur" | "focus" | null>(null);
+
+  const StudentAssessmentQuestions = useGetStudentAssessmentQuestions();
+  const getAllStudentAssessmentQuestions =
+    StudentAssessmentQuestions.data?.data.questions;
+  const AllStudentAssessmentQuestionsLength =
+    getAllStudentAssessmentQuestions?.length;
 
   useEffect(() => {
     const handleFocus = () => {
@@ -63,21 +71,13 @@ export default function MainAssessmentContainer() {
 
   useEffect(() => {
     setCurrentSelectedOption(
-      userAnsweredData?.[`${currentTabIndex}_${currentQIndex}`]?.answer || "0"
+      userAnsweredData?.[
+        `${
+          getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        }_${currentQIndex}`
+      ]?.answer || "0"
     );
   }, [currentTabIndex, currentQIndex, userAnsweredData]);
-
-  useEffect(() => {
-    let timeoutId: any;
-
-    if (stopwatchTime > 0) {
-      timeoutId = setTimeout(() => {
-        setStopwatchTime((prev) => prev - 1);
-      }, 1000);
-    }
-
-    return () => clearTimeout(timeoutId);
-  }, [stopwatchTime]);
 
   // const tabItems = useMemo(() => {
   //   return [
@@ -99,7 +99,7 @@ export default function MainAssessmentContainer() {
   function moveToNextQuestion() {
     const nextQuestionIndex = currentQIndex + 1;
     if (
-      nextQuestionIndex <= ASSESSMENT_CONFIG.MAX_NO_OF_QUESTION &&
+      nextQuestionIndex <= AllStudentAssessmentQuestionsLength &&
       nextQuestionIndex > 0
     ) {
       setCurrentQIndex(nextQuestionIndex);
@@ -109,7 +109,9 @@ export default function MainAssessmentContainer() {
   function handleMarkForReviewAndNext(answeredValue: string) {
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${currentTabIndex}_${currentQIndex}`]: {
+      [`${
+        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+      }_${currentQIndex}`]: {
         answer: answeredValue,
         status: 1,
       },
@@ -121,7 +123,9 @@ export default function MainAssessmentContainer() {
     setCurrentSelectedOption("0");
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${currentTabIndex}_${currentQIndex}`]: {
+      [`${
+        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+      }_${currentQIndex}`]: {
         answer: "0",
         status: 2,
       },
@@ -132,36 +136,46 @@ export default function MainAssessmentContainer() {
     if (!answeredValue || answeredValue === "0") return;
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${currentTabIndex}_${currentQIndex}`]: {
+      [`${
+        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+      }_${currentQIndex}`]: {
         answer: answeredValue,
         status: 0,
       },
     });
+    setAssessmentSectionValue(
+      getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+    );
     moveToNextQuestion();
   }
 
   function handleQIndexChange(qIndex: number) {
-    if (qIndex <= ASSESSMENT_CONFIG.MAX_NO_OF_QUESTION && qIndex > 0) {
-      setCurrentQIndex(qIndex);
-
+    if (qIndex <= AllStudentAssessmentQuestionsLength && qIndex > 0) {
       setUserAnsweredData((prev) => {
-        if (prev[`${currentTabIndex}_${qIndex}`]) {
+        const prevIndex = currentQIndex;
+        if (!prevIndex || prevIndex === qIndex) return prev;
+
+        const prevQuestionId =
+          getAllStudentAssessmentQuestions?.[prevIndex - 1]?.id;
+        if (!prevQuestionId) return prev;
+
+        const prevKey = `${prevQuestionId}_${prevIndex}`;
+        const prevEntry = prev[prevKey];
+        if (prevEntry && prevEntry.answer && prevEntry.answer !== "") {
           return prev;
         }
         return {
           ...prev,
-          [`${currentTabIndex}_${qIndex}`]: {
-            answer: "",
+          [prevKey]: {
+            answer: prevEntry?.answer ?? "",
             status: 2,
           },
         };
       });
+      setCurrentQIndex(qIndex);
     }
   }
 
-  // useEffect(() => {
-  //   console.log(userAnsweredData);
-  // }, [userAnsweredData]);
   return (
     <>
       <Grid
@@ -190,52 +204,36 @@ export default function MainAssessmentContainer() {
             <div>
               <div>Question No. {currentQIndex}</div>
               <div>Total Tab switched {tabSwitchCount}</div>
-
-              <Stack
-                stackProps={{
-                  alignItems: "end",
-                  sx: {
-                    width: "100%",
-                    padding: "10px 10px",
-                    backgroundColor: colorStyles.latestJobCardBackground,
-                  },
-                }}
-              >
+              <StopWatchHandler />
+              {getAllStudentAssessmentQuestions?.[currentQIndex - 1]
+                ?.question_paragraph && (
                 <Typography
                   typographyProps={{
-                    children: `Time left: ${String(
-                      Math.floor(stopwatchTime / 60)
-                    ).padStart(2, "0")}:${String(stopwatchTime % 60).padStart(
-                      2,
-                      "0"
-                    )}`,
-                    variant: TypographyVariantEnum.H5,
+                    children:
+                      getAllStudentAssessmentQuestions?.[currentQIndex - 1]
+                        ?.question_paragraph,
+                    variant: TypographyVariantEnum.H6,
                     color: "text.secondary",
-                    className: "text-center ",
+                    className: "text-start mt-4",
                   }}
                 />
-              </Stack>
+              )}
 
               <Typography
                 typographyProps={{
-                  children: SAMPLE_QUESTIONS[currentQIndex - 1].paragraph,
+                  children:
+                    getAllStudentAssessmentQuestions?.[currentQIndex - 1]
+                      ?.question_text,
                   variant: TypographyVariantEnum.H6,
                   color: "text.secondary",
-                  className: "text-center mt-4",
-                }}
-              />
-
-              <Typography
-                typographyProps={{
-                  children: SAMPLE_QUESTIONS[currentQIndex - 1].question,
-                  variant: TypographyVariantEnum.H6,
-                  color: "text.secondary",
-                  className: "text-center mt-4",
+                  className: "text-start mt-4",
                 }}
               />
 
               <QuestionOptions
-                questionData={SAMPLE_QUESTIONS[currentQIndex - 1].options}
+                questionData={
+                  getAllStudentAssessmentQuestions?.[currentQIndex - 1]
+                }
                 selectedValue={currentSelectedOption}
                 onChange={setCurrentSelectedOption}
               />
@@ -281,7 +279,7 @@ export default function MainAssessmentContainer() {
           <AssessmentNavigation
             setCurrentQIndex={handleQIndexChange}
             userAssessmentDetails={userAnsweredData}
-            assessmentSection={currentTabIndex}
+            assessmentSection={assessmentSectionValue}
           />
           <SubmitButton />
         </Grid>
@@ -291,7 +289,7 @@ export default function MainAssessmentContainer() {
 }
 
 type QuestionOptionsProps = {
-  questionData: Record<string, string>;
+  questionData: Record<string, string | any>;
   selectedValue: string;
   onChange: (value: string) => void;
 };
@@ -301,6 +299,13 @@ const QuestionOptions = ({
   selectedValue,
   onChange,
 }: QuestionOptionsProps) => {
+  const QuestionOptionsData = {
+    A: questionData?.option_1,
+    B: questionData?.option_2,
+    C: questionData?.option_3,
+    D: questionData?.option_4,
+  };
+
   return (
     <FormControl>
       <RadioGroup
@@ -309,22 +314,22 @@ const QuestionOptions = ({
         value={selectedValue}
         onChange={(e) => onChange(e.target.value)}
       >
-        {Object.entries(questionData).map(([key, value]) => {
+        {Object.entries(QuestionOptionsData).map(([key, value]) => {
           return (
-            <FormControlLabel
-              key={`${key}-${value}`}
-              value={key}
-              control={<Radio />}
-              label={value}
-            />
+            <>
+              <FormControlLabel
+                key={`${key}-${value}`}
+                value={key}
+                control={<Radio />}
+                label={value}
+              />
+            </>
           );
         })}
       </RadioGroup>
     </FormControl>
   );
 };
-
-const MAX_TIME = 20 * 60;
 
 function SubmitButton() {
   const [open, setOpen] = useState(false);
