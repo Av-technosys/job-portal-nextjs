@@ -19,6 +19,9 @@ import {
 import { useRouter } from "next/navigation";
 import StopWatchHandler from "@/components/Assessments/StopWatchHandler";
 import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
+import { UseCreateStudentAnsweredData } from "@/services/useCreateStudentTestAnsweredData";
+import { getErrorMessageFromAPI } from "@/helper";
+import { useNotification } from "@/services";
 
 export default function MainAssessmentContainer() {
   type AnsweredData = {
@@ -37,6 +40,7 @@ export default function MainAssessmentContainer() {
   const [userAnsweredData, setUserAnsweredData] = useState<AnsweredData>({});
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const prevTypeRef = useRef<"blur" | "focus" | null>(null);
+  const [timeForSubmit, setTimeForSubmit] = useState<number | null>(null);
 
   const StudentAssessmentQuestions = useGetStudentAssessmentQuestions();
   const getAllStudentAssessmentQuestions =
@@ -176,6 +180,10 @@ export default function MainAssessmentContainer() {
     }
   }
 
+  function getStopWatchTimeValue(time: number) {
+    setTimeForSubmit(time);
+  }
+
   return (
     <>
       <Grid
@@ -204,7 +212,7 @@ export default function MainAssessmentContainer() {
             <div>
               <div>Question No. {currentQIndex}</div>
               <div>Total Tab switched {tabSwitchCount}</div>
-              <StopWatchHandler />
+              <StopWatchHandler getStopWatchTime={getStopWatchTimeValue} />
               {getAllStudentAssessmentQuestions?.[currentQIndex - 1]
                 ?.question_paragraph && (
                 <Typography
@@ -281,7 +289,11 @@ export default function MainAssessmentContainer() {
             userAssessmentDetails={userAnsweredData}
             assessmentSection={assessmentSectionValue}
           />
-          <SubmitButton />
+          <SubmitButton
+            userAnsweredData={userAnsweredData}
+            timeForSubmit={timeForSubmit}
+            tabSwitchCount={tabSwitchCount}
+          />
         </Grid>
       </Grid>
     </>
@@ -331,11 +343,48 @@ const QuestionOptions = ({
   );
 };
 
-function SubmitButton() {
+type SubmitButtonProps = {
+  userAnsweredData: any;
+  timeForSubmit: number | null;
+  tabSwitchCount: number;
+};
+
+function SubmitButton({
+  userAnsweredData,
+  timeForSubmit,
+  tabSwitchCount,
+}: SubmitButtonProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const { showNotification } = useNotification();
+
+  const data = {
+    answers: {
+      ...userAnsweredData,
+    },
+    timeLeft: timeForSubmit,
+    tabSwitchCount: tabSwitchCount,
+  };
+
+  const testId: number = 2;
+
+  const createStudentTestAnsweredData = UseCreateStudentAnsweredData({
+    mutationConfig: {
+      onSuccess: () => {
+        router.push("/assessment-summary");
+      },
+      onError: (error) => {
+        showNotification({
+          ...getErrorMessageFromAPI(error),
+        });
+        console.error(error, "error");
+      },
+    },
+  });
+
   function handleSubmitTest() {
-    router.push("/assessment-submission");
+    createStudentTestAnsweredData.mutate({ data, testId });
+    setOpen(false);
   }
   return (
     <React.Fragment>
@@ -398,18 +447,7 @@ function SubmitButton() {
             >
               <Button
                 buttonProps={{
-                  children: "Start Next Section",
-                  variant: ButtonVariantEnum.CONTAINED,
-                  color: "success",
-                  sx: {
-                    marginTop: "16px",
-                  },
-                }}
-                onClick={handleSubmitTest}
-              />
-              <Button
-                buttonProps={{
-                  children: "Close Section",
+                  children: "Close",
                   variant: ButtonVariantEnum.CONTAINED,
                   color: "error",
                   sx: {
@@ -417,6 +455,17 @@ function SubmitButton() {
                   },
                 }}
                 onClick={() => setOpen(false)}
+              />
+              <Button
+                buttonProps={{
+                  children: "Submit",
+                  variant: ButtonVariantEnum.CONTAINED,
+                  color: "success",
+                  sx: {
+                    marginTop: "16px",
+                  },
+                }}
+                onClick={handleSubmitTest}
               />
             </Stack>
           </Stack>

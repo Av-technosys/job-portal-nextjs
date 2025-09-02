@@ -57,5 +57,6 @@ export const apiConstantsURL = {
   },
   assessment: {
     getQuestionsBySubjectId: `assessment/get_test_by_subject_id/`,
+    submitStudentAnsweredData: `assesment/submit_test_by_id/`,
   },
 };

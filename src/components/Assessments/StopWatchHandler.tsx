@@ -3,7 +3,11 @@ import { Stack, Typography } from "../common";
 import { TypographyVariantEnum } from "@/types";
 import { colorStyles } from "@/styles";
 
-const StopWatchHandler = () => {
+type StopWatchHandlerProps = {
+  getStopWatchTime: (time: number) => void;
+};
+
+const StopWatchHandler = ({ getStopWatchTime }: StopWatchHandlerProps) => {
   const MAX_TIME = 20 * 60;
   const [stopwatchTime, setStopwatchTime] = useState(MAX_TIME);
 
@@ -18,6 +22,8 @@ const StopWatchHandler = () => {
 
     return () => clearTimeout(timeoutId);
   }, [stopwatchTime]);
+
+  getStopWatchTime(stopwatchTime);
 
   return (
     <>

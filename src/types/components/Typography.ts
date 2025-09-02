@@ -23,6 +23,7 @@ export enum TypographyFontWeight {
 
 export enum TypographyFontSize {
   extraTitle = "48px",
+  semiExtraTitle = "40px",
   largeTitle = "36px",
   heading = "32px",
   extraHeading = "30px",

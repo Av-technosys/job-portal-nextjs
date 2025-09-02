@@ -34,6 +34,8 @@ export { default as EventIcon } from "@mui/icons-material/Event";
 export { default as MoreVertIcon } from "@mui/icons-material/MoreVert";
 export { default as NotificationsActiveIcon } from "@mui/icons-material/NotificationsActive";
 export { default as WorkIcon } from "@mui/icons-material/Work";
+export { default as StopWatchIcon } from "@mui/icons-material/Timer";
+export { default as TotalQuestionsIcon } from "@mui/icons-material/QuestionAnswer";
 export { default as VisibilityOutlinedIcon } from "@mui/icons-material/VisibilityOutlined";
 export { default as PeopleIcon } from "@mui/icons-material/People";
 export { default as CurrencyRupeeIcon } from "@mui/icons-material/CurrencyRupee";
