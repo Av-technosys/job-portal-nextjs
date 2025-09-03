@@ -40,7 +40,7 @@ export default function CandidateApplicationCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: JOB_TYPE(candidate) || { children: "N/A" },
+        textProps: JOB_TYPE(candidate),
       },
       {
         icon: (
@@ -48,7 +48,7 @@ export default function CandidateApplicationCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: EXPERIENCE(candidate) || { children: "N/A" },
+        textProps: EXPERIENCE(candidate),
       },
       {
         icon: (
@@ -56,7 +56,7 @@ export default function CandidateApplicationCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: LOCATION(candidate) || { children: "N/A" },
+        textProps: LOCATION(candidate),
       },
     ];
   }, [EXPERIENCE, JOB_TYPE, LOCATION, , candidate]);

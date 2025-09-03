@@ -12,6 +12,7 @@ import {
   RecruiterDocumentKeyEnum,
   RecruiterListSortEnum,
   ShowNotificationProps,
+  StudentListSortEnum,
   TypographyFontColor,
   TypographyFontSize,
   TypographyFontWeight,
@@ -76,6 +77,29 @@ export const RECRUITER_LISTING_DROPDOWN_SORT_OPTIONS = [
     label: "Company (DESC)",
     key: "-first_name",
     value: RecruiterListSortEnum.COMPANY_DESC,
+  },
+];
+
+export const STUDENT_LISTING_DROPDOWN_SORT_OPTIONS = [
+  {
+    label: "Created at (ASC)",
+    key: "created_date",
+    value: StudentListSortEnum.CREATED_DATE_ASC,
+  },
+  {
+    label: "Created at (DESC)",
+    key: "-created_date",
+    value: StudentListSortEnum.CREATED_DATE_DESC,
+  },
+  {
+    label: "Company (ASC)",
+    key: "first_name",
+    value: StudentListSortEnum.COMPANY_ASC,
+  },
+  {
+    label: "Company (DESC)",
+    key: "-first_name",
+    value: StudentListSortEnum.COMPANY_DESC,
   },
 ];
 
@@ -215,6 +239,17 @@ export const PROFILE_PICTURE_UPLOAD_CONFIG = {
     } as ShowNotificationProps,
     DELETE_SUCCESS: {
       message: "Profile Picture Deleted Successfully",
+    } as ShowNotificationProps,
+  },
+};
+
+export const QUESTION_PICTURE_UPLOAD_CONFIG = {
+  NOTIFICATION_CONFIG: {
+    SUCCESS: {
+      message: "Question Picture Updated Successfully",
+    } as ShowNotificationProps,
+    DELETE_SUCCESS: {
+      message: "Question Picture Deleted Successfully",
     } as ShowNotificationProps,
   },
 };
@@ -514,6 +549,13 @@ export const CITY_OPTIONS = [
   { label: "Delhi", value: "delhi" },
   { label: "Bangalore", value: "bangalore" },
   { label: "Pune", value: "pune" },
+  // Add more cities as needed
+];
+export const QUESTION_OPTIONS = [
+  { label: "Option 1", value: "option_1" },
+  { label: "Option 2", value: "option_2" },
+  { label: "Option 3", value: "option_3" },
+  { label: "Option 4", value: "option_4" },
   // Add more cities as needed
 ];
 

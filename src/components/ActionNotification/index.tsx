@@ -55,7 +55,6 @@ function ActionNotification() {
       try {
         requestPermission().then(() => {
           messageRef.current.unSubscribe = onMessage(function (payload) {
-            console.log("Received message ", payload);
             showNotification({
               message: payload?.notification?.body as string,
             });

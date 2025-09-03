@@ -55,3 +55,33 @@ export type CreateOrUpdateStudentProfileSocialLinksInput = {
   platform: string;
   url: string;
 };
+
+export type CreateOrUpdateSubjectInfoInput = {
+  id: number;
+  difficult_question_count: number;
+  easy_question_count: number;
+  medium_question_count: number;
+  exam_name: string;
+  section_name: string;
+  marks_correct: string;
+  marks_incorrect: string;
+  marks_unattempted: string;
+  duration_minutes: number;
+};
+
+export type CreateOrUpdateQuestionInfoInput = {
+  question_details: [
+    {
+      correct_option: string;
+      difficulty_level: number;
+      id: number;
+      option_1: string;
+      option_2: string;
+      option_3: string;
+      option_4: string;
+      question_image: string;
+      question_paragraph: string;
+      question_text: string;
+    }
+  ];
+};

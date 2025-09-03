@@ -9,6 +9,14 @@ export type CreateOrUpdateProfilePicInput = {
   file: File;
 };
 
+export enum QuestionImageEnum {
+  QUESTION_IMAGE = "question_image",
+}
+export type CreateOrUpdateQuestionPicInput = {
+  file_type: QuestionImageEnum.QUESTION_IMAGE;
+  file: File;
+};
+
 export type CreateOrUpdateDocumentInput = {
   file_type: JobSeekerDocumentKeyEnum | RecruiterDocumentKeyEnum;
   file: File;
@@ -45,3 +53,15 @@ export interface UploadDocumentProps {
   documentKey: JobSeekerDocumentKeyEnum;
   documentDetails?: CommonObjectType;
 }
+// export interface UploadQuestionProps {
+//   lines?: string[];
+//   uploadText?: string;
+//   dragText?: string;
+//   fileInfo?: string;
+//   accept?: DocumentTypeEnum;
+//   onUpload?: (file: File | null) => void;
+//   onDelete?: () => void;
+//   formControlProps?: FormControlProps;
+//   documentKey: JobSeekerDocumentKeyEnum;
+//   documentDetails?: CommonObjectType;
+// }

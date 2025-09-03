@@ -35,19 +35,15 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
     return [
       {
         icon: <EmailIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: MAIL_TEXT || {
-          children: "N/A",
-        },
-        textProps: EMAIL(recruiter) || { children: "N/A" },
+        subTextProps: MAIL_TEXT,
+        textProps: EMAIL(recruiter),
       },
       {
         icon: (
           <LocationOnIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        subTextProps: LOCATION_TEXT || {
-          children: "N/A",
-        },
-        textProps: LOCATION(recruiter) || { children: "N/A" },
+        subTextProps: LOCATION_TEXT,
+        textProps: LOCATION(recruiter),
       },
       {
         icon: (
@@ -55,17 +51,13 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: MOBILE_TEXT || {
-          children: "N/A",
-        },
-        textProps: MOBILE(recruiter) || { children: "N/A" },
+        subTextProps: MOBILE_TEXT,
+        textProps: MOBILE(recruiter),
       },
       {
         icon: <LinkedInIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: LINKED_IN_TEXT || {
-          children: "N/A",
-        },
-        textProps: LINKED_IN_URL(recruiter) || { children: "N/A" },
+        subTextProps: LINKED_IN_TEXT,
+        textProps: LINKED_IN_URL(recruiter),
       },
     ];
   }, [

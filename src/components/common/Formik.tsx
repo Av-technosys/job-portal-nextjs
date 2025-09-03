@@ -176,7 +176,7 @@ function Formik({
               stackProps={{
                 className: constructClassName([
                   classNames?.formItemParentClassName || "",
-                  "w-full gap-12 flex-col flex-wrap items-center md:flex-row md:gap-12 items-start",
+                  "w-full gap-6  flex-col flex-wrap items-center md:flex-row md:gap-6 items-start",
                 ]),
               }}
             >
@@ -186,21 +186,18 @@ function Formik({
                 fieldDetailsArray={fieldDetailsArray}
               />
             </Stack>
-            {formFooterArray?.map((fieldDetail, idx) => {
-              return (
-                <Stack
-                  stackProps={{
-                    className: constructClassName([
-                      classNames?.formFooterClassName || "",
-                      "gap-8 m-4",
-                    ]),
-                  }}
-                  key={`${idx}-form-footer`}
-                >
-                  <Button {...fieldDetail} />
-                </Stack>
-              );
-            })}
+            <Stack
+              stackProps={{
+                className: constructClassName([
+                  classNames?.formFooterClassName || "",
+                  "flex flex-row justify-end mt-12 items-center space-x-4 ",
+                ]),
+              }}
+            >
+              {formFooterArray?.map((fieldDetail, idx) => (
+                <Button key={idx} {...fieldDetail} />
+              ))}
+            </Stack>
           </Form>
         );
       }}
