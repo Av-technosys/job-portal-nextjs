@@ -7,9 +7,7 @@ import {
   Typography,
   IconButton,
 } from "../common";
-import {
-  CANDIDATE_APPLICATION_PAGE_CONFIG,
-} from "@/constants";
+import { CANDIDATE_APPLICATION_PAGE_CONFIG } from "@/constants";
 import { getInitials } from "@/helper";
 
 import {
@@ -21,7 +19,6 @@ import {
 import { useMemo } from "react";
 import { colorStyles } from "@/styles";
 
-
 export default function CandidateApplicationCard({
   candidate,
   openApplicationPopup,
@@ -30,15 +27,10 @@ export default function CandidateApplicationCard({
   candidate: CommonObjectType;
   openApplicationPopup: VoidFunction;
   handleIconButtonClick: (event: React.MouseEvent<HTMLElement>) => void;
-
 }) {
   const { CANDIDATE_CARD } = CANDIDATE_APPLICATION_PAGE_CONFIG;
   const { IMAGE, NAME, JOB_TYPE, LOCATION, EXPERIENCE, BUTTON } =
     CANDIDATE_CARD;
-
-
-
-
 
   const candidateDetails = useMemo(() => {
     return [
@@ -131,13 +123,13 @@ export default function CandidateApplicationCard({
                 gap: 3,
               }}
             >
-              {candidateDetails.map((detail, index) => (
+              {/* {candidateDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`CandidateApplicationDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))}
+              ))} */}
             </Stack>
             <Stack
               stackProps={{

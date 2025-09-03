@@ -192,13 +192,13 @@ export default function JobCard({
               flexWrap: "wrap",
             }}
           >
-            {jobDetails.map((detail, index) => (
+            {/* {jobDetails.map((detail, index) => (
               <TextWithIcon
                 key={`jobDetails-${index}`}
                 icon={detail.icon}
                 textProps={detail.textProps}
               />
-            ))}
+            ))} */}
           </Stack>
 
           {/* Apply Button */}

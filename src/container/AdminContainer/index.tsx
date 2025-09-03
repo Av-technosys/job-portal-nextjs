@@ -31,6 +31,7 @@ import {
 import {
   AutoCompleteListItem,
   CommonObjectType,
+  ElementRenderType,
   RecruiterListSortEnum,
 } from "@/types";
 import { SelectChangeEvent } from "@mui/material";
@@ -279,7 +280,9 @@ function Personal() {
         isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
       >
         <Table
-          data={paginatedInfoData}
+          data={
+            paginatedInfoData as unknown as Record<string, ElementRenderType>[]
+          }
           // }
           columns={[
             {

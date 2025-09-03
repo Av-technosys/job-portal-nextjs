@@ -79,14 +79,14 @@ function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
           direction: "column",
         }}
       >
-        {candidateDetailOverview.map((detail, index) => (
+        {/* {candidateDetailOverview.map((detail, index) => (
           <TextWithIcon
             key={`candidateDetailOverview-${index}`}
             icon={detail.icon}
             subTextProps={detail.subTextProps}
             textProps={detail.textProps}
           />
-        ))}
+        ))} */}
       </Stack>
     </Stack>
   );

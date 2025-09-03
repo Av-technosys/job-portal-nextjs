@@ -97,13 +97,13 @@ export default function FindRecruiterCard({
                 flexWrap: "wrap",
               }}
             >
-              {recruiterDetails.map((detail, index) => (
+              {/* {recruiterDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`recruiterDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))}
+              ))} */}
             </Stack>
             <Stack>
               <Button

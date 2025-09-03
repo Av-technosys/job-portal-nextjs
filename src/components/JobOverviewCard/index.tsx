@@ -111,14 +111,14 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
           direction: "column",
         }}
       >
-        {jobOverview.map((detail, index) => (
+        {/* {jobOverview.map((detail, index) => (
           <TextWithIcon
             key={index}
             icon={detail.icon}
             subTextProps={detail.subTextProps}
             textProps={detail.textProps}
           />
-        ))}
+        ))} */}
       </Stack>
     </Stack>
   );

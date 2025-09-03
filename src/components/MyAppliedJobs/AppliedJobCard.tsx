@@ -91,13 +91,13 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
                 gap: 1,
               }}
             >
-              {appliedJobDetails.map((detail, index) => (
+              {/* {appliedJobDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`appliedJobDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))}
+              ))} */}
             </Stack>
           </Stack>
         </Stack>

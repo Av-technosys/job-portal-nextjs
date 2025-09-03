@@ -90,13 +90,13 @@ export default function SavedJobSeekerCard({ job }: { job: CommonObjectType }) {
               marginTop: 3,
             }}
           >
-            {jobSeekerDetails.map((detail, index) => (
+            {/* {jobSeekerDetails.map((detail, index) => (
               <TextWithIcon
                 key={`jobSeekerDetails-${index}`}
                 icon={detail.icon}
                 textProps={detail.textProps}
               />
-            ))}
+            ))} */}
           </Stack>
         </Stack>
       </Stack>

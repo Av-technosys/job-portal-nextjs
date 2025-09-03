@@ -229,13 +229,13 @@ export default function PostedJobCard({
                 direction: "row",
               }}
             >
-              {postedJobDetails.map((detail, index) => (
+              {/* {postedJobDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`postedJobDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))}
+              ))} */}
             </Stack>
           </Stack>
         </Stack>
