@@ -280,9 +280,7 @@ function Personal() {
         isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
       >
         <Table
-          data={
-            paginatedInfoData as unknown as Record<string, ElementRenderType>[]
-          }
+          data={paginatedInfoData}
           // }
           columns={[
             {
