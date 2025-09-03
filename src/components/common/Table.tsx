@@ -41,53 +41,67 @@ function Table({ columns, data }: TableProps) {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <MUITable>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell key={`ja-TabelCellHeader${column.field}`}>
-                  {column.headerName}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {open && (
-              <AlertDialog user={selectedUser} open={open} setOpen={setOpen} />
-            )}
-
-            {data.map((row, index) => (
-              <TableRow key={`ja_TableRow${index}`}>
+      <Stack
+        stackProps={{
+          width: "100%",
+          overflow: { xs: "scrollX", md: "hidden" },
+        }}
+      >
+        <TableContainer
+          sx={{ width: { xs: "140%", md: "100%" } }}
+          component={Paper}
+        >
+          <MUITable>
+            <TableHead>
+              <TableRow>
                 {columns.map((column) => (
-                  <TableCell key={`ja-TabelCellFeild${column.field}`}>
-                    {row[column.field] && column.field == "first_name" ? (
-                      <Stack
-                        stackProps={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        {row[column.field]}
-                        <IconButton
-                          onClick={(event) =>
-                            handleIconButtonClick(event, row.user)
-                          }
-                        >
-                          <MoreVertIcon />
-                        </IconButton>
-                      </Stack>
-                    ) : (
-                      row[column.field]
-                    )}
+                  <TableCell key={`ja-TabelCellHeader${column.field}`}>
+                    {column.headerName}
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </MUITable>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {open && (
+                <AlertDialog
+                  user={selectedUser}
+                  open={open}
+                  setOpen={setOpen}
+                />
+              )}
+
+              {data.map((row, index) => (
+                <TableRow key={`ja_TableRow${index}`}>
+                  {columns.map((column) => (
+                    <TableCell key={`ja-TabelCellFeild${column.field}`}>
+                      {row[column.field] && column.field == "first_name" ? (
+                        <Stack
+                          stackProps={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          {row[column.field]}
+                          <IconButton
+                            onClick={(event) =>
+                              handleIconButtonClick(event, row.user)
+                            }
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+                        </Stack>
+                      ) : (
+                        row[column.field]
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </MUITable>
+        </TableContainer>
+      </Stack>
       <Menuhiddendrop
         handleClose={handleClose}
         anchorEl={anchorEl}

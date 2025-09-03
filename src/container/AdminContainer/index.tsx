@@ -61,13 +61,19 @@ function AdminContainer() {
             direction: "column",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            width: "100%",
+            maxWidth: "100%",
             gap: 4,
           }}
         >
           <Typography {...WELCOME_MESSAGE("Admin")} />
 
-          <Stack stackProps={{ direction: "row", gap: 6, flexWrap: "wrap" }}>
+          <Stack
+            stackProps={{
+              direction: "row",
+              gap: { xs: 2, lg: 6 },
+              flexWrap: "wrap",
+            }}
+          >
             {statsData.map((item, index) => {
               return (
                 <Paper
