@@ -1,95 +1,133 @@
-import { CheckCircleIcon, JA_LOGO } from "@/assets";
-import {
-  Button,
-  Divider,
-  NextImage,
-  Stack,
-  TextWithIcon,
-  Typography,
-} from "../common";
+import { Button, Grid, Stack, Typography } from "../common";
 import { ASSESSMENT_SCORE_PAGE_CONFIG } from "@/constants";
 import { colorStyles } from "@/styles";
-import { useMemo } from "react";
 
 function AssessmentScore() {
   const {
-    SCORE_TEXT,
     SCORE_VALUE_1,
     SCORE_VALUE_2,
     CONGRATS_TEXT,
     RETAKE_TEST,
     CONTINUE_BUTTON,
-    ASSESSMENT_SPREAD_TEXT,
-    SUMMERY,
-    SCORE_VALUE_3,
+    ASSESSMENT_TOTAL_ATTEMPTED_QUESTIONS,
+    ASSESSMENT_TOTAL_REMAINING_QUESTIONS,
+    ASSESSMENT_TOTAL_QUESTIONS,
   } = ASSESSMENT_SCORE_PAGE_CONFIG;
 
-  const section = useMemo(() => {
-    return {
-      summery: "summery",
-      value: "76/100",
-    };
-  }, []);
-
-  const scoreListDetails = useMemo(() => {
-    return [
-      {
-        icon: (
-          <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        textProps: SUMMERY(section),
-      },
-      {
-        icon: (
-          <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        textProps: SUMMERY(section),
-      },
-      {
-        icon: (
-          <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        textProps: SUMMERY(section),
-      },
-      {
-        icon: (
-          <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        textProps: SUMMERY(section),
-      },
-      {
-        icon: (
-          <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        textProps: SUMMERY(section),
-      },
-    ];
-  }, [SUMMERY, section]);
   return (
     <>
-      <Stack>
-        <NextImage
-          props={{
-            alt: "ja_logo",
-            src: JA_LOGO,
-          }}
-        />
-        <Divider />
-        <Stack
-          stackProps={{
-            direction: "row",
-            justifyContent: "space-between",
+      {/* <Stack
+        stackProps={{
+          direction: "row",
+          justifyContent: "space-between",
+          className: "max-w-5xl mx-auto",
+        }}
+      > */}
+      <Grid
+        gridProps={{
+          container: true,
+          spacing: 3,
+          className: "max-w-5xl mx-auto mt-5 ",
+        }}
+      >
+        <Grid
+          gridProps={{
+            size: { xs: 12, sm: 6 },
           }}
         >
           <Stack
             stackProps={{
-              width: "45%",
+              width: { xs: "100%", sm: "80%" },
               gap: 2,
-              className: " mt-5",
+              className: "mt-7 flex flex-col justify-between",
+            }}
+          >
+            <Stack
+              stackProps={{
+                className: "p-4 border shadow bg-blue-100",
+                direction: "column",
+                justifyContent: "space-between",
+                spacing: 2,
+              }}
+            >
+              <Stack
+                stackProps={{
+                  direction: "column",
+                  spacing: "3px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Stack
+                  stackProps={{ className: "text-blue-600 text-2xl font-bold" }}
+                >
+                  30
+                </Stack>
+                <Typography {...ASSESSMENT_TOTAL_QUESTIONS()} />
+              </Stack>
+            </Stack>
+            <Stack
+              stackProps={{
+                className: "p-4 border shadow bg-green-100",
+                direction: "column",
+                justifyContent: "space-between",
+                spacing: 2,
+              }}
+            >
+              <Stack
+                stackProps={{
+                  direction: "column",
+                  spacing: "3px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Stack
+                  stackProps={{
+                    className: "text-green-600 text-2xl font-bold",
+                  }}
+                >
+                  25
+                </Stack>
+                <Typography {...ASSESSMENT_TOTAL_ATTEMPTED_QUESTIONS()} />
+              </Stack>
+            </Stack>
+            <Stack
+              stackProps={{
+                className: "p-4 border shadow bg-red-100",
+                direction: "column",
+                justifyContent: "space-between",
+                spacing: 2,
+              }}
+            >
+              <Stack
+                stackProps={{
+                  direction: "column",
+                  spacing: "3px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Stack
+                  stackProps={{ className: "text-red-600 text-2xl font-bold" }}
+                >
+                  5
+                </Stack>
+                <Typography {...ASSESSMENT_TOTAL_REMAINING_QUESTIONS()} />
+              </Stack>
+            </Stack>
+          </Stack>
+        </Grid>
+
+        <Grid gridProps={{ size: { xs: 12, sm: 6 } }}>
+          <Stack
+            stackProps={{
+              width: "100%",
+              gap: 2,
+              className: " mt-5 ",
               direction: "column",
             }}
           >
-            <Typography {...SCORE_TEXT()} />
             <Stack
               stackProps={{
                 gap: 1,
@@ -102,13 +140,14 @@ function AssessmentScore() {
                   justifyContent: "center",
                   alignContent: "center",
                   textAlign: "center",
+                  className: "my-2",
                 }}
               >
                 <Stack
                   stackProps={{
                     className: "rounded-full mx-auto",
-                    height: 200,
-                    width: 200,
+                    height: 150,
+                    width: 150,
                     justifyContent: "center",
                     textAlign: "center",
                     sx: {
@@ -125,7 +164,7 @@ function AssessmentScore() {
                 stackProps={{
                   justifyContent: "center",
                   textAlign: "center",
-                  sx: { bgcolor: colorStyles.lightBlue },
+                  className: "bg-blue-100 p-2",
                 }}
               >
                 <Typography {...CONGRATS_TEXT()} />
@@ -142,48 +181,9 @@ function AssessmentScore() {
               </Stack>
             </Stack>
           </Stack>
-
-          <Stack
-            stackProps={{
-              width: "40%",
-              gap: 2,
-              className: "mt-7",
-            }}
-          >
-            <Typography {...ASSESSMENT_SPREAD_TEXT()} />
-            <Stack
-              stackProps={{
-                className: "p-4 border shadow",
-                direction: "column",
-                justifyContent: "space-between",
-                spacing: 2,
-              }}
-            >
-              {scoreListDetails.map((details, index) => (
-                <Stack
-                  key={`scoreListDetails-${index}`}
-                  stackProps={{
-                    className: "border rounded-lg",
-                    direction: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    spacing: 1,
-                  }}
-                >
-                  {/* <TextWithIcon
-                    textWithIconProps={{
-                      className: "p-2",
-                    }}
-                    icon={details.icon}
-                    textProps={details.textProps}
-                  /> */}
-                  <Typography {...SCORE_VALUE_3(section)} />
-                </Stack>
-              ))}
-            </Stack>
-          </Stack>
-        </Stack>
-      </Stack>
+        </Grid>
+      </Grid>
+      {/* </Stack> */}
     </>
   );
 }

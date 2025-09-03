@@ -1,7 +1,4 @@
-import {
-  getDefaultCertificationData,
-  getDefaultWorkExperienceData,
-} from "@/helper";
+import { getDefaultWorkExperienceData } from "@/helper";
 import {
   ButtonColorEnum,
   ButtonSizeEnum,
@@ -30,6 +27,9 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
         children: " 76 ",
         variant: TypographyVariantEnum.H5,
       },
+      fontSize: TypographyFontSize.largeTitle,
+      fontColor: TypographyFontColor.white,
+      fontWeight: TypographyFontWeight.extrabold,
     };
   },
   SCORE_VALUE_2: () => {
@@ -38,6 +38,9 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
         children: "  of 100 ",
         variant: TypographyVariantEnum.H6,
       },
+      fontSize: TypographyFontSize.extralarge,
+      fontColor: TypographyFontColor.white,
+      fontWeight: TypographyFontWeight.extrabold,
     };
   },
   SCORE_VALUE_3: (section: CommonObjectType) => {
@@ -48,7 +51,40 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
       },
     } as TypographyProps;
   },
+  ASSESSMENT_TOTAL_QUESTIONS: () => {
+    return {
+      typographyProps: {
+        children: "Total no. of Questions",
+        variant: TypographyVariantEnum.CAPTION,
+      },
+      fontSize: TypographyFontSize.extralarge,
+      fontColor: TypographyFontColor.blue,
+      fontWeight: TypographyFontWeight.extrabold,
+    };
+  },
 
+  ASSESSMENT_TOTAL_ATTEMPTED_QUESTIONS: () => {
+    return {
+      typographyProps: {
+        children: "Total Attempted Questions",
+        variant: TypographyVariantEnum.CAPTION,
+      },
+      fontSize: TypographyFontSize.extralarge,
+      fontColor: TypographyFontColor.green,
+      fontWeight: TypographyFontWeight.extrabold,
+    };
+  },
+  ASSESSMENT_TOTAL_REMAINING_QUESTIONS: () => {
+    return {
+      typographyProps: {
+        children: "Remaining Questions",
+        variant: TypographyVariantEnum.CAPTION,
+      },
+      fontSize: TypographyFontSize.extralarge,
+      fontColor: TypographyFontColor.red,
+      fontWeight: TypographyFontWeight.extrabold,
+    };
+  },
   ASSESSMENT_SPREAD_TEXT: () => {
     return {
       typographyProps: {
@@ -64,6 +100,7 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
           " Congratulations, your score exceeds 65% and you are cleared to move forward with the next phase of the process. ",
         variant: TypographyVariantEnum.CAPTION,
       },
+      fontWeight: TypographyFontWeight.extrabold,
     };
   },
   SUMMERY: (section: CommonObjectType) => {
