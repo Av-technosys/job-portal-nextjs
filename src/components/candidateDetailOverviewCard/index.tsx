@@ -29,20 +29,20 @@ function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
     return [
       {
         icon: <CakeIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: DOB_TEXT || { children: "N/A" },
-        textProps: DOB(candidate) || { children: "N/A" },
+        subTextProps: DOB_TEXT,
+        textProps: DOB(candidate),
       },
       {
         icon: <FlagIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: NATIONALITY_TEXT || { children: "N/A" },
-        textProps: NATIONALITY(candidate) || { children: "N/A" },
+        subTextProps: NATIONALITY_TEXT,
+        textProps: NATIONALITY(candidate),
       },
       {
         icon: (
           <LayersOutlinedIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        subTextProps: EXPERIECE_TEXT || { children: "N/A" },
-        textProps: EXPERIENCE(candidate) || { children: "N/A" },
+        subTextProps: EXPERIECE_TEXT,
+        textProps: EXPERIENCE(candidate),
       },
       {
         icon: (
@@ -50,8 +50,8 @@ function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: EDUCATION_TEXT || { children: "N/A" },
-        textProps: EXPERIENCE(candidate) || { children: "N/A" },
+        subTextProps: EDUCATION_TEXT,
+        textProps: EXPERIENCE(candidate),
       },
     ];
   }, [

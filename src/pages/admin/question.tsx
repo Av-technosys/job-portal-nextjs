@@ -47,7 +47,7 @@ const Index = () => {
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
     const { work_experiences, ...rest } = values;
 
-    let transformedValues = {
+    const transformedValues = {
       ...rest,
       question_details: Array.isArray(work_experiences)
         ? work_experiences.map((exp: any) => ({

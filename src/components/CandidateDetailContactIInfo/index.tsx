@@ -27,19 +27,15 @@ function CandidateContactCard({ candidate }: CandidateContactCardProps) {
     return [
       {
         icon: <EmailIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: MAIL_TEXT || {
-          children: "N/A",
-        },
-        textProps: EMAIL(candidate) || { children: "N/A" },
+        subTextProps: MAIL_TEXT,
+        textProps: EMAIL(candidate),
       },
       {
         icon: (
           <LocationOnIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        subTextProps: LOCATION_TEXT || {
-          children: "N/A",
-        },
-        textProps: LOCATION(candidate) || { children: "N/A" },
+        subTextProps: LOCATION_TEXT,
+        textProps: LOCATION(candidate),
       },
       {
         icon: (
@@ -47,10 +43,8 @@ function CandidateContactCard({ candidate }: CandidateContactCardProps) {
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: MOBILE_TEXT || {
-          children: "N/A",
-        },
-        textProps: MOBILE(candidate) || { children: "N/A" },
+        subTextProps: MOBILE_TEXT,
+        textProps: MOBILE(candidate),
       },
     ];
   }, [

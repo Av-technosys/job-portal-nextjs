@@ -23,12 +23,10 @@ export default function SavedJobSeekerCard({ job }: { job: CommonObjectType }) {
     return [
       {
         icon: <FmdGoodOutlinedIcon />,
-        textProps: LOCATION(job) || { children: "N/A" },
+        textProps: LOCATION(job),
       },
       {
-        textProps: EXPERIENCE_LEVEL(job) || {
-          children: "N/A",
-        },
+        textProps: EXPERIENCE_LEVEL(job),
       },
     ];
   }, [LOCATION, EXPERIENCE_LEVEL, job]);

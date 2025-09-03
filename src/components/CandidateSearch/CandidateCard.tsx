@@ -74,12 +74,10 @@ export default function CandidateSearchCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: LOCATION(candidate) || { children: "N/A" },
+        textProps: LOCATION(candidate),
       },
       {
-        textProps: EXPERIENCE(candidate) || {
-          children: "years of experience",
-        },
+        textProps: EXPERIENCE(candidate),
       },
     ];
   }, [LOCATION, EXPERIENCE, candidate]);

@@ -30,7 +30,7 @@ export default function FindRecruiterCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: ADDRESS(recruiter) || { children: "N/A" },
+        textProps: ADDRESS(recruiter),
       },
     ];
   }, [ADDRESS, recruiter]);

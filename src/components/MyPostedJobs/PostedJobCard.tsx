@@ -147,7 +147,7 @@ export default function PostedJobCard({
             }}
           />
         ),
-        textProps: LOCATION(job) || { children: "N/A" },
+        textProps: LOCATION(job),
       },
       {
         icon: (
@@ -158,7 +158,7 @@ export default function PostedJobCard({
             }}
           />
         ),
-        textProps: SALARY_RANGE(job) || { children: "N/A" },
+        textProps: SALARY_RANGE(job),
       },
     ];
   }, [LOCATION, SALARY_RANGE, job]);

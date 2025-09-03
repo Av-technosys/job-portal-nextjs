@@ -37,31 +37,31 @@ function AssessmentScore() {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
     ];
   }, [SUMMERY, section]);
