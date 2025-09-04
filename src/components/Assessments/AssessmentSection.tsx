@@ -81,7 +81,12 @@ const AssessmentSection = ({ id }: testID) => {
                     <Button {...START_TEST} />
                   ) : (
                     <>
-                      <Stack stackProps={{ direction: "row", spacing: "8px" }}>
+                      <Stack
+                        stackProps={{
+                          direction: { xs: "column", sm: "row" },
+                          spacing: "8px",
+                        }}
+                      >
                         <Button {...RETAKE_TEST} />
                         <Button {...ANALYSIS_TEST} />
                       </Stack>
