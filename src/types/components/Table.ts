@@ -8,5 +8,6 @@ interface Column {
 export interface TableProps {
   columns: Column[];
   data: Record<string, ElementRenderType>[];
-  // handleOnDelete: (id: Number) => void;
+  deleteHandler: (id: string) => void;
+  isButtonDisabled?: boolean;
 }

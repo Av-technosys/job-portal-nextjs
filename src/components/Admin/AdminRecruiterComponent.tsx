@@ -1,7 +1,9 @@
 import { FIND_RECRUITER_PAGE_CONFIG, PAGIANTION_LIMIT } from "@/constants";
 import {
+  useCommonDetails,
   useGetFindRecruiterList,
   useGetSearchDetailsAsPerURLOrUserType,
+  useNotification,
   usePagination,
 } from "@/services";
 import { CommonObjectType, RecruiterListSortEnum } from "@/types";
@@ -20,6 +22,9 @@ import {
   When,
 } from "@/components";
 import { SearchIcon } from "@/assets";
+import { FIND_STUDENT_PAGE_CONFIG } from "@/constants/findstudent";
+import { getErrorMessageFromAPI } from "@/helper";
+import { useDeleteRecruiter } from "@/services/useDeleteRecruiter";
 
 const AdminRecruiterComponent = () => {
   const [selectedSort, setSelectedSort] = useState<RecruiterListSortEnum[]>([
@@ -51,12 +56,38 @@ const AdminRecruiterComponent = () => {
     searchString,
   });
 
-  const newData =
+  const newRecruiterData =
     paginatedInfoData.length > 0
       ? paginatedInfoData.map((item: any) => {
           return { ...item, user: item.user.recruiter_profile_id };
         })
       : [];
+
+  console.log("newRecruiterData: ", newRecruiterData);
+
+  const deleteRecruiterMutation = useDeleteRecruiter();
+  const { showNotification } = useNotification();
+  const { refetchCommonDetails } = useCommonDetails();
+
+  const { SUCCESS } = FIND_STUDENT_PAGE_CONFIG;
+  const recruiterDeleteHandler = (id: string) => {
+    console.log(id);
+    deleteRecruiterMutation.mutate(
+      { user: id },
+      {
+        onSuccess: () => {
+          showNotification(SUCCESS);
+          refetchCommonDetails();
+        },
+        onError: (error) => {
+          showNotification({
+            ...getErrorMessageFromAPI(error),
+          });
+          console.error(error, "error");
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -141,7 +172,7 @@ const AdminRecruiterComponent = () => {
         isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
       >
         <Table
-          data={newData}
+          data={newRecruiterData}
           columns={[
             {
               field: "user",
@@ -164,6 +195,8 @@ const AdminRecruiterComponent = () => {
               headerName: "State",
             },
           ]}
+          deleteHandler={recruiterDeleteHandler}
+          isButtonDisabled={deleteRecruiterMutation.isPending}
         />
       </InfinitePagination>
     </>

@@ -1,22 +1,31 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MutationConfig } from "@/types";
-import { deleteUser } from "./usedeleteUser";
+import { CommonAllDataType, MutationConfig } from "@/types";
+import { apiConstantsURL } from "@/constants";
+import { api } from "@/helper";
+
+type DeleteUserFn = (params: { user: string }) => Promise<CommonAllDataType>;
 
 type UseDeleteRecruiterOptions = {
-  mutationConfig?: MutationConfig<typeof deleteUser>;
+  mutationConfig?: MutationConfig<DeleteUserFn>;
 };
 
-export const useDeleteRecruiterOrJobseeker = ({
+export const useDeleteJobseeker = ({
   mutationConfig,
 }: UseDeleteRecruiterOptions = {}) => {
   const queryClient = useQueryClient();
+
+  const deleteUser: DeleteUserFn = ({ user }) => {
+    return api.delete(apiConstantsURL.profile.deleteJobSeeker, {
+      data: { id: user },
+    });
+  };
+
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};
 
   return useMutation({
     mutationFn: deleteUser,
     onSuccess: (...args) => {
       onSuccess?.(...args);
-      // Invalidate queries if needed
       queryClient.invalidateQueries();
     },
     onError: (...args) => {

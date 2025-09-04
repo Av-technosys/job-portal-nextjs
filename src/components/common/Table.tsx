@@ -13,9 +13,9 @@ import { MenuList, IconButton, Menuhiddendrop, Stack } from "../common";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { TableProps } from "@/types";
-import AlertDialog from "./DialogAlert";
+import AlertDialogDelete from "./DialogAlert";
 
-function Table({ columns, data }: TableProps) {
+function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -37,6 +37,12 @@ function Table({ columns, data }: TableProps) {
       setOpen(true);
       setAnchorEl(null);
     }
+  };
+
+  const handleOnDelete = () => {
+    console.log("selectedUser: ", selectedUser);
+    deleteHandler(selectedUser);
+    setOpen(false);
   };
 
   return (
@@ -63,10 +69,12 @@ function Table({ columns, data }: TableProps) {
             </TableHead>
             <TableBody>
               {open && (
-                <AlertDialog
-                  user={selectedUser}
+                <AlertDialogDelete
                   open={open}
                   setOpen={setOpen}
+                  deleteItemType={"User"}
+                  deleteHandler={handleOnDelete}
+                  isButtonDisabled={isButtonDisabled}
                 />
               )}
 
@@ -85,7 +93,7 @@ function Table({ columns, data }: TableProps) {
                           {row[column.field]}
                           <IconButton
                             onClick={(event) =>
-                              handleIconButtonClick(event, row.user)
+                              handleIconButtonClick(event, row.id)
                             }
                           >
                             <MoreVertIcon />

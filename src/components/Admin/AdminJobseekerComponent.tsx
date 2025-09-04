@@ -1,7 +1,9 @@
 import { PAGIANTION_LIMIT } from "@/constants";
 import { FIND_STUDENT_PAGE_CONFIG } from "@/constants/findstudent";
 import {
+  useCommonDetails,
   useGetSearchDetailsAsPerURLOrUserType,
+  useNotification,
   usePagination,
 } from "@/services";
 import { useGetFindStudentList } from "@/services/useGetFindStudent";
@@ -21,6 +23,8 @@ import {
   When,
 } from "@/components";
 import { SearchIcon } from "@/assets";
+import { useDeleteJobseeker } from "@/services/useDeleteJobseeker";
+import { getErrorMessageFromAPI } from "@/helper";
 
 function AdminJobseekerComponent() {
   const [selectedSort, setSelectedSort] = useState<StudentListSortEnum[]>([
@@ -52,12 +56,37 @@ function AdminJobseekerComponent() {
     searchString,
   });
 
-  const newData =
+  const jobSeekerNewData =
     paginatedInfoData.length > 0
       ? paginatedInfoData.map((item: any) => {
           return { ...item, user: item.user };
         })
       : [];
+
+  console.log("jobSeekerNewData: ", jobSeekerNewData);
+
+  const deleteJobSeekerMutation = useDeleteJobseeker();
+  const { showNotification } = useNotification();
+  const { refetchCommonDetails } = useCommonDetails();
+
+  const { SUCCESS } = FIND_STUDENT_PAGE_CONFIG;
+  const jobSeekerDeleteHandler = (id: string) => {
+    deleteJobSeekerMutation.mutate(
+      { user: id },
+      {
+        onSuccess: () => {
+          showNotification(SUCCESS);
+          refetchCommonDetails();
+        },
+        onError: (error) => {
+          showNotification({
+            ...getErrorMessageFromAPI(error),
+          });
+          console.error(error, "error");
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -142,7 +171,7 @@ function AdminJobseekerComponent() {
         isFetchingMore={findStudentAPIData?.isFetchingNextPage}
       >
         <Table
-          data={newData}
+          data={jobSeekerNewData}
           columns={[
             {
               field: "user",
@@ -169,6 +198,8 @@ function AdminJobseekerComponent() {
               headerName: "Experience",
             },
           ]}
+          deleteHandler={jobSeekerDeleteHandler}
+          isButtonDisabled={deleteJobSeekerMutation.isPending}
         />
       </InfinitePagination>
     </>

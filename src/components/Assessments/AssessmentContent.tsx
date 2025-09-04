@@ -3,7 +3,11 @@ import { Button, Stack, Typography, When } from "../common";
 import { ADMIN_QUESTION_URL, ASSESSMENT_SCORE_PAGE_CONFIG } from "@/constants";
 import DialogEdit from "../common/DialogEdit";
 import { useRouter } from "next/navigation";
-import AlertDialog from "../common/DialogAlert";
+import AlertDialogDelete from "../common/DialogAlert";
+import { useDeleteSubject } from "@/services/useDeleteSubject";
+import { useNotification } from "@/services";
+import { FIND_STUDENT_PAGE_CONFIG } from "@/constants/findstudent";
+import { getErrorMessageFromAPI } from "@/helper";
 
 interface AssessmentType {
   exam_name: string;
@@ -19,14 +23,14 @@ interface AssessmentType {
 }
 
 interface AssessmentContentProps {
-  PaidAssessment: AssessmentType[];
-  AssessmentContent: any;
+  paidAssessment: AssessmentType[];
+  assessmentContent: any;
   btntype: boolean;
 }
 
 const AssessmentContent: React.FC<AssessmentContentProps> = ({
-  PaidAssessment,
-  AssessmentContent,
+  paidAssessment,
+  assessmentContent,
   btntype,
 }) => {
   const {
@@ -36,36 +40,60 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
     ASSESSMENT_VQ_BUTTON,
   } = ASSESSMENT_SCORE_PAGE_CONFIG;
 
-  const [open, setOpen] = React.useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
   const router = useRouter();
-  const [DialogOpen, setDialogOpen] = React.useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<any>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const [Value, setValue] = React.useState({});
 
-  const handlemenuclick = (userValue: any) => {
-    setDialogOpen(true);
-    setAnchorEl(null);
+  const handleDeleteClick = (userValue: any) => {
+    setIsDeleteDialogOpen(true);
     setSelectedUser(userValue);
   };
 
   const assessmentEditHandler = ({ value }: any) => {
-    setOpen(true);
+    setIsEditDialogOpen(true);
     setValue(value);
+  };
+
+  const deleteSubjectMutation = useDeleteSubject();
+  const { showNotification } = useNotification();
+  const { SUCCESS_SUBJECT } = FIND_STUDENT_PAGE_CONFIG;
+
+  const assesmentDeleteHandler = () => {
+    deleteSubjectMutation.mutate(
+      { user: selectedUser },
+      {
+        onSuccess: () => {
+          showNotification(SUCCESS_SUBJECT);
+          setIsDeleteDialogOpen(false);
+        },
+        onError: (error) => {
+          showNotification({
+            ...getErrorMessageFromAPI(error),
+          });
+          console.error(error, "error");
+        },
+      }
+    );
   };
 
   return (
     <Stack>
-      {open && (
-        <DialogEdit open={open} setopen={setOpen} AssessmentValue={Value} />
+      {isEditDialogOpen && (
+        <DialogEdit
+          open={isEditDialogOpen}
+          setopen={setIsEditDialogOpen}
+          AssessmentValue={Value}
+        />
       )}
-      {DialogOpen && (
-        <AlertDialog
-          user={selectedUser}
-          open={DialogOpen}
-          setOpen={setDialogOpen}
-          subject={"Subject"}
+      {isDeleteDialogOpen && (
+        <AlertDialogDelete
+          open={isDeleteDialogOpen}
+          setOpen={setIsDeleteDialogOpen}
+          deleteItemType={"Subject"}
+          deleteHandler={assesmentDeleteHandler}
         />
       )}
       <Stack
@@ -81,7 +109,7 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
               : {},
         }}
       >
-        <Typography {...AssessmentContent} />
+        <Typography {...assessmentContent} />
         <When condition={btntype}>
           {" "}
           <Button
@@ -91,7 +119,7 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
         </When>
       </Stack>
       <Stack>
-        {PaidAssessment?.map((Assessment, index) => (
+        {paidAssessment?.map((assesment, index) => (
           <Stack
             key={index}
             stackProps={{
@@ -103,7 +131,7 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
               className: "px-2 py-2 mt-4 rounded-md",
             }}
           >
-            <Stack>{Assessment.exam_name}</Stack>
+            <Stack>{assesment.exam_name}</Stack>
             <Stack
               stackProps={{
                 direction: "row",
@@ -119,14 +147,14 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
               <Button
                 onClick={() =>
                   assessmentEditHandler({
-                    value: Assessment,
+                    value: assesment,
                   })
                 }
                 {...ASSESSMENT_EDIT_BUTTON}
               />
               <When condition={btntype}>
                 <Button
-                  onClick={() => handlemenuclick(Assessment?.id)}
+                  onClick={() => handleDeleteClick(assesment?.id)}
                   {...ASSESSMENT_DELETE_BUTTON}
                 />
               </When>

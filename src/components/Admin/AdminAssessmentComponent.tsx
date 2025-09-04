@@ -26,13 +26,13 @@ function AdminAssessmentComponent() {
       {subdata ? (
         <>
           <AssessmentContent
-            AssessmentContent={ASSESSMENT_PAID}
-            PaidAssessment={paiddata}
+            assessmentContent={ASSESSMENT_PAID}
+            paidAssessment={paiddata}
             btntype={true}
           />
           <AssessmentContent
-            AssessmentContent={ASSESSMENT_FREE}
-            PaidAssessment={freedata}
+            assessmentContent={ASSESSMENT_FREE}
+            paidAssessment={freedata}
             btntype={false}
           />
         </>
