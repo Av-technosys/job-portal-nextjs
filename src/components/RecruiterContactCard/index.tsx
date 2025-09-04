@@ -35,19 +35,15 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
     return [
       {
         icon: <EmailIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: MAIL_TEXT || {
-          children: "N/A",
-        },
-        textProps: EMAIL(recruiter) || { children: "N/A" },
+        subTextProps: MAIL_TEXT,
+        textProps: EMAIL(recruiter),
       },
       {
         icon: (
           <LocationOnIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        subTextProps: LOCATION_TEXT || {
-          children: "N/A",
-        },
-        textProps: LOCATION(recruiter) || { children: "N/A" },
+        subTextProps: LOCATION_TEXT,
+        textProps: LOCATION(recruiter),
       },
       {
         icon: (
@@ -55,17 +51,13 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: MOBILE_TEXT || {
-          children: "N/A",
-        },
-        textProps: MOBILE(recruiter) || { children: "N/A" },
+        subTextProps: MOBILE_TEXT,
+        textProps: MOBILE(recruiter),
       },
       {
         icon: <LinkedInIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: LINKED_IN_TEXT || {
-          children: "N/A",
-        },
-        textProps: LINKED_IN_URL(recruiter) || { children: "N/A" },
+        subTextProps: LINKED_IN_TEXT,
+        textProps: LINKED_IN_URL(recruiter),
       },
     ];
   }, [
@@ -84,7 +76,7 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
     <Stack stackProps={{ className: "p-4 border-2 rounded-md" }}>
       <Typography {...CONTACT_TEXT} />
       <Stack stackProps={{ className: "mt-4", gap: 2 }}>
-        {recruiterDetailContactInformation.map((detail, index) => (
+        {/* {recruiterDetailContactInformation.map((detail, index) => (
           <TextAndSubtextWithIcon
             textWithIconProps={{ direction: "row" }}
             key={`recruiterDetailOverview-${index}`}
@@ -92,7 +84,7 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
             subTextProps={detail.subTextProps}
             textProps={detail.textProps}
           />
-        ))}
+        ))} */}
       </Stack>
     </Stack>
   );

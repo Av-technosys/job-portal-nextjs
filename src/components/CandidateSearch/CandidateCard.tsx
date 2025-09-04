@@ -74,12 +74,10 @@ export default function CandidateSearchCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: LOCATION(candidate) || { children: "N/A" },
+        textProps: LOCATION(candidate),
       },
       {
-        textProps: EXPERIENCE(candidate) || {
-          children: "years of experience",
-        },
+        textProps: EXPERIENCE(candidate),
       },
     ];
   }, [LOCATION, EXPERIENCE, candidate]);
@@ -138,13 +136,13 @@ export default function CandidateSearchCard({
                 gap: 3,
               }}
             >
-              {candidateDetails.map((detail, index) => (
+              {/* {candidateDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`candidateDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))}
+              ))} */}
             </Stack>
           </Stack>
         </Stack>

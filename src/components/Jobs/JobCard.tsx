@@ -52,7 +52,7 @@ export default function JobCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: DEPARTMENT(job) || { children: "N/A" },
+        textProps: DEPARTMENT(job),
       },
       {
         icon: (
@@ -60,7 +60,7 @@ export default function JobCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: JOB_TYPE(job) || { children: "N/A" },
+        textProps: JOB_TYPE(job),
       },
       {
         icon: (
@@ -68,7 +68,7 @@ export default function JobCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: SALARY_RANGE(job) || { children: "N/A" },
+        textProps: SALARY_RANGE(job),
       },
       {
         icon: (
@@ -76,7 +76,7 @@ export default function JobCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: LOCATION(job) || { children: "N/A" },
+        textProps: LOCATION(job),
       },
     ];
   }, [DEPARTMENT, JOB_TYPE, LOCATION, SALARY_RANGE, job]);
@@ -192,13 +192,13 @@ export default function JobCard({
               flexWrap: "wrap",
             }}
           >
-            {jobDetails.map((detail, index) => (
+            {/* {jobDetails.map((detail, index) => (
               <TextWithIcon
                 key={`jobDetails-${index}`}
                 icon={detail.icon}
                 textProps={detail.textProps}
               />
-            ))}
+            ))} */}
           </Stack>
 
           {/* Apply Button */}

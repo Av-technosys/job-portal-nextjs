@@ -34,28 +34,22 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: JOB_POSTED_TEXT() || {
-          children: "N/A",
-        },
-        textProps: POSTED_DATE(job) || { children: "N/A" },
+        subTextProps: JOB_POSTED_TEXT(),
+        textProps: POSTED_DATE(job),
       },
       {
         icon: (
           <TimerOutlinedIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        subTextProps: JOB_EXPIRE_TEXT() || {
-          children: "N/A",
-        },
-        textProps: JOB_EXPIRE(job) || { children: "N/A" },
+        subTextProps: JOB_EXPIRE_TEXT(),
+        textProps: JOB_EXPIRE(job),
       },
       {
         icon: (
           <LayersOutlinedIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        subTextProps: JOB_LEVEL_TEXT() || {
-          children: "N/A",
-        },
-        textProps: JOB_LEVEL(job) || { children: "N/A" },
+        subTextProps: JOB_LEVEL_TEXT(),
+        textProps: JOB_LEVEL(job),
       },
       {
         icon: (
@@ -63,10 +57,8 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: EXPERIENCE_TEXT() || {
-          children: "N/A",
-        },
-        textProps: EXPERIENCE(job) || { children: "N/A" },
+        subTextProps: EXPERIENCE_TEXT(),
+        textProps: EXPERIENCE(job),
       },
       {
         icon: (
@@ -74,10 +66,8 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: EDUCATION_TEXT() || {
-          children: "N/A",
-        },
-        textProps: EDUCATION(job) || { children: "N/A" },
+        subTextProps: EDUCATION_TEXT(),
+        textProps: EDUCATION(job),
       },
     ];
   }, [
@@ -111,14 +101,14 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
           direction: "column",
         }}
       >
-        {jobOverview.map((detail, index) => (
+        {/* {jobOverview.map((detail, index) => (
           <TextWithIcon
             key={index}
             icon={detail.icon}
             subTextProps={detail.subTextProps}
             textProps={detail.textProps}
           />
-        ))}
+        ))} */}
       </Stack>
     </Stack>
   );

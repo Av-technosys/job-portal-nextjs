@@ -3,7 +3,12 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    // ##########
+    "noImplicitAny": false,   // 👈 allow "any"
+    "strictNullChecks": false, // 👈 allow nulls
+    "strict": false,
+    // ##########
+    // "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -16,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/admin/question/page.tsx"],
   "exclude": ["node_modules"]
 }

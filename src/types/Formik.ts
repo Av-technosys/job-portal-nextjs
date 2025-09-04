@@ -17,11 +17,16 @@ export enum FormikFieldsEnum {
   DROPDOWN = "dropdown",
   TYPOGRAPHY = "typography",
   UPLOAD_PROFILE_IMAGE = "uploadProfileImage",
+  UPLOAD_QUESTION_IMAGE = "UploadQuestionImage",
   UPLOAD_DOCUMENT = "uploadDocument",
   MULTI_SELECT_DROPDOWN = "multiSelectDropdown",
   ARRAY_FIELD = "formikArrayField",
   SOCIAL_URL_INPUT = "socialUrlInput",
   CHECKBOX = "checkbox",
+  // EXAM_NAME="English Practice Exam",
+  // SECTION_NAME="English",
+  // EXAM_TIME="60 mins",
+  // EXAM_TYPE="Enter Here"
 }
 
 export interface FomrikCommonProps {
@@ -57,6 +62,9 @@ export interface FormikUploadDocumentProps extends UploadDocumentProps {
   fieldType?: FormikFieldsEnum;
 }
 
+// export interface FormikUploadQuestionProps extends UploadQuestionProps {
+//   fieldType?: FormikFieldsEnum;
+// }
 export interface FormikProps {
   initialValues: CommonObjectType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,6 +79,7 @@ export interface FormikProps {
     | FormikArrayFieldProps[]
     | FormikCheckboxProps[]
     | FormikUploadDocumentProps[];
+  // | FormikUploadQuestionProps[];
   formFooterArray?: ButtonProps[];
   classNames?: {
     formItemParentClassName?: string;

@@ -294,8 +294,8 @@ export const JOB_DETAILS_CONFIG = {
         name: "description",
         placeholder: "Tell us about your company vision",
         multiline: true,
-        minRows: 10,
-        maxRows: 10,
+        minRows: 4,
+        maxRows: 4,
       },
       formControlProps: {
         sx: FIELD_WIDTHS.EXTRA_LARGE,

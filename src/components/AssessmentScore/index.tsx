@@ -37,31 +37,31 @@ function AssessmentScore() {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
       {
         icon: (
           <CheckCircleIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
-        textProps: SUMMERY(section) || { children: "N/A" },
+        textProps: SUMMERY(section),
       },
     ];
   }, [SUMMERY, section]);
@@ -170,13 +170,13 @@ function AssessmentScore() {
                     spacing: 1,
                   }}
                 >
-                  <TextWithIcon
+                  {/* <TextWithIcon
                     textWithIconProps={{
                       className: "p-2",
                     }}
                     icon={details.icon}
                     textProps={details.textProps}
-                  />
+                  /> */}
                   <Typography {...SCORE_VALUE_3(section)} />
                 </Stack>
               ))}

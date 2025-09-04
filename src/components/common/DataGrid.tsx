@@ -7,7 +7,7 @@ import { TableProps } from "@/types";
 function DataGridPro({ columns, data }: TableProps) {
   return (
     <>
-      <MUIDataGrid
+      {/* <MUIDataGrid
         rows={data}
         columns={columns}
         initialState={{
@@ -20,7 +20,7 @@ function DataGridPro({ columns, data }: TableProps) {
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
-      />
+      /> */}
     </>
   );
 }

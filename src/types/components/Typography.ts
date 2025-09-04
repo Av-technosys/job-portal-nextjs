@@ -36,7 +36,10 @@ export enum TypographyFontSize {
   small = "14px",
   extraSmall = "12px",
 }
-
+export enum TypographyMargin {
+  small = "20px",
+  zero = "0px",
+}
 export enum TypographyFontColor {
   primary = "primary",
   secondary = "secondary",

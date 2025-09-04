@@ -52,3 +52,4 @@ export { default as Carousel } from "./Carousel";
 export { CarouselCard as CarouselCard } from "./Carousel";
 export { default as TextAndSubtextWithIcon } from "./TextAndSubtextWithIcon";
 export { default as Grid } from "./Grid";
+export { default as Menuhiddendrop} from "./menuhiddendrop";

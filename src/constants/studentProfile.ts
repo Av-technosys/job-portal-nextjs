@@ -546,7 +546,7 @@ export const STUDENT_PROFILE_ADDITIONAL_INFORMATION_CONFIG = {
             shrink: true,
           },
           formControlProps: {
-            sx: FIELD_WIDTHS.LARGE,
+            sx: { width: "100%", flexBasis: "65%" },
           },
         },
         {
@@ -822,7 +822,7 @@ export const STUDENT_PROFILE_ADDITIONAL_INFORMATION_CONFIG = {
   },
   SAVE_BUTTON: {
     buttonProps: {
-      children: "Save And Next",
+      children: "Save",
       variant: ButtonVariantEnum.CONTAINED,
       color: ButtonColorEnum.PRIMARY,
       size: ButtonSizeEnum.LARGE,
@@ -836,6 +836,12 @@ export const STUDENT_PROFILE_ADDITIONAL_INFORMATION_CONFIG = {
   NOTIFICATION_CONFIG: {
     SUCCESS: {
       message: "Profile Updated Successfully",
+    } as ShowNotificationProps,
+    SUCCESS_SUBJECT: {
+      message: "Subject Updated Successfully",
+    } as ShowNotificationProps,
+    SUCCESS_CREATE_SUBJECT: {
+      message: "Subject Created Successfully",
     } as ShowNotificationProps,
   },
 };
@@ -938,6 +944,10 @@ export const STUDENT_PROFILE_WORKING_EXPERIENCE_CONFIG = {
 
 export const JOB_SEEKER_UPLOAD_PROFILE_CONFIG = {
   fieldType: FormikFieldsEnum.UPLOAD_PROFILE_IMAGE,
+};
+
+export const QUESTION_UPLOAD_CONFIG = {
+  fieldType: FormikFieldsEnum.UPLOAD_QUESTION_IMAGE,
 };
 
 export const JOB_SEEKER_UPLOAD_DOCUMENT_CONFIG = {

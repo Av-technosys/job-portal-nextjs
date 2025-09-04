@@ -38,7 +38,7 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
             }}
           />
         ),
-        textProps: LOCATION(job) || { children: "N/A" },
+        textProps: LOCATION(job),
       },
       {
         icon: (
@@ -49,7 +49,7 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
             }}
           />
         ),
-        textProps: SALARY_RANGE(job) || { children: "N/A" },
+        textProps: SALARY_RANGE(job),
       },
     ];
   }, [LOCATION, SALARY_RANGE, job]);
@@ -91,13 +91,13 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
                 gap: 1,
               }}
             >
-              {appliedJobDetails.map((detail, index) => (
+              {/* {appliedJobDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`appliedJobDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))}
+              ))} */}
             </Stack>
           </Stack>
         </Stack>

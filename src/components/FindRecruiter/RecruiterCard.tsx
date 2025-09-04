@@ -30,7 +30,7 @@ export default function FindRecruiterCard({
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        textProps: ADDRESS(recruiter) || { children: "N/A" },
+        textProps: ADDRESS(recruiter),
       },
     ];
   }, [ADDRESS, recruiter]);
@@ -97,13 +97,13 @@ export default function FindRecruiterCard({
                 flexWrap: "wrap",
               }}
             >
-              {recruiterDetails.map((detail, index) => (
+              {/* {recruiterDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`recruiterDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))}
+              ))} */}
             </Stack>
             <Stack>
               <Button
