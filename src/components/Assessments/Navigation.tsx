@@ -46,6 +46,7 @@ function AssessmentStatusLegend() {
       gridProps={{
         container: true,
         spacing: 1,
+        padding: "6px",
       }}
     >
       {statusLegendArr.map((legendText, index) => {
@@ -119,6 +120,7 @@ export default function AssessmentNavigation({
             overflowX: "hidden",
             overflowY: "scroll",
             height: "283px",
+            padding: "8px",
           },
         }}
       >
@@ -147,26 +149,3 @@ export default function AssessmentNavigation({
     </>
   );
 }
-
-//  {questionArr.map((questionNo, index) => {
-//           const questionDetails = userAssessmentDetails?.[
-//             `${assessmentSection}_${index + 1}`
-//           ] as CommonObjectType;
-
-//           console.log("questionDetails", questionDetails);
-
-//           return (
-//             <Grid
-//               key={`${questionNo}-${index}-questionNo`}
-//               gridProps={{
-//                 size: 3,
-//                 onClick: () => setCurrentQIndex(index + 1),
-//               }}
-//             >
-//               <QuestionNoBox
-//                 questionNo={index + 1}
-//                 questionStatus={questionDetails?.status as number}
-//               />
-//             </Grid>
-//           );
-//         })}

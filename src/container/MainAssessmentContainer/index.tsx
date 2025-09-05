@@ -1,13 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowForwardOutlinedIcon, ChevronRightIcon } from "@/assets";
-import {
-  AssessmentNavigation,
-  Button,
-  Grid,
-  Modal,
-  Stack,
-  Typography,
-} from "@/components";
+import { ArrowForwardOutlinedIcon } from "@/assets";
+import { Button, Grid, Stack, Typography } from "@/components";
 
 import { ButtonVariantEnum, TypographyVariantEnum } from "@/types";
 import {
@@ -16,12 +9,10 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+
 import StopWatchHandler from "@/components/Assessments/StopWatchHandler";
 import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
-import { UseCreateStudentAnsweredData } from "@/services/useCreateStudentTestAnsweredData";
-import { getErrorMessageFromAPI } from "@/helper";
-import { useNotification } from "@/services";
+import AssessmentSidebar from "@/components/common/AssessmentSidebar";
 
 export default function MainAssessmentContainer() {
   type AnsweredData = {
@@ -189,23 +180,22 @@ export default function MainAssessmentContainer() {
       <Grid
         gridProps={{
           container: true,
-          className: "m-4",
-          style: {
-            height: "100%",
-          },
+          className: "m-4 h-screen",
         }}
       >
         <Grid
           gridProps={{
-            size: 9,
+            size: { xs: 11, sm: 6.5, md: 8, lg: 8.6 },
           }}
         >
           <Stack
             stackProps={{
+              direction: "column",
               justifyContent: "space-between",
-              className: "h-full",
+              className: "h-full p-4",
               sx: {
                 height: "100%",
+                width: "100%",
               },
             }}
           >
@@ -248,7 +238,7 @@ export default function MainAssessmentContainer() {
             </div>
             <Stack
               stackProps={{
-                direction: "row",
+                direction: { xs: "column", sm: "row" },
                 gap: 1,
               }}
             >
@@ -279,17 +269,12 @@ export default function MainAssessmentContainer() {
             </Stack>
           </Stack>
         </Grid>
-        <Grid
-          gridProps={{
-            size: 3,
-          }}
-        >
-          <AssessmentNavigation
+
+        <Grid gridProps={{ size: { xs: 1, sm: 5.5, md: 4, lg: 3.4 } }}>
+          <AssessmentSidebar
             setCurrentQIndex={handleQIndexChange}
             userAssessmentDetails={userAnsweredData}
             assessmentSection={assessmentSectionValue}
-          />
-          <SubmitButton
             userAnsweredData={userAnsweredData}
             timeForSubmit={timeForSubmit}
             tabSwitchCount={tabSwitchCount}
@@ -342,135 +327,3 @@ const QuestionOptions = ({
     </FormControl>
   );
 };
-
-type SubmitButtonProps = {
-  userAnsweredData: any;
-  timeForSubmit: number | null;
-  tabSwitchCount: number;
-};
-
-function SubmitButton({
-  userAnsweredData,
-  timeForSubmit,
-  tabSwitchCount,
-}: SubmitButtonProps) {
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
-  const { showNotification } = useNotification();
-
-  const data = {
-    answers: {
-      ...userAnsweredData,
-    },
-    timeLeft: timeForSubmit,
-    tabSwitchCount: tabSwitchCount,
-  };
-
-  const testId: number = 2;
-
-  const createStudentTestAnsweredData = UseCreateStudentAnsweredData({
-    mutationConfig: {
-      onSuccess: () => {
-        router.push("/assessment-summary");
-      },
-      onError: (error) => {
-        showNotification({
-          ...getErrorMessageFromAPI(error),
-        });
-        console.error(error, "error");
-      },
-    },
-  });
-
-  function handleSubmitTest() {
-    createStudentTestAnsweredData.mutate({ data, testId });
-    setOpen(false);
-  }
-  return (
-    <React.Fragment>
-      <Button
-        buttonProps={{
-          children: "Submit",
-          variant: ButtonVariantEnum.CONTAINED,
-          endIcon: <ChevronRightIcon />,
-          sx: {
-            marginTop: "16px",
-          },
-        }}
-        onClick={() => setOpen(true)}
-      />
-
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <>
-          <Stack
-            stackProps={{
-              width: "80%",
-              sx: {
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                bgcolor: "background.paper",
-                border: "2px solid #333",
-                boxShadow: 24,
-                p: 4,
-                maxHeight: "80vh",
-                maxWidth: "52rem",
-                overflow: "auto",
-              },
-            }}
-          >
-            <Typography
-              typographyProps={{
-                children: "Start Next Section",
-                variant: TypographyVariantEnum.H6,
-                color: "text.secondary",
-                className: "text-center ",
-              }}
-            />
-            <Typography
-              typographyProps={{
-                children:
-                  "Your Attempt for this section is successfully submitted. You Can Now Take a Break Before Starting Next Section. Do you Want to start the Next Section Now ?",
-                variant: TypographyVariantEnum.H6,
-                color: "text.secondary",
-                className: "text-center mt-4",
-              }}
-            />
-
-            <Stack
-              stackProps={{
-                direction: "row",
-                spacing: 2,
-                justifyContent: "flex-end",
-              }}
-            >
-              <Button
-                buttonProps={{
-                  children: "Close",
-                  variant: ButtonVariantEnum.CONTAINED,
-                  color: "error",
-                  sx: {
-                    marginTop: "16px",
-                  },
-                }}
-                onClick={() => setOpen(false)}
-              />
-              <Button
-                buttonProps={{
-                  children: "Submit",
-                  variant: ButtonVariantEnum.CONTAINED,
-                  color: "success",
-                  sx: {
-                    marginTop: "16px",
-                  },
-                }}
-                onClick={handleSubmitTest}
-              />
-            </Stack>
-          </Stack>
-        </>
-      </Modal>
-    </React.Fragment>
-  );
-}

@@ -15,6 +15,8 @@ function AdminAssessmentComponent() {
       return item;
     }
   });
+
+  console.log(paiddata);
   const freedata = subdata?.filter((item: any) => {
     if (item?.is_paid == false) {
       return item;
