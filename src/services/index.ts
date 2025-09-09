@@ -52,6 +52,8 @@ export * from "./useGetStudentProfileAdditionalInfo";
 export * from "./useSocialLinksRecruiter";
 export * from "./useSocialLinksJobSeeker";
 export * from "./useCreateOrderId";
-export * from "./useCaptureTransaction"
-export * from "./useUpdateJobStatus"
-export * from "./useUpdateCandidateStatus"
+export * from "./useCaptureTransaction";
+export * from "./useUpdateJobStatus";
+export * from "./useUpdateCandidateStatus";
+export * from "./useDeleteAssessmentQuestion";
+export * from "./useGetQuestionbySubjectID";
