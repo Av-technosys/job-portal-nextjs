@@ -9,7 +9,7 @@ import {
   TableContainer,
   Paper,
 } from "@mui/material";
-import { MenuList, IconButton, Menuhiddendrop, Stack } from "../common";
+import { MenuList, IconButton, Stack, MenuHiddenDrop } from "../common";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { TableProps } from "@/types";
@@ -110,7 +110,7 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
           </MUITable>
         </TableContainer>
       </Stack>
-      <Menuhiddendrop
+      <MenuHiddenDrop
         handleClose={handleClose}
         anchorEl={anchorEl}
         styles={{
@@ -128,7 +128,7 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
             },
           ]}
         />
-      </Menuhiddendrop>
+      </MenuHiddenDrop>
     </>
   );
 }
