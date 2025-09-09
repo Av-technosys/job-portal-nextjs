@@ -71,7 +71,6 @@ const AdminRecruiterComponent = () => {
 
   const { SUCCESS } = FIND_STUDENT_PAGE_CONFIG;
   const recruiterDeleteHandler = (id: string) => {
-    console.log(id);
     deleteRecruiterMutation.mutate(
       { user: id },
       {

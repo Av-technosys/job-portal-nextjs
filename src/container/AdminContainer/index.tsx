@@ -5,7 +5,15 @@ import {
   PersonIcon,
   SchoolIcon,
 } from "@/assets";
-import { Paper, Stack, Table, Tabs, Typography, When } from "@/components";
+import {
+  Grid,
+  Paper,
+  Stack,
+  Table,
+  Tabs,
+  Typography,
+  When,
+} from "@/components";
 import { ADMIN_PAGE_BODY_CONFIG } from "@/constants";
 import { useCommonDetails } from "@/services";
 import React, { useMemo } from "react";
@@ -67,49 +75,52 @@ function AdminContainer() {
         >
           <Typography {...WELCOME_MESSAGE("Admin")} />
 
-          <Stack
-            stackProps={{
-              direction: "row",
-              gap: { xs: 2, lg: 6 },
-              flexWrap: "wrap",
-            }}
-          >
-            {statsData.map((item, index) => {
-              return (
-                <Paper
+          <Stack>
+            <Grid gridProps={{ container: true, spacing: 3 }}>
+              {statsData.map((item, index) => (
+                <Grid
                   key={index}
-                  paperProps={{
-                    sx: {
-                      padding: 4,
-                      background: item.bgColor,
-                      width: "fit-content",
-                      borderRadius: "12px",
-                      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.15)",
-                    },
+                  gridProps={{
+                    size: { xs: 12, sm: 6, md: 4 },
                   }}
                 >
-                  <Stack
-                    stackProps={{
-                      direction: "column",
-                      gap: 1,
-                      minWidth: { xs: "100%", md: "100px" },
+                  <Paper
+                    paperProps={{
+                      sx: {
+                        padding: 4,
+                        background: item.bgColor,
+                        borderRadius: "12px",
+                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.15)",
+                        height: "100%",
+                      },
                     }}
                   >
-                    {item.icon}
-                    <Typography
-                      typographyProps={{
-                        children: item.count,
+                    <Stack
+                      stackProps={{
+                        direction: "column",
+                        gap: 1,
+                        alignItems: "flex-start",
                       }}
-                    />
-                    <Typography
-                      typographyProps={{
-                        children: item.label,
-                      }}
-                    />
-                  </Stack>
-                </Paper>
-              );
-            })}
+                    >
+                      {item.icon}
+                      <Typography
+                        typographyProps={{
+                          children: item.count,
+                          variant: "h6",
+                        }}
+                      />
+                      <Typography
+                        typographyProps={{
+                          children: item.label,
+                          variant: "body2",
+                          color: "text.secondary",
+                        }}
+                      />
+                    </Stack>
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
           </Stack>
 
           <Typography {...TAB_TITLE} />
