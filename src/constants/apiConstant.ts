@@ -64,6 +64,7 @@ export const apiConstantsURL = {
     getSubjectById: `assessment/get_subject_by_id/`,
     updateSubject: `assessment/update_subject/`,
     createSubject: `assessment/create_Subject/`,
+    createQuestion: `assessment/create_question/`,
     subjectInfo: `assessment/get_subjectInfo/`,
     updateQuestion: `assessment/update_question/`,
     questionInfo: `assessment/get_questionInfo/`,

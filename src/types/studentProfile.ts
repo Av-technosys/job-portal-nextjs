@@ -85,3 +85,21 @@ export type CreateOrUpdateQuestionInfoInput = {
     }
   ];
 };
+
+export type CreateQuestionInfoInput = {
+  question_details: [
+    {
+      correct_option: string;
+      difficulty_level: number;
+      id: number;
+      option_1: string;
+      option_2: string;
+      option_3: string;
+      option_4: string;
+      question_image: string;
+      question_paragraph: string;
+      question_text: string;
+      subject: string | number;
+    }
+  ];
+};
