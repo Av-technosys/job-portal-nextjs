@@ -17,7 +17,7 @@ import {
 import { CommonObjectType, JobListSortEnum } from "@/types";
 import AdminQuestionCard from "./AdminQuestionCard";
 
-function AdminAssessmentSubject({ subjectId }: { subjectId: number }) {
+function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
   const [selectedSort, setSelectedSort] = useState<JobListSortEnum[]>([
     JobListSortEnum.CREATED_DATE_DESC,
   ]);
@@ -62,7 +62,7 @@ function AdminAssessmentSubject({ subjectId }: { subjectId: number }) {
           justifyContent: "space-between",
           alignItems: { xs: "stretch", sm: "center" },
           width: "100%",
-          px: { xs: 2, sm: 4, md: 8, lg: 12, xl: 25 },
+          px: { xs: 2, sm: 4, md: 8 },
           gap: { xs: 2, sm: 0 },
           my: { xs: 2, md: 6 },
           sx: { maxWidth: { xs: "100%", md: 1000 }, mx: "auto" },
@@ -141,4 +141,4 @@ function AdminAssessmentSubject({ subjectId }: { subjectId: number }) {
   );
 }
 
-export default AdminAssessmentSubject;
+export default AdminAssessmentQuestion;

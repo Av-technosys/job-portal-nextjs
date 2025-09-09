@@ -56,4 +56,4 @@ export * from "./useCaptureTransaction";
 export * from "./useUpdateJobStatus";
 export * from "./useUpdateCandidateStatus";
 export * from "./useDeleteAssessmentQuestion";
-export * from "./useGetQuestionBySubjectId"
+export * from "./useGetQuestionbySubjectID";

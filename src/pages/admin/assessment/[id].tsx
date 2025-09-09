@@ -1,12 +1,11 @@
-import React, { ReactElement } from "react";
-import { DashboardLayout } from "@/components";
+import React from "react";
+
 import { getDehydratedStateForCommonDetails } from "@/services";
 import { GetServerSidePropsContext } from "next";
-import JobDetailContainer from "@/container/JobDetailContainer";
-import { AdminAssessmentSubjectContainer } from "@/container";
+import { AdminAssessmentQuestionsContainer } from "@/container";
 
 function Page() {
-  return <AdminAssessmentSubjectContainer />;
+  return <AdminAssessmentQuestionsContainer />;
 }
 
 // Page.getLayout = (page: ReactElement) => (

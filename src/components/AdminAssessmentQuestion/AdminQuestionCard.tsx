@@ -78,7 +78,7 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
   return (
     <Stack
       stackProps={{
-        px: { xs: 2, sm: 4, md: 8, lg: 12, xl: 25 },
+        px: { xs: 2, sm: 4, md: 8 },
         py: { xs: 2, md: 4 },
         spacing: 2,
         sx: { width: "100%", maxWidth: { xs: "100%", md: 1000 }, mx: "auto" },
