@@ -11,12 +11,13 @@ import { useCommonDetails } from "@/services";
 import React, { useMemo } from "react";
 
 import AdminTabs from "@/components/Admin";
+import { useGetAdminProfileMetaDataInfo } from "@/services/useGetAdminMetaData";
 
 function AdminContainer() {
   const { userType } = useCommonDetails();
 
   // reate useGetAdminMetaDetails use API "http://localhost:8000/user_profiles/get_admin_meta_details/"
-  const adminMetaDetails = useGetAdminMetaDetails();
+  const adminMetaDetails = useGetAdminProfileMetaDataInfo();
 
   const adminMetaDetailsMemo = useMemo(() => {
     return adminMetaDetails?.data?.data;
@@ -28,26 +29,26 @@ function AdminContainer() {
     {
       icon: <PeopleIcon fontSize="large" />,
       count:
-        adminMetaDetailsMemo.recruiter_count +
-        adminMetaDetailsMemo.job_seeker_count,
+        adminMetaDetailsMemo?.recruiter_count +
+        adminMetaDetailsMemo?.job_seeker_count,
       label: "Total Users",
       bgColor: "#FFE2E5",
     },
     {
       icon: <BusinessIcon fontSize="large" />,
-      count: adminMetaDetailsMemo.recruiter_count,
+      count: adminMetaDetailsMemo?.recruiter_count,
       label: "Recruiter count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <PersonIcon fontSize="large" />,
-      count: adminMetaDetailsMemo.job_seeker_count,
+      count: adminMetaDetailsMemo?.job_seeker_count,
       label: "Student Count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <SchoolIcon fontSize="large" />,
-      count: adminMetaDetailsMemo.assessment_count,
+      count: adminMetaDetailsMemo?.assessment_count,
       label: "Total assessment taken",
       bgColor: "#FFC1B2",
     },
