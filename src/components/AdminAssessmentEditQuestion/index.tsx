@@ -1,4 +1,4 @@
-import { Button, Formik, Stack } from "@/components";
+import { Button, Formik, Loader, Stack } from "@/components";
 import AdminLayout from "@/components/AdminLayout";
 import { QUESTION_UPLOAD_CONFIG } from "@/constants";
 import { QUESTION_CONFIG } from "@/constants/questionFormat";
@@ -84,11 +84,21 @@ const Index = ({
   }
 
   if (subjectId && !questionData && questionMethod == "update-question") {
-    return <>Loading...</>;
+    return (
+      <Loader
+        loaderProps={{
+          open: true,
+        }}
+      />
+    );
   }
   return (
     <>
       <Stack stackProps={{ className: "max-w-5xl border my-5 p-10 mx-auto" }}>
+        <Button
+          onClick={() => router.push(`/admin/assessment`)}
+          {...QUESTION_CONFIG.FORM_CONFIG.BACK_BUTTON}
+        />
         <Formik
           initialValues={
             subjectId && questionData

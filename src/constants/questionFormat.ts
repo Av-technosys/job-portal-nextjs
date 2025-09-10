@@ -162,6 +162,18 @@ export const QUESTION_CONFIG = {
         },
       },
     },
+    BACK_BUTTON: {
+      buttonProps: {
+        children: "Back",
+        variant: ButtonVariantEnum.OUTLINED,
+        color: ButtonColorEnum.ERROR,
+        size: ButtonSizeEnum.LARGE,
+        sx: {
+          marginLeft: "auto",
+          marginBottom: "1rem",
+        },
+      },
+    },
   },
   NOTIFICATION_CONFIG: {
     SUCCESS: {
