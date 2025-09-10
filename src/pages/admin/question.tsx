@@ -10,7 +10,7 @@ import {
   useGetStudentProfileAdditionalInfo,
   useNotification,
 } from "@/services";
-import { useCreateOrUpdateQuestionInfo } from "@/services/useCreateOrUpdateQuestion";
+import { useCreateOrUpdateQuestionInfo } from "@/services/useUpdateQuestion";
 
 import {
   CommonObjectType,

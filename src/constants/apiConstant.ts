@@ -69,6 +69,7 @@ export const apiConstantsURL = {
     createSubject: `assessment/create_Subject/`,
     subjectInfo: `assessment/get_subjectInfo/`,
     updateQuestion: `assessment/update_question/`,
+    createQuestion: `assessment/create_question/`,
     questionInfo: `assessment/get_questionInfo/`,
     deleteSubject: `assessment/delete_subject/`,
     deleteQuestion: `assessment/delete_question/`,

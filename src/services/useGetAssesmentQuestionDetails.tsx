@@ -7,13 +7,7 @@ export interface AssessmentQuestionQueryParams {
   id: number;
 }
 
-export const getAssesmentQuestionDetails = ({
-  id,
-}: {
-  id: number;
-}): Promise<{
-  data: SuccessResponseType;
-}> => {
+export const getAssesmentQuestionDetails = ({ id }: { id: number }) => {
   return api.get(`${apiConstantsURL.assessment.getQuestionById}${id}/`);
 };
 

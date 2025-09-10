@@ -138,7 +138,7 @@ function UploadQuestionPic() {
         sx={{
           width: "100%",
           flexBasis: isRecruiter ? "100%" : "100%",
-          height: "80px",
+          height: "50px",
           marginBottom: "180px",
         }}
       >

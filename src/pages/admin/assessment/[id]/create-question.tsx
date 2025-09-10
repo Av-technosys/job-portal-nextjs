@@ -2,16 +2,16 @@ import { AdminAssessmentEditQuestion } from "@/components";
 import { useRouter } from "next/router";
 import React from "react";
 
-function AdminAssessmentEditQuestionsContainer() {
+function CreateQuestion() {
   const router = useRouter();
   const { id } = router.query;
 
   return (
     <AdminAssessmentEditQuestion
-      questionMethod="update-question"
+      questionMethod="create-question"
       subjectId={Number(id)}
     />
   );
 }
 
-export default AdminAssessmentEditQuestionsContainer;
+export default CreateQuestion;

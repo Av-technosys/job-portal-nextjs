@@ -8,7 +8,7 @@ import {
 import { api } from "@/helper";
 import { getQuestionInfoQueryOptions } from "./useGetQuestionInfo";
 
-export const CreateOrUpdateQuestionInfo = ({
+export const UpdateQuestionInfo = ({
   data,
 }: {
   data: CreateOrUpdateQuestionInfoInput;
@@ -16,13 +16,13 @@ export const CreateOrUpdateQuestionInfo = ({
   return api.put(`${apiConstantsURL.assessment.updateQuestion}`, data);
 };
 
-type UseCreateOrUpdateQuestionInfoOptions = {
-  mutationConfig?: MutationConfig<typeof CreateOrUpdateQuestionInfo>;
+type UseUpdateQuestionInfoOptions = {
+  mutationConfig?: MutationConfig<typeof UpdateQuestionInfo>;
 };
 
-export const useCreateOrUpdateQuestionInfo = ({
+export const useUpdateQuestionInfo = ({
   mutationConfig,
-}: UseCreateOrUpdateQuestionInfoOptions = {}) => {
+}: UseUpdateQuestionInfoOptions = {}) => {
   const queryClient = useQueryClient();
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};
 
@@ -37,6 +37,6 @@ export const useCreateOrUpdateQuestionInfo = ({
       onError?.(...args);
     },
     ...restConfig,
-    mutationFn: CreateOrUpdateQuestionInfo,
+    mutationFn: UpdateQuestionInfo,
   });
 };

@@ -22,6 +22,7 @@ import {
   TypographyVariantEnum,
 } from "@/types";
 import AdminQuestionCard from "./AdminQuestionCard";
+import { Router, useRouter } from "next/router";
 
 function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
   const [selectedSort, setSelectedSort] = useState<JobListSortEnum[]>([
@@ -39,7 +40,7 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
   });
 
   //  http:  127.0.0.1:8000/assessment/get_question_by_subject_id/5/
-  const { ADD_QUESTION_BUTTON, JOB_LISTING_SORT_DROPDOWN } =
+  const { ADD_QUESTION_BUTTON, BACK_BUTTON, JOB_LISTING_SORT_DROPDOWN } =
     ADMIN_QUESTION_CARD_CONFIG;
   const [searchString] = useState(""); // Remove setSearchString
   const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
@@ -60,6 +61,8 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
     );
   }
 
+  const router = useRouter();
+
   return (
     <>
       <Stack
@@ -74,7 +77,11 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
           sx: { maxWidth: { xs: "100%", md: 1000 }, mx: "auto" },
         }}
       >
-        <Stack stackProps={{ flex: 1 }}>
+        <Stack stackProps={{ flex: 1, direction: "row", spacing: 1 }}>
+          <Button
+            onClick={() => router.push(`/admin/assessment`)}
+            {...BACK_BUTTON}
+          />
           <AutoComplete
             textfieldProps={{
               ...(searchProps.input as CommonObjectType),
@@ -105,7 +112,12 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
               justifyContent: "center",
             }}
           >
-            <Button {...ADD_QUESTION_BUTTON} />
+            <Button
+              onClick={() =>
+                router.push(`/admin/assessment/${subjectId}/create-question`)
+              }
+              {...ADD_QUESTION_BUTTON}
+            />
           </Stack>
           <Dropdown
             {...JOB_LISTING_SORT_DROPDOWN}
