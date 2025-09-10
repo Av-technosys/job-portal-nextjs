@@ -141,7 +141,7 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
               }}
             >
               <Button
-                onClick={() => router.push(ADMIN_QUESTION_URL)}
+                onClick={() => router.push(ADMIN_QUESTION_URL(assesment.id))}
                 {...ASSESSMENT_VQ_BUTTON}
               />
               <Button

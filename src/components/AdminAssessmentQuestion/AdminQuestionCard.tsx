@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { ADMIN_QUESTION_CARD_CONFIG } from "@/constants/adminAssessmentQuestion";
 import {
@@ -11,6 +11,8 @@ import {
   IconButton,
 } from "../common";
 import { useDeleteAssessmentQuestion, useNotification } from "@/services";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 interface AdminQuestionCardProps {
   questionData: {
@@ -27,10 +29,11 @@ interface AdminQuestionCardProps {
 const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
   questionData,
   index,
-  onEdit,
   onDelete,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const normalizeAnswer = React.useMemo(() => {
     if (!questionData.answer) return "";
     return questionData.answer.startsWith("option_")
@@ -41,6 +44,7 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
   const deleteMutation = useDeleteAssessmentQuestion({
     onSuccess: () => {
       showNotification({ message: "Question deleted." });
+      queryClient.invalidateQueries();
       onDelete?.();
     },
     onError: () => {
@@ -66,7 +70,7 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
       }
     }
     if (key === "edit") {
-      onEdit?.();
+      router.push(`/admin/question/${questionData.id}`);
     }
     handleClose();
   };

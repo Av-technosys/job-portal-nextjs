@@ -5,18 +5,10 @@ import {
   PersonIcon,
   SchoolIcon,
 } from "@/assets";
-import {
-  Grid,
-  Paper,
-  Stack,
-  Table,
-  Tabs,
-  Typography,
-  When,
-} from "@/components";
+import { Grid, Paper, Stack, Typography, When } from "@/components";
 import { ADMIN_PAGE_BODY_CONFIG } from "@/constants";
 import { useCommonDetails } from "@/services";
-import React, { useMemo } from "react";
+import React from "react";
 
 import AdminTabs from "@/components/Admin";
 

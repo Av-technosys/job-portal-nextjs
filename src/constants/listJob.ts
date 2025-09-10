@@ -25,16 +25,6 @@ export const JOB_LISTING_DROPDOWN_SORT_OPTIONS = [
     key: "-created_date",
     value: JobListSortEnum.CREATED_DATE_DESC,
   },
-  {
-    label: "Department (ASC)",
-    key: "department",
-    value: JobListSortEnum.DEPARTMENT_ASC,
-  },
-  {
-    label: "Department (DESC)",
-    key: "-department",
-    value: JobListSortEnum.DEPARTMENT_DESC,
-  },
 ];
 
 export const LIST_JOB_PAGE_CONFIG = {

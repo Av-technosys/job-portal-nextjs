@@ -27,3 +27,4 @@ export { default as ContactUsContainer } from "./ContactUsContainer";
 export { default as AboutUsContainer } from "./AboutUsContainer";
 export { default as MainAssessmentContainer } from "./MainAssessmentContainer";
 export { default as AdminAssessmentQuestionsContainer } from "./AdminAssessmentQuestionsContainer";
+export { default as AdminAssessmentEditQuestionsContainer } from "./AdminAssessmentEditQuestionsContainer";

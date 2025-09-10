@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import { ADMIN_QUESTION_CARD_CONFIG, PAGIANTION_LIMIT } from "@/constants";
 import {
   AutoComplete,
@@ -7,6 +7,8 @@ import {
   InfinitePagination,
   Loader,
   Stack,
+  Typography,
+  When,
 } from "../common";
 import { SelectChangeEvent } from "@mui/material/Select";
 import {
@@ -14,7 +16,11 @@ import {
   useGetQuestionBySubjectId,
   usePagination,
 } from "@/services";
-import { CommonObjectType, JobListSortEnum } from "@/types";
+import {
+  CommonObjectType,
+  JobListSortEnum,
+  TypographyVariantEnum,
+} from "@/types";
 import AdminQuestionCard from "./AdminQuestionCard";
 
 function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
@@ -137,6 +143,15 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
           ))}
         </Stack>
       </InfinitePagination>
+      <When condition={paginatedInfoData?.length === 0}>
+        <Typography
+          typographyProps={{
+            textAlign: "center",
+            children: "No Questions Found",
+            variant: TypographyVariantEnum.H6,
+          }}
+        />
+      </When>
     </>
   );
 }

@@ -45,4 +45,5 @@ export { default as EmptySavedJobs } from "./EmptyStates/EmptySavedjob";
 export { default as RecruiterContactCard } from "./RecruiterContactCard";
 export { default as AssessmentNavigation } from "./Assessments/Navigation";
 export { default as AdminAssessmentQuestion } from "./AdminAssessmentQuestion";
+export { default as AdminAssessmentEditQuestion } from "./AdminAssessmentEditQuestion";
 export * from "./AdminAssessmentQuestion";
