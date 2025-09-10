@@ -8,46 +8,55 @@ import {
 import { Grid, Paper, Stack, Typography, When } from "@/components";
 import { ADMIN_PAGE_BODY_CONFIG } from "@/constants";
 import { useCommonDetails } from "@/services";
-import React from "react";
+import React, { useMemo } from "react";
 
 import AdminTabs from "@/components/Admin";
 
 function AdminContainer() {
   const { userType } = useCommonDetails();
 
+  // reate useGetAdminMetaDetails use API "http://localhost:8000/user_profiles/get_admin_meta_details/"
+  const adminMetaDetails = useGetAdminMetaDetails();
+
+  const adminMetaDetailsMemo = useMemo(() => {
+    return adminMetaDetails?.data?.data;
+  }, [adminMetaDetails]);
+
   const { WELCOME_MESSAGE, TAB_TITLE } = ADMIN_PAGE_BODY_CONFIG;
 
   const statsData = [
     {
       icon: <PeopleIcon fontSize="large" />,
-      count: "1K",
+      count:
+        adminMetaDetailsMemo.recruiter_count +
+        adminMetaDetailsMemo.job_seeker_count,
       label: "Total Users",
       bgColor: "#FFE2E5",
     },
     {
       icon: <BusinessIcon fontSize="large" />,
-      count: "1K",
+      count: adminMetaDetailsMemo.recruiter_count,
       label: "Recruiter count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <PersonIcon fontSize="large" />,
-      count: "1K",
+      count: adminMetaDetailsMemo.job_seeker_count,
       label: "Student Count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <SchoolIcon fontSize="large" />,
-      count: "1K",
-      label: "Student Count",
+      count: adminMetaDetailsMemo.assessment_count,
+      label: "Total assessment taken",
       bgColor: "#FFC1B2",
     },
-    {
-      icon: <AccountBalanceIcon fontSize="large" />,
-      count: "1K",
-      label: "Student Count",
-      bgColor: "#DCFCE7",
-    },
+    // {
+    //   icon: <AccountBalanceIcon fontSize="large" />,
+    //   count: "1K",
+    //   label: "Student Count",
+    //   bgColor: "#DCFCE7",
+    // },
   ];
 
   if (userType === -1) return null;

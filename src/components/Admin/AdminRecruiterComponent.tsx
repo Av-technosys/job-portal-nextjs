@@ -63,8 +63,6 @@ const AdminRecruiterComponent = () => {
         })
       : [];
 
-  console.log("newRecruiterData: ", newRecruiterData);
-
   const deleteRecruiterMutation = useDeleteRecruiter();
   const { showNotification } = useNotification();
   const { refetchCommonDetails } = useCommonDetails();

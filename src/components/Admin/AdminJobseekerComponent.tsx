@@ -63,8 +63,6 @@ function AdminJobseekerComponent() {
         })
       : [];
 
-  console.log("jobSeekerNewData: ", jobSeekerNewData);
-
   const deleteJobSeekerMutation = useDeleteJobseeker();
   const { showNotification } = useNotification();
   const { refetchCommonDetails } = useCommonDetails();

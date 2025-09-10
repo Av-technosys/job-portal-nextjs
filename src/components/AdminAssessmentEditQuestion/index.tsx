@@ -32,8 +32,6 @@ const Index = ({ subjectId }: { subjectId: number }) => {
     return questionAPIData?.data?.data;
   }, [questionAPIData]);
 
-  console.log("job: ", questionData);
-
   const {
     OPTION,
     QUESTION_FORM_CONFIG,
