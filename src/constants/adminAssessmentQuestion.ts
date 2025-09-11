@@ -116,6 +116,14 @@ export const ADMIN_QUESTION_CARD_CONFIG = {
       type: "submit",
     },
   },
+  BACK_BUTTON: {
+    buttonProps: {
+      children: "Back",
+      variant: ButtonVariantEnum.OUTLINED,
+      color: ButtonColorEnum.ERROR,
+      size: ButtonSizeEnum.LARGE,
+    },
+  },
 
   SEARCHBAR_TEXT: () => ({
     typographyProps: {

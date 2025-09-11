@@ -3,12 +3,10 @@ import React, { ReactElement } from "react";
 import { getDehydratedStateForCommonDetails } from "@/services";
 import { GetServerSidePropsContext } from "next";
 import { AdminAssessmentQuestionsContainer } from "@/container";
-import AdminAssessmentContainer from "@/container/AdminAssessmentContainer";
-import { DashboardLayout } from "@/components";
 import AdminLayout from "@/components/AdminLayout";
 
 function Page() {
-  return <AdminAssessmentContainer />;
+  return <AdminAssessmentQuestionsContainer />;
 }
 
 Page.getLayout = (page: ReactElement) => (

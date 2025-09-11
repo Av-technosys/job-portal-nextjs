@@ -2,10 +2,10 @@ import React from "react";
 
 import { getDehydratedStateForCommonDetails } from "@/services";
 import { GetServerSidePropsContext } from "next";
-import { AdminAssessmentQuestionsContainer } from "@/container";
+import { AdminAssessmentEditQuestionsContainer } from "@/container";
 
 function Page() {
-  return <AdminAssessmentQuestionsContainer />;
+  return <AdminAssessmentEditQuestionsContainer />;
 }
 
 // Page.getLayout = (page: ReactElement) => (

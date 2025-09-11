@@ -1,24 +1,20 @@
 import { PAGIANTION_LIMIT } from "@/constants";
 import { FIND_STUDENT_PAGE_CONFIG } from "@/constants/findstudent";
-import {
-  useCommonDetails,
-  useGetSearchDetailsAsPerURLOrUserType,
-  useNotification,
-  usePagination,
-} from "@/services";
+import { useCommonDetails, useNotification, usePagination } from "@/services";
 import { useGetFindStudentList } from "@/services/useGetFindStudent";
-import { CommonObjectType, StudentListSortEnum } from "@/types";
-import { SelectChangeEvent } from "@mui/material";
-import { useState } from "react";
+import { StudentListSortEnum } from "@/types";
 import {
-  AutoComplete,
-  Button,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  SelectChangeEvent,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import {
   Dropdown,
   InfinitePagination,
-  Paper,
   Stack,
   Table,
-  Tabs,
   Typography,
   When,
 } from "@/components";
@@ -27,14 +23,35 @@ import { useDeleteJobseeker } from "@/services/useDeleteJobseeker";
 import { getErrorMessageFromAPI } from "@/helper";
 
 function AdminJobseekerComponent() {
+  const [searchString, setSearchString] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  // Debounce effect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchString(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue]);
+
   const [selectedSort, setSelectedSort] = useState<StudentListSortEnum[]>([
     StudentListSortEnum.CREATED_DATE_ASC,
   ]);
+
+  const searchProps = {
+    input: {
+      placeholder: "Search job seeker name",
+    },
+  };
 
   const findStudentAPIData = useGetFindStudentList({
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
     },
   });
 
@@ -50,20 +67,12 @@ function AdminJobseekerComponent() {
   const { TITLE_COUNT, TITLE_HEADER, STUDENT_LISTING_SORT_DROPDOWN } =
     FIND_STUDENT_PAGE_CONFIG;
 
-  const [searchString, setSearchString] = useState<string>("");
-
-  const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
-    searchString,
-  });
-
   const jobSeekerNewData =
     paginatedInfoData.length > 0
       ? paginatedInfoData.map((item: any) => {
           return { ...item, user: item.user };
         })
       : [];
-
-  console.log("jobSeekerNewData: ", jobSeekerNewData);
 
   const deleteJobSeekerMutation = useDeleteJobseeker();
   const { showNotification } = useNotification();
@@ -118,42 +127,23 @@ function AdminJobseekerComponent() {
               alignItems: "center",
             }}
           >
-            <AutoComplete
-              // {...(searchProps.autoComplete as CommonObjectType)}
-              // searchOptions={searchString?.length > 2 ? searchOptions : undefined}
-              // handleDebouncedInputChange={(debouncedSearchValue: string = "") => {
-              //   setSearchString(debouncedSearchValue);
-              // }}
-              // getOptionLabel={(option: AutoCompleteListItem) => {
-              //   return option.title as string;
-              // }}
-              textfieldProps={{
-                ...(searchProps.input as CommonObjectType),
-                slotProps: {
-                  input: {
-                    startAdornment: <SearchIcon color={"primary"} />,
-                  },
-                },
-              }}
-              styles={{
-                autocompleteStyles: {
-                  minWidth: "252px",
-                  "& .MuiOutlinedInput-root": {
-                    height: "50px",
-                    // "& fieldset": {
-                    //   borderColor: "transparent",
-                    // },
-                    // "&:hover fieldset": {
-                    //   borderColor: "transparent",
-                    // },
-                    // "&.Mui-focused:not(.Mui-error) fieldset": {
-                    //   borderColor: "transparent",
-                    // },
-                  },
-                },
-              }}
-              // isLoading={apiData?.isLoading || apiData?.isFetchingNextPage}
-            />
+            <FormControl sx={{ m: 1, width: "30ch" }} variant="outlined">
+              <OutlinedInput
+                id="outlined-adornment-search"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder={searchProps.input.placeholder}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                }
+                aria-describedby="outlined-search-helper-text"
+                inputProps={{
+                  "aria-label": "search",
+                }}
+              />
+            </FormControl>
 
             <Dropdown
               {...STUDENT_LISTING_SORT_DROPDOWN}

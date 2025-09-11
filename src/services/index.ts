@@ -57,3 +57,4 @@ export * from "./useUpdateJobStatus";
 export * from "./useUpdateCandidateStatus";
 export * from "./useDeleteAssessmentQuestion";
 export * from "./useGetQuestionbySubjectID";
+export * from "./useGetAssesmentQuestionDetails";

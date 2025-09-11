@@ -5,56 +5,52 @@ import {
   PersonIcon,
   SchoolIcon,
 } from "@/assets";
-import {
-  Grid,
-  Paper,
-  Stack,
-  Table,
-  Tabs,
-  Typography,
-  When,
-} from "@/components";
+import { Grid, Paper, Stack, Typography, When } from "@/components";
 import { ADMIN_PAGE_BODY_CONFIG } from "@/constants";
 import { useCommonDetails } from "@/services";
 import React, { useMemo } from "react";
 
 import AdminTabs from "@/components/Admin";
+import { useGetAdminProfileMetaDataInfo } from "@/services/useGetAdminMetaData";
+import { TypographyFontSize, TypographyFontWeight } from "@/types";
 
 function AdminContainer() {
   const { userType } = useCommonDetails();
+
+  const adminMetaDetails = useGetAdminProfileMetaDataInfo();
+
+  const adminMetaDetailsMemo = useMemo(() => {
+    return adminMetaDetails?.data?.data;
+  }, [adminMetaDetails]);
 
   const { WELCOME_MESSAGE, TAB_TITLE } = ADMIN_PAGE_BODY_CONFIG;
 
   const statsData = [
     {
       icon: <PeopleIcon fontSize="large" />,
-      count: "1K",
+      count:
+        adminMetaDetailsMemo?.recruiter_count +
+        adminMetaDetailsMemo?.job_seeker_count,
       label: "Total Users",
       bgColor: "#FFE2E5",
     },
     {
       icon: <BusinessIcon fontSize="large" />,
-      count: "1K",
+      count: adminMetaDetailsMemo?.recruiter_count,
       label: "Recruiter count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <PersonIcon fontSize="large" />,
-      count: "1K",
+      count: adminMetaDetailsMemo?.job_seeker_count,
       label: "Student Count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <SchoolIcon fontSize="large" />,
-      count: "1K",
-      label: "Student Count",
+      count: adminMetaDetailsMemo?.assessment_count,
+      label: "Total assessment taken",
       bgColor: "#FFC1B2",
-    },
-    {
-      icon: <AccountBalanceIcon fontSize="large" />,
-      count: "1K",
-      label: "Student Count",
-      bgColor: "#DCFCE7",
     },
   ];
 
@@ -81,7 +77,7 @@ function AdminContainer() {
                 <Grid
                   key={index}
                   gridProps={{
-                    size: { xs: 12, sm: 6, md: 4 },
+                    size: { xs: 12, sm: 6, md: 3 },
                   }}
                 >
                   <Paper
@@ -102,19 +98,18 @@ function AdminContainer() {
                         alignItems: "flex-start",
                       }}
                     >
-                      {item.icon}
                       <Typography
                         typographyProps={{
                           children: item.count,
-                          variant: "h6",
                         }}
+                        fontSize={TypographyFontSize.largeTitle}
                       />
                       <Typography
                         typographyProps={{
                           children: item.label,
-                          variant: "body2",
-                          color: "text.secondary",
                         }}
+                        fontWeight={TypographyFontWeight.bold}
+                        fontSize={TypographyFontSize.normal}
                       />
                     </Stack>
                   </Paper>

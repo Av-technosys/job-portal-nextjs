@@ -27,7 +27,6 @@ export const useDeleteSubject = ({
     mutationFn: deleteSubject,
     onSuccess: (...args) => {
       onSuccess?.(...args);
-      // Invalidate queries if needed
       queryClient.invalidateQueries();
     },
     onError: (...args) => {
