@@ -116,6 +116,14 @@ export const ADMIN_QUESTION_CARD_CONFIG = {
       type: "submit",
     },
   },
+  EXCEL_FILE_UPLOAD_QUESTION_BUTTON: {
+    buttonProps: {
+      children: "Upload Questions File",
+      variant: ButtonVariantEnum.CONTAINED,
+      color: ButtonColorEnum.SUCCESS,
+      size: ButtonSizeEnum.LARGE,
+    },
+  },
   BACK_BUTTON: {
     buttonProps: {
       children: "Back",

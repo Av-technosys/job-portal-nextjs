@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@/components";
-import { BACK_TO_ADMIN_URL } from "@/constants";
+import { ADMIN_QUESTION_URL } from "@/constants";
 import { EXCEL_UPLOAD_PAGE_CONFIG } from "@/constants/excelUpload";
 import { getErrorMessageFromAPI } from "@/helper";
 import { useNotification } from "@/services";
@@ -109,7 +109,7 @@ const ExcelUploader = () => {
           )}
           <Stack stackProps={{ direction: "row", spacing: 2 }}>
             <Button
-              onClick={() => router.push(BACK_TO_ADMIN_URL)}
+              onClick={() => router.push(ADMIN_QUESTION_URL(Number(id)))}
               {...BACK_BUTTON}
             />
             <Button
