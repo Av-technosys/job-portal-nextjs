@@ -25,6 +25,7 @@ import AdminQuestionCard from "./AdminQuestionCard";
 import { Router, useRouter } from "next/router";
 
 function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
+  const router = useRouter();
   const [selectedSort, setSelectedSort] = useState<JobListSortEnum[]>([
     JobListSortEnum.CREATED_DATE_DESC,
   ]);
@@ -60,8 +61,6 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
       />
     );
   }
-
-  const router = useRouter();
 
   return (
     <>
