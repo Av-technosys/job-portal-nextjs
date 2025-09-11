@@ -40,9 +40,14 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
     paginatedAPIData: subjectInfoAPIData,
   });
 
-  const { ADD_QUESTION_BUTTON, BACK_BUTTON, JOB_LISTING_SORT_DROPDOWN } =
-    ADMIN_QUESTION_CARD_CONFIG;
-  const [searchString] = useState("");
+  //  http:  127.0.0.1:8000/assessment/get_question_by_subject_id/5/
+  const {
+    ADD_QUESTION_BUTTON,
+    EXCEL_FILE_UPLOAD_QUESTION_BUTTON,
+    BACK_BUTTON,
+    JOB_LISTING_SORT_DROPDOWN,
+  } = ADMIN_QUESTION_CARD_CONFIG;
+  const [searchString] = useState(""); // Remove setSearchString
   const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
     searchString,
   });
@@ -75,7 +80,13 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
           sx: { maxWidth: { xs: "100%", md: 1000 }, mx: "auto" },
         }}
       >
-        <Stack stackProps={{ flex: 1, direction: "row", spacing: 1 }}>
+        <Stack
+          stackProps={{
+            flex: 1,
+            direction: { xs: "column", md: "row" },
+            spacing: 1,
+          }}
+        >
           <Button
             onClick={() => router.push(`/admin/assessment`)}
             {...BACK_BUTTON}
@@ -105,24 +116,36 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
             direction: { xs: "column", sm: "row" },
           }}
         >
-          <Stack
-            stackProps={{
-              justifyContent: "center",
-            }}
-          >
-            <Button
-              onClick={() =>
-                router.push(`/admin/assessment/${subjectId}/create-question`)
-              }
-              {...ADD_QUESTION_BUTTON}
-            />
-          </Stack>
           <Dropdown
             {...JOB_LISTING_SORT_DROPDOWN}
             onChange={handleSortChange}
             value={selectedSort?.[0]}
           />
         </Stack>
+      </Stack>
+      <Stack
+        stackProps={{
+          width: "100%",
+          mx: "auto",
+          direction: "row",
+          spacing: 2,
+          justifyContent: "end",
+          px: { xs: 2, sm: 4, md: 8 },
+          sx: { maxWidth: { xs: "100%", md: 1000 }, mx: "auto" },
+        }}
+      >
+        <Button
+          onClick={() =>
+            router.push(`/admin/assessment/${subjectId}/create-question`)
+          }
+          {...ADD_QUESTION_BUTTON}
+        />
+        <Button
+          onClick={() =>
+            router.push(`/admin/assessment/${subjectId}/excelupload`)
+          }
+          {...EXCEL_FILE_UPLOAD_QUESTION_BUTTON}
+        />
       </Stack>
       <InfinitePagination
         dataLength={paginatedInfoData?.length}

@@ -39,7 +39,7 @@ const Index = ({
     mutationConfig: {
       onSuccess: () => {
         showNotification(NOTIFICATION_CONFIG.SUCCESS);
-        router.push(`/admin/assessment`);
+        router.push(`/admin/assessment/${questionData?.subject}`);
         queryClient.invalidateQueries({
           queryKey: ["question_by_subject_id"],
         });
@@ -94,6 +94,15 @@ const Index = ({
   }
   return (
     <>
+      {(CreateQuestionInfoMutate.isPending ||
+        UpdateQuestionInfoMutate.isPending) && (
+        <Loader
+          loaderProps={{
+            open: true,
+          }}
+        />
+      )}
+
       <Stack stackProps={{ className: "max-w-5xl border my-5 p-10 mx-auto" }}>
         <Button
           onClick={() => router.push(`/admin/assessment`)}
