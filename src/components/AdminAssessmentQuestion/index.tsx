@@ -22,7 +22,7 @@ import {
   TypographyVariantEnum,
 } from "@/types";
 import AdminQuestionCard from "./AdminQuestionCard";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
   const router = useRouter();
@@ -40,10 +40,9 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
     paginatedAPIData: subjectInfoAPIData,
   });
 
-  //  http:  127.0.0.1:8000/assessment/get_question_by_subject_id/5/
   const { ADD_QUESTION_BUTTON, BACK_BUTTON, JOB_LISTING_SORT_DROPDOWN } =
     ADMIN_QUESTION_CARD_CONFIG;
-  const [searchString] = useState(""); // Remove setSearchString
+  const [searchString] = useState("");
   const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
     searchString,
   });
