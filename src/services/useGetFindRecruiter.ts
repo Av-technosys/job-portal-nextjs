@@ -23,7 +23,6 @@ export const getFindRecruiterList = ({
 }: GetRecruiterListParams): Promise<{
   data: PaginationSuccessResponseType;
 }> => {
-  console.log("recived sort value: ", sort);
   return api.get(`${apiConstantsURL.profile.findRecruiter}`, {
     params: { page, page_size: pageLimit, sort, search },
   });

@@ -68,3 +68,4 @@ export { default as PersonIcon } from "@mui/icons-material/Person";
 export { default as BusinessIcon } from "@mui/icons-material/Business";
 export { default as SchoolIcon } from "@mui/icons-material/School";
 export { default as AccountBalanceIcon } from "@mui/icons-material/AccountBalance";
+export { default as CloseIcon } from "@mui/icons-material/Close";

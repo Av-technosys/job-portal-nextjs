@@ -14,11 +14,20 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { TableProps } from "@/types";
 import AlertDialogDelete from "./DialogAlert";
+import AdminPannelSidebar from "./AdminPannelSidebar";
 
-function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
+function Table({
+  columns,
+  data,
+  tableType,
+  deleteHandler,
+  isButtonDisabled,
+}: TableProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null);
+  const [sideBarStatus, setSideBarStatus] = useState<boolean | any>(false);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -26,21 +35,24 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
 
   const handleIconButtonClick = (
     event: React.MouseEvent<HTMLElement>,
-    userValue: any
+    userValue: any,
+    userId: any
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedUser(userValue);
+    setUserId(userId);
   };
 
   const handlemenuclick = (key: string) => {
     if (key === "delete") {
       setOpen(true);
       setAnchorEl(null);
+    } else {
+      setSideBarStatus(!sideBarStatus);
     }
   };
 
   const handleOnDelete = () => {
-    console.log("selectedUser: ", selectedUser);
     deleteHandler(selectedUser);
     setOpen(false);
   };
@@ -53,6 +65,12 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
           overflow: { xs: "scrollX", md: "hidden" },
         }}
       >
+        <AdminPannelSidebar
+          sideBarStatus={sideBarStatus}
+          setSideBarStatus={setSideBarStatus}
+          selectedUser={userId}
+          UserType={tableType}
+        />
         <TableContainer
           sx={{ width: { xs: "140%", md: "100%" } }}
           component={Paper}
@@ -93,7 +111,7 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
                           {row[column.field]}
                           <IconButton
                             onClick={(event) =>
-                              handleIconButtonClick(event, row.id)
+                              handleIconButtonClick(event, row.id, row.user)
                             }
                           >
                             <MoreVertIcon />
@@ -122,6 +140,10 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
         <MenuList
           onClick={handlemenuclick}
           menuItems={[
+            {
+              label: "View",
+              key: "view",
+            },
             {
               label: "Delete",
               key: "delete",

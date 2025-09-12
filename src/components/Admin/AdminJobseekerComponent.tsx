@@ -162,9 +162,10 @@ function AdminJobseekerComponent() {
       >
         <Table
           data={jobSeekerNewData}
+          tableType="jobseeker"
           columns={[
             {
-              field: "user",
+              field: "id",
               headerName: "Id",
             },
             {

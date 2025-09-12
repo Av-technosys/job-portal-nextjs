@@ -16,6 +16,8 @@ export const apiConstantsURL = {
     generalInfo: `user_profiles/job_seeker_general/`,
     additionalInfo: `user_profiles/job_seeker_additional/`,
     adminMetaDataInfo: `user_profiles/get_admin_meta_details/`,
+    jobseekerFullDetails: `user_profiles/job_seeker_details/`,
+    recruiterFullDetails: `user_profiles/recruiter_details/`,
     // qualifications: `user_profiles/qualifications/`,
     // experience: `user_profiles/experience/`,
     // skillSet: `user_profiles/skill_set/`,
