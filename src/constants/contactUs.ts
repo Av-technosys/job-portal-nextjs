@@ -2,13 +2,179 @@ import {
   ButtonColorEnum,
   ButtonSizeEnum,
   ButtonVariantEnum,
+  ShowNotificationProps,
   TypographyFontColor,
   TypographyFontSize,
   TypographyFontWeight,
   TypographyVariantEnum,
 } from "@/types";
 
-export const CONTACT_US_PAGE_CONFIG = {
+// export const CONTACT_US_PAGE_CONFIG = {
+//   TITLE_TEXT: {
+//     typographyProps: {
+//       children: "Contact Us",
+//       variant: TypographyVariantEnum.H5,
+//     },
+//     fontSize: TypographyFontSize.largeTitle,
+//     fontWeight: TypographyFontWeight.bold,
+//   },
+//   SUB_TITLE_TEXT: {
+//     typographyProps: {
+//       children: "Any question or remarks? Just write us a message!",
+//       variant: TypographyVariantEnum.H6,
+//     },
+//     fontSize: TypographyFontSize.small,
+//     fontColor: TypographyFontColor.grey,
+//   },
+//   FIRST_NAME_FIELD: {
+//     inputProps: {
+//       label: "First Name",
+//       require: true,
+//       name: "first name",
+//     },
+//   },
+//   LAST_NAME_FIELD: {
+//     inputProps: {
+//       label: "Last Name",
+//       require: true,
+//       name: "last name",
+//     },
+//   },
+//   EMAIL_FIELD: {
+//     inputProps: {
+//       label: "Email",
+//       require: true,
+//       name: "email",
+//     },
+//   },
+//   CONTACT_FIELD: {
+//     inputProps: {
+//       label: "Contact Number",
+//       require: true,
+//       type: "number",
+//       name: "contact number",
+//     },
+//   },
+//   SUBJECT_FIELD: {
+//     inputProps: {
+//       label: "Subject",
+//       require: true,
+//       name: "subject",
+//     },
+//   },
+//   MESSAGE_FIELD: {
+//     inputProps: {
+//       label: "Message",
+//       require: true,
+//       name: "message",
+//     },
+//   },
+//   SEND_BUTTON: {
+//     buttonProps: {
+//       children: "Send Message",
+//       variant: ButtonVariantEnum.CONTAINED,
+//       color: ButtonColorEnum.PRIMARY,
+//       size: ButtonSizeEnum.LARGE,
+//     },
+//   },
+// };
+
+export const CONTACT_FORM_CONFIG = {
+  FORM_CONFIG: {
+    FIRST_NAME_FIELD: {
+      inputProps: {
+        name: "first_name",
+      },
+      inputLabelProps: {
+        children: "First Name",
+        shrink: true,
+      },
+      formControlProps: {
+        sx: { width: "100%", flexBasis: "45%" },
+      },
+    },
+    LAST_NAME_FIELD: {
+      inputProps: {
+        name: "last_name",
+      },
+      inputLabelProps: {
+        children: "Last Name",
+        shrink: true,
+      },
+      formControlProps: {
+        sx: { width: "100%", flexBasis: "45%" },
+      },
+    },
+    EMAIL_FIELD: {
+      inputProps: {
+        name: "email",
+        type: "email",
+      },
+      inputLabelProps: {
+        children: "Email",
+        shrink: true,
+      },
+      formControlProps: {
+        sx: { width: "100%", flexBasis: "45%" },
+      },
+    },
+    CONTACT_NUMBER_FIELD: {
+      inputProps: {
+        name: "phone_number",
+      },
+      inputLabelProps: {
+        children: "Contact Number",
+        shrink: true,
+      },
+      formControlProps: {
+        sx: { width: "100%", flexBasis: "45%" },
+      },
+    },
+    SUBJECT_FIELD: {
+      inputProps: {
+        name: "subject",
+      },
+      inputLabelProps: {
+        children: "Subject",
+        shrink: true,
+      },
+      formControlProps: {
+        sx: { width: "100%" },
+      },
+    },
+    MESSAGE_FIELD: {
+      inputProps: {
+        name: "message",
+        multiline: true,
+        rows: 4,
+      },
+      inputLabelProps: {
+        children: "Message",
+        shrink: true,
+      },
+      formControlProps: {
+        sx: { width: "100%" },
+      },
+    },
+    SEND_BUTTON: {
+      buttonProps: {
+        children: "Send Message",
+        variant: ButtonVariantEnum.CONTAINED,
+        color: ButtonColorEnum.PRIMARY,
+        size: ButtonSizeEnum.LARGE,
+        type: "submit",
+        sx: {
+          marginLeft: "auto",
+          marginTop: "2rem",
+        },
+      },
+    },
+  },
+  NOTIFICATION_CONFIG: {
+    SUCCESS: {
+      message: "Message Sent Successfully",
+    } as ShowNotificationProps,
+  },
   TITLE_TEXT: {
     typographyProps: {
       children: "Contact Us",
@@ -25,58 +191,8 @@ export const CONTACT_US_PAGE_CONFIG = {
     fontSize: TypographyFontSize.small,
     fontColor: TypographyFontColor.grey,
   },
-  FIRST_NAME_FIELD: {
-    inputProps: {
-      label: "First Name",
-      require: true,
-      name: "first name",
-    },
-  },
-  LAST_NAME_FIELD: {
-    inputProps: {
-      label: "Last Name",
-      require: true,
-      name: "last name",
-    },
-  },
-  EMAIL_FIELD: {
-    inputProps: {
-      label: "Email",
-      require: true,
-      name: "email",
-    },
-  },
-  CONTACT_FIELD: {
-    inputProps: {
-      label: "Contact Number",
-      require: true,
-      type: "number",
-      name: "contact number",
-    },
-  },
-  SUBJECT_FIELD: {
-    inputProps: {
-      label: "Subject",
-      require: true,
-      name: "subject",
-    },
-  },
-  MESSAGE_FIELD: {
-    inputProps: {
-      label: "Message",
-      require: true,
-      name: "message",
-    },
-  },
-  SEND_BUTTON: {
-    buttonProps: {
-      children: "Send Message",
-      variant: ButtonVariantEnum.CONTAINED,
-      color: ButtonColorEnum.PRIMARY,
-      size: ButtonSizeEnum.LARGE,
-    },
-  },
 };
+
 export const LEFT_SECTION_CONFIG = {
   HEADER_TEXT: {
     typographyProps: {

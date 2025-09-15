@@ -296,7 +296,7 @@ const AdminSideBarDrawer = ({
                   ) : sp.platform === "twitter" ? (
                     <TwitterIcon />
                   ) : (
-                    "Other Links:"
+                    <Stack stackProps={{ color: "black" }}>Other Links:</Stack>
                   )}
                 </Stack>
 

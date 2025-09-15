@@ -1,10 +1,11 @@
 import {
-  CONTACT_US_PAGE_CONFIG,
+  CONTACT_FORM_CONFIG,
   LEFT_SECTION_CONFIG,
 } from "@/constants/contactUs";
 import {
   Button,
   Container,
+  Formik,
   Input,
   Paper,
   SocialLogin,
@@ -16,19 +17,34 @@ import { colorStyles } from "@/styles";
 import { useMemo } from "react";
 import { EmailIcon, LocationOnIcon, PhoneIcon } from "@/assets";
 import { SSO_REDIRECT_URL } from "@/constants";
+import { contactUsFormSchema } from "@/validator/contactUs";
+import { useCreateContactUsInfo } from "@/services/useCreateContactUs";
+import { useNotification } from "@/services";
+import { getErrorMessageFromAPI } from "@/helper";
+
+export interface contactFormData {
+  phone_number: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  message: string;
+  subject: string;
+}
 
 function ContactUs() {
+  const { TITLE_TEXT, SUB_TITLE_TEXT, NOTIFICATION_CONFIG } =
+    CONTACT_FORM_CONFIG;
+  const { showNotification } = useNotification();
+
   const {
-    TITLE_TEXT,
-    SUB_TITLE_TEXT,
     FIRST_NAME_FIELD,
     LAST_NAME_FIELD,
     EMAIL_FIELD,
-    CONTACT_FIELD,
+    CONTACT_NUMBER_FIELD,
     SUBJECT_FIELD,
     MESSAGE_FIELD,
     SEND_BUTTON,
-  } = CONTACT_US_PAGE_CONFIG;
+  } = CONTACT_FORM_CONFIG.FORM_CONFIG;
 
   const { HEADER_TEXT, SUB_TITLE_TEXT2, LOCATION, EMAIL, CONTACT } =
     LEFT_SECTION_CONFIG;
@@ -50,152 +66,131 @@ function ContactUs() {
     ];
   }, [CONTACT, EMAIL, LOCATION]);
 
+  const CreateContactUsInfoMutate = useCreateContactUsInfo({
+    mutationConfig: {
+      onSuccess: () => {
+        showNotification(NOTIFICATION_CONFIG.SUCCESS);
+      },
+      onError: (error) => {
+        showNotification({
+          ...getErrorMessageFromAPI(error),
+        });
+        console.error(error, "error");
+      },
+    },
+  });
+
+  function handleFormSuccess(values: any) {
+    CreateContactUsInfoMutate.mutate({
+      data: values.values as contactFormData,
+    });
+  }
+
   return (
-    <>
-      <div>
-        <Stack
-          stackProps={{
-            className: "h-screen",
-            direction: "row",
-            justifyContent: "space-between",
-            gap: 16,
-            width: "100%",
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Container
+        containerProps={{
+          maxWidth: "lg",
+          className: "w-full py-12",
+        }}
+      >
+        <Paper
+          paperProps={{
+            className: "p-6 md:p-10 shadow-lg rounded-lg",
           }}
         >
+          {/* Title Section */}
           <Stack
             stackProps={{
-              width: "100vw",
+              gap: 2,
+              direction: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              className: "mb-10",
             }}
           >
-            <Container
-              containerProps={{
-                maxWidth: "lg",
-                className: "h-screen flex justify-center items-center mt-10",
+            <Typography {...TITLE_TEXT} />
+            <Typography {...SUB_TITLE_TEXT} />
+          </Stack>
+
+          {/* Main Layout */}
+          <Stack
+            stackProps={{
+              direction: { xs: "column", md: "row" },
+              gap: 6,
+              width: "100%",
+            }}
+          >
+            {/* Left Section */}
+            <Stack
+              stackProps={{
+                className: "rounded-lg p-6 md:p-10 flex-1",
+                sx: { bgcolor: colorStyles.footerBackgroundColor },
               }}
             >
-              <Paper
-                paperProps={{
-                  className: "p-4 w-full shadow-none",
+              <Stack
+                stackProps={{
+                  gap: 8,
+                  direction: "column",
+                  alignItems: "start",
                 }}
               >
-                <Stack
-                  stackProps={{
-                    className: "mt-10 mb-10",
-                    gap: 2,
-                    direction: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography {...TITLE_TEXT} />
-                  <Typography {...SUB_TITLE_TEXT} />
+                <Stack stackProps={{ gap: 2, width: "100%" }}>
+                  <Typography {...HEADER_TEXT} />
+                  <Typography {...SUB_TITLE_TEXT2} />
                 </Stack>
+
                 <Stack
                   stackProps={{
-                    direction: "row",
-                    flexWrap: "wrap",
-                    width: "100%",
                     gap: 4,
-                    alignItems: "center",
+                    className: "mb-6",
                   }}
                 >
-                  <Stack
-                    stackProps={{
-                      className: "rounded-lg p-10",
-                      sx: {
-                        bgcolor: colorStyles.footerBackgroundColor,
-                      },
-                    }}
-                  >
-                    {/* left section */}
-                    <Stack
-                      stackProps={{
-                        gap: 10,
-                        direction: "column",
-                        alignItems: "start",
-                      }}
-                    >
-                      <Stack
-                        stackProps={{
-                          className: "",
-                          width: "100%",
-                          gap: 2,
-                        }}
-                      >
-                        <Typography {...HEADER_TEXT} />
-                        <Typography {...SUB_TITLE_TEXT2} />
-                      </Stack>
-                      <Stack
-                        stackProps={{
-                          className: "mb-6",
-                          gap: 4,
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        {companyContact.map((detail, index) => (
-                          <TextWithIcon
-                            key={`companyContact-${index}`}
-                            icon={detail.icon}
-                            textProps={detail.textProps}
-                          />
-                        ))}
-                      </Stack>
-                      <SocialLogin callbackUrl={`${SSO_REDIRECT_URL}`} />
-                    </Stack>
-                  </Stack>
-                  {/* form */}
-                  <form>
-                    <Stack
-                      stackProps={{
-                        className: "ml-2",
-                        paddingTop: "16px",
-                        gap: 6,
-                        direction: "column",
-                        alignContent: "space-around",
-                        justifyContent: "space-between",
-                        alignItems: "stretch",
-                      }}
-                    >
-                      <Stack
-                        stackProps={{
-                          direction: "row",
-                          gap: 4,
-                          display: "flex",
-                        }}
-                      >
-                        <Input {...FIRST_NAME_FIELD} />
-                        <Input {...LAST_NAME_FIELD} />
-                      </Stack>
-                      <Stack
-                        stackProps={{
-                          direction: "row",
-                          gap: 4,
-                          display: "flex",
-                        }}
-                      >
-                        <Input {...EMAIL_FIELD} />
-                        <Input {...CONTACT_FIELD} />
-                      </Stack>
-                      <Input {...SUBJECT_FIELD} />
-                      <Input {...MESSAGE_FIELD} />
-                    </Stack>
-                    <Stack
-                      stackProps={{
-                        marginTop: 8,
-                        direction: "row",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <Button {...SEND_BUTTON} />
-                    </Stack>
-                  </form>
+                  {companyContact.map((detail, index) => (
+                    <TextWithIcon
+                      key={`companyContact-${index}`}
+                      icon={detail.icon}
+                      textProps={detail.textProps}
+                    />
+                  ))}
                 </Stack>
-              </Paper>
-            </Container>
+
+                <SocialLogin callbackUrl={`${SSO_REDIRECT_URL}`} />
+              </Stack>
+            </Stack>
+
+            {/* Right Section (Form) */}
+            <Stack
+              stackProps={{
+                className: "flex-1",
+              }}
+            >
+              <Formik
+                initialValues={{
+                  first_name: "",
+                  last_name: "",
+                  email: "",
+                  phone_number: "",
+                  subject: "",
+                  message: "",
+                }}
+                onSuccess={handleFormSuccess}
+                validationSchema={contactUsFormSchema}
+                fieldDetailsArray={[
+                  FIRST_NAME_FIELD,
+                  LAST_NAME_FIELD,
+                  EMAIL_FIELD,
+                  CONTACT_NUMBER_FIELD,
+                  SUBJECT_FIELD,
+                  MESSAGE_FIELD,
+                ]}
+                formFooterArray={[SEND_BUTTON]}
+              />
+            </Stack>
           </Stack>
-        </Stack>
-      </div>
-    </>
+        </Paper>
+      </Container>
+    </div>
   );
 }
 
