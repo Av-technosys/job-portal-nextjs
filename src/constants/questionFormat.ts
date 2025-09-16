@@ -169,7 +169,7 @@ export const QUESTION_CONFIG = {
         color: ButtonColorEnum.ERROR,
         size: ButtonSizeEnum.LARGE,
         sx: {
-          marginLeft: "auto",
+          marginRight: "auto",
           marginBottom: "1rem",
         },
       },

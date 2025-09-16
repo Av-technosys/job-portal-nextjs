@@ -1,7 +1,6 @@
-import React, { Children, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ADMIN_QUESTION_CARD_CONFIG, PAGIANTION_LIMIT } from "@/constants";
 import {
-  AutoComplete,
   Button,
   Dropdown,
   InfinitePagination,
@@ -11,21 +10,35 @@ import {
   When,
 } from "../common";
 import { SelectChangeEvent } from "@mui/material/Select";
-import {
-  useGetSearchDetailsAsPerURLOrUserType,
-  useGetQuestionBySubjectId,
-  usePagination,
-} from "@/services";
-import {
-  CommonObjectType,
-  JobListSortEnum,
-  TypographyVariantEnum,
-} from "@/types";
+import { useGetQuestionBySubjectId, usePagination } from "@/services";
+import { JobListSortEnum, TypographyVariantEnum } from "@/types";
 import AdminQuestionCard from "./AdminQuestionCard";
 import { useRouter } from "next/router";
+import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
+import { SearchIcon } from "@/assets";
 
 function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
   const router = useRouter();
+  const [searchString, setSearchString] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  // Debounce effect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchString(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue]);
+
+  const searchProps = {
+    input: {
+      placeholder: "Search by question id",
+    },
+  };
+
   const [selectedSort, setSelectedSort] = useState<JobListSortEnum[]>([
     JobListSortEnum.CREATED_DATE_DESC,
   ]);
@@ -34,23 +47,20 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
       subjectId,
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
     },
   });
   const { paginatedInfoData, hasMore } = usePagination({
     paginatedAPIData: subjectInfoAPIData,
   });
 
-  //  http:  127.0.0.1:8000/assessment/get_question_by_subject_id/5/
   const {
     ADD_QUESTION_BUTTON,
     EXCEL_FILE_UPLOAD_QUESTION_BUTTON,
     BACK_BUTTON,
     JOB_LISTING_SORT_DROPDOWN,
   } = ADMIN_QUESTION_CARD_CONFIG;
-  const [searchString] = useState(""); // Remove setSearchString
-  const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
-    searchString,
-  });
+
   const handleSortChange = (event: SelectChangeEvent<unknown>) => {
     const newSort = event.target.value;
     setSelectedSort([newSort] as JobListSortEnum[]);
@@ -87,25 +97,32 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
             spacing: 1,
           }}
         >
-          <Button
-            onClick={() => router.push(`/admin/assessment`)}
-            {...BACK_BUTTON}
-          />
-          <AutoComplete
-            textfieldProps={{
-              ...(searchProps.input as CommonObjectType),
-              placeholder: "Search question by ID",
-            }}
-            styles={{
-              autocompleteStyles: {
-                width: "30%",
-                minWidth: { xs: "100%", sm: 252 },
-                "& .MuiOutlinedInput-root": {
-                  height: 50,
-                },
-              },
-            }}
-          />
+          <Button onClick={() => router.back()} {...BACK_BUTTON} />
+
+          <FormControl sx={{ m: 1, width: "30ch" }} variant="outlined">
+            <OutlinedInput
+              id="outlined-adornment-search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              // onChange={(e) => {
+              //   const newValue = e.target.value;
+
+              //   if (newValue === "" || /^[0-9\b]+$/.test(newValue)) {
+              //     setSearchValue(newValue);
+              //   }
+              // }}
+              placeholder={searchProps.input.placeholder}
+              endAdornment={
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              }
+              aria-describedby="outlined-search-helper-text"
+              inputProps={{
+                "aria-label": "search",
+              }}
+            />
+          </FormControl>
         </Stack>
 
         <Stack

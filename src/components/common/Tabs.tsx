@@ -40,6 +40,7 @@ function Tabs({ items = [], tabsProps, handleTabChange }: TabsProps) {
             label={item?.label}
             value={item.value}
             icon={item?.icon}
+            onClick={item.onClick}
           />
         ))}
       </MUITabs>
