@@ -10,4 +10,5 @@ export interface TableProps {
   data: Record<string, ElementRenderType>[];
   deleteHandler: (id: string) => void;
   isButtonDisabled?: boolean;
+  tableType: string;
 }

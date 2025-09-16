@@ -74,7 +74,7 @@ const AdminRecruiterComponent = () => {
   const newRecruiterData =
     paginatedInfoData.length > 0
       ? paginatedInfoData.map((item: any) => {
-          return { ...item, user: item.user.recruiter_profile_id };
+          return { ...item };
         })
       : [];
 
@@ -166,9 +166,10 @@ const AdminRecruiterComponent = () => {
       >
         <Table
           data={newRecruiterData}
+          tableType="recruiter"
           columns={[
             {
-              field: "user",
+              field: "id",
               headerName: "Id",
             },
             {
