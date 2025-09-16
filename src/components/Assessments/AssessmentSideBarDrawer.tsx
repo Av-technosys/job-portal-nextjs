@@ -21,16 +21,26 @@ const AssessmentSideBarDrawer = ({
     <>
       {isExpanded && (
         <>
-          <AssessmentNavigation
-            setCurrentQIndex={setCurrentQIndex}
-            userAssessmentDetails={userAssessmentDetails}
-            assessmentSection={assessmentSection}
-          />
-          <SubmitButton
-            userAnsweredData={userAnsweredData}
-            timeForSubmit={timeForSubmit}
-            tabSwitchCount={tabSwitchCount}
-          />
+          <Stack
+            stackProps={{
+              width: "100%",
+              height: "100%",
+              direction: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <AssessmentNavigation
+              setCurrentQIndex={setCurrentQIndex}
+              userAssessmentDetails={userAssessmentDetails}
+              assessmentSection={assessmentSection}
+            />
+
+            <SubmitButton
+              userAnsweredData={userAnsweredData}
+              timeForSubmit={timeForSubmit}
+              tabSwitchCount={tabSwitchCount}
+            />
+          </Stack>
         </>
       )}
     </>

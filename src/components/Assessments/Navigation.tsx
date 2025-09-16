@@ -97,55 +97,63 @@ export default function AssessmentNavigation({
   }, [questions]);
   return (
     <>
-      <AssessmentStatusLegend />
-      <Typography
-        typographyProps={{
-          variant: "h5",
-          children: "Choose a Questions",
-          sx: {
-            pt: 2,
-            pb: 1,
-            px: 2,
-            color: "white",
-            backgroundColor: "#007AFF",
-          },
-        }}
-      />
-      <Grid
-        gridProps={{
-          container: true,
-          rowSpacing: 1,
-          columnSpacing: 2,
-          sx: {
-            overflowX: "hidden",
-            overflowY: "scroll",
-            height: "283px",
-            padding: "8px",
-          },
+      <Stack
+        stackProps={{
+          width: "100%",
+          direction: "column",
+          justifyContent: "center",
         }}
       >
-        {questionArr?.map((question: any, index: any) => {
-          const questionId = question.id;
-          const questionDetails = userAssessmentDetails?.[
-            `${questionId}_${index + 1}`
-          ] as CommonObjectType;
+        <AssessmentStatusLegend />
+        <Typography
+          typographyProps={{
+            variant: "h5",
+            children: "Choose a Questions",
+            sx: {
+              pt: 2,
+              pb: 1,
+              px: 2,
+              color: "white",
+              backgroundColor: "#007AFF",
+            },
+          }}
+        />
+        <Grid
+          gridProps={{
+            container: true,
+            rowSpacing: 1,
+            columnSpacing: 2,
+            sx: {
+              overflowX: "hidden",
+              overflowY: "scroll",
+              height: "283px",
+              padding: "8px",
+            },
+          }}
+        >
+          {questionArr?.map((question: any, index: any) => {
+            const questionId = question.id;
+            const questionDetails = userAssessmentDetails?.[
+              `${questionId}_${index + 1}`
+            ] as CommonObjectType;
 
-          return (
-            <Grid
-              key={`${questionId}-${index}-questionNo`}
-              gridProps={{
-                size: 3,
-                onClick: () => setCurrentQIndex(index + 1),
-              }}
-            >
-              <QuestionNoBox
-                questionNo={index + 1}
-                questionStatus={questionDetails?.status as number}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
+            return (
+              <Grid
+                key={`${questionId}-${index}-questionNo`}
+                gridProps={{
+                  size: 3,
+                  onClick: () => setCurrentQIndex(index + 1),
+                }}
+              >
+                <QuestionNoBox
+                  questionNo={index + 1}
+                  questionStatus={questionDetails?.status as number}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Stack>
     </>
   );
 }

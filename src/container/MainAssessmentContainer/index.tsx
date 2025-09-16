@@ -180,19 +180,19 @@ export default function MainAssessmentContainer() {
       <Grid
         gridProps={{
           container: true,
-          className: "m-4 h-screen",
+          className: " h-screen",
         }}
       >
         <Grid
           gridProps={{
-            size: { xs: 11, sm: 6.5, md: 8, lg: 8.6 },
+            size: { xs: 11, sm: 6.5, md: 8, lg: 8.6, xl: 9 },
           }}
         >
           <Stack
             stackProps={{
               direction: "column",
               justifyContent: "space-between",
-              className: "h-full p-4",
+              className: "h-full p-2 sm:p-0",
               sx: {
                 height: "100%",
                 width: "100%",
@@ -270,7 +270,11 @@ export default function MainAssessmentContainer() {
           </Stack>
         </Grid>
 
-        <Grid gridProps={{ size: { xs: 1, sm: 5.5, md: 4, lg: 3.4 } }}>
+        <Grid
+          gridProps={{
+            size: { xs: 1, sm: 5.5, md: 4, lg: 3.4, xl: 3 },
+          }}
+        >
           <AssessmentSidebar
             setCurrentQIndex={handleQIndexChange}
             userAssessmentDetails={userAnsweredData}
