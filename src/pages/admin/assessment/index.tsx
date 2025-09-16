@@ -8,7 +8,8 @@ import { DashboardLayout } from "@/components";
 import AdminLayout from "@/components/AdminLayout";
 
 function Page() {
-  return <AdminAssessmentContainer />;
+  // return <AdminAssessmentContainer />;
+  return <> </>;
 }
 
 Page.getLayout = (page: ReactElement) => (

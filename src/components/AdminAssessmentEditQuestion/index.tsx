@@ -105,7 +105,7 @@ const Index = ({
 
       <Stack stackProps={{ className: "max-w-5xl border my-5 p-10 mx-auto" }}>
         <Button
-          onClick={() => router.push(`/admin/assessment`)}
+          onClick={() => router.back()}
           {...QUESTION_CONFIG.FORM_CONFIG.BACK_BUTTON}
         />
         <Formik

@@ -8,6 +8,7 @@ export interface TabsProps {
     key: string;
     children: ElementRenderType;
     icon?: React.ReactElement<unknown>;
+    onClick?: () => void;
   }[];
   tabsProps?: MUITabsProps;
   handleTabChange?: (newValue: string) => void;

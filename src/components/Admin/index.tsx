@@ -3,27 +3,41 @@ import { useMemo } from "react";
 import AdminRecruiterComponent from "./AdminRecruiterComponent";
 import AdminJobseekerComponent from "./AdminJobseekerComponent";
 import AdminAssessmentComponent from "./AdminAssessmentComponent";
+import { useRouter } from "next/router";
 
 function AdminTabs() {
+  const router = useRouter();
+  const { tab } = router.query;
+  const currentTabOpen = tab || "recruiter";
+
   const tabItems = useMemo(() => {
     return [
       {
         label: "Recruiter",
-        value: "generalInformation",
-        key: "generalInformation",
+        value: "recruiter",
+        key: "recruiter",
         children: <AdminRecruiterComponent />,
+        onClick: () => {
+          router.push("/admin?tab=recruiter");
+        },
       },
       {
         label: "Job Seekers",
-        value: "profile",
-        key: "job-seeker-profile",
+        value: "jobSeeker",
+        key: "jobSeeker",
         children: <AdminJobseekerComponent />,
+        onClick: () => {
+          router.push("/admin?tab=jobSeeker");
+        },
       },
       {
         label: "Assessments",
-        value: "additionalInformation",
-        key: "additionalInformation",
+        value: "assesment",
+        key: "assesment",
         children: <AdminAssessmentComponent />,
+        onClick: () => {
+          router.push("/admin?tab=assesment");
+        },
       },
     ];
   }, []);
@@ -32,7 +46,7 @@ function AdminTabs() {
       <Tabs
         items={tabItems}
         tabsProps={{
-          defaultValue: tabItems?.[0].key,
+          defaultValue: currentTabOpen,
           sx: {
             borderBottom: 1,
             borderColor: "divider",
