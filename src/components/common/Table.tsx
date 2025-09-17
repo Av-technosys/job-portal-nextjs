@@ -9,16 +9,40 @@ import {
   TableContainer,
   Paper,
 } from "@mui/material";
-import { MenuList, IconButton, Menuhiddendrop, Stack } from "../common";
+import {
+  MenuList,
+  IconButton,
+  Stack,
+  MenuHiddenDrop,
+  When,
+  Loader,
+} from "../common";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { TableProps } from "@/types";
 import AlertDialogDelete from "./DialogAlert";
+import AdminPannelSidebar from "./AdminPannelSidebar";
+import { useActivateUser, userId } from "@/services/useActivateUser";
+import { NOTIFICATION_CONFIG_USER } from "@/constants";
+import { useNotification } from "@/services";
+import { getErrorMessageFromAPI } from "@/helper";
+import { useDeactivateUser } from "@/services/useDeactivateUser";
+import { useQueryClient } from "@tanstack/react-query";
 
-function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
+function Table({
+  columns,
+  data,
+  tableType,
+  deleteHandler,
+  isButtonDisabled,
+}: TableProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null);
+  const [sideBarStatus, setSideBarStatus] = useState<boolean | any>(false);
+  const { showNotification } = useNotification();
+  const queryClient = useQueryClient();
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -26,16 +50,72 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
 
   const handleIconButtonClick = (
     event: React.MouseEvent<HTMLElement>,
-    userValue: any
+    userValue: any,
+    userId: any
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedUser(userValue);
+    setUserId(userId);
   };
+
+  const ActivateUserMutate = useActivateUser({
+    mutationConfig: {
+      onSuccess: async () => {
+        showNotification(NOTIFICATION_CONFIG_USER.ACTIVATE);
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: ["jobseeker_full_details"],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["recruiter_full_details"],
+          }),
+        ]);
+      },
+      onError: (error) => {
+        showNotification({
+          ...getErrorMessageFromAPI(error),
+        });
+        console.error(error, "error");
+      },
+    },
+  });
+
+  const DeactivateUserMutate = useDeactivateUser({
+    mutationConfig: {
+      onSuccess: async () => {
+        showNotification(NOTIFICATION_CONFIG_USER.DEACTIVATE_USER);
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: ["jobseeker_full_details"],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["recruiter_full_details"],
+          }),
+        ]);
+      },
+      onError: (error) => {
+        showNotification({
+          ...getErrorMessageFromAPI(error),
+        });
+        console.error(error, "error");
+      },
+    },
+  });
 
   const handlemenuclick = (key: string) => {
     if (key === "delete") {
       setOpen(true);
       setAnchorEl(null);
+    } else if (key === "view") {
+      setSideBarStatus(!sideBarStatus);
+    } else if (key === "activate") {
+      ActivateUserMutate.mutate({
+        id: userId as userId,
+      });
+    } else {
+      DeactivateUserMutate.mutate({
+        id: userId as userId,
+      });
     }
   };
 
@@ -46,12 +126,26 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
 
   return (
     <>
+      {(ActivateUserMutate.isPending || DeactivateUserMutate.isPending) && (
+        <Loader
+          loaderProps={{
+            open: true,
+          }}
+        />
+      )}
+
       <Stack
         stackProps={{
           width: "100%",
           overflow: { xs: "scrollX", md: "hidden" },
         }}
       >
+        <AdminPannelSidebar
+          sideBarStatus={sideBarStatus}
+          setSideBarStatus={setSideBarStatus}
+          selectedUser={userId}
+          UserType={tableType}
+        />
         <TableContainer
           sx={{ width: { xs: "140%", md: "100%" } }}
           component={Paper}
@@ -77,11 +171,13 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
                 />
               )}
 
-              {data.map((row, index) => (
+              {data?.map((row, index) => (
                 <TableRow key={`ja_TableRow${index}`}>
                   {columns.map((column) => (
                     <TableCell key={`ja-TabelCellFeild${column.field}`}>
-                      {row[column.field] && column.field == "first_name" ? (
+                      {row[column.field] &&
+                      tableType != "Contact-details" &&
+                      column.field == "first_name" ? (
                         <Stack
                           stackProps={{
                             flexDirection: "row",
@@ -92,11 +188,25 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
                           {row[column.field]}
                           <IconButton
                             onClick={(event) =>
-                              handleIconButtonClick(event, row.id)
+                              handleIconButtonClick(event, row.id, row.user)
                             }
                           >
                             <MoreVertIcon />
                           </IconButton>
+                        </Stack>
+                      ) : column.field == "gender" ? (
+                        <Stack
+                          stackProps={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <When condition={row[column.field] === 0}>Male</When>
+                          <When condition={row[column.field] === 1}>
+                            Female
+                          </When>
+                          <When condition={row[column.field] === 2}>Other</When>
                         </Stack>
                       ) : (
                         row[column.field]
@@ -109,7 +219,7 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
           </MUITable>
         </TableContainer>
       </Stack>
-      <Menuhiddendrop
+      <MenuHiddenDrop
         handleClose={handleClose}
         anchorEl={anchorEl}
         styles={{
@@ -122,12 +232,24 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
           onClick={handlemenuclick}
           menuItems={[
             {
+              label: "View",
+              key: "view",
+            },
+            {
+              label: "Activate",
+              key: "activate",
+            },
+            {
+              label: "Deactive",
+              key: "deactive",
+            },
+            {
               label: "Delete",
               key: "delete",
             },
           ]}
         />
-      </Menuhiddendrop>
+      </MenuHiddenDrop>
     </>
   );
 }

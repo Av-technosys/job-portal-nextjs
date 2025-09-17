@@ -232,6 +232,15 @@ export const SEARCH_STATUS_OPTIONS = [
   },
 ];
 
+export const NOTIFICATION_CONFIG_USER = {
+  ACTIVATE: {
+    message: "User Activate Successfully..",
+  },
+  DEACTIVATE_USER: {
+    message: "User Deactivate Successfully..",
+  },
+};
+
 export const PROFILE_PICTURE_UPLOAD_CONFIG = {
   NOTIFICATION_CONFIG: {
     SUCCESS: {

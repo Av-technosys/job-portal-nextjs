@@ -16,24 +16,6 @@ export default function AlertDialogDelete({
   const handleClose = () => setOpen(false);
 
   const handleDeleteClick = () => {
-    // if (!deleteItemType) {
-    //   deleteUserMutation.mutate(
-    //     { user },
-    //     {
-    //       onSuccess: () => {
-    //         showNotification(SUCCESS);
-    //         setOpen(false);
-    //         refetchCommonDetails();
-    //       },
-    //       onError: (error) => {
-    //         showNotification({
-    //           ...getErrorMessageFromAPI(error),
-    //         });
-    //         console.error(error, "error");
-    //       },
-    //     }
-    //   );
-    // }
     deleteHandler();
   };
 

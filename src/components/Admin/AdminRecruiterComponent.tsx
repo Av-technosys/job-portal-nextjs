@@ -2,22 +2,22 @@ import { FIND_RECRUITER_PAGE_CONFIG, PAGIANTION_LIMIT } from "@/constants";
 import {
   useCommonDetails,
   useGetFindRecruiterList,
-  useGetSearchDetailsAsPerURLOrUserType,
   useNotification,
   usePagination,
 } from "@/services";
-import { CommonObjectType, RecruiterListSortEnum } from "@/types";
-import { SelectChangeEvent } from "@mui/material";
-import React, { useState } from "react";
+import { RecruiterListSortEnum } from "@/types";
 import {
-  AutoComplete,
-  Button,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  SelectChangeEvent,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
   Dropdown,
   InfinitePagination,
-  Paper,
   Stack,
   Table,
-  Tabs,
   Typography,
   When,
 } from "@/components";
@@ -27,6 +27,20 @@ import { getErrorMessageFromAPI } from "@/helper";
 import { useDeleteRecruiter } from "@/services/useDeleteRecruiter";
 
 const AdminRecruiterComponent = () => {
+  const [searchString, setSearchString] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  // Debounce effect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchString(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue]);
+
   const [selectedSort, setSelectedSort] = useState<RecruiterListSortEnum[]>([
     RecruiterListSortEnum.CREATED_DATE_ASC,
   ]);
@@ -35,6 +49,7 @@ const AdminRecruiterComponent = () => {
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
     },
   });
 
@@ -50,16 +65,16 @@ const AdminRecruiterComponent = () => {
   const { TITLE_COUNT, TITLE_HEADER, RECRUITER_LISTING_SORT_DROPDOWN } =
     FIND_RECRUITER_PAGE_CONFIG;
 
-  const [searchString, setSearchString] = useState<string>("");
-
-  const { searchProps } = useGetSearchDetailsAsPerURLOrUserType({
-    searchString,
-  });
+  const searchProps = {
+    input: {
+      placeholder: "Search recruiter name",
+    },
+  };
 
   const newRecruiterData =
     paginatedInfoData.length > 0
       ? paginatedInfoData.map((item: any) => {
-          return { ...item, user: item.user.recruiter_profile_id };
+          return { ...item };
         })
       : [];
 
@@ -116,42 +131,23 @@ const AdminRecruiterComponent = () => {
               alignItems: "center",
             }}
           >
-            <AutoComplete
-              // {...(searchProps.autoComplete as CommonObjectType)}
-              // searchOptions={searchString?.length > 2 ? searchOptions : undefined}
-              // handleDebouncedInputChange={(debouncedSearchValue: string = "") => {
-              //   setSearchString(debouncedSearchValue);
-              // }}
-              // getOptionLabel={(option: AutoCompleteListItem) => {
-              //   return option.title as string;
-              // }}
-              textfieldProps={{
-                ...(searchProps.input as CommonObjectType),
-                slotProps: {
-                  input: {
-                    startAdornment: <SearchIcon color={"primary"} />,
-                  },
-                },
-              }}
-              styles={{
-                autocompleteStyles: {
-                  minWidth: "252px",
-                  "& .MuiOutlinedInput-root": {
-                    height: "50px",
-                    // "& fieldset": {
-                    //   borderColor: "transparent",
-                    // },
-                    // "&:hover fieldset": {
-                    //   borderColor: "transparent",
-                    // },
-                    // "&.Mui-focused:not(.Mui-error) fieldset": {
-                    //   borderColor: "transparent",
-                    // },
-                  },
-                },
-              }}
-              // isLoading={apiData?.isLoading || apiData?.isFetchingNextPage}
-            />
+            <FormControl sx={{ m: 1, width: "30ch" }} variant="outlined">
+              <OutlinedInput
+                id="outlined-adornment-search"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder={searchProps.input.placeholder}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                }
+                aria-describedby="outlined-search-helper-text"
+                inputProps={{
+                  "aria-label": "search",
+                }}
+              />
+            </FormControl>
 
             <Dropdown
               {...RECRUITER_LISTING_SORT_DROPDOWN}
@@ -170,9 +166,10 @@ const AdminRecruiterComponent = () => {
       >
         <Table
           data={newRecruiterData}
+          tableType="recruiter"
           columns={[
             {
-              field: "user",
+              field: "id",
               headerName: "Id",
             },
             {

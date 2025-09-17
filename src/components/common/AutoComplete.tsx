@@ -14,6 +14,7 @@ function AutoComplete({
   isLoading = false,
   noOptionsText,
   loadingText,
+  isOpen = false,
 }: AutoCompleteProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -38,7 +39,7 @@ function AutoComplete({
   return (
     <MuiAutocomplete
       sx={styles?.autocompleteStyles}
-      open={open}
+      open={open && isOpen}
       onOpen={handleOpen}
       onClose={handleClose}
       onInputChange={handleInputChange}

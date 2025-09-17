@@ -1,7 +1,7 @@
 import { Menu as MUIMenu } from "@mui/material";
 import { MenuProps } from "@/types";
 
-function Menuhiddendrop({
+function MenuHiddenDrop({
   onMenuClick,
   handleClose,
   anchorEl,
@@ -55,4 +55,4 @@ function Menuhiddendrop({
   );
 }
 
-export default Menuhiddendrop;
+export default MenuHiddenDrop;

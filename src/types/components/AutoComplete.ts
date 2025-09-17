@@ -17,4 +17,5 @@ export interface AutoCompleteProps {
   };
   noOptionsText?: string;
   loadingText?: string;
+  isOpen?: boolean;
 }

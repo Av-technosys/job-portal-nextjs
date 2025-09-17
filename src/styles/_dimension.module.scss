@@ -6,6 +6,10 @@ $topRibbonHeight: 75px;
 // $headerHeight: 248px;
 $headerHeight: 175px;
 $assessmentheaderHeight: 0px;
+$adminSidebarWidth: 0px;
+$adminSidebarExpandedWidth: 450px;
+$adminHeaderHeight: 0px;
+
 
 :export {
   sidebarWidth: $sidebarWidth;
@@ -15,4 +19,7 @@ $assessmentheaderHeight: 0px;
   topRibbonHeight: $topRibbonHeight;
   headerHeight: $headerHeight;
   assessmentheaderHeight: $assessmentheaderHeight;
+  adminSidebarWidth: $adminSidebarWidth;
+  adminSidebarExpandedWidth: $adminSidebarExpandedWidth;
+  adminHeaderHeight: $adminHeaderHeight;
 }

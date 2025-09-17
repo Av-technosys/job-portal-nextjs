@@ -36,7 +36,7 @@ function AdminLayout({
     <>
       <Box sx={{ display: "flex" }}>
         <AdminHeader isAuthenticated={isAuthenticated} />
-        <Box component="main" sx={{ flexGrow: 1, p: 3, pt: 12 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, pt: 13 }}>
           {children}
         </Box>
       </Box>
