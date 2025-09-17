@@ -63,15 +63,12 @@ const AdminRecruiterComponent = () => {
         })
       : [];
 
-  console.log("newRecruiterData: ", newRecruiterData);
-
   const deleteRecruiterMutation = useDeleteRecruiter();
   const { showNotification } = useNotification();
   const { refetchCommonDetails } = useCommonDetails();
 
   const { SUCCESS } = FIND_STUDENT_PAGE_CONFIG;
   const recruiterDeleteHandler = (id: string) => {
-    console.log(id);
     deleteRecruiterMutation.mutate(
       { user: id },
       {

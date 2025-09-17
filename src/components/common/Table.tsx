@@ -40,7 +40,6 @@ function Table({ columns, data, deleteHandler, isButtonDisabled }: TableProps) {
   };
 
   const handleOnDelete = () => {
-    console.log("selectedUser: ", selectedUser);
     deleteHandler(selectedUser);
     setOpen(false);
   };

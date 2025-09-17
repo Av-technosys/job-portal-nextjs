@@ -11,7 +11,7 @@ export const CreateStudentTestAnsweredData = ({
   testId: number;
 }): Promise<CommonAllDataType> => {
   return api.post(
-    `${apiConstantsURL.assessment.submitStudentAnsweredData}${testId}`,
+    `${apiConstantsURL.assessment.assessmentAnsweredData}${testId}`,
     data
   );
 };
