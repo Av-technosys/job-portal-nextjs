@@ -95,9 +95,9 @@ function Personal() {
         onSuccess={handleFormSuccess}
         fieldDetailsArray={[
           NAME_FIELD,
-          JOB_SEEKER_UPLOAD_PROFILE_CONFIG,
           DATE_OF_BIRTH_FIELD,
           GENDER_FIELD,
+          JOB_SEEKER_UPLOAD_PROFILE_CONFIG,
           EMPTY_FIELD,
           EMAIL_FIELD,
           PHONE_NUMBER_FIELD,
