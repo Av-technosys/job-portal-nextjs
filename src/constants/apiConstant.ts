@@ -5,6 +5,7 @@ export const apiConstantsURL = {
     register: `accounts/register/`,
     activate: `accounts/activate/`,
     deactivate: `accounts/deactivate/`,
+    allContactDetails: `accounts/get_contacts/`,
     contacts: `accounts/contacts/`,
     verifyOtp: `accounts/verify_otp/`,
     sendOtpForForgotPassword: `accounts/send_otp_password_reset/`,

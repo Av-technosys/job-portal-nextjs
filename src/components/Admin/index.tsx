@@ -4,6 +4,7 @@ import AdminRecruiterComponent from "./AdminRecruiterComponent";
 import AdminJobseekerComponent from "./AdminJobseekerComponent";
 import AdminAssessmentComponent from "./AdminAssessmentComponent";
 import { useRouter } from "next/router";
+import AdminContactDetailsComponent from "./AdminContactDetailsComponent";
 
 function AdminTabs() {
   const router = useRouter();
@@ -37,6 +38,15 @@ function AdminTabs() {
         children: <AdminAssessmentComponent />,
         onClick: () => {
           router.push("/admin?tab=assesment");
+        },
+      },
+      {
+        label: "Contact-Details",
+        value: "contact-details",
+        key: "contact-details",
+        children: <AdminContactDetailsComponent />,
+        onClick: () => {
+          router.push("/admin?tab=contact-details");
         },
       },
     ];

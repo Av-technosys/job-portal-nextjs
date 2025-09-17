@@ -171,11 +171,13 @@ function Table({
                 />
               )}
 
-              {data.map((row, index) => (
+              {data?.map((row, index) => (
                 <TableRow key={`ja_TableRow${index}`}>
                   {columns.map((column) => (
                     <TableCell key={`ja-TabelCellFeild${column.field}`}>
-                      {row[column.field] && column.field == "first_name" ? (
+                      {row[column.field] &&
+                      tableType != "Contact-details" &&
+                      column.field == "first_name" ? (
                         <Stack
                           stackProps={{
                             flexDirection: "row",
