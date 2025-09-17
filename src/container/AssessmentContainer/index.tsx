@@ -1,21 +1,21 @@
 import JobSeekerSubscriptionContainer from "../SubscriptionContainer";
-import { FeatureWIP, Link, Stack } from "@/components";
+import { FeatureWIP, Link, Loader, Stack } from "@/components";
 
 function AssessmentContainer() {
   // const { userType, accessType } = useCommonDetails();
 
-  if (userType === -1) {
-    return (
-      <Loader
-        loaderProps={{
-          open: true,
-        }}
-      />
-    );
-  }
+  // if (userType === -1) {
+  //   return (
+  //     <Loader
+  //       loaderProps={{
+  //         open: true,
+  //       }}
+  //     />
+  //   );
+  // }
 
-  if (accessType !== -1) {
-    // if (true) {
+  // if (accessType !== -1) {
+  if (true) {
     return (
       <Stack>
         <FeatureWIP
