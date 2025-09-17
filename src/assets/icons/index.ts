@@ -2,6 +2,7 @@ import JA_LOGO from "./ja_logo.png";
 import JA_LOGO_white from "./ja_logo_white.png";
 import free_assessment from "./free_assessment.jpeg";
 import paid_assessment from "./paid_assessment.jpeg";
+import resume_assessment from "./resume_assessment.jpeg";
 import recruiter_plan_page_icon from "./recruiter_plan_page_icon.png";
 import INDIA_FLAG from "./india_flag.png";
 import ASSESSMENT_SUMMARY from "./ASSESSMET_SUMMARY.png";
@@ -21,6 +22,7 @@ export {
   JA_LOGO_white,
   free_assessment,
   paid_assessment,
+  resume_assessment,
   recruiter_plan_page_icon,
   INDIA_FLAG,
   ASSESSMENT_SUMMARY,

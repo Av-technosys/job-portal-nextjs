@@ -43,6 +43,19 @@ export const SUBSCRIPTION_PAGE_CONFIG = {
       },
     },
   },
+  RESUME_BUTTON_CONFIG: {
+    buttonProps: {
+      variant: ButtonVariantEnum.OUTLINED,
+      children: "Resume Aptitude Test",
+      className: "mt-4",
+      sx: {
+        borderRadius: "50px",
+        backgroundColor: "#123a59",
+        padding: "10px 20px",
+        color: "#fff",
+      },
+    },
+  },
   ACTUAL_APTITUDE_TEST_BUTTON_CONFIG: {
     buttonProps: {
       variant: ButtonVariantEnum.OUTLINED,

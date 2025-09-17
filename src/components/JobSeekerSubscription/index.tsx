@@ -1,4 +1,4 @@
-import { free_assessment, paid_assessment } from "@/assets";
+import { free_assessment, paid_assessment, resume_assessment } from "@/assets";
 import {
   Typography,
   Stack,
@@ -33,6 +33,7 @@ export default function Subscription() {
 
   const {
     BUTTON_CONFIG,
+    RESUME_BUTTON_CONFIG,
     HEADER_TEXT,
     HEADER_SUB_TEXT,
     ACTUAL_APTITUDE_TEST_BUTTON_CONFIG,
@@ -55,7 +56,7 @@ export default function Subscription() {
             stackProps={{
               direction: { xs: "column", md: "row" },
               alignItems: "center",
-              gap: 10,
+              gap: 5,
               marginTop: "50px",
             }}
           >
@@ -63,6 +64,11 @@ export default function Subscription() {
               avatarUrl={free_assessment?.src}
               onButtonClick={() => router.push("/dashboard/assessment/5")} // yeh 5 test id hai jo change hogi baad me...
               buttonConfig={BUTTON_CONFIG}
+            />
+            <SubscriptionCard
+              avatarUrl={resume_assessment?.src}
+              onButtonClick={() => setOpen(true)}
+              buttonConfig={RESUME_BUTTON_CONFIG}
             />
             <SubscriptionCard
               avatarUrl={paid_assessment?.src}

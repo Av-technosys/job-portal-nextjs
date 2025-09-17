@@ -1,8 +1,9 @@
+import { useCommonDetails } from "@/services";
 import JobSeekerSubscriptionContainer from "../SubscriptionContainer";
 import { FeatureWIP, Link, Loader, Stack } from "@/components";
 
 function AssessmentContainer() {
-  // const { userType, accessType } = useCommonDetails();
+  const { userType, accessType } = useCommonDetails();
 
   // if (userType === -1) {
   //   return (
@@ -14,8 +15,8 @@ function AssessmentContainer() {
   //   );
   // }
 
-  // if (accessType !== -1) {
-  if (true) {
+  if (accessType !== -1) {
+    // if (true) {
     return (
       <Stack>
         <FeatureWIP

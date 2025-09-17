@@ -130,7 +130,8 @@ function UploadProfilePic() {
         sx={{
           width: "100%",
           flexBasis: isRecruiter ? "45%" : "25%",
-          height: "80px",
+          height: "50px",
+          marginBottom: { xs: "0px", sm: "240px" },
         }}
       >
         <InputLabel shrink className={"mb-4 label-shrink"}>
