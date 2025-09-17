@@ -78,8 +78,9 @@ export const apiConstantsURL = {
     updateQuestion: `assessment/update_question/`,
     questionInfo: `assessment/get_questionInfo/`,
     deleteSubject: `assessment/delete_subject/`,
+    getQuestionsBySubjectId: `assessment/get_test_by_subject_id/`,
+    assessmentAnsweredData: `assesment/submit_test_by_id/`,
     deleteQuestion: `assessment/delete_question/`,
-    getQuestionBySubjectId: `assessment/get_question_by_subject_id/`,
     getQuestionById: `assessment/get_question_by_id/`,
   },
 };

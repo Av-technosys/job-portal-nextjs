@@ -61,7 +61,7 @@ export default function Subscription() {
           >
             <SubscriptionCard
               avatarUrl={free_assessment?.src}
-              onButtonClick={() => setOpen(true)}
+              onButtonClick={() => router.push("/dashboard/assessment/5")} // yeh 5 test id hai jo change hogi baad me...
               buttonConfig={BUTTON_CONFIG}
             />
             <SubscriptionCard
