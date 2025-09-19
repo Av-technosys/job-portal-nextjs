@@ -111,45 +111,54 @@ function AdminJobseekerComponent() {
         >
           <Stack
             stackProps={{
-              direction: "row",
-              gap: 1,
-              alignItems: "baseline",
+              width: "100%",
+              direction: { xs: "column", sm: "row" },
+              gap: { xs: 2, sm: 4 },
+              alignItems: "start",
+              justifyContent: "space-between",
             }}
           >
-            <Typography {...TITLE_COUNT(totalLength)} />
-            <Typography {...TITLE_HEADER(totalLength)} />
-          </Stack>
+            <Stack
+              stackProps={{
+                direction: "row",
+                gap: 1,
+                alignItems: "center",
+              }}
+            >
+              <Typography {...TITLE_COUNT(totalLength)} />
+              <Typography {...TITLE_HEADER(totalLength)} />
+            </Stack>
 
-          <Stack
-            stackProps={{
-              direction: "row",
-              gap: 4,
-              alignItems: "center",
-            }}
-          >
-            <FormControl sx={{ m: 1, width: "30ch" }} variant="outlined">
-              <OutlinedInput
-                id="outlined-adornment-search"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder={searchProps.input.placeholder}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                }
-                aria-describedby="outlined-search-helper-text"
-                inputProps={{
-                  "aria-label": "search",
-                }}
+            <Stack
+              stackProps={{ direction: { xs: "column", sm: "row" }, gap: 1 }}
+            >
+              <FormControl
+                sx={{ m: 1, width: { xs: "20ch", sm: "30ch" } }}
+                variant="outlined"
+              >
+                <OutlinedInput
+                  id="outlined-adornment-search"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder={searchProps.input.placeholder}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  }
+                  aria-describedby="outlined-search-helper-text"
+                  inputProps={{
+                    "aria-label": "search",
+                  }}
+                />
+              </FormControl>
+
+              <Dropdown
+                {...STUDENT_LISTING_SORT_DROPDOWN}
+                onChange={handleSortChange}
+                value={selectedSort?.[0]}
               />
-            </FormControl>
-
-            <Dropdown
-              {...STUDENT_LISTING_SORT_DROPDOWN}
-              onChange={handleSortChange}
-              value={selectedSort?.[0]}
-            />
+            </Stack>
           </Stack>
         </Stack>
       </When>

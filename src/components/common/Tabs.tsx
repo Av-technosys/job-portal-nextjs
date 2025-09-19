@@ -33,7 +33,12 @@ function Tabs({ items = [], tabsProps, handleTabChange }: TabsProps) {
 
   return (
     <>
-      <MUITabs {...tabsProps} value={value} onChange={handleChange}>
+      <MUITabs
+        {...tabsProps}
+        value={value}
+        onChange={handleChange}
+        className="[&>*]:!overflow-auto"
+      >
         {items.map((item) => (
           <Tab
             key={`ja-Tabs-${item.key}`}

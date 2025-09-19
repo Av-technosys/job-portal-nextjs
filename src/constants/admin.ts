@@ -13,7 +13,7 @@ export const ADMIN_PAGE_BODY_CONFIG = {
         variant: TypographyVariantEnum.H5,
       },
       fontWeight: TypographyFontWeight.semibold,
-      fontSize: TypographyFontSize.extraTitle,
+      fontSize: TypographyFontSize.semiExtraTitle,
       fontColor: TypographyFontColor.black15,
     };
   },

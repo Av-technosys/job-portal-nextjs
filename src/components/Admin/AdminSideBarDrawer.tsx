@@ -52,7 +52,7 @@ const AdminSideBarDrawer = ({
     <Stack
       stackProps={{
         className:
-          "p-5 h-full border-l border-gray-300 w-[450px] bg-slate-100 shadow-lg overflow-y-auto",
+          "p-5 h-full border-l border-gray-300 w-[390px] bg-slate-100 shadow-lg overflow-y-auto",
         direction: "column",
       }}
     >

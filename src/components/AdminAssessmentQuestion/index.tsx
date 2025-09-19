@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { ADMIN_QUESTION_CARD_CONFIG, PAGIANTION_LIMIT } from "@/constants";
+import {
+  ADMIN_QUESTION_CARD_CONFIG,
+  LOGIN_URL,
+  PAGIANTION_LIMIT,
+  TOP_RIBBON_AUTH_REDIRECT_CONFIG,
+} from "@/constants";
 import {
   Button,
   Dropdown,
   InfinitePagination,
   Loader,
+  NextImage,
   Stack,
   Typography,
   When,
@@ -14,13 +20,22 @@ import { useGetQuestionBySubjectId, usePagination } from "@/services";
 import { JobListSortEnum, TypographyVariantEnum } from "@/types";
 import AdminQuestionCard from "./AdminQuestionCard";
 import { useRouter } from "next/router";
-import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
-import { SearchIcon } from "@/assets";
+import {
+  AppBar,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
+import { JA_LOGO, SearchIcon } from "@/assets";
+import { colorStyles, useThemeContext } from "@/styles";
+import AccountPopover from "../Header/AccountPopover";
 
 function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
   const router = useRouter();
   const [searchString, setSearchString] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
+  const { LOGIN_BUTTON } = TOP_RIBBON_AUTH_REDIRECT_CONFIG;
+  const { theme } = useThemeContext();
 
   // Debounce effect
   useEffect(() => {
@@ -76,8 +91,62 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
     );
   }
 
+  function handleClick(url: string) {
+    router.push(
+      {
+        pathname: `${url}`,
+      },
+      url
+    );
+  }
+
+  const isAuthenticated = true;
+
   return (
     <>
+      <Stack
+        stackProps={{
+          width: "100%",
+          bgcolor: "skyblue",
+          direction: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "130px",
+        }}
+      >
+        <AppBar
+          style={{
+            backgroundColor: theme.palette.background.paper,
+            zIndex: theme.zIndex.drawer + 1,
+            borderBottom: `1px solid ${colorStyles.topRibbonColor}`,
+          }}
+          elevation={0}
+        >
+          <Stack
+            stackProps={{
+              className: "items-center w-full justify-between px-2 md:px-20",
+              direction: "row",
+            }}
+          >
+            <NextImage
+              props={{
+                alt: "ja_logo",
+                src: JA_LOGO,
+              }}
+            />
+
+            <When condition={!isAuthenticated}>
+              <Button
+                {...LOGIN_BUTTON}
+                onClick={() => handleClick(LOGIN_URL)}
+              />
+            </When>
+            <When condition={isAuthenticated}>
+              <AccountPopover />
+            </When>
+          </Stack>
+        </AppBar>
+      </Stack>
       <Stack
         stackProps={{
           direction: { xs: "column", sm: "row" },
@@ -92,7 +161,6 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
       >
         <Stack
           stackProps={{
-            flex: 1,
             direction: { xs: "column", md: "row" },
             spacing: 1,
           }}

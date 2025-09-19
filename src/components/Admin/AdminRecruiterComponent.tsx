@@ -115,23 +115,27 @@ const AdminRecruiterComponent = () => {
         >
           <Stack
             stackProps={{
-              direction: "row",
-              gap: 1,
-              alignItems: "baseline",
+              width: "100%",
+              direction: { xs: "column", sm: "row" },
+              gap: { xs: 2, sm: 4 },
+              alignItems: "start",
+              justifyContent: "space-between",
             }}
           >
-            <Typography {...TITLE_COUNT(totalLength)} />
-            <Typography {...TITLE_HEADER(totalLength)} />
-          </Stack>
-
-          <Stack
-            stackProps={{
-              direction: "row",
-              gap: 4,
-              alignItems: "center",
-            }}
-          >
-            <FormControl sx={{ m: 1, width: "30ch" }} variant="outlined">
+            <Stack
+              stackProps={{
+                direction: "row",
+                gap: 1,
+                alignItems: "baseline",
+              }}
+            >
+              <Typography {...TITLE_COUNT(totalLength)} />
+              <Typography {...TITLE_HEADER(totalLength)} />
+            </Stack>
+            <FormControl
+              sx={{ width: { xs: "20ch", sm: "30ch" } }}
+              variant="outlined"
+            >
               <OutlinedInput
                 id="outlined-adornment-search"
                 value={searchValue}

@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useRouter, usePathname } from "next/navigation";
 import { ACCOUNT_POPOVER_CONFIG, LOGIN_URL, PROFILE_URL } from "@/constants";
 import {
   Avatar,
@@ -18,12 +20,15 @@ import {
 import { useState } from "react";
 
 function AccountPopover() {
-  const { TEXT_CONFIG, MENU_ITEMS, AVATAR_CONFIG } = ACCOUNT_POPOVER_CONFIG;
+  const { TEXT_CONFIG, MENU_ITEMS, MENU_ITEMS_ADMIN, AVATAR_CONFIG } =
+    ACCOUNT_POPOVER_CONFIG;
+
   const { showNotification } = useNotification();
   const { deleteFCMToken } = useFirebaseNotification();
   const router = useRouter();
   const { name, profileImage } = useCommonDetails();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const pagePath = usePathname();
 
   function postLogoutAction() {
     clearAllCookie();
@@ -70,7 +75,12 @@ function AccountPopover() {
   return (
     <>
       <IconButton onClick={handleIconButtonClick}>
-        <Avatar {...AVATAR_CONFIG(profileImage, name)} />
+        <Avatar
+          {...AVATAR_CONFIG(
+            profileImage,
+            pagePath?.startsWith("/admin") ? "admin" : name
+          )}
+        />
       </IconButton>
       <Menu
         handleClose={handleClose}
@@ -83,11 +93,16 @@ function AccountPopover() {
       >
         <Typography
           {...TEXT_CONFIG({
-            loggedInUser: name,
+            loggedInUser: pagePath?.startsWith("/admin") ? "admin" : name,
           })}
         />
         <Divider />
-        <MenuList menuItems={MENU_ITEMS} onClick={handleMenuItemClick} />
+        <MenuList
+          menuItems={
+            pagePath?.startsWith("/admin") ? MENU_ITEMS_ADMIN : MENU_ITEMS
+          }
+          onClick={handleMenuItemClick}
+        />
       </Menu>
     </>
   );
