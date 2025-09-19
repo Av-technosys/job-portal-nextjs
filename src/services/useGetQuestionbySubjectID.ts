@@ -26,7 +26,7 @@ export const getQuestionBySubjectId = ({
   data: PaginationSuccessResponseType;
 }> => {
   return api.get(
-    `${apiConstantsURL.assessment.getQuestionsBySubjectId}${subjectId}`,
+    `${apiConstantsURL.assessment.getQuestionBySubjectId}${subjectId}`,
     {
       params: {
         page,
