@@ -85,7 +85,7 @@ function AdminContainer() {
   const isAuthenticated = true;
 
   return (
-    <When condition={true}>
+    <Stack>
       <Stack
         stackProps={{
           width: "100%",
@@ -189,7 +189,7 @@ function AdminContainer() {
         <Typography {...TAB_TITLE} />
         <AdminTabs />
       </Stack>
-    </When>
+    </Stack>
   );
 }
 
