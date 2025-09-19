@@ -395,6 +395,12 @@ export const ACCOUNT_POPOVER_CONFIG = {
       key: "logout",
     },
   ],
+  MENU_ITEMS_ADMIN: [
+    {
+      label: "Logout",
+      key: "logout",
+    },
+  ],
 };
 
 export const USER_WISE_DASHBOARD_TITLE = ({

@@ -146,10 +146,7 @@ function Table({
           selectedUser={userId}
           UserType={tableType}
         />
-        <TableContainer
-          sx={{ width: { xs: "140%", md: "100%" } }}
-          component={Paper}
-        >
+        <TableContainer sx={{ width: "100%" }} component={Paper}>
           <MUITable>
             <TableHead>
               <TableRow>
