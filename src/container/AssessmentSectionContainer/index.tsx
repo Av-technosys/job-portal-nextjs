@@ -5,13 +5,17 @@ import { useRouter } from "next/router";
 
 import React from "react";
 
-const AssessmentSectionContainer = () => {
+type assessmentProps = {
+  assessmentType: string;
+};
+
+const AssessmentSectionContainer = ({ assessmentType }: assessmentProps) => {
   const router = useRouter();
   const { id } = router.query;
 
   return (
     <>
-      <AssessmentSection id={id} />
+      <AssessmentSection id={id} assessmentType={assessmentType} />
     </>
   );
 };

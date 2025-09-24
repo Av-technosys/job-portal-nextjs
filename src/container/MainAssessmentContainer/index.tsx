@@ -13,6 +13,7 @@ import {
 import StopWatchHandler from "@/components/Assessments/StopWatchHandler";
 import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
 import AssessmentSidebar from "@/components/common/AssessmentSidebar";
+import { useRouter } from "next/router";
 
 export default function MainAssessmentContainer() {
   type AnsweredData = {
@@ -32,6 +33,9 @@ export default function MainAssessmentContainer() {
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const prevTypeRef = useRef<"blur" | "focus" | null>(null);
   const [timeForSubmit, setTimeForSubmit] = useState<number | null>(null);
+
+  // const router = useRouter();
+  // const { assesment_session_id, subject_id } = router.query;
 
   const StudentAssessmentQuestions = useGetStudentAssessmentQuestions();
   const getAllStudentAssessmentQuestions =
@@ -199,9 +203,9 @@ export default function MainAssessmentContainer() {
               },
             }}
           >
-            <div>
-              <div>Question No. {currentQIndex}</div>
-              <div>Total Tab switched {tabSwitchCount}</div>
+            <Stack>
+              <Stack>Question No. {currentQIndex}</Stack>
+              <Stack>Total Tab switched {tabSwitchCount}</Stack>
               <StopWatchHandler getStopWatchTime={getStopWatchTimeValue} />
               {getAllStudentAssessmentQuestions?.[currentQIndex - 1]
                 ?.question_paragraph && (
@@ -235,7 +239,7 @@ export default function MainAssessmentContainer() {
                 selectedValue={currentSelectedOption}
                 onChange={setCurrentSelectedOption}
               />
-            </div>
+            </Stack>
             <Stack
               stackProps={{
                 direction: { xs: "column", sm: "row" },
