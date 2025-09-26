@@ -16,6 +16,8 @@ const AssessmentSideBarDrawer = ({
   userAnsweredData,
   timeForSubmit,
   tabSwitchCount,
+  attemptId,
+  questionData,
 }: any) => {
   return (
     <>
@@ -33,12 +35,14 @@ const AssessmentSideBarDrawer = ({
               setCurrentQIndex={setCurrentQIndex}
               userAssessmentDetails={userAssessmentDetails}
               assessmentSection={assessmentSection}
+              questionData={questionData}
             />
 
             <SubmitButton
               userAnsweredData={userAnsweredData}
               timeForSubmit={timeForSubmit}
               tabSwitchCount={tabSwitchCount}
+              attemptId={attemptId}
             />
           </Stack>
         </>
@@ -53,31 +57,57 @@ type SubmitButtonProps = {
   userAnsweredData: any;
   timeForSubmit: number | null;
   tabSwitchCount: number;
+  attemptId: number;
 };
 
 function SubmitButton({
   userAnsweredData,
   timeForSubmit,
   tabSwitchCount,
+  attemptId,
 }: SubmitButtonProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { showNotification } = useNotification();
 
-  const data = {
-    answers: {
-      ...userAnsweredData,
-    },
-    timeLeft: timeForSubmit,
-    tabSwitchCount: tabSwitchCount,
+  // const data = {
+  //   answers: {
+  //     ...userAnsweredData,
+  //   },
+  //   timeLeft: timeForSubmit,
+  //   tabSwitchCount: tabSwitchCount,
+  //   is_completed: true,
+  // };
+
+  const answerMap: Record<string, number> = {
+    A: 0,
+    B: 1,
+    C: 2,
+    D: 3,
   };
 
-  const testId: number = 2;
+  // convert userAnsweredData into required format
+  const transformedAnswers: Record<string, string> = Object.entries(
+    userAnsweredData || {}
+  ).reduce((acc, [key, value]: any) => {
+    const answer = answerMap[value.answer] ?? null;
+    if (answer !== null) {
+      acc[key] = `1_${answer}`;
+    }
+    return acc;
+  }, {} as Record<string, string>);
+
+  const data = {
+    answers: transformedAnswers,
+    timeLeft: timeForSubmit,
+    tabSwitchCount: tabSwitchCount,
+    is_completed: false,
+  };
 
   const createStudentTestAnsweredData = UseCreateStudentAnsweredData({
     mutationConfig: {
       onSuccess: () => {
-        router.push("/assessment-summary");
+        router.push(`/dashboard/assessment-summary/${attemptId}`);
       },
       onError: (error) => {
         showNotification({
@@ -89,7 +119,7 @@ function SubmitButton({
   });
 
   function handleSubmitTest() {
-    createStudentTestAnsweredData.mutate({ data, testId });
+    createStudentTestAnsweredData.mutate({ data, attemptId });
     setOpen(false);
   }
   return (

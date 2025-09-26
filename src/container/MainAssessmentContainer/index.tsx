@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 
 import StopWatchHandler from "@/components/Assessments/StopWatchHandler";
-import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
 import AssessmentSidebar from "@/components/common/AssessmentSidebar";
 import { useRouter } from "next/router";
+import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
 
 export default function MainAssessmentContainer() {
   type AnsweredData = {
@@ -34,14 +34,22 @@ export default function MainAssessmentContainer() {
   const prevTypeRef = useRef<"blur" | "focus" | null>(null);
   const [timeForSubmit, setTimeForSubmit] = useState<number | null>(null);
 
-  // const router = useRouter();
-  // const { assesment_session_id, subject_id } = router.query;
+  const router = useRouter();
+  const { assesment_session_id, subject_id } = router.query;
 
-  const StudentAssessmentQuestions = useGetStudentAssessmentQuestions();
+  const StudentAssessmentQuestions = useGetStudentAssessmentQuestions({
+    queryParams: {
+      assesment_session_id: assesment_session_id,
+      subject_id: subject_id,
+    },
+  });
+
   const getAllStudentAssessmentQuestions =
-    StudentAssessmentQuestions.data?.data.questions;
+    StudentAssessmentQuestions.data?.data?.questions;
   const AllStudentAssessmentQuestionsLength =
     getAllStudentAssessmentQuestions?.length;
+
+  const attempt_id = StudentAssessmentQuestions.data?.data?.attempt_id;
 
   useEffect(() => {
     const handleFocus = () => {
@@ -77,23 +85,6 @@ export default function MainAssessmentContainer() {
       ]?.answer || "0"
     );
   }, [currentTabIndex, currentQIndex, userAnsweredData]);
-
-  // const tabItems = useMemo(() => {
-  //   return [
-  //     {
-  //       label: "English",
-  //       key: "english-0",
-  //       value: "0",
-  //       children: null,
-  //     },
-  //     {
-  //       label: "Hindi",
-  //       key: "hindi-1",
-  //       value: "1",
-  //       children: null,
-  //     },
-  //   ];
-  // }, []);
 
   function moveToNextQuestion() {
     const nextQuestionIndex = currentQIndex + 1;
@@ -286,6 +277,8 @@ export default function MainAssessmentContainer() {
             userAnsweredData={userAnsweredData}
             timeForSubmit={timeForSubmit}
             tabSwitchCount={tabSwitchCount}
+            attemptId={attempt_id}
+            questionData={getAllStudentAssessmentQuestions}
           />
         </Grid>
       </Grid>

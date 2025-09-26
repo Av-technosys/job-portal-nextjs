@@ -148,7 +148,7 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
                       <Button
                         onClick={() =>
                           router.push(
-                            `/assessment/get_test_question?assesment_session_id=${id}&subject_id=${item?.id}`
+                            `/assessment/get_all_test_question?assesment_session_id=${id}&subject_id=${item?.id}`
                           )
                         }
                         {...START_TEST}

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Stack, Paper, Typography, Grid, IconButton } from "../common";
 import { CommonObjectType } from "@/types";
-import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
 
 function QuestionNoBox({
   questionNo,
@@ -83,15 +82,16 @@ export interface AssessmentNavigationProps {
   setCurrentQIndex: (questionNo: number) => void;
   userAssessmentDetails: CommonObjectType;
   assessmentSection: number | null | string;
+  questionData: any;
 }
 
 export default function AssessmentNavigation({
   setCurrentQIndex,
   userAssessmentDetails,
   assessmentSection,
+  questionData,
 }: AssessmentNavigationProps) {
-  const { data } = useGetStudentAssessmentQuestions();
-  const questions = data?.data.questions;
+  const questions = questionData;
   const questionArr = useMemo(() => {
     return questions ?? [];
   }, [questions]);

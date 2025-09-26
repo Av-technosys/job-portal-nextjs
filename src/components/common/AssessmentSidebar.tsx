@@ -14,6 +14,8 @@ function AssessmentSidebar({
   userAnsweredData,
   timeForSubmit,
   tabSwitchCount,
+  attemptId,
+  questionData,
 }: any) {
   const { isExtraSmallScreen } = useScreen();
   const [isExpanded, setIsExpanded] = useState(!isExtraSmallScreen);
@@ -56,6 +58,8 @@ function AssessmentSidebar({
               userAnsweredData={userAnsweredData}
               timeForSubmit={timeForSubmit}
               tabSwitchCount={tabSwitchCount}
+              attemptId={attemptId}
+              questionData={questionData}
             />
           </Box>
         </Box>

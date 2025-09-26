@@ -20,15 +20,8 @@ function AssessmentScore({ id }: paramID) {
     setScoreDetails(assessmentScoreDetails?.data?.data);
   }, [assessmentScoreDetails]);
 
-  const {
-    SCORE_VALUE_1,
-    SCORE_VALUE_2,
-    CONGRATS_TEXT,
-    CONTINUE_BUTTON,
-    ASSESSMENT_TOTAL_ATTEMPTED_QUESTIONS,
-    ASSESSMENT_TOTAL_REMAINING_QUESTIONS,
-    ASSESSMENT_TOTAL_QUESTIONS,
-  } = ASSESSMENT_SCORE_PAGE_CONFIG;
+  const { SCORE_VALUE_1, SCORE_VALUE_2, CONGRATS_TEXT, CONTINUE_BUTTON } =
+    ASSESSMENT_SCORE_PAGE_CONFIG;
 
   if (!scoreDetails) {
     return (
@@ -45,103 +38,9 @@ function AssessmentScore({ id }: paramID) {
           gridProps={{
             container: true,
             spacing: 3,
-            className: "max-w-5xl mx-auto mt-5 ",
+            className: "max-w-5xl mx-auto mt-5 flex justify-center",
           }}
         >
-          <Grid
-            gridProps={{
-              size: { xs: 12, sm: 6 },
-            }}
-          >
-            <Stack
-              stackProps={{
-                width: { xs: "100%", sm: "80%" },
-                gap: 2,
-                className: "mt-7 flex flex-col justify-between",
-              }}
-            >
-              <Stack
-                stackProps={{
-                  className: "p-4 border shadow bg-blue-100",
-                  direction: "column",
-                  justifyContent: "space-between",
-                  spacing: 2,
-                }}
-              >
-                <Stack
-                  stackProps={{
-                    direction: "column",
-                    spacing: "3px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Stack
-                    stackProps={{
-                      className: "text-blue-600 text-2xl font-bold",
-                    }}
-                  >
-                    {scoreDetails?.total_questions}
-                  </Stack>
-                  <Typography {...ASSESSMENT_TOTAL_QUESTIONS()} />
-                </Stack>
-              </Stack>
-              <Stack
-                stackProps={{
-                  className: "p-4 border shadow bg-green-100",
-                  direction: "column",
-                  justifyContent: "space-between",
-                  spacing: 2,
-                }}
-              >
-                <Stack
-                  stackProps={{
-                    direction: "column",
-                    spacing: "3px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Stack
-                    stackProps={{
-                      className: "text-green-600 text-2xl font-bold",
-                    }}
-                  >
-                    {scoreDetails?.total_questions_attempted}
-                  </Stack>
-                  <Typography {...ASSESSMENT_TOTAL_ATTEMPTED_QUESTIONS()} />
-                </Stack>
-              </Stack>
-              <Stack
-                stackProps={{
-                  className: "p-4 border shadow bg-red-100",
-                  direction: "column",
-                  justifyContent: "space-between",
-                  spacing: 2,
-                }}
-              >
-                <Stack
-                  stackProps={{
-                    direction: "column",
-                    spacing: "3px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Stack
-                    stackProps={{
-                      className: "text-red-600 text-2xl font-bold",
-                    }}
-                  >
-                    {scoreDetails?.total_questions -
-                      scoreDetails?.total_questions_attempted}
-                  </Stack>
-                  <Typography {...ASSESSMENT_TOTAL_REMAINING_QUESTIONS()} />
-                </Stack>
-              </Stack>
-            </Stack>
-          </Grid>
-
           <Grid gridProps={{ size: { xs: 12, sm: 6 } }}>
             <Stack
               stackProps={{
@@ -182,7 +81,9 @@ function AssessmentScore({ id }: paramID) {
                     <Typography
                       {...SCORE_VALUE_1(scoreDetails?.total_marks_scored)}
                     />
-                    <Typography {...SCORE_VALUE_2()} />
+                    <Typography
+                      {...SCORE_VALUE_2(scoreDetails?.assesment_total)}
+                    />
                   </Stack>
                 </Stack>
                 <Stack
@@ -192,7 +93,12 @@ function AssessmentScore({ id }: paramID) {
                     className: "bg-blue-100 p-2",
                   }}
                 >
-                  <Typography {...CONGRATS_TEXT()} />
+                  <Typography
+                    {...CONGRATS_TEXT(
+                      scoreDetails?.total_marks_scored,
+                      scoreDetails?.assesment_total
+                    )}
+                  />
                 </Stack>
                 <Stack
                   stackProps={{
