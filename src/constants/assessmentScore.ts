@@ -32,10 +32,10 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
       fontWeight: TypographyFontWeight.extrabold,
     };
   },
-  SCORE_VALUE_2: () => {
+  SCORE_VALUE_2: (totalMarks) => {
     return {
       typographyProps: {
-        children: "  of 100 ",
+        children: `of ${totalMarks}`,
         variant: TypographyVariantEnum.H6,
       },
       fontSize: TypographyFontSize.extralarge,
@@ -93,11 +93,12 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
       },
     };
   },
-  CONGRATS_TEXT: () => {
+  CONGRATS_TEXT: (scoredMarks, totalMarks) => {
     return {
       typographyProps: {
-        children:
-          " Congratulations, your score exceeds 65% and you are cleared to move forward with the next phase of the process. ",
+        children: ` Congratulations, your score exceeds ${
+          (scoredMarks / totalMarks) * 100
+        }% and you are cleared to move forward with the next phase of the process. `,
         variant: TypographyVariantEnum.CAPTION,
       },
       fontWeight: TypographyFontWeight.extrabold,

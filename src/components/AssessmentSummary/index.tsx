@@ -4,31 +4,27 @@ import { ASSESSMENT_SUMMARY_PAGE_CONFIG } from "@/constants/assessmentSummary";
 import { colorStyles } from "@/styles";
 import { useRouter } from "next/navigation";
 
-function AssessmentSummary() {
+export type paramAttemptId = {
+  attemptId: number | string | string[];
+};
+
+function AssessmentSummary({ attemptId }: paramAttemptId) {
   const {
     SUBMITTED_MESSAGE,
     SUMMERY_TEXT,
     ASSESSMENT,
     ASSESSMENT_TEXT,
-    TIME_TAKEN,
-    TIME,
-    SUBMITTED_ON_TEXT,
-    SUBMITTED_ON_TIME,
-    SUBMITTED_TIME_TEXT,
-    SUBMITTED_TIME,
-    JOB_SEEKER_ID,
-    JOB_SEEKER_ID_VALUE,
     FEEDBACK_TEXT,
     GIVE_FEEDBACK,
     SHOW_SCORE,
   } = ASSESSMENT_SUMMARY_PAGE_CONFIG;
   const router = useRouter();
   function handleGiveFeedbackClick() {
-    router.push("/assessment-feedback");
+    router.push("/contact-us");
   }
 
   function handleShowScoreClick() {
-    router.push("/assessment-score");
+    router.push(`/dashboard/assessment-score/${attemptId}`);
   }
   return (
     <>
@@ -63,6 +59,7 @@ function AssessmentSummary() {
         <Stack
           stackProps={{
             direction: "row",
+            alignItems: "center",
           }}
         >
           <Stack>
@@ -93,48 +90,6 @@ function AssessmentSummary() {
             >
               <Typography {...ASSESSMENT()} />
               <Typography {...ASSESSMENT_TEXT()} />
-            </Stack>
-            <Stack
-              stackProps={{
-                className: "p-3",
-                gap: 1,
-              }}
-            >
-              <Typography {...TIME_TAKEN()} />
-              <Typography {...TIME()} />
-            </Stack>
-            <Stack
-              stackProps={{
-                className: "p-3",
-                direction: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Stack
-                stackProps={{
-                  gap: 1,
-                }}
-              >
-                <Typography {...SUBMITTED_ON_TEXT()} />
-                <Typography {...SUBMITTED_ON_TIME()} />
-              </Stack>
-              <Stack
-                stackProps={{
-                  gap: 1,
-                }}
-              >
-                <Typography {...SUBMITTED_TIME_TEXT()} />
-                <Typography {...SUBMITTED_TIME()} />
-              </Stack>
-            </Stack>
-            <Stack
-              stackProps={{
-                className: "p-3",
-                gap: 1,
-              }}
-            >
-              <Typography {...JOB_SEEKER_ID()} />
-              <Typography {...JOB_SEEKER_ID_VALUE()} />
             </Stack>
             <Stack
               stackProps={{

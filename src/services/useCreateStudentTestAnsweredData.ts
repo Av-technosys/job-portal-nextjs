@@ -5,13 +5,13 @@ import { CommonAllDataType, MutationConfig } from "@/types";
 
 export const CreateStudentTestAnsweredData = ({
   data,
-  testId,
+  attemptId,
 }: {
   data: any;
-  testId: number;
+  attemptId: number;
 }): Promise<CommonAllDataType> => {
   return api.post(
-    `${apiConstantsURL.assessment.assessmentAnsweredData}${testId}`,
+    `${apiConstantsURL.assessment.assessmentAnsweredData}${attemptId}/`,
     data
   );
 };

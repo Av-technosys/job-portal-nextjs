@@ -90,16 +90,25 @@ const AssessmentSection = ({ id }: testID) => {
                         <Button {...RETAKE_TEST} />
                         <Button {...ANALYSIS_TEST} />
                       </Stack>
-                    </>
-                  )}
-                </Stack>
-              </Paper>
-            );
-          })}
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          router.push(
+                            `/assessment/get_all_test_question?assesment_session_id=${id}&subject_id=${item?.id}`
+                          )
+                        }
+                        {...START_TEST}
+                      />
+                    )}
+                  </Stack>
+                </Paper>
+              );
+            })}
+          </Stack>
         </Stack>
-      </Stack>
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export default AssessmentSection;
