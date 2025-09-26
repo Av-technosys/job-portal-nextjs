@@ -4,7 +4,7 @@ import AssessmentSectionContainer from "@/container/AssessmentSectionContainer";
 import React, { ReactElement } from "react";
 
 function AssessmentTestId() {
-  return <AssessmentSectionContainer assessmentType="paid" />;
+  return <AssessmentSectionContainer assessmentType="free" />;
 }
 
 AssessmentTestId.getLayout = (page: ReactElement) => (

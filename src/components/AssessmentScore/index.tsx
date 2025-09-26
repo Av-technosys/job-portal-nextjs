@@ -1,5 +1,6 @@
-import { Button, Grid, Stack, Typography } from "../common";
+import { Button, Grid, Loader, Stack, Typography } from "../common";
 import { ASSESSMENT_SCORE_PAGE_CONFIG } from "@/constants";
+import { useGetAssessmentScoreInfo } from "@/services/useGetAssessmentScoreDetails";
 import { colorStyles } from "@/styles";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,13 +23,11 @@ function AssessmentScore({ id }: paramID) {
   const { SCORE_VALUE_1, SCORE_VALUE_2, CONGRATS_TEXT, CONTINUE_BUTTON } =
     ASSESSMENT_SCORE_PAGE_CONFIG;
 
-  return (
-    <>
-      {/* <Stack
-        stackProps={{
-          direction: "row",
-          justifyContent: "space-between",
-          className: "max-w-5xl mx-auto",
+  if (!scoreDetails) {
+    return (
+      <Loader
+        loaderProps={{
+          open: true,
         }}
       />
     );
@@ -119,12 +118,11 @@ function AssessmentScore({ id }: paramID) {
                 </Stack>
               </Stack>
             </Stack>
-          </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-      {/* </Stack> */}
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default AssessmentScore;

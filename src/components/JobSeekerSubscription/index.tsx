@@ -12,13 +12,23 @@ import {
   SUBSCRIPTION_CONFIG,
   DASHBOARD_URL,
 } from "@/constants";
+import { useGetResumeTestDataInfo } from "@/services/useGetResumeTestDetails";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Subscription() {
   const [open, setOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [isTestEnd, setIsTestEnd] = useState<null | boolean>(null);
+  const [testId, setTestId] = useState<null | number | string>(null);
   const router = useRouter();
+
+  const resumeTestDetails = useGetResumeTestDataInfo();
+
+  useEffect(() => {
+    setIsTestEnd(resumeTestDetails?.data?.data[0]?.is_test_end);
+    setTestId(resumeTestDetails?.data?.data[0]?.id);
+  }, [resumeTestDetails]);
 
   const handlePaymentModalOpen = () => {
     setOpen(false);
@@ -62,14 +72,20 @@ export default function Subscription() {
           >
             <SubscriptionCard
               avatarUrl={free_assessment?.src}
-              onButtonClick={() => router.push("/dashboard/assessment/5")} // yeh 5 test id hai jo change hogi baad me...
+              onButtonClick={() =>
+                router.push("/dashboard/assessment/free-test")
+              }
               buttonConfig={BUTTON_CONFIG}
             />
-            <SubscriptionCard
-              avatarUrl={resume_assessment?.src}
-              onButtonClick={() => setOpen(true)}
-              buttonConfig={RESUME_BUTTON_CONFIG}
-            />
+            {isTestEnd == false && (
+              <SubscriptionCard
+                avatarUrl={resume_assessment?.src}
+                onButtonClick={() =>
+                  router.push(`/dashboard/assessment/${testId}`)
+                }
+                buttonConfig={RESUME_BUTTON_CONFIG}
+              />
+            )}
             <SubscriptionCard
               avatarUrl={paid_assessment?.src}
               onButtonClick={() => setOpen(true)}

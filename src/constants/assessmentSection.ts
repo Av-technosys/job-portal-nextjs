@@ -44,18 +44,30 @@ export const ASSESSMENT_SECTION_PAGE_CONFIG = {
       size: ButtonSizeEnum.SMALL,
     },
   },
-  TOTAL_QUESTIONS: {
-    typographyProps: {
-      children: "50 Questions",
-      variant: TypographyVariantEnum.CAPTION,
+  BACK_BUTTON: {
+    buttonProps: {
+      children: "Back",
+      variant: ButtonVariantEnum.OUTLINED,
+      color: ButtonColorEnum.ERROR,
+      size: ButtonSizeEnum.LARGE,
     },
-    fontSize: TypographyFontSize.extraSmall,
   },
-  MAX_TIME: {
-    typographyProps: {
-      children: "60 Min",
-      variant: TypographyVariantEnum.CAPTION,
-    },
-    fontSize: TypographyFontSize.extraSmall,
+  TOTAL_QUESTIONS: (questions: number) => {
+    return {
+      typographyProps: {
+        children: `${questions} Questions`,
+        variant: TypographyVariantEnum.CAPTION,
+      },
+      fontSize: TypographyFontSize.extraSmall,
+    };
+  },
+  MAX_TIME: (time: number) => {
+    return {
+      typographyProps: {
+        children: `${time} Min`,
+        variant: TypographyVariantEnum.CAPTION,
+      },
+      fontSize: TypographyFontSize.extraSmall,
+    };
   },
 };

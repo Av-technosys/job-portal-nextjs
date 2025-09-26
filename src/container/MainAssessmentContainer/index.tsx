@@ -194,9 +194,9 @@ export default function MainAssessmentContainer() {
               },
             }}
           >
-            <div>
-              <div>Question No. {currentQIndex}</div>
-              <div>Total Tab switched {tabSwitchCount}</div>
+            <Stack>
+              <Stack>Question No. {currentQIndex}</Stack>
+              <Stack>Total Tab switched {tabSwitchCount}</Stack>
               <StopWatchHandler getStopWatchTime={getStopWatchTimeValue} />
               {getAllStudentAssessmentQuestions?.[currentQIndex - 1]
                 ?.question_paragraph && (
@@ -230,7 +230,7 @@ export default function MainAssessmentContainer() {
                 selectedValue={currentSelectedOption}
                 onChange={setCurrentSelectedOption}
               />
-            </div>
+            </Stack>
             <Stack
               stackProps={{
                 direction: { xs: "column", sm: "row" },

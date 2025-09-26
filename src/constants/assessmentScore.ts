@@ -21,10 +21,10 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
       },
     };
   },
-  SCORE_VALUE_1: () => {
+  SCORE_VALUE_1: (marks) => {
     return {
       typographyProps: {
-        children: " 76 ",
+        children: `${marks}`,
         variant: TypographyVariantEnum.H5,
       },
       fontSize: TypographyFontSize.largeTitle,
