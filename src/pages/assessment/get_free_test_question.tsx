@@ -4,7 +4,7 @@ import { GetServerSidePropsContext } from "next";
 import { MainAssessmentContainer } from "@/container";
 
 function Page() {
-  return <MainAssessmentContainer />;
+  return <MainAssessmentContainer testType="free" />;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
