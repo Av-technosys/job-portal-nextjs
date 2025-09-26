@@ -144,11 +144,20 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
                           {...ANALYSIS_TEST}
                         />
                       </Stack>
-                    ) : (
+                    ) : assessmentType == "paid" ? (
                       <Button
                         onClick={() =>
                           router.push(
                             `/assessment/get_all_test_question?assesment_session_id=${id}&subject_id=${item?.id}`
+                          )
+                        }
+                        {...START_TEST}
+                      />
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          router.push(
+                            `/assessment/get_free_test_question/?subject_id=${item?.id}`
                           )
                         }
                         {...START_TEST}

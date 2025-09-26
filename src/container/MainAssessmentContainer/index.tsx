@@ -14,8 +14,13 @@ import StopWatchHandler from "@/components/Assessments/StopWatchHandler";
 import AssessmentSidebar from "@/components/common/AssessmentSidebar";
 import { useRouter } from "next/router";
 import { useGetStudentAssessmentQuestions } from "@/services/useGetStudentAssessmentQuestions";
+import { useGetFreeAssessmentQuestions } from "@/services/useGetFreeAssessmentQuestions";
 
-export default function MainAssessmentContainer() {
+export type testTypeProp = {
+  testType: string;
+};
+
+export default function MainAssessmentContainer({ testType }: testTypeProp) {
   type AnsweredData = {
     [key: string]: {
       answer: string;
@@ -36,13 +41,22 @@ export default function MainAssessmentContainer() {
 
   const router = useRouter();
   const { assesment_session_id, subject_id } = router.query;
+  let StudentAssessmentQuestions;
 
-  const StudentAssessmentQuestions = useGetStudentAssessmentQuestions({
-    queryParams: {
-      assesment_session_id: assesment_session_id,
-      subject_id: subject_id,
-    },
-  });
+  if (testType == "paid") {
+    StudentAssessmentQuestions = useGetStudentAssessmentQuestions({
+      queryParams: {
+        assesment_session_id: assesment_session_id,
+        subject_id: subject_id,
+      },
+    });
+  } else {
+    StudentAssessmentQuestions = useGetFreeAssessmentQuestions({
+      queryParams: {
+        subject_id: subject_id,
+      },
+    });
+  }
 
   const getAllStudentAssessmentQuestions =
     StudentAssessmentQuestions.data?.data?.questions;
