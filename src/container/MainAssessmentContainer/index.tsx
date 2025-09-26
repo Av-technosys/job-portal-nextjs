@@ -43,19 +43,25 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   const { assesment_session_id, subject_id } = router.query;
   let StudentAssessmentQuestions;
 
+  // if (testType == "paid") {
+  const paidAssesmentData = useGetStudentAssessmentQuestions({
+    queryParams: {
+      assesment_session_id: assesment_session_id,
+      subject_id: subject_id,
+    },
+  });
+  // } else {
+  const freeAssesmentData = useGetFreeAssessmentQuestions({
+    queryParams: {
+      subject_id: subject_id,
+    },
+  });
+  // }
+
   if (testType == "paid") {
-    StudentAssessmentQuestions = useGetStudentAssessmentQuestions({
-      queryParams: {
-        assesment_session_id: assesment_session_id,
-        subject_id: subject_id,
-      },
-    });
+    StudentAssessmentQuestions = paidAssesmentData;
   } else {
-    StudentAssessmentQuestions = useGetFreeAssessmentQuestions({
-      queryParams: {
-        subject_id: subject_id,
-      },
-    });
+    StudentAssessmentQuestions = freeAssesmentData;
   }
 
   const getAllStudentAssessmentQuestions =
