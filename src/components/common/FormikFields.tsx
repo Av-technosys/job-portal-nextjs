@@ -31,12 +31,14 @@ function FormikFields({
   setFieldValue,
   field,
   errors,
+  questionData,
   ...rest
 }: {
   fieldType?: FormikFieldsEnum;
   setFieldValue: FormikFormProps["setFieldValue"];
   field: CommonObjectType;
   errors?: CommonObjectType;
+  questionData?: any;
 }) {
   return (
     <>
@@ -77,7 +79,7 @@ function FormikFields({
         <UploadProfilePic />
       </When>
       <When condition={fieldType === FormikFieldsEnum.UPLOAD_QUESTION_IMAGE}>
-        <UploadQuestionPic />
+        <UploadQuestionPic {...questionData} />
       </When>
       <When condition={fieldType === FormikFieldsEnum.MULTI_SELECT_DROPDOWN}>
         <MultiSelectDropdown

@@ -1,22 +1,14 @@
-import {
-  useCommonDetails,
-  useCreateOrUpdateProfilePicture,
-  useDeleteProfilePicture,
-  useNotification,
-} from "@/services";
+import { useCommonDetails, useNotification } from "@/services";
 import { ChangeEvent, useMemo, useState } from "react";
 import {
   ButtonColorEnum,
   ButtonSizeEnum,
   ButtonVariantEnum,
-  CreateOrUpdateProfilePicInput,
   CreateOrUpdateQuestionPicInput,
-  ProfileImageEnum,
   QuestionImageEnum,
 } from "@/types";
 import {
   IMAGE,
-  PROFILE_PICTURE_UPLOAD_CONFIG,
   QUESTION_PICTURE_UPLOAD_CONFIG,
   TYPO_DRAG_DROP_UPLOAD_CONFIG,
   TYPO_SIZE_UPLOAD_CONFIG,
@@ -40,7 +32,9 @@ import {
   useDeleteQuestionPicture,
 } from "@/services/useUploadQuestionPic";
 
-function UploadQuestionPic() {
+function UploadQuestionPic({ questionId, questionImage }: any) {
+  // const { questionId, questionImage } = questionData;
+  console.log(questionId, "questionId");
   const { showNotification } = useNotification();
   const { NOTIFICATION_CONFIG } = QUESTION_PICTURE_UPLOAD_CONFIG;
   const [isDragOver, setIsDragOver] = useState(false);
@@ -83,7 +77,8 @@ function UploadQuestionPic() {
       createOrUpdateQuestionPicture.mutate({
         data: {
           file_type: QuestionImageEnum.QUESTION_IMAGE,
-          file,
+          question_id: questionId,
+          question_image: file,
         } as CreateOrUpdateQuestionPicInput,
       });
     }
@@ -91,7 +86,11 @@ function UploadQuestionPic() {
 
   function handleDeleteClick() {
     if (profileImage) {
-      deleteQuestionPicture.mutate({});
+      deleteQuestionPicture.mutate({
+        data: {
+          question_id: questionId,
+        },
+      });
     }
   }
 
@@ -125,8 +124,8 @@ function UploadQuestionPic() {
   }
 
   const isProfileImageAvailable = useMemo(() => {
-    return profileImage !== undefined && profileImage !== null;
-  }, [profileImage]);
+    return questionImage !== undefined && questionImage !== null;
+  }, [questionImage]);
 
   const isRecruiter = useMemo(() => {
     return userType !== -1 ? isLoggedInUserRecruiter({ userType }) : false;
@@ -203,7 +202,7 @@ function UploadQuestionPic() {
                 },
               }}
             >
-              <Avatar {...IMAGE((profileImage || "") as string).avatarProps}>
+              <Avatar {...IMAGE(questionImage || ("" as string)).avatarProps}>
                 {getInitials({
                   name: name || "",
                 })}

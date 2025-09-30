@@ -30,6 +30,7 @@ export function FormikForm({
   errors,
   setFieldValue,
   parentFieldName,
+  questionData,
 }: FormikFormProps) {
   function getFieldName(
     fieldDetail:
@@ -106,6 +107,7 @@ export function FormikForm({
                     setFieldValue={setFieldValue}
                     field={field}
                     errors={errors}
+                    questionData={questionData}
                   />
                 );
               }}
@@ -124,6 +126,7 @@ export function FormikForm({
                   setFieldValue={setFieldValue}
                   field={field}
                   errors={errors}
+                  questionData={questionData}
                 />
               );
             }}
@@ -141,6 +144,7 @@ function Formik({
   fieldDetailsArray,
   formFooterArray,
   classNames,
+  questionData,
 }: FormikProps) {
   const [isFormSubmittedOnce, setIsFormSubmittedOnce] = useState(false);
   const onSubmit = useCallback(
@@ -184,6 +188,7 @@ function Formik({
                 errors={errors as CommonObjectType}
                 setFieldValue={setFieldValue}
                 fieldDetailsArray={fieldDetailsArray}
+                questionData={questionData}
               />
             </Stack>
             <Stack

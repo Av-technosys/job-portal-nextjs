@@ -43,7 +43,7 @@ export const apiConstantsURL = {
     socialUrlsRecruiter: `user_profiles/social_urls_recruiter/`,
     socialUrlsJobSeeker: `user_profiles/social_urls_job_seeker/`,
     profileImage: `user_profiles/upload_profile_image/`,
-    questionImage: `user_profiles/upload_question_image/`,
+    questionImage: `assessment/upload_question_image/`,
     updateCandidateStatus: `jobs/application_status/`,
   },
   jobs: {

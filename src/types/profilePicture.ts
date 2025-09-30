@@ -14,7 +14,7 @@ export enum QuestionImageEnum {
 }
 export type CreateOrUpdateQuestionPicInput = {
   file_type: QuestionImageEnum.QUESTION_IMAGE;
-  file: File;
+  question_image: File;
 };
 
 export type CreateOrUpdateDocumentInput = {

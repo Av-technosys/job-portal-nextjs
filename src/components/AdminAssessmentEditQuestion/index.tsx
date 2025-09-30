@@ -152,6 +152,10 @@ const Index = ({
             QUESTION_CONFIG.FORM_CONFIG.CORRECT_OPTION_FIELD,
           ]}
           formFooterArray={[QUESTION_CONFIG.FORM_CONFIG.SAVE_BUTTON]}
+          questionData={{
+            questionId: questionData.id,
+            questionImage: questionData.question_image,
+          }}
         />
       </Stack>
     </>

@@ -85,6 +85,7 @@ export interface FormikProps {
     formItemParentClassName?: string;
     formFooterClassName?: string;
   };
+  questionData?: { questionId: number; questionImage: string | null };
 }
 
 export interface FormikFormProps {
@@ -93,6 +94,7 @@ export interface FormikFormProps {
   setFieldValue: FormikHelpers<CommonObjectType>["setFieldValue"];
   parentFieldName?: string;
   classNames?: FormikProps["classNames"];
+  questionData?: { questionId: number; questionImage: string | null };
 }
 
 export interface FormikArrayFieldProps {
