@@ -31,10 +31,12 @@ import {
   useCreateOrUpdateQuestionPicture,
   useDeleteQuestionPicture,
 } from "@/services/useUploadQuestionPic";
+import { useQueryClient } from "@tanstack/react-query";
 
 function UploadQuestionPic({ questionId, questionImage }: any) {
   // const { questionId, questionImage } = questionData;
   console.log(questionId, "questionId");
+  const queryClient = useQueryClient();
   const { showNotification } = useNotification();
   const { NOTIFICATION_CONFIG } = QUESTION_PICTURE_UPLOAD_CONFIG;
   const [isDragOver, setIsDragOver] = useState(false);
@@ -45,8 +47,10 @@ function UploadQuestionPic({ questionId, questionImage }: any) {
   const createOrUpdateQuestionPicture = useCreateOrUpdateQuestionPicture({
     mutationConfig: {
       onSuccess: () => {
-        refetchCommonDetails();
         showNotification(NOTIFICATION_CONFIG.SUCCESS);
+        // queryClient.invalidateQueries({
+        //   queryKey: ["question_details"],
+        // });
       },
       onError: (error) => {
         showNotification({
@@ -60,7 +64,7 @@ function UploadQuestionPic({ questionId, questionImage }: any) {
   const deleteQuestionPicture = useDeleteQuestionPicture({
     mutationConfig: {
       onSuccess: () => {
-        refetchCommonDetails();
+        // refetchCommonDetails();
         showNotification(NOTIFICATION_CONFIG.DELETE_SUCCESS);
       },
       onError: (error) => {

@@ -62,10 +62,10 @@ export const useCreateOrUpdateQuestionPicture = ({
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (...args) => {
+    onSuccess: async (...args) => {
       onSuccess?.(...args);
       // Invalidate Old Data
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: getQuestionPictureQueryOptions().queryKey,
       });
     },
@@ -77,9 +77,16 @@ export const useCreateOrUpdateQuestionPicture = ({
   });
 };
 
+export type QuestionIdInfoInput = {
+  question_id: string | number;
+};
 // DELETE
-export const DeleteQuestionPicture = ({}): Promise<CommonAllDataType> => {
-  return api.delete(`${apiConstantsURL.profile.questionImage}`);
+export const DeleteQuestionPicture = ({
+  data,
+}: {
+  data: QuestionIdInfoInput;
+}): Promise<CommonAllDataType> => {
+  return api.patch(`${apiConstantsURL.profile.questionImage}`, data);
 };
 
 type UseDeleteQuestionPictureOptions = {
