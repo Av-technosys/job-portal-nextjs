@@ -49,6 +49,7 @@ function StudentProfile() {
     EXPECTING_SALARY_FIELD,
     JOB_SEARCH_STATUS_FIELD,
     NOTICE_PERIOD_FIELD,
+    COVER_LATER_PARAGRAPH_FIELD,
     SAVE_BUTTON,
   } = FORM_CONFIG;
 
@@ -128,6 +129,7 @@ function StudentProfile() {
   }, [jobSeekerGeneralInfo]);
 
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
+    console.log("values", values);
     jobSeekerGeneralInfoMutate.mutate({
       data: createDataForStudentProfileGeneralDetails({
         valueObj: values,
@@ -237,6 +239,7 @@ function StudentProfile() {
           EXPECTING_SALARY_FIELD,
           JOB_SEARCH_STATUS_FIELD,
           NOTICE_PERIOD_FIELD,
+          COVER_LATER_PARAGRAPH_FIELD,
           UPLOAD_DOCUMENTS_HEADING,
           ...uploadDocumentsFields,
         ]}

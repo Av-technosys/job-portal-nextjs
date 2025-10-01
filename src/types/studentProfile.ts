@@ -26,6 +26,7 @@ export type CreateOrUpdateStudentProfileGeneralInfoInput = {
   end_date: string;
   aq_id: number;
   sy_id: number;
+  cover_later: string;
 };
 
 export type CreateOrUpdateStudentProfileAdditionalInfoInput = {

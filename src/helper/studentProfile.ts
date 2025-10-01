@@ -88,6 +88,7 @@ export function createDataForStudentProfileGeneralDetails({
   // Key: Value
   const payloadArr = {
     qualification_type: "qualification_type",
+    cover_later: "cover_later",
     institution_name: "institution_name",
     qualification_status: "qualification_status",
     score: "score",
