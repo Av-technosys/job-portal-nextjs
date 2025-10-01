@@ -511,6 +511,22 @@ export const STUDENT_PROFILE_PROFILE_CONFIG = {
       },
       options: NOTICE_PERIOD_OPTIONS,
     },
+    COVER_LATER_PARAGRAPH_FIELD: {
+      inputProps: {
+        name: "cover_later",
+        placeholder: "Enter Your Cover Later Here",
+        multiline: true,
+        minRows: 5,
+        maxRows: 5,
+      },
+      inputLabelProps: {
+        children: "Cover Later",
+        shrink: true,
+      },
+      formControlProps: {
+        sx: FIELD_WIDTHS.EXTRA_LARGE,
+      },
+    },
     SAVE_BUTTON: {
       buttonProps: {
         children: "Save And Next",
