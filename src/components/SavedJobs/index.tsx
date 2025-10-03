@@ -7,7 +7,7 @@ import {
   useNotification,
   usePagination,
 } from "@/services";
-import { InfinitePagination, Stack, Typography, When } from "../common";
+import { InfinitePagination, Stack, Typography, When, Loader } from "../common";
 import { SAVED_JOB_PAGE_COFIG, PAGIANTION_LIMIT } from "@/constants";
 import SavedJobCard from "./SavedJobCard";
 import { CommonObjectType } from "@/types";
@@ -103,6 +103,9 @@ function SavedJobs() {
 
   return (
     <>
+      <When condition={jobSaveAPIData?.isLoading || jobSaveAPIData?.isFetching}>
+        <Loader loaderProps={{ open: true }} />
+      </When>
       <Stack
         stackProps={{
           direction: "row",
@@ -148,7 +151,7 @@ function SavedJobs() {
         </InfinitePagination>
       </When>
 
-      <When condition={totalLength === 0}>
+      <When condition={jobSaveAPIData?.isFetched && totalLength === 0}>
         <EmptySavedJobs />
       </When>
     </>
