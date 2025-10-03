@@ -76,7 +76,7 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
     <Stack stackProps={{ className: "p-4 border-2 rounded-md" }}>
       <Typography {...CONTACT_TEXT} />
       <Stack stackProps={{ className: "mt-4", gap: 2 }}>
-        {/* {recruiterDetailContactInformation.map((detail, index) => (
+        {recruiterDetailContactInformation.map((detail, index) => (
           <TextAndSubtextWithIcon
             textWithIconProps={{ direction: "row" }}
             key={`recruiterDetailOverview-${index}`}
@@ -84,7 +84,7 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
             subTextProps={detail.subTextProps}
             textProps={detail.textProps}
           />
-        ))} */}
+        ))}
       </Stack>
     </Stack>
   );
