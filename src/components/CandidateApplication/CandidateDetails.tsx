@@ -112,7 +112,6 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
   };
 
   console.log("selectedCandidate: ", selectedCandidate.current);
-
   return (
     <>
       <When condition={totalLength !== 0}>
@@ -170,7 +169,15 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
             onClick={() =>
               handleMenuItemClick(
                 item.key,
-                Number(selectedCandidate.current?.user?.id)
+                typeof selectedCandidate.current?.user === "object"
+                  ? Number(
+                      (
+                        selectedCandidate.current?.user as {
+                          id?: string | number;
+                        }
+                      )?.id
+                    )
+                  : Number(selectedCandidate.current?.user)
               )
             }
           >

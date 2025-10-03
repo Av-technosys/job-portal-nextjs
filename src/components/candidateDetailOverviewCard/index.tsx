@@ -9,12 +9,13 @@ import { colorStyles } from "@/styles";
 import { CANDIDATE_DETAILS_PAGE_CONFIG } from "@/constants";
 import { Stack, TextWithIcon } from "../common";
 import { CommonObjectType } from "@/types";
+import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
 
 interface CandidateOverviewCardProps {
-  candidate: CommonObjectType;
+  candidateId: number | string | string[] | boolean;
 }
 
-function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
+function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
   const {
     DOB_TEXT,
     DOB,
@@ -25,24 +26,32 @@ function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
     EDUCATION_TEXT,
   } = CANDIDATE_DETAILS_PAGE_CONFIG;
 
+  const ApplicantPersonalDetails = useGetApplicantPersonalDetails({
+    queryParams: {
+      UserId: candidateId,
+    },
+  });
+
+  const ApplicantFullData = ApplicantPersonalDetails?.data?.data;
+
   const candidateDetailOverview = useMemo(() => {
     return [
       {
         icon: <CakeIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
         subTextProps: DOB_TEXT,
-        textProps: DOB(candidate),
+        textProps: DOB(ApplicantFullData?.data_of_birth),
       },
       {
         icon: <FlagIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
         subTextProps: NATIONALITY_TEXT,
-        textProps: NATIONALITY(candidate),
+        textProps: NATIONALITY(ApplicantFullData?.country),
       },
       {
         icon: (
           <LayersOutlinedIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
         subTextProps: EXPERIECE_TEXT,
-        textProps: EXPERIENCE(candidate),
+        textProps: EXPERIENCE(ApplicantFullData?.gender),
       },
       {
         icon: (
@@ -51,7 +60,7 @@ function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
           />
         ),
         subTextProps: EDUCATION_TEXT,
-        textProps: EXPERIENCE(candidate),
+        textProps: EXPERIENCE(ApplicantFullData?.phone_number),
       },
     ];
   }, [
@@ -62,7 +71,6 @@ function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
     NATIONALITY,
     EXPERIECE_TEXT,
     EDUCATION_TEXT,
-    candidate,
   ]);
 
   return (

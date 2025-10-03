@@ -173,7 +173,7 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
   NAME: (candidate: CommonObjectType) => {
     return {
       typographyProps: {
-        children: candidate?.name,
+        children: candidate?.first_name,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.large,

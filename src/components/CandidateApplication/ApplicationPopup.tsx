@@ -1,5 +1,12 @@
 import { APPLICATION_MODAL, CANDIDATE_DETAILS_PAGE_CONFIG } from "@/constants";
-import { Avatar, Button, Modal, Stack, Typography } from "../common";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  Modal,
+  Stack,
+  Typography,
+} from "../common";
 import { CommonObjectType, Job } from "@/types";
 // import Messaging from "../Messaging";
 import { CancelOutlinedIcon } from "@/assets";
@@ -9,6 +16,8 @@ import SocialLinksCard from "../SocialLinksCard";
 import CandidateContactCard from "../CandidateDetailContactIInfo";
 import ResumeDownloadCard from "../ResumedownloadCard";
 import { CandidateDetailOverviewCard } from "..";
+import { useGetApplicantDetails } from "@/services/useGetApplicantDetails";
+import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
 
 interface ApplicationPopupProps {
   open: boolean;
@@ -17,32 +26,33 @@ interface ApplicationPopupProps {
   candidateDetails: CommonObjectType;
 }
 
-const candidate = {
-  id: 1,
-  name: "Vishal Sir",
-  email: "vishal.sir@example.com",
-  phone: "+1234567890",
-  date_of_birth: "06/09/2000",
-  nationality: "india",
-  experience: "5 years",
-  education: "Bachelor's in Computer Science",
-  resume_url: "https://example.com/resume.pdf",
-  applied_date: "2024-01-20",
-  status: "active" as "active" | "expired",
-  skills: ["React", "TypeScript", "Node.js"],
-  current_company: "Tech Corp",
-  designation: "Senior Developer",
-  salary: "$80,000",
-  location: "New York",
-  description:
-    "I've been passionate about graphic design and digital art from an early ",
-  cover_letter:
-    "Respected Sir,I am willing to express my interest in the fourth grade instructional position that is currently available in the Fort Wayne Community School System learned of the opening trough a notice posted on Job Assured, IPFW's job database. I am confident that my academic background and curriculum development skills would be successfully utilized in this teaching position.",
-};
+// const candidate = {
+//   id: 1,
+//   name: "Vishal Sir",
+//   email: "vishal.sir@example.com",
+//   phone: "+1234567890",
+//   date_of_birth: "06/09/2000",
+//   nationality: "india",
+//   experience: "5 years",
+//   education: "Bachelor's in Computer Science",
+//   resume_url: "https://example.com/resume.pdf",
+//   applied_date: "2024-01-20",
+//   status: "active" as "active" | "expired",
+//   skills: ["React", "TypeScript", "Node.js"],
+//   current_company: "Tech Corp",
+//   designation: "Senior Developer",
+//   salary: "$80,000",
+//   location: "New York",
+//   description:
+//     "I've been passionate about graphic design and digital art from an early ",
+//   cover_letter:
+//     "Respected Sir,I am willing to express my interest in the fourth grade instructional position that is currently available in the Fort Wayne Community School System learned of the opening trough a notice posted on Job Assured, IPFW's job database. I am confident that my academic background and curriculum development skills would be successfully utilized in this teaching position.",
+// };
 
 export default function ApplicationPopup({
   open,
   handleClose,
+  candidateDetails,
 }: // jobDetails,
 // candidateDetails,
 ApplicationPopupProps) {
@@ -60,6 +70,27 @@ ApplicationPopupProps) {
     COVER_LETTER,
   } = CANDIDATE_DETAILS_PAGE_CONFIG;
 
+  const userId =
+    typeof candidateDetails?.user === "object"
+      ? (candidateDetails?.user as { id?: string | number })?.id
+      : candidateDetails?.user;
+
+  const ApplicantDetails = useGetApplicantDetails({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  console.log("applicanttttt", ApplicantDetails?.data?.data);
+
+  const ApplicantPersonalDetails = useGetApplicantPersonalDetails({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  console.log("applicantPersonalDetails", ApplicantPersonalDetails?.data?.data);
+
   return (
     <>
       <Modal open={open} onClose={handleClose}>
@@ -75,9 +106,11 @@ ApplicationPopupProps) {
                 alignItems: "end",
               }}
             >
-              <CancelOutlinedIcon
-                sx={{ color: colorStyles.filterTagsTextColor }}
-              />
+              <IconButton onClick={handleClose}>
+                <CancelOutlinedIcon
+                  sx={{ color: colorStyles.filterTagsTextColor }}
+                />
+              </IconButton>
             </Stack>
             <Stack
               stackProps={{
@@ -94,8 +127,14 @@ ApplicationPopupProps) {
                 }}
               >
                 <Stack>
-                  <Avatar {...IMAGE(candidate).avatarProps}>
-                    {getInitials({ name: String(candidate?.name || "") })}
+                  <Avatar
+                    {...IMAGE(ApplicantPersonalDetails?.data?.data).avatarProps}
+                  >
+                    {getInitials({
+                      name: String(
+                        ApplicantPersonalDetails.data?.data?.first_name || ""
+                      ),
+                    })}
                   </Avatar>
                 </Stack>
                 <Stack
@@ -103,8 +142,10 @@ ApplicationPopupProps) {
                     gap: 1,
                   }}
                 >
-                  <Typography {...NAME(candidate)} />
-                  <Typography {...DESIGNATION(candidate)} />
+                  <Typography {...NAME(ApplicantPersonalDetails?.data?.data)} />
+                  <Typography
+                    {...DESIGNATION(ApplicantPersonalDetails?.data?.data)}
+                  />
                 </Stack>
               </Stack>
               <Stack
@@ -134,11 +175,14 @@ ApplicationPopupProps) {
                   gap: 2,
                 }}
               >
-                <Typography {...BIOGRAPHY_TEXT} />
-                <Typography {...BIOGRAPHY(candidate)} />
+                {/* <Typography {...BIOGRAPHY_TEXT} />
+                <Typography {...BIOGRAPHY(candidate)} /> */}
                 <Typography {...COVER_LETTER_TEXT} />
-                <Typography {...COVER_LETTER(candidate)} />
-                <SocialLinksCard job={candidate} />
+                <Typography
+                  {...COVER_LETTER(ApplicantDetails?.data?.data?.cover_letter)}
+                />
+
+                <SocialLinksCard userId={userId} />
               </Stack>
               {/* right Stack */}
               <Stack
@@ -147,9 +191,9 @@ ApplicationPopupProps) {
                   gap: 3,
                 }}
               >
-                <CandidateDetailOverviewCard candidate={candidate} />
-                <ResumeDownloadCard candidate={candidate} />
-                <CandidateContactCard candidate={candidate} />
+                <CandidateDetailOverviewCard candidateId={userId} />
+                {/* <ResumeDownloadCard candidate={candidate} />
+                <CandidateContactCard candidate={candidate} /> */}
               </Stack>
             </Stack>
           </Stack>
