@@ -58,3 +58,6 @@ export * from "./useUpdateCandidateStatus";
 export * from "./useDeleteAssessmentQuestion";
 export * from "./useGetQuestionbySubjectID";
 export * from "./useGetAssesmentQuestionDetails";
+export * from "./useGetCompanyProfileById";
+export * from "./useGetRecruiterFoundingById";
+export * from "./useGetSocialUrlsRecruiterById";

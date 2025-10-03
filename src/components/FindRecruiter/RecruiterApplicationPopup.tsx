@@ -10,6 +10,11 @@ import { colorStyles } from "@/styles";
 import { getInitials } from "@/helper";
 import SocialLinksCard from "../SocialLinksCard";
 import { RecruiterContactCard } from "..";
+import {
+  useGetCompanyProfileById,
+  useGetRecruiterFoundingById,
+  useGetSocialUrlsRecruiterById,
+} from "@/services";
 
 interface RecruiterApplicationPopupProps {
   open: boolean;
@@ -36,6 +41,7 @@ const recruiter = {
 export default function RecruiterApplicationPopup({
   open,
   handleClose,
+  recruiterDetails,
 }: RecruiterApplicationPopupProps) {
   const { MODAL_STYLES } = RECRUITER_APPLICATION_MODAL;
   const {
@@ -49,6 +55,29 @@ export default function RecruiterApplicationPopup({
     SKILLS_TEXT,
     SKILLS,
   } = RECRUITER_APPLICATION_PAGE_CONFIG;
+
+  const userId =
+    typeof recruiterDetails?.user === "object"
+      ? (recruiterDetails?.user as { id?: string | number })?.id
+      : recruiterDetails?.user;
+
+  const CompanyProfileById = useGetCompanyProfileById({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const RecruiterFoundingById = useGetRecruiterFoundingById({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const SocialUrlsRecruiterById = useGetSocialUrlsRecruiterById({
+    queryParams: {
+      UserId: userId,
+    },
+  });
 
   return (
     <>
