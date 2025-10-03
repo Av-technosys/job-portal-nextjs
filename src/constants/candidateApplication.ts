@@ -35,7 +35,7 @@ export const CANDIDATE_APPLICATION_PAGE_CONFIG = {
       return {
         avatarProps: {
           variant: AvatarVariantEnum.SQUARE,
-          src: candidate?.company_profile_image, // Default image if none is provided
+          src: candidate?.profile_picture, // Default image if none is provided
           alt: candidate?.company_profile_image || "Company logo",
           children: candidate?.company_profile_image,
           sx: {
@@ -385,34 +385,47 @@ export const APPLICATION_MODAL = {
   },
 };
 
+export const IN_REVIEW = "in_review";
+export const ON_HOLD = "on_hold";
 export const SHORTLIST = "shortlist";
-export const NOT_SHORTLISTED = "not_shortlisted";
-export const SELECT = "select";
-export const INTERVIEWED = "interviewed";
-export const NOT_INTERVIEWED = "not_interviewed";
+export const INTERVIEWING = "interviewing";
+export const REJECTED = "rejected";
+export const SALARY_NEGOTIATION = "salary_negotiation";
+export const OFFERED = "offered";
+export const JOINED = "joined";
 
 export const CANDIDATE_APPLICATION_MENU_ITEMS = [
   {
-    label: "Select",
-    key: SELECT,
+    label: "In Review",
+    key: IN_REVIEW,
   },
-
   {
-    label: "Shortlist",
+    label: "On Hold",
+    key: ON_HOLD,
+  },
+  {
+    label: "Shortlisted",
     key: SHORTLIST,
   },
   {
-    label: "Not Shortlisted",
-    key: NOT_SHORTLISTED,
+    label: "Interviewing",
+    key: INTERVIEWING,
   },
   {
-    label: "Interviewed",
-    key: INTERVIEWED,
+    label: "Rejected",
+    key: REJECTED,
   },
-
   {
-    label: "Not Interviewed",
-    key: NOT_INTERVIEWED,
+    label: "Salary Negotiation",
+    key: SALARY_NEGOTIATION,
+  },
+  {
+    label: "Offered",
+    key: OFFERED,
+  },
+  {
+    label: "Joined",
+    key: JOINED,
   },
 ];
 
@@ -423,5 +436,4 @@ export const CANDIDATE_NOTIFICATION_CONFIG = {
   DELETE_SUCCESS: {
     message: "Candidate Deleted successfully",
   },
-
 };

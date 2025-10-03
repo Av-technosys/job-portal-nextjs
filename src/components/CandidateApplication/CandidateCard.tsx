@@ -80,7 +80,7 @@ export default function CandidateApplicationCard({
         }}
       >
         <Stack>
-          <Avatar {...IMAGE(candidate).avatarProps}>
+          <Avatar {...IMAGE(candidate.user as CommonObjectType).avatarProps}>
             {getInitials({ name: String(candidate?.name || "") })}
           </Avatar>
         </Stack>
@@ -99,7 +99,7 @@ export default function CandidateApplicationCard({
               width: "100%",
             }}
           >
-            <Typography {...NAME(candidate)} />
+            <Typography {...NAME(candidate.user as CommonObjectType)} />
             <IconButton onClick={handleIconButtonClick}>
               <MoreVertIcon />
             </IconButton>
@@ -123,13 +123,13 @@ export default function CandidateApplicationCard({
                 gap: 3,
               }}
             >
-              {/* {candidateDetails.map((detail, index) => (
+              {candidateDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`CandidateApplicationDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))} */}
+              ))}
             </Stack>
             <Stack
               stackProps={{
