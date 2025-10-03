@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetPostedJobList, usePagination } from "@/services";
-import { InfinitePagination, Stack, Typography, When } from "../common";
+import { InfinitePagination, Loader, Stack, Typography, When } from "../common";
 import { CANDIATE_APPLICATIONS_URL, POSTED_JOB_PAGE_CONFIG } from "@/constants";
 import PostedJobCard from "./PostedJobCard";
 // import { colorStyles } from "@/styles";
@@ -29,6 +29,9 @@ function PostedJobs() {
 
   return (
     <>
+      <When condition={jobInfoAPIData?.isLoading || jobInfoAPIData?.isFetching}>
+        <Loader loaderProps={{ open: true }} />
+      </When>
       <Stack
         stackProps={{
           direction: "row",
@@ -78,7 +81,7 @@ function PostedJobs() {
           </Stack>
         </InfinitePagination>
       </When>
-      <When condition={totalLength === 0}>
+      <When condition={jobInfoAPIData?.isFetched && totalLength === 0}>
         <EmptyPostedJobs />
       </When>
     </>

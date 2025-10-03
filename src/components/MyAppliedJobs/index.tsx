@@ -1,6 +1,13 @@
 import React from "react";
 import { useGetAppliedJobList, usePagination } from "@/services";
-import { InfinitePagination, Stack, Typography, When } from "../common";
+import {
+  InfinitePagination,
+  Loader,
+  Skeleton,
+  Stack,
+  Typography,
+  When,
+} from "../common";
 import { APPLIED_JOB_PAGE_CONFIG } from "@/constants";
 import AppliedJobCard from "./AppliedJobCard";
 import EmptyAppliedJobs from "../EmptyStates/EmptyAppliedJobs";
@@ -17,6 +24,9 @@ function AppliedJobs() {
 
   return (
     <>
+      <When condition={jobInfoAPIData?.isLoading || jobInfoAPIData?.isFetching}>
+        <Loader loaderProps={{ open: true }} />
+      </When>
       <Stack
         stackProps={{
           direction: "row",
@@ -31,19 +41,6 @@ function AppliedJobs() {
               <Typography {...TITLE_COUNT(totalLength)} />
               <Typography {...TITLE_HEADER(totalLength)} />
             </>
-            {/* <Stack
-          stackProps={{
-            className: "mb-3.5",
-            direction: "row",
-            justifyContent: "space-around",
-            bgcolor: colorStyles.listTitleBackgroundColor,
-          }}
-        >
-          <Typography {...JOB()} />
-          <Typography {...JOB_TYPE()} />
-          <Typography {...APPLIED_DATE()} />
-          <Typography {...ACTION()} />
-        </Stack> */}
           </When>
         </Stack>
       </Stack>
@@ -61,7 +58,7 @@ function AppliedJobs() {
           </Stack>
         </InfinitePagination>
       </When>
-      <When condition={totalLength === 0}>
+      <When condition={jobInfoAPIData?.isFetched && totalLength === 0}>
         <EmptyAppliedJobs />
       </When>
     </>
