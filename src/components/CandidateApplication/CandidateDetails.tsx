@@ -111,7 +111,6 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
     handleClose();
   };
 
-  console.log("selectedCandidate: ", selectedCandidate.current);
   return (
     <>
       <When condition={totalLength !== 0}>

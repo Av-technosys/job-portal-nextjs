@@ -3,6 +3,7 @@ import {
   Avatar,
   Button,
   IconButton,
+  Loader,
   Modal,
   Stack,
   Typography,
@@ -16,8 +17,9 @@ import SocialLinksCard from "../SocialLinksCard";
 import CandidateContactCard from "../CandidateDetailContactIInfo";
 import ResumeDownloadCard from "../ResumedownloadCard";
 import { CandidateDetailOverviewCard } from "..";
-import { useGetApplicantDetails } from "@/services/useGetApplicantDetails";
 import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
+import CandidateAcademicCard from "./CandidateAcademicInfo";
+import CandidateProfessionalCard from "./CandidateProfessionalInfo";
 
 interface ApplicationPopupProps {
   open: boolean;
@@ -25,29 +27,6 @@ interface ApplicationPopupProps {
   jobDetails: Job;
   candidateDetails: CommonObjectType;
 }
-
-// const candidate = {
-//   id: 1,
-//   name: "Vishal Sir",
-//   email: "vishal.sir@example.com",
-//   phone: "+1234567890",
-//   date_of_birth: "06/09/2000",
-//   nationality: "india",
-//   experience: "5 years",
-//   education: "Bachelor's in Computer Science",
-//   resume_url: "https://example.com/resume.pdf",
-//   applied_date: "2024-01-20",
-//   status: "active" as "active" | "expired",
-//   skills: ["React", "TypeScript", "Node.js"],
-//   current_company: "Tech Corp",
-//   designation: "Senior Developer",
-//   salary: "$80,000",
-//   location: "New York",
-//   description:
-//     "I've been passionate about graphic design and digital art from an early ",
-//   cover_letter:
-//     "Respected Sir,I am willing to express my interest in the fourth grade instructional position that is currently available in the Fort Wayne Community School System learned of the opening trough a notice posted on Job Assured, IPFW's job database. I am confident that my academic background and curriculum development skills would be successfully utilized in this teaching position.",
-// };
 
 export default function ApplicationPopup({
   open,
@@ -60,14 +39,9 @@ ApplicationPopupProps) {
   const {
     IMAGE,
     NAME,
-    DESIGNATION,
     NOT_SHORTLISTED_BUTTON,
     SAVE_FOR_LATER_BUTTON,
     SCEHDULE_INTERVIEW_BUTTON,
-    BIOGRAPHY_TEXT,
-    BIOGRAPHY,
-    COVER_LETTER_TEXT,
-    COVER_LETTER,
   } = CANDIDATE_DETAILS_PAGE_CONFIG;
 
   const userId =
@@ -75,21 +49,13 @@ ApplicationPopupProps) {
       ? (candidateDetails?.user as { id?: string | number })?.id
       : candidateDetails?.user;
 
-  const ApplicantDetails = useGetApplicantDetails({
+  const ApplicantFullData = useGetApplicantPersonalDetails({
     queryParams: {
       UserId: userId,
     },
   });
 
-  console.log("applicanttttt", ApplicantDetails?.data?.data);
-
-  const ApplicantPersonalDetails = useGetApplicantPersonalDetails({
-    queryParams: {
-      UserId: userId,
-    },
-  });
-
-  console.log("applicantPersonalDetails", ApplicantPersonalDetails?.data?.data);
+  const AplicantPersonalDetails = ApplicantFullData?.data?.data;
 
   return (
     <>
@@ -128,12 +94,11 @@ ApplicationPopupProps) {
               >
                 <Stack>
                   <Avatar
-                    {...IMAGE(ApplicantPersonalDetails?.data?.data).avatarProps}
+                    {...IMAGE(AplicantPersonalDetails?.profile_picture)
+                      .avatarProps}
                   >
                     {getInitials({
-                      name: String(
-                        ApplicantPersonalDetails.data?.data?.first_name || ""
-                      ),
+                      name: String(AplicantPersonalDetails?.first_name || ""),
                     })}
                   </Avatar>
                 </Stack>
@@ -142,10 +107,7 @@ ApplicationPopupProps) {
                     gap: 1,
                   }}
                 >
-                  <Typography {...NAME(ApplicantPersonalDetails?.data?.data)} />
-                  <Typography
-                    {...DESIGNATION(ApplicantPersonalDetails?.data?.data)}
-                  />
+                  <Typography {...NAME(AplicantPersonalDetails?.first_name)} />
                 </Stack>
               </Stack>
               <Stack
@@ -175,13 +137,8 @@ ApplicationPopupProps) {
                   gap: 2,
                 }}
               >
-                {/* <Typography {...BIOGRAPHY_TEXT} />
-                <Typography {...BIOGRAPHY(candidate)} /> */}
-                <Typography {...COVER_LETTER_TEXT} />
-                <Typography
-                  {...COVER_LETTER(ApplicantDetails?.data?.data?.cover_letter)}
-                />
-
+                <CandidateAcademicCard candidateId={userId} />
+                <CandidateProfessionalCard candidateId={userId} />
                 <SocialLinksCard userId={userId} />
               </Stack>
               {/* right Stack */}
@@ -192,8 +149,8 @@ ApplicationPopupProps) {
                 }}
               >
                 <CandidateDetailOverviewCard candidateId={userId} />
-                {/* <ResumeDownloadCard candidate={candidate} />
-                <CandidateContactCard candidate={candidate} /> */}
+                <ResumeDownloadCard candidateId={userId} />
+                <CandidateContactCard candidateId={userId} />
               </Stack>
             </Stack>
           </Stack>

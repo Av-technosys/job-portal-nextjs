@@ -13,17 +13,14 @@ import { ApplicantSocialLinkProps } from "@/types";
 import { useGetApplicantSocialLinks } from "@/services/useGetApplicantSocialLinks";
 
 const SocialLinksCard = ({ userId }: ApplicantSocialLinkProps) => {
-  console.log("userIddd", userId);
   const { SOCIAL_HANDLE } = JOB_DETAIL_PAGE_CONFIG;
   const ApplicantSocialLinksDetails = useGetApplicantSocialLinks({
     queryParams: {
       UserId: userId,
     },
   });
-  console.log("applicantsociallinksdetails", ApplicantSocialLinksDetails);
 
-  // const social_links = job?.social_links || [];
-  const social_links = [];
+  const social_links = ApplicantSocialLinksDetails?.data?.data;
 
   const platformIconMap: Record<string, JSX.Element> = {
     instagram: <InstagramIcon />,

@@ -2,16 +2,16 @@ import React, { useMemo } from "react";
 import {
   CakeIcon,
   FlagIcon,
-  LayersOutlinedIcon,
   BusinessCenterOutlinedIcon,
+  Man2Icon,
+  PhoneInTalkRoundedIcon,
 } from "@/assets";
 import { colorStyles } from "@/styles";
 import { CANDIDATE_DETAILS_PAGE_CONFIG } from "@/constants";
 import { Stack, TextWithIcon } from "../common";
-import { CommonObjectType } from "@/types";
 import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
 
-interface CandidateOverviewCardProps {
+export interface CandidateOverviewCardProps {
   candidateId: number | string | string[] | boolean;
 }
 
@@ -21,9 +21,10 @@ function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
     DOB,
     NATIONALITY_TEXT,
     NATIONALITY,
-    EXPERIECE_TEXT,
-    EXPERIENCE,
-    EDUCATION_TEXT,
+    GENDER_TEXT,
+    GENDER,
+    MOBILE_TEXT,
+    MOBILE,
   } = CANDIDATE_DETAILS_PAGE_CONFIG;
 
   const ApplicantPersonalDetails = useGetApplicantPersonalDetails({
@@ -35,11 +36,18 @@ function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
   const ApplicantFullData = ApplicantPersonalDetails?.data?.data;
 
   const candidateDetailOverview = useMemo(() => {
+    const genderValue = ApplicantFullData?.gender;
+    let formattedGender =
+      genderValue === 0
+        ? "Male"
+        : genderValue === 1
+        ? "Female"
+        : genderValue || "Not specified";
     return [
       {
         icon: <CakeIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
         subTextProps: DOB_TEXT,
-        textProps: DOB(ApplicantFullData?.data_of_birth),
+        textProps: DOB(ApplicantFullData?.date_of_birth),
       },
       {
         icon: <FlagIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
@@ -47,30 +55,29 @@ function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
         textProps: NATIONALITY(ApplicantFullData?.country),
       },
       {
-        icon: (
-          <LayersOutlinedIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        subTextProps: EXPERIECE_TEXT,
-        textProps: EXPERIENCE(ApplicantFullData?.gender),
+        icon: <Man2Icon sx={{ color: colorStyles.filterTagsTextColor }} />,
+        subTextProps: GENDER_TEXT,
+        textProps: GENDER(formattedGender),
       },
       {
         icon: (
-          <BusinessCenterOutlinedIcon
+          <PhoneInTalkRoundedIcon
             sx={{ color: colorStyles.filterTagsTextColor }}
           />
         ),
-        subTextProps: EDUCATION_TEXT,
-        textProps: EXPERIENCE(ApplicantFullData?.phone_number),
+        subTextProps: MOBILE_TEXT,
+        textProps: MOBILE(ApplicantFullData?.phone_number),
       },
     ];
   }, [
-    EXPERIENCE,
     DOB_TEXT,
     DOB,
     NATIONALITY_TEXT,
     NATIONALITY,
-    EXPERIECE_TEXT,
-    EDUCATION_TEXT,
+    GENDER_TEXT,
+    GENDER,
+    MOBILE_TEXT,
+    MOBILE,
   ]);
 
   return (
@@ -84,17 +91,17 @@ function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
           className: "grid grid-cols-2",
           gap: 2,
           alignItems: "center",
-          direction: "column",
+          direction: { xs: "column", sm: "row" },
         }}
       >
-        {/* {candidateDetailOverview.map((detail, index) => (
+        {candidateDetailOverview?.map((detail, index) => (
           <TextWithIcon
             key={`candidateDetailOverview-${index}`}
-            icon={detail.icon}
-            subTextProps={detail.subTextProps}
-            textProps={detail.textProps}
+            icon={detail?.icon}
+            subTextProps={detail?.subTextProps}
+            textProps={detail?.textProps}
           />
-        ))} */}
+        ))}
       </Stack>
     </Stack>
   );
