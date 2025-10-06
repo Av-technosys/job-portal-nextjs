@@ -46,6 +46,8 @@ function NotificationPopover({
     paginatedAPIData: notificationAPIData,
   });
 
+  // no-op here; InfinitePagination will handle scroll-based fetching when height is provided
+
   return (
     <>
       <Popover
@@ -60,12 +62,14 @@ function NotificationPopover({
           vertical: "top",
           horizontal: "center",
         }}
+        PaperProps={{ sx: { width: 360 } }}
       >
         <InfinitePagination
           dataLength={paginatedInfoData?.length}
           next={notificationAPIData?.fetchNextPage}
           hasMore={hasMore}
           isFetchingMore={notificationAPIData?.isFetchingNextPage}
+          height={360}
         >
           <>
             <When condition={paginatedInfoData?.length > 0}>
