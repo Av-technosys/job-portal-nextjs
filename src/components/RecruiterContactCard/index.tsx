@@ -8,17 +8,13 @@ import {
   LocationOnIcon,
   PhoneInTalkRoundedIcon,
 } from "@/assets";
+import { useGetCompanyProfileById } from "@/services";
 
-interface RecruiterContactCardProps {
-  recruiter: {
-    email?: string;
-    location?: string;
-    phone?: string;
-    linkedin?: string;
-  };
+export interface RecruiterContactCardProps {
+  recruiterId: string | number | boolean;
 }
 
-function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
+function RecruiterContactCard({ recruiterId }: RecruiterContactCardProps) {
   const {
     CONTACT_TEXT,
     MAIL_TEXT,
@@ -31,34 +27,42 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
     LINKED_IN_URL,
   } = RECRUITER_APPLICATION_PAGE_CONFIG;
 
+  const CompanyProfileById = useGetCompanyProfileById({
+    queryParams: {
+      UserId: recruiterId,
+    },
+  });
+
+  const companyData = CompanyProfileById?.data?.data || {};
+
   const recruiterDetailContactInformation = useMemo(() => {
     return [
       {
         icon: <EmailIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
         subTextProps: MAIL_TEXT,
-        textProps: EMAIL(recruiter),
+        textProps: EMAIL(companyData?.email || undefined),
       },
       {
         icon: (
           <LocationOnIcon sx={{ color: colorStyles.filterTagsTextColor }} />
         ),
         subTextProps: LOCATION_TEXT,
-        textProps: LOCATION(recruiter),
+        textProps: LOCATION(companyData),
       },
-      {
-        icon: (
-          <PhoneInTalkRoundedIcon
-            sx={{ color: colorStyles.filterTagsTextColor }}
-          />
-        ),
-        subTextProps: MOBILE_TEXT,
-        textProps: MOBILE(recruiter),
-      },
-      {
-        icon: <LinkedInIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: LINKED_IN_TEXT,
-        textProps: LINKED_IN_URL(recruiter),
-      },
+      // {
+      //   icon: (
+      //     <PhoneInTalkRoundedIcon
+      //       sx={{ color: colorStyles.filterTagsTextColor }}
+      //     />
+      //   ),
+      //   subTextProps: MOBILE_TEXT,
+      //   textProps: MOBILE(recruiter),
+      // },
+      // {
+      //   icon: <LinkedInIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      //   subTextProps: LINKED_IN_TEXT,
+      //   textProps: LINKED_IN_URL(recruiter),
+      // },
     ];
   }, [
     MAIL_TEXT,
@@ -69,7 +73,6 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
     LOCATION,
     MOBILE_TEXT,
     MOBILE,
-    recruiter,
   ]);
 
   return (

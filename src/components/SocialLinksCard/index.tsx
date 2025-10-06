@@ -10,10 +10,14 @@ import {
   TwitterIcon,
 } from "@/assets";
 import { SocialLinksCardProps } from "@/types";
+import { useGetSocialUrlsRecruiterById } from "@/services";
+import { RecruiterContactCardProps } from "../RecruiterContactCard";
 
-const SocialLinksCard: React.FC<SocialLinksCardProps> = ({ job }) => {
+const SocialLinksCard: React.FC<RecruiterContactCardProps> = ({
+  recruiterId,
+}) => {
   const { SOCIAL_HANDLE } = JOB_DETAIL_PAGE_CONFIG;
-  const social_links = job?.social_links || []; // ✅ Ensures it's an arra
+  // const social_links = recruiter?.social_links || [];
 
   const platformIconMap: Record<string, JSX.Element> = {
     instagram: <InstagramIcon />,
@@ -22,6 +26,14 @@ const SocialLinksCard: React.FC<SocialLinksCardProps> = ({ job }) => {
     google: <GoogleIcon />,
     other: <PublicIcon />,
   };
+
+  const SocialUrlsRecruiterById = useGetSocialUrlsRecruiterById({
+    queryParams: {
+      UserId: recruiterId,
+    },
+  });
+
+  const social_links = SocialUrlsRecruiterById?.data?.data || [];
 
   return (
     <Stack
