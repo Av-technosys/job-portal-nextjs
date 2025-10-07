@@ -2,7 +2,7 @@ import {
   RECRUITER_APPLICATION_MODAL,
   RECRUITER_APPLICATION_PAGE_CONFIG,
 } from "@/constants";
-import { Avatar, Modal, Stack, Typography } from "../common";
+import { Avatar, Modal, Stack, Typography, IconButton } from "../common";
 import { CommonObjectType, Job } from "@/types";
 import { CancelOutlinedIcon } from "@/assets";
 import { colorStyles } from "@/styles";
@@ -49,9 +49,11 @@ export default function RecruiterApplicationPopup({
                 alignItems: "end",
               }}
             >
-              <CancelOutlinedIcon
-                sx={{ color: colorStyles.filterTagsTextColor }}
-              />
+              <IconButton onClick={handleClose}>
+                <CancelOutlinedIcon
+                  sx={{ color: colorStyles.filterTagsTextColor }}
+                />
+              </IconButton>
             </Stack>
             <Stack
               stackProps={{

@@ -9,15 +9,18 @@ import {
   PublicIcon,
   TwitterIcon,
 } from "@/assets";
-import { SocialLinksCardProps } from "@/types";
+import { SocialLinksCardProps, CommonObjectType } from "@/types";
 import { useGetSocialUrlsRecruiterById } from "@/services";
-import { RecruiterContactCardProps } from "../RecruiterContactCard";
 
-const SocialLinksCard: React.FC<RecruiterContactCardProps> = ({
-  recruiterId,
-}) => {
+type Props = {
+  recruiterId?: string | number | boolean;
+  job?: CommonObjectType;
+};
+
+const SocialLinksCard: React.FC<Props> = ({ recruiterId, job }) => {
   const { SOCIAL_HANDLE } = JOB_DETAIL_PAGE_CONFIG;
-  // const social_links = recruiter?.social_links || [];
+  // If job prop is provided, prefer its social_links (used for candidate/job contexts)
+  const social_links_from_job = job?.social_links || [];
 
   const platformIconMap: Record<string, JSX.Element> = {
     instagram: <InstagramIcon />,
@@ -33,7 +36,13 @@ const SocialLinksCard: React.FC<RecruiterContactCardProps> = ({
     },
   });
 
-  const social_links = SocialUrlsRecruiterById?.data?.data || [];
+  const social_links_from_api = SocialUrlsRecruiterById?.data?.data || [];
+
+  // prefer job-provided links when job is passed; otherwise use API links
+  const social_links =
+    Array.isArray(social_links_from_job) && social_links_from_job.length > 0
+      ? social_links_from_job
+      : social_links_from_api;
 
   return (
     <Stack

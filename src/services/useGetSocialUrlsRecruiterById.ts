@@ -7,7 +7,7 @@ export interface getSocialUrlsRecruiterByIdQueryParams {
   UserId?: number | string | string[] | boolean;
 }
 
-export const useSocialUrlsRecruiterById = ({
+export const getSocialUrlsRecruiterById = ({
   UserId,
 }: getSocialUrlsRecruiterByIdQueryParams) => {
   return api.get(`${apiConstantsURL.profile.socialUrlsRecruiterById}${UserId}`);
@@ -19,7 +19,7 @@ export const getSocialUrlsRecruiterByIdQueryOptions = (
   const { UserId } = queryParams;
   return queryOptions({
     queryKey: ["socialUrlsRecruiterById", UserId],
-    queryFn: () => useSocialUrlsRecruiterById({ UserId }),
+    queryFn: () => getSocialUrlsRecruiterById({ UserId }),
   });
 };
 

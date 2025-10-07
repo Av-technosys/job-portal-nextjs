@@ -7,7 +7,7 @@ export interface getRecruiterFoundingByIdQueryParams {
   UserId?: number | string | string[] | boolean;
 }
 
-export const useRecruiterFoundingById = ({
+export const getRecruiterFoundingById = ({
   UserId,
 }: getRecruiterFoundingByIdQueryParams) => {
   return api.get(`${apiConstantsURL.profile.recruiterFoundingById}${UserId}`);
@@ -19,7 +19,7 @@ export const getRecruiterFoundingByIdQueryOptions = (
   const { UserId } = queryParams;
   return queryOptions({
     queryKey: ["recruiterFoundingById", UserId],
-    queryFn: () => useRecruiterFoundingById({ UserId }),
+    queryFn: () => getRecruiterFoundingById({ UserId }),
   });
 };
 

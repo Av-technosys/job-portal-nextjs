@@ -7,7 +7,7 @@ export interface getCompanyProfileByIdQueryParams {
   UserId?: number | string | string[] | boolean;
 }
 
-export const useCompanyProfileById = ({
+export const getCompanyProfileById = ({
   UserId,
 }: getCompanyProfileByIdQueryParams) => {
   return api.get(`${apiConstantsURL.profile.companyProfileById}${UserId}`);
@@ -19,7 +19,7 @@ export const getCompanyProfileByIdQueryOptions = (
   const { UserId } = queryParams;
   return queryOptions({
     queryKey: ["companyProfileById", UserId],
-    queryFn: () => useCompanyProfileById({ UserId }),
+    queryFn: () => getCompanyProfileById({ UserId }),
   });
 };
 
