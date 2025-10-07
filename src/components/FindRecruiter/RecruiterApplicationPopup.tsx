@@ -94,20 +94,6 @@ export default function RecruiterApplicationPopup({
             >
               {/* left Stack */}
               <RecruiterOverview recruiterId={userId} />
-              <Stack
-                stackProps={{
-                  width: { xs: "100%", md: "50%" },
-                  gap: 2,
-                }}
-              >
-                <Typography {...PROFESSIONAL_OVERVIEW_TEXT} />
-                <Typography {...PROFESSIONAL_OVERVIEW(recruiter)} />
-                <Typography {...CARRER_TEXT} />
-                <Typography {...CARRER_EXPERIENCE(recruiter)} />
-                <Typography {...SKILLS_TEXT} />
-                <Typography {...SKILLS(recruiter)} />
-                {/* <SocialLinksCard job={recruiter} /> */}
-              </Stack>
               {/* right Stack */}
               <Stack
                 stackProps={{

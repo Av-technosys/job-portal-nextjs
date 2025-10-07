@@ -39,7 +39,7 @@ export default function RecruiterOverview({
       <Typography {...CARRER_EXPERIENCE(recruiter)} />
       <Typography {...SKILLS_TEXT} />
       <Typography {...SKILLS(recruiter)} />
-      <SocialLinksCard recruiterId={recruiterId} />
+      <SocialLinksCard userId={recruiterId} />
     </Stack>
   );
 }
