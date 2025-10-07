@@ -9,11 +9,18 @@ import {
   PublicIcon,
   TwitterIcon,
 } from "@/assets";
-import { SocialLinksCardProps } from "@/types";
+import { ApplicantSocialLinkProps } from "@/types";
+import { useGetApplicantSocialLinks } from "@/services/useGetApplicantSocialLinks";
 
-const SocialLinksCard: React.FC<SocialLinksCardProps> = ({ job }) => {
+const SocialLinksCard = ({ userId }: ApplicantSocialLinkProps) => {
   const { SOCIAL_HANDLE } = JOB_DETAIL_PAGE_CONFIG;
-  const social_links = job?.social_links || []; // ✅ Ensures it's an arra
+  const ApplicantSocialLinksDetails = useGetApplicantSocialLinks({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const social_links = ApplicantSocialLinksDetails?.data?.data;
 
   const platformIconMap: Record<string, JSX.Element> = {
     instagram: <InstagramIcon />,

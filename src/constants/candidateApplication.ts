@@ -35,7 +35,7 @@ export const CANDIDATE_APPLICATION_PAGE_CONFIG = {
       return {
         avatarProps: {
           variant: AvatarVariantEnum.SQUARE,
-          src: candidate?.company_profile_image, // Default image if none is provided
+          src: candidate?.profile_picture, // Default image if none is provided
           alt: candidate?.company_profile_image || "Company logo",
           children: candidate?.company_profile_image,
           sx: {
@@ -147,13 +147,13 @@ export const JOB_DETAILS_SECTION = {
 };
 
 export const CANDIDATE_DETAILS_PAGE_CONFIG = {
-  IMAGE: (candidate: CommonObjectType) => {
+  IMAGE: (profile_picture: string) => {
     return {
       avatarProps: {
         variant: AvatarVariantEnum.CIRCULAR,
-        src: candidate?.company_profile_image, // Default image if none is provided
-        alt: candidate?.company_name || "Company logo",
-        children: candidate?.company_profile_image,
+        src: profile_picture, // Default image if none is provided
+        alt: profile_picture || "Company logo",
+        children: profile_picture,
         sx: {
           width: 100,
           height: 100,
@@ -170,10 +170,10 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       },
     } as TypographyProps;
   },
-  NAME: (candidate: CommonObjectType) => {
+  NAME: (first_name) => {
     return {
       typographyProps: {
-        children: candidate?.name,
+        children: first_name,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.large,
@@ -203,10 +203,10 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
     },
     fontSize: TypographyFontSize.large,
   },
-  COVER_LETTER: (candidate: CommonObjectType) => {
+  COVER_LETTER: (coverlater: string) => {
     return {
       typographyProps: {
-        children: candidate?.cover_letter,
+        children: coverlater,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -224,12 +224,12 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       children: "Date Of Birth",
       variant: TypographyVariantEnum.BODY2,
     },
-    fontSize: TypographyFontSize.large,
+    fontSize: TypographyFontSize.small,
   },
-  DOB: (candidate: CommonObjectType) => {
+  DOB: (date_of_birth: string) => {
     return {
       typographyProps: {
-        children: candidate?.date_of_birth,
+        children: date_of_birth,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -240,39 +240,32 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       children: "Nationality",
       variant: TypographyVariantEnum.BODY2,
     },
-    fontSize: TypographyFontSize.large,
+    fontSize: TypographyFontSize.small,
   },
-  NATIONALITY: (candidate: CommonObjectType) => {
+  NATIONALITY: (nationality: string) => {
     return {
       typographyProps: {
-        children: candidate?.nationality,
+        children: nationality,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
     } as TypographyProps;
   },
-  EXPERIECE_TEXT: {
+  GENDER_TEXT: {
     typographyProps: {
-      children: "Experience",
+      children: "Gender",
       variant: TypographyVariantEnum.BODY2,
     },
-    fontSize: TypographyFontSize.large,
+    fontSize: TypographyFontSize.small,
   },
-  EXPERIENCE: (candidate: CommonObjectType) => {
+  GENDER: (gender: string) => {
     return {
       typographyProps: {
-        children: candidate?.experience,
+        children: gender,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
     } as TypographyProps;
-  },
-  EDUCATION_TEXT: {
-    typographyProps: {
-      children: "Education",
-      variant: TypographyVariantEnum.BODY2,
-    },
-    fontSize: TypographyFontSize.large,
   },
   DOWNLOAD_RESUME_TEXT: {
     typographyProps: {
@@ -288,17 +281,54 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
     },
     fontSize: TypographyFontSize.large,
   },
+  ACADEMIC_TEXT: {
+    typographyProps: {
+      children: "Academic Information",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.large,
+  },
+  PROFESSIONAL_TEXT: {
+    typographyProps: {
+      children: "Professional Information",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.large,
+  },
+  SKILLS_TEXT: {
+    typographyProps: {
+      children: "SKILLS:-",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.large,
+  },
   MAIL_TEXT: {
     typographyProps: {
       children: "MAIL",
       variant: TypographyVariantEnum.BODY2,
     },
-    fontSize: TypographyFontSize.large,
+    fontSize: TypographyFontSize.small,
   },
-  EMAIL: (candidate: CommonObjectType) => {
+  EMAIL: (email: string) => {
     return {
       typographyProps: {
-        children: candidate?.email,
+        children: email,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  ADDRESS_TEXT: {
+    typographyProps: {
+      children: "ADDRESS",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  ADDRESS: (address: string) => {
+    return {
+      typographyProps: {
+        children: address,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -309,21 +339,37 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       children: "LOCATION",
       variant: TypographyVariantEnum.BODY2,
     },
-    fontSize: TypographyFontSize.large,
+    fontSize: TypographyFontSize.small,
   },
-  LOCATION: (candidate: CommonObjectType) => {
+  LOCATION: (state: string, city: string) => {
     return {
       typographyProps: {
-        children: candidate?.location,
+        children: `${state},${city}`,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
     } as TypographyProps;
   },
-  MOBILE: (candidate: CommonObjectType) => {
+  POSTAL_CODE_TEXT: {
+    typographyProps: {
+      children: "PINCODE",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  POSTAL_CODE: (code: string | number) => {
     return {
       typographyProps: {
-        children: candidate?.phone,
+        children: code,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  MOBILE: (phone: string) => {
+    return {
+      typographyProps: {
+        children: phone,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -334,7 +380,151 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       children: "MOBILE",
       variant: TypographyVariantEnum.BODY2,
     },
-    fontSize: TypographyFontSize.large,
+    fontSize: TypographyFontSize.small,
+  },
+  INSTITUTION_NAME: (institude: string) => {
+    return {
+      typographyProps: {
+        children: institude,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  INSTITUTION_NAME_TEXT: {
+    typographyProps: {
+      children: "INSTITUTION NAME",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  QUALIFICATION_STATUS: (qualificationStatus: string) => {
+    return {
+      typographyProps: {
+        children: qualificationStatus,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  QUALIFICATION_STATUS_TEXT: {
+    typographyProps: {
+      children: "QUALIFICATION STATUS",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  QUALIFICATION_TYPE: (qualificationType: string) => {
+    return {
+      typographyProps: {
+        children: qualificationType,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  QUALIFICATION_TYPE_TEXT: {
+    typographyProps: {
+      children: "QUALIFICATION TYPE",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  APPLICANT_SCORE: (score: string) => {
+    return {
+      typographyProps: {
+        children: score,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  APPLICANT_SCORE_TEXT: {
+    typographyProps: {
+      children: "SCORE",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  CURRENT_SALARY: (institude: string) => {
+    return {
+      typographyProps: {
+        children: institude,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  CURRENT_SALARY_TEXT: {
+    typographyProps: {
+      children: "CURRENT SALARY",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  EXPECTED_SALARY: (qualificationStatus: string) => {
+    return {
+      typographyProps: {
+        children: qualificationStatus,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  EXPECTED_SALARY_TEXT: {
+    typographyProps: {
+      children: "EXPECTED SALARY",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  NOTICE_PERIOD: (qualificationType: string) => {
+    return {
+      typographyProps: {
+        children: qualificationType,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  NOTICE_PERIOD_TEXT: {
+    typographyProps: {
+      children: "NOTICE-PERIOD",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  START_DATE: (score: string) => {
+    return {
+      typographyProps: {
+        children: score,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  START_DATE_TEXT: {
+    typographyProps: {
+      children: "START DATE",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
+  },
+  END_DATE: (score: string) => {
+    return {
+      typographyProps: {
+        children: score,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
+  },
+  END_DATE_TEXT: {
+    typographyProps: {
+      children: "END DATE",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.small,
   },
   EDUCATION: (candidate: CommonObjectType) => {
     return {
@@ -385,34 +575,47 @@ export const APPLICATION_MODAL = {
   },
 };
 
+export const IN_REVIEW = "in_review";
+export const ON_HOLD = "on_hold";
 export const SHORTLIST = "shortlist";
-export const NOT_SHORTLISTED = "not_shortlisted";
-export const SELECT = "select";
-export const INTERVIEWED = "interviewed";
-export const NOT_INTERVIEWED = "not_interviewed";
+export const INTERVIEWING = "interviewing";
+export const REJECTED = "rejected";
+export const SALARY_NEGOTIATION = "salary_negotiation";
+export const OFFERED = "offered";
+export const JOINED = "joined";
 
 export const CANDIDATE_APPLICATION_MENU_ITEMS = [
   {
-    label: "Select",
-    key: SELECT,
+    label: "In Review",
+    key: IN_REVIEW,
   },
-
   {
-    label: "Shortlist",
+    label: "On Hold",
+    key: ON_HOLD,
+  },
+  {
+    label: "Shortlisted",
     key: SHORTLIST,
   },
   {
-    label: "Not Shortlisted",
-    key: NOT_SHORTLISTED,
+    label: "Interviewing",
+    key: INTERVIEWING,
   },
   {
-    label: "Interviewed",
-    key: INTERVIEWED,
+    label: "Rejected",
+    key: REJECTED,
   },
-
   {
-    label: "Not Interviewed",
-    key: NOT_INTERVIEWED,
+    label: "Salary Negotiation",
+    key: SALARY_NEGOTIATION,
+  },
+  {
+    label: "Offered",
+    key: OFFERED,
+  },
+  {
+    label: "Joined",
+    key: JOINED,
   },
 ];
 
@@ -423,5 +626,4 @@ export const CANDIDATE_NOTIFICATION_CONFIG = {
   DELETE_SUCCESS: {
     message: "Candidate Deleted successfully",
   },
-
 };

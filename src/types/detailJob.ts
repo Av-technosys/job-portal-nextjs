@@ -35,6 +35,10 @@ export interface SocialLinksCardProps {
   job: Job;
 }
 
+export interface ApplicantSocialLinkProps {
+  userId: string | number | boolean;
+}
+
 export interface JobOverviewCardProps {
   job: CommonObjectType;
 }
