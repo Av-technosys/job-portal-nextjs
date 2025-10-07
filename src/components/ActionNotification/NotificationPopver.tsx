@@ -1,3 +1,4 @@
+import { formatDate } from "@/helper";
 import {
   Stack,
   Typography,
@@ -16,15 +17,23 @@ function NotificationCard({
   return (
     <Stack
       stackProps={{
-        className: "border border-black p-4",
+        className: "border bg-white border-gray-200 py-2 px-4 rounded-lg",
         direction: "row",
         justifyContent: "space-between",
         alignItems: "center",
       }}
     >
-      <Stack>
+      <Stack stackProps={{ gap: 2, width: "100%" }}>
         <Typography
           typographyProps={{ children: notification?.body as string }}
+        />
+        <Typography
+          typographyProps={{
+            style: { fontSize: "12px", textAlign: "right" },
+            children: formatDate(
+              notification?.created_date?.toString()
+            ) as string,
+          }}
         />
       </Stack>
     </Stack>
@@ -69,11 +78,13 @@ function NotificationPopover({
           next={notificationAPIData?.fetchNextPage}
           hasMore={hasMore}
           isFetchingMore={notificationAPIData?.isFetchingNextPage}
-          height={360}
+          height={520}
         >
           <>
             <When condition={paginatedInfoData?.length > 0}>
-              <Stack>
+              <Stack
+                stackProps={{ bgcolor: "#f8f9f8", padding: 1.5, gap: 1.5 }}
+              >
                 {paginatedInfoData?.map((item) => {
                   return (
                     <NotificationCard

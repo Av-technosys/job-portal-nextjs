@@ -55,7 +55,8 @@ ApplicationPopupProps) {
     },
   });
 
-  const AplicantPersonalDetails = ApplicantFullData?.data?.data;
+  const aplicantPersonalDetails = ApplicantFullData?.data?.data;
+  console.log("AplicantPersonalDetails: ", aplicantPersonalDetails);
 
   return (
     <>
@@ -94,12 +95,12 @@ ApplicationPopupProps) {
               >
                 <Stack>
                   <Avatar
-                    {...IMAGE(AplicantPersonalDetails?.profile_picture)
+                    {...IMAGE(aplicantPersonalDetails?.profile_picture)
                       .avatarProps}
                   >
-                    {getInitials({
-                      name: String(AplicantPersonalDetails?.first_name || ""),
-                    })}
+                    {/* {getInitials({
+                      name: String(aplicantPersonalDetails?.first_name || ""),
+                    })} */}
                   </Avatar>
                 </Stack>
                 <Stack
@@ -107,7 +108,7 @@ ApplicationPopupProps) {
                     gap: 1,
                   }}
                 >
-                  <Typography {...NAME(AplicantPersonalDetails?.first_name)} />
+                  <Typography {...NAME(aplicantPersonalDetails?.first_name)} />
                 </Stack>
               </Stack>
               <Stack
@@ -148,7 +149,9 @@ ApplicationPopupProps) {
                   gap: 3,
                 }}
               >
-                <CandidateDetailOverviewCard candidateId={userId} />
+                <CandidateDetailOverviewCard
+                  aplicantPersonalDetails={aplicantPersonalDetails}
+                />
                 <ResumeDownloadCard candidateId={userId} />
                 <CandidateContactCard candidateId={userId} />
               </Stack>

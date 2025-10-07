@@ -9,7 +9,7 @@ export interface CandidateOverviewCardProps {
   candidateId: number | string | string[] | boolean;
 }
 
-function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
+function CandidateOverviewCard({ aplicantPersonalDetails }: any) {
   const {
     DOB_TEXT,
     DOB,
@@ -21,58 +21,42 @@ function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
     MOBILE,
   } = CANDIDATE_DETAILS_PAGE_CONFIG;
 
-  const ApplicantPersonalDetails = useGetApplicantPersonalDetails({
-    queryParams: {
-      UserId: candidateId,
+  const ApplicantFullData = aplicantPersonalDetails;
+  const genderValue = ApplicantFullData?.gender;
+
+  const formattedGender =
+    genderValue === 0
+      ? "Male"
+      : genderValue === 1
+      ? "Female"
+      : genderValue || "Not specified";
+
+  const candidateDetailOverview = [
+    {
+      icon: <CakeIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: DOB_TEXT,
+      textProps: DOB(ApplicantFullData?.date_of_birth),
     },
-  });
-
-  const ApplicantFullData = ApplicantPersonalDetails?.data?.data;
-
-  const candidateDetailOverview = useMemo(() => {
-    const genderValue = ApplicantFullData?.gender;
-    const formattedGender =
-      genderValue === 0
-        ? "Male"
-        : genderValue === 1
-        ? "Female"
-        : genderValue || "Not specified";
-    return [
-      {
-        icon: <CakeIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: DOB_TEXT,
-        textProps: DOB(ApplicantFullData?.date_of_birth),
-      },
-      {
-        icon: <FlagIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: NATIONALITY_TEXT,
-        textProps: NATIONALITY(ApplicantFullData?.country),
-      },
-      {
-        icon: <Man2Icon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: GENDER_TEXT,
-        textProps: GENDER(formattedGender),
-      },
-      {
-        icon: (
-          <PhoneInTalkRoundedIcon
-            sx={{ color: colorStyles.filterTagsTextColor }}
-          />
-        ),
-        subTextProps: MOBILE_TEXT,
-        textProps: MOBILE(ApplicantFullData?.phone_number),
-      },
-    ];
-  }, [
-    DOB_TEXT,
-    DOB,
-    NATIONALITY_TEXT,
-    NATIONALITY,
-    GENDER_TEXT,
-    GENDER,
-    MOBILE_TEXT,
-    MOBILE,
-  ]);
+    {
+      icon: <FlagIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: NATIONALITY_TEXT,
+      textProps: NATIONALITY(ApplicantFullData?.country),
+    },
+    {
+      icon: <Man2Icon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: GENDER_TEXT,
+      textProps: GENDER(formattedGender),
+    },
+    {
+      icon: (
+        <PhoneInTalkRoundedIcon
+          sx={{ color: colorStyles.filterTagsTextColor }}
+        />
+      ),
+      subTextProps: MOBILE_TEXT,
+      textProps: MOBILE(ApplicantFullData?.phone_number),
+    },
+  ];
 
   return (
     <Stack
