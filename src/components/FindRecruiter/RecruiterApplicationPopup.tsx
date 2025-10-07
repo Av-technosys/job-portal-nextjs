@@ -114,7 +114,7 @@ export default function RecruiterApplicationPopup({
                 <Typography {...CARRER_EXPERIENCE(recruiter)} />
                 <Typography {...SKILLS_TEXT} />
                 <Typography {...SKILLS(recruiter)} />
-                <SocialLinksCard job={recruiter} />
+                {/* <SocialLinksCard job={recruiter} /> */}
               </Stack>
               {/* right Stack */}
               <Stack

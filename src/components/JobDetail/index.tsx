@@ -174,7 +174,7 @@ function JobDetail({ jobId }: { jobId: number }) {
         >
           <SalaryLocationCard job={job} />
           <JobOverviewCard job={job} />
-          <SocialLinksCard job={job} />
+          {/* <SocialLinksCard job={job} /> */}
         </Stack>
       </Stack>
     </Stack>

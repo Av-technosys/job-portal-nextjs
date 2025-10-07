@@ -1,11 +1,5 @@
 import React, { useMemo } from "react";
-import {
-  CakeIcon,
-  FlagIcon,
-  BusinessCenterOutlinedIcon,
-  Man2Icon,
-  PhoneInTalkRoundedIcon,
-} from "@/assets";
+import { CakeIcon, FlagIcon, Man2Icon, PhoneInTalkRoundedIcon } from "@/assets";
 import { colorStyles } from "@/styles";
 import { CANDIDATE_DETAILS_PAGE_CONFIG } from "@/constants";
 import { Stack, TextWithIcon } from "../common";
@@ -37,7 +31,7 @@ function CandidateOverviewCard({ candidateId }: CandidateOverviewCardProps) {
 
   const candidateDetailOverview = useMemo(() => {
     const genderValue = ApplicantFullData?.gender;
-    let formattedGender =
+    const formattedGender =
       genderValue === 0
         ? "Male"
         : genderValue === 1
