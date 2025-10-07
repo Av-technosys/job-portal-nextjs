@@ -9,10 +9,7 @@ import { colorStyles } from "@/styles";
 import { getInitials } from "@/helper";
 import { RecruiterContactCard } from "..";
 import RecruiterOverview from "./RecruiterOverview";
-import {
-  useGetCompanyProfileById,
-  useGetRecruiterFoundingById,
-} from "@/services";
+import { useGetCompanyProfileById } from "@/services";
 
 interface RecruiterApplicationPopupProps {
   open: boolean;
@@ -102,7 +99,15 @@ export default function RecruiterApplicationPopup({
                   gap: 3,
                 }}
               >
-                <RecruiterContactCard recruiterId={userId} />
+                <RecruiterContactCard
+                  recruiterEmail={recruiter.email}
+                  recruiterAddress={{
+                    address_line_1: recruiter.address_line_1,
+                    address_line_2: recruiter.address_line_2,
+                    city: recruiter.city,
+                    state: recruiter.state,
+                  }}
+                />
               </Stack>
             </Stack>
           </Stack>

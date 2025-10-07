@@ -129,7 +129,6 @@ function StudentProfile() {
   }, [jobSeekerGeneralInfo]);
 
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
-    console.log("values", values);
     jobSeekerGeneralInfoMutate.mutate({
       data: createDataForStudentProfileGeneralDetails({
         valueObj: values,

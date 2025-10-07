@@ -30,6 +30,7 @@ export default function RecruiterOverview({
       stackProps={{
         width: { xs: "100%", md: "50%" },
         gap: 2,
+        paddingTop: "20px",
       }}
     >
       <Typography {...PROFESSIONAL_OVERVIEW_TEXT} />
