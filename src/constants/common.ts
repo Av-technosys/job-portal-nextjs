@@ -448,7 +448,7 @@ export const PAGIANTION_LIMIT = 7;
 
 export const PAGIANTION_SEARCH_LIMIT = 20;
 
-export const PAGIANTION_NOTIFICATION_LIMIT = 20;
+export const PAGIANTION_NOTIFICATION_LIMIT = 8;
 
 export const SEARCH_BAR_HEADER_CONFIG = {
   jobSearch: {

@@ -1,5 +1,6 @@
 import { InfinitePaginationProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Box, CircularProgress } from "@mui/material";
 
 function InfinitePagination({
   children,
@@ -10,6 +11,7 @@ function InfinitePagination({
   inverse = false,
   showEndMessage = true,
   showLoader = true,
+  height,
 }: InfinitePaginationProps) {
   return (
     <>
@@ -17,9 +19,17 @@ function InfinitePagination({
         dataLength={dataLength}
         next={next}
         hasMore={hasMore}
+        // when height is provided, InfiniteScroll will render a scrollable div
+        height={height as any}
         loader={
           showLoader ? (
-            <h4>{isFetchingMore ? "Loading More..." : "Loading..."}</h4>
+            isFetchingMore ? (
+              <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
+            ) : (
+              <h4>Loading...</h4>
+            )
           ) : null
         }
         endMessage={

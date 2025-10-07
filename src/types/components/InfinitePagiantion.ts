@@ -7,4 +7,6 @@ export interface InfinitePaginationProps {
   inverse?: boolean;
   showEndMessage?: boolean;
   showLoader?: boolean;
+  height?: number | string;
+  wiodth?: number | string;
 }
