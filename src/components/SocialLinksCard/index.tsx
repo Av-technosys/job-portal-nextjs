@@ -21,6 +21,18 @@ const SocialLinksCard: React.FC<Props> = ({ recruiterId, job }) => {
   const { SOCIAL_HANDLE } = JOB_DETAIL_PAGE_CONFIG;
   // If job prop is provided, prefer its social_links (used for candidate/job contexts)
   const social_links_from_job = job?.social_links || [];
+import { ApplicantSocialLinkProps } from "@/types";
+import { useGetApplicantSocialLinks } from "@/services/useGetApplicantSocialLinks";
+
+const SocialLinksCard = ({ userId }: ApplicantSocialLinkProps) => {
+  const { SOCIAL_HANDLE } = JOB_DETAIL_PAGE_CONFIG;
+  const ApplicantSocialLinksDetails = useGetApplicantSocialLinks({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const social_links = ApplicantSocialLinksDetails?.data?.data;
 
   const platformIconMap: Record<string, JSX.Element> = {
     instagram: <InstagramIcon />,

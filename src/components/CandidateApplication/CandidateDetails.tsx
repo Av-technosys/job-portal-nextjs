@@ -9,15 +9,18 @@ import { InfinitePagination, Stack, Typography, When, Menu } from "../common";
 import {
   CANDIDATE_APPLICATION_PAGE_CONFIG,
   CANDIDATE_APPLICATION_MENU_ITEMS,
+  IN_REVIEW,
+  ON_HOLD,
   SHORTLIST,
-  NOT_SHORTLISTED,
-  SELECT,
-  INTERVIEWED,
-  NOT_INTERVIEWED,
+  INTERVIEWING,
+  REJECTED,
+  SALARY_NEGOTIATION,
+  OFFERED,
+  JOINED,
   CANDIDATE_NOTIFICATION_CONFIG,
 } from "@/constants";
 import CandidateApplicationCard from "./CandidateCard";
-import { CommonObjectType, Job } from "@/types";
+import { CommonAllDataType, CommonObjectType, Job } from "@/types";
 import ApplicationPopup from "./ApplicationPopup";
 import { MenuItem } from "@mui/material";
 import { getErrorMessageFromAPI } from "@/helper";
@@ -33,7 +36,11 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
 
   function updateCandidateStatus(candidateId: number, status: number) {
     updateCandidateStatusMutate.mutate(
-      { student_id: candidateId, job_id: jobDetails?.job_id as number, status: status },
+      {
+        student_id: candidateId,
+        job_id: jobDetails?.job_id as number,
+        status: status,
+      },
       {
         onSuccess: () => {
           showNotification(CANDIDATE_NOTIFICATION_CONFIG.SUCCESS);
@@ -48,8 +55,12 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
     );
   }
 
-  const handleIconButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleIconButtonClick = (
+    event: React.MouseEvent<HTMLElement>,
+    candidate: CommonObjectType
+  ) => {
     setAnchorEl(event.currentTarget);
+    selectedCandidate.current = candidate;
   };
 
   const handleClose = () => {
@@ -72,25 +83,33 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
 
   const handleMenuItemClick = (key: string, candidateId: number) => {
     switch (key) {
+      case IN_REVIEW:
+        updateCandidateStatus(candidateId, 1);
+        break;
+      case ON_HOLD:
+        updateCandidateStatus(candidateId, 2);
+        break;
       case SHORTLIST:
         updateCandidateStatus(candidateId, 3);
         break;
-      case NOT_SHORTLISTED:
-        updateCandidateStatus(candidateId, 5);
-        break;
-      case SELECT:
-        updateCandidateStatus(candidateId, 6);
-        break;
-      case INTERVIEWED:
+      case INTERVIEWING:
         updateCandidateStatus(candidateId, 4);
         break;
-      case NOT_INTERVIEWED:
-        updateCandidateStatus(candidateId, 2);
+      case REJECTED:
+        updateCandidateStatus(candidateId, 5);
+        break;
+      case SALARY_NEGOTIATION:
+        updateCandidateStatus(candidateId, 6);
+        break;
+      case OFFERED:
+        updateCandidateStatus(candidateId, 7);
+        break;
+      case JOINED:
+        updateCandidateStatus(candidateId, 8);
         break;
     }
     handleClose();
   };
-
 
   return (
     <>
@@ -127,7 +146,9 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
               candidate={candidate}
               key={`candidateApplication-${candidate?.id}`}
               openApplicationPopup={() => openApplicationPopup(candidate)}
-              handleIconButtonClick={handleIconButtonClick}
+              handleIconButtonClick={(event) =>
+                handleIconButtonClick(event, candidate)
+              }
             />
           ))}
         </Stack>
@@ -144,7 +165,20 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
         {CANDIDATE_APPLICATION_MENU_ITEMS.map((item) => (
           <MenuItem
             key={`CandidateApplicationMenu-${item.key}`}
-            onClick={() => handleMenuItemClick(item.key, Number(selectedCandidate.current.id))}
+            onClick={() =>
+              handleMenuItemClick(
+                item.key,
+                typeof selectedCandidate.current?.user === "object"
+                  ? Number(
+                      (
+                        selectedCandidate.current?.user as {
+                          id?: string | number;
+                        }
+                      )?.id
+                    )
+                  : Number(selectedCandidate.current?.user)
+              )
+            }
           >
             {item.label}
           </MenuItem>

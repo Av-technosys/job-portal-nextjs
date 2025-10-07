@@ -1,69 +1,62 @@
 import React, { useMemo } from "react";
-import {
-  CakeIcon,
-  FlagIcon,
-  LayersOutlinedIcon,
-  BusinessCenterOutlinedIcon,
-} from "@/assets";
+import { CakeIcon, FlagIcon, Man2Icon, PhoneInTalkRoundedIcon } from "@/assets";
 import { colorStyles } from "@/styles";
 import { CANDIDATE_DETAILS_PAGE_CONFIG } from "@/constants";
 import { Stack, TextWithIcon } from "../common";
-import { CommonObjectType } from "@/types";
+import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
 
-interface CandidateOverviewCardProps {
-  candidate: CommonObjectType;
+export interface CandidateOverviewCardProps {
+  candidateId: number | string | string[] | boolean;
 }
 
-function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
+function CandidateOverviewCard({ aplicantPersonalDetails }: any) {
   const {
     DOB_TEXT,
     DOB,
     NATIONALITY_TEXT,
     NATIONALITY,
-    EXPERIECE_TEXT,
-    EXPERIENCE,
-    EDUCATION_TEXT,
+    GENDER_TEXT,
+    GENDER,
+    MOBILE_TEXT,
+    MOBILE,
   } = CANDIDATE_DETAILS_PAGE_CONFIG;
 
-  const candidateDetailOverview = useMemo(() => {
-    return [
-      {
-        icon: <CakeIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: DOB_TEXT,
-        textProps: DOB(candidate),
-      },
-      {
-        icon: <FlagIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: NATIONALITY_TEXT,
-        textProps: NATIONALITY(candidate),
-      },
-      {
-        icon: (
-          <LayersOutlinedIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        subTextProps: EXPERIECE_TEXT,
-        textProps: EXPERIENCE(candidate),
-      },
-      {
-        icon: (
-          <BusinessCenterOutlinedIcon
-            sx={{ color: colorStyles.filterTagsTextColor }}
-          />
-        ),
-        subTextProps: EDUCATION_TEXT,
-        textProps: EXPERIENCE(candidate),
-      },
-    ];
-  }, [
-    EXPERIENCE,
-    DOB_TEXT,
-    DOB,
-    NATIONALITY_TEXT,
-    NATIONALITY,
-    EXPERIECE_TEXT,
-    EDUCATION_TEXT,
-    candidate,
-  ]);
+  const ApplicantFullData = aplicantPersonalDetails;
+  const genderValue = ApplicantFullData?.gender;
+
+  const formattedGender =
+    genderValue === 0
+      ? "Male"
+      : genderValue === 1
+      ? "Female"
+      : genderValue || "Not specified";
+
+  const candidateDetailOverview = [
+    {
+      icon: <CakeIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: DOB_TEXT,
+      textProps: DOB(ApplicantFullData?.date_of_birth),
+    },
+    {
+      icon: <FlagIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: NATIONALITY_TEXT,
+      textProps: NATIONALITY(ApplicantFullData?.country),
+    },
+    {
+      icon: <Man2Icon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: GENDER_TEXT,
+      textProps: GENDER(formattedGender),
+    },
+    {
+      icon: (
+        <PhoneInTalkRoundedIcon
+          sx={{ color: colorStyles.filterTagsTextColor }}
+        />
+      ),
+      subTextProps: MOBILE_TEXT,
+      textProps: MOBILE(ApplicantFullData?.phone_number),
+    },
+  ];
 
   return (
     <Stack
@@ -76,17 +69,17 @@ function CandidateOverviewCard({ candidate }: CandidateOverviewCardProps) {
           className: "grid grid-cols-2",
           gap: 2,
           alignItems: "center",
-          direction: "column",
+          direction: { xs: "column", sm: "row" },
         }}
       >
-        {/* {candidateDetailOverview.map((detail, index) => (
+        {candidateDetailOverview?.map((detail, index) => (
           <TextWithIcon
             key={`candidateDetailOverview-${index}`}
-            icon={detail.icon}
-            subTextProps={detail.subTextProps}
-            textProps={detail.textProps}
+            icon={detail?.icon}
+            subTextProps={detail?.subTextProps}
+            textProps={detail?.textProps}
           />
-        ))} */}
+        ))}
       </Stack>
     </Stack>
   );
