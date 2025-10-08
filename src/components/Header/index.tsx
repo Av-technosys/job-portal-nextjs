@@ -22,7 +22,7 @@ function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
         <Toolbar sx={{ padding: "0px!important", flexDirection: "column" }}>
           <LogoAndSearchRibbon isAuthenticated={isAuthenticated} />
           {/* <TopRibbon /> */}
-          <BreadcrumbRibbon pathname={pathname} />
+          {/* <BreadcrumbRibbon pathname={pathname} /> */}
         </Toolbar>
       </AppBar>
     </>

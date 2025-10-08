@@ -55,6 +55,12 @@ export const useGetSearchDetailsAsPerURLOrUserType = ({
     },
   });
 
+  console.log(
+    "Searched-Recruiter data",
+    recruiterListAPIData?.data?.pages[0]?.data?.data
+  );
+  console.log("search-String", searchString);
+
   const candidateListAPIData = useGetCandidateSearchList({
     queryFnParams: {
       pageLimit: PAGIANTION_SEARCH_LIMIT,
@@ -62,6 +68,7 @@ export const useGetSearchDetailsAsPerURLOrUserType = ({
       search: searchString,
     },
   });
+  // console.log("Searched-Candidate data", candidateListAPIData?.data);
 
   const getSearchBarDetails = useCallback(
     (

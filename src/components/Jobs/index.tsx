@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useDeleteSavedJob,
   useCreateSavedJob,
@@ -22,7 +22,12 @@ import {
   PAGIANTION_LIMIT,
 } from "@/constants";
 import JobCard from "./JobCard";
-import { SelectChangeEvent } from "@mui/material";
+import {
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  SelectChangeEvent,
+} from "@mui/material";
 import {
   CommonObjectType,
   JobListSortEnum,
@@ -37,7 +42,21 @@ import {
   mutateJobListQueryDataForSavedJobs,
 } from "@/helper";
 import { useRouter } from "next/router";
+import { SearchIcon } from "@/assets";
 function Jobs() {
+  const [searchString, setSearchString] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchString(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue]);
+
   const {
     TITLE_COUNT,
     TITLE_HEADER,
@@ -136,12 +155,19 @@ function Jobs() {
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
     },
   });
 
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: jobInfoAPIData,
   });
+
+  const searchProps = {
+    input: {
+      placeholder: "Search Job name",
+    },
+  };
 
   return (
     <>
@@ -168,6 +194,28 @@ function Jobs() {
             <Skeleton variant={SkeletonVariantEnum.TEXT} />
           </When>
           <Typography {...TITLE_HEADER(totalLength)} />
+        </Stack>
+        <Stack>
+          <FormControl
+            sx={{ width: { xs: "20ch", sm: "30ch" } }}
+            variant="outlined"
+          >
+            <OutlinedInput
+              id="outlined-adornment-search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder={searchProps.input.placeholder}
+              endAdornment={
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              }
+              aria-describedby="outlined-search-helper-text"
+              inputProps={{
+                "aria-label": "search",
+              }}
+            />
+          </FormControl>
         </Stack>
         <Stack
           stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}

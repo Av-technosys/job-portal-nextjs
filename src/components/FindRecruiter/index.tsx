@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGetFindRecruiterList, usePagination } from "@/services";
 import {
   Dropdown,
@@ -10,10 +10,29 @@ import {
 import { FIND_RECRUITER_PAGE_CONFIG, PAGIANTION_LIMIT } from "@/constants";
 import RecruiterCard from "./RecruiterCard";
 import { CommonObjectType, RecruiterListSortEnum } from "@/types";
-import { SelectChangeEvent } from "@mui/material";
+import {
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  SelectChangeEvent,
+} from "@mui/material";
+import { SearchIcon } from "@/assets";
 // import RecruiterApplicationPopup from "./RecruiterApplicationPopup";
 
 function FindRecruiter() {
+  const [searchString, setSearchString] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchString(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue]);
+
   const { TITLE_COUNT, TITLE_HEADER, RECRUITER_LISTING_SORT_DROPDOWN } =
     FIND_RECRUITER_PAGE_CONFIG;
   // const [isRecruiterPopupOpen, setRecruiterPopupStatus] = useState(false);
@@ -35,11 +54,18 @@ function FindRecruiter() {
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
     },
   });
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: findRecruiterAPIData,
   });
+
+  const searchProps = {
+    input: {
+      placeholder: "Search recruiter name",
+    },
+  };
 
   return (
     <>
@@ -63,6 +89,27 @@ function FindRecruiter() {
             <Typography {...TITLE_COUNT(totalLength)} />
             <Typography {...TITLE_HEADER(totalLength)} />
           </Stack>
+
+          <FormControl
+            sx={{ width: { xs: "20ch", sm: "30ch" } }}
+            variant="outlined"
+          >
+            <OutlinedInput
+              id="outlined-adornment-search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder={searchProps.input.placeholder}
+              endAdornment={
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              }
+              aria-describedby="outlined-search-helper-text"
+              inputProps={{
+                "aria-label": "search",
+              }}
+            />
+          </FormControl>
 
           <Dropdown
             {...RECRUITER_LISTING_SORT_DROPDOWN}
