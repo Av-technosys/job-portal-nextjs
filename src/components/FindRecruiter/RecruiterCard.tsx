@@ -79,9 +79,9 @@ export default function FindRecruiterCard({
               <Typography {...RECRUITER_NAME(recruiter)} />
               <Typography {...RECRUITER_DESIGNATION(recruiter)} />
             </Stack>
-            <Stack>
+            {/* <Stack>
               <BookmarkBorderIcon />
-            </Stack>
+            </Stack> */}
           </Stack>
           <Stack
             stackProps={{

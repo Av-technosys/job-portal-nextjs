@@ -2,14 +2,14 @@ import {
   RECRUITER_APPLICATION_MODAL,
   RECRUITER_APPLICATION_PAGE_CONFIG,
 } from "@/constants";
-import { Avatar, Modal, Stack, Typography } from "../common";
+import { Avatar, Modal, Stack, Typography, IconButton } from "../common";
 import { CommonObjectType, Job } from "@/types";
-// import Messaging from "../Messaging";
 import { CancelOutlinedIcon } from "@/assets";
 import { colorStyles } from "@/styles";
 import { getInitials } from "@/helper";
-import SocialLinksCard from "../SocialLinksCard";
 import { RecruiterContactCard } from "..";
+import RecruiterOverview from "./RecruiterOverview";
+import { useGetCompanyProfileById } from "@/services";
 
 interface RecruiterApplicationPopupProps {
   open: boolean;
@@ -18,37 +18,26 @@ interface RecruiterApplicationPopupProps {
   recruiterDetails: CommonObjectType;
 }
 
-const recruiter = {
-  id: 1,
-  name: "Vishal Sir",
-  email: "vishal.sir@example.com",
-  phone: "+1234567890",
-  linked_in_url: "https://www.linkedin.com/in",
-  designation: "Senior Developer",
-  location: "New York",
-  overview:
-    "I've been passionate about graphic design and digital art from an early ",
-  carrer_experience:
-    "Respected Sir,I am willing to express my interest in the fourth grade instructional position that is currently available in the Fort Wayne Community School System learned of the opening trough a notice posted on Job Assured, IPFW's job database. I am confident that my academic background and curriculum development skills would be successfully utilized in this teaching position.",
-  skills:
-    "Respected Sir,I am willing to express my interest in the fourth grade instructional position that is currently available in the Fort Wayne Community School System learned of the opening trough a notice posted on Job Assured, IPFW's job database. I am confident that my academic background and curriculum development skills would be successfully utilized in this teaching position.",
-};
 export default function RecruiterApplicationPopup({
   open,
   handleClose,
+  recruiterDetails,
 }: RecruiterApplicationPopupProps) {
   const { MODAL_STYLES } = RECRUITER_APPLICATION_MODAL;
-  const {
-    IMAGE,
-    NAME,
-    DESIGNATION,
-    PROFESSIONAL_OVERVIEW_TEXT,
-    PROFESSIONAL_OVERVIEW,
-    CARRER_TEXT,
-    CARRER_EXPERIENCE,
-    SKILLS_TEXT,
-    SKILLS,
-  } = RECRUITER_APPLICATION_PAGE_CONFIG;
+  const { IMAGE, NAME, DESIGNATION } = RECRUITER_APPLICATION_PAGE_CONFIG;
+
+  const userId =
+    typeof recruiterDetails?.user === "object"
+      ? (recruiterDetails?.user as { id?: string | number })?.id
+      : recruiterDetails?.user;
+
+  const companyProfileQuery = useGetCompanyProfileById({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const recruiter = companyProfileQuery?.data?.data || {};
 
   return (
     <>
@@ -60,9 +49,11 @@ export default function RecruiterApplicationPopup({
                 alignItems: "end",
               }}
             >
-              <CancelOutlinedIcon
-                sx={{ color: colorStyles.filterTagsTextColor }}
-              />
+              <IconButton onClick={handleClose}>
+                <CancelOutlinedIcon
+                  sx={{ color: colorStyles.filterTagsTextColor }}
+                />
+              </IconButton>
             </Stack>
             <Stack
               stackProps={{
@@ -89,7 +80,7 @@ export default function RecruiterApplicationPopup({
                   }}
                 >
                   <Typography {...NAME(recruiter)} />
-                  <Typography {...DESIGNATION(recruiter)} />
+                  <Typography {...DESIGNATION} />
                 </Stack>
               </Stack>
             </Stack>
@@ -102,20 +93,7 @@ export default function RecruiterApplicationPopup({
               }}
             >
               {/* left Stack */}
-              <Stack
-                stackProps={{
-                  width: { xs: "100%", md: "50%" },
-                  gap: 2,
-                }}
-              >
-                <Typography {...PROFESSIONAL_OVERVIEW_TEXT} />
-                <Typography {...PROFESSIONAL_OVERVIEW(recruiter)} />
-                <Typography {...CARRER_TEXT} />
-                <Typography {...CARRER_EXPERIENCE(recruiter)} />
-                <Typography {...SKILLS_TEXT} />
-                <Typography {...SKILLS(recruiter)} />
-                {/* <SocialLinksCard job={recruiter} /> */}
-              </Stack>
+              <RecruiterOverview recruiterId={userId} />
               {/* right Stack */}
               <Stack
                 stackProps={{
@@ -123,7 +101,15 @@ export default function RecruiterApplicationPopup({
                   gap: 3,
                 }}
               >
-                <RecruiterContactCard recruiter={recruiter} />
+                <RecruiterContactCard
+                  recruiterEmail={recruiter.email}
+                  recruiterAddress={{
+                    address_line_1: recruiter.address_line_1,
+                    address_line_2: recruiter.address_line_2,
+                    city: recruiter.city,
+                    state: recruiter.state,
+                  }}
+                />
               </Stack>
             </Stack>
           </Stack>

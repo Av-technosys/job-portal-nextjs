@@ -9,6 +9,7 @@ import {
 } from "../common";
 import { FIND_RECRUITER_PAGE_CONFIG, PAGIANTION_LIMIT } from "@/constants";
 import RecruiterCard from "./RecruiterCard";
+import RecruiterApplicationPopup from "./RecruiterApplicationPopup";
 import { CommonObjectType, RecruiterListSortEnum } from "@/types";
 import { SelectChangeEvent } from "@mui/material";
 // import RecruiterApplicationPopup from "./RecruiterApplicationPopup";
@@ -16,7 +17,7 @@ import { SelectChangeEvent } from "@mui/material";
 function FindRecruiter() {
   const { TITLE_COUNT, TITLE_HEADER, RECRUITER_LISTING_SORT_DROPDOWN } =
     FIND_RECRUITER_PAGE_CONFIG;
-  // const [isRecruiterPopupOpen, setRecruiterPopupStatus] = useState(false);
+  const [isRecruiterPopupOpen, setRecruiterPopupStatus] = useState(false);
   const selectedRecruiter = useRef({} as CommonObjectType);
   const [selectedSort, setSelectedSort] = useState<RecruiterListSortEnum[]>([
     RecruiterListSortEnum.CREATED_DATE_ASC,
@@ -28,7 +29,7 @@ function FindRecruiter() {
   };
   function openRecruiterPopup(recruiter: CommonObjectType) {
     selectedRecruiter.current = recruiter;
-    // setRecruiterPopupStatus(true);
+    setRecruiterPopupStatus(true);
   }
 
   const findRecruiterAPIData = useGetFindRecruiterList({
@@ -90,6 +91,12 @@ function FindRecruiter() {
           ))}
         </Stack>
       </InfinitePagination>
+      <RecruiterApplicationPopup
+        open={isRecruiterPopupOpen}
+        handleClose={() => setRecruiterPopupStatus(false)}
+        jobDetails={{} as any}
+        recruiterDetails={selectedRecruiter.current}
+      />
     </>
   );
 }

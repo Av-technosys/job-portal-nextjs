@@ -1,82 +1,34 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { RECRUITER_APPLICATION_PAGE_CONFIG } from "@/constants";
 import { Stack, TextAndSubtextWithIcon, Typography } from "../common";
 import { colorStyles } from "@/styles";
-import {
-  EmailIcon,
-  LinkedInIcon,
-  LocationOnIcon,
-  PhoneInTalkRoundedIcon,
-} from "@/assets";
+import { EmailIcon, LocationOnIcon } from "@/assets";
 
-interface RecruiterContactCardProps {
-  recruiter: {
-    email?: string;
-    location?: string;
-    phone?: string;
-    linkedin?: string;
-  };
+export interface RecruiterContactCardProps {
+  recruiterId: string | number | boolean;
 }
 
-function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
-  const {
-    CONTACT_TEXT,
-    MAIL_TEXT,
-    EMAIL,
-    LOCATION,
-    MOBILE,
-    LOCATION_TEXT,
-    MOBILE_TEXT,
-    LINKED_IN_TEXT,
-    LINKED_IN_URL,
-  } = RECRUITER_APPLICATION_PAGE_CONFIG;
-
-  const recruiterDetailContactInformation = useMemo(() => {
-    return [
-      {
-        icon: <EmailIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: MAIL_TEXT,
-        textProps: EMAIL(recruiter),
-      },
-      {
-        icon: (
-          <LocationOnIcon sx={{ color: colorStyles.filterTagsTextColor }} />
-        ),
-        subTextProps: LOCATION_TEXT,
-        textProps: LOCATION(recruiter),
-      },
-      {
-        icon: (
-          <PhoneInTalkRoundedIcon
-            sx={{ color: colorStyles.filterTagsTextColor }}
-          />
-        ),
-        subTextProps: MOBILE_TEXT,
-        textProps: MOBILE(recruiter),
-      },
-      {
-        icon: <LinkedInIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
-        subTextProps: LINKED_IN_TEXT,
-        textProps: LINKED_IN_URL(recruiter),
-      },
-    ];
-  }, [
-    MAIL_TEXT,
-    EMAIL,
-    LINKED_IN_TEXT,
-    LINKED_IN_URL,
-    LOCATION_TEXT,
-    LOCATION,
-    MOBILE_TEXT,
-    MOBILE,
-    recruiter,
-  ]);
+function RecruiterContactCard({ recruiterEmail, recruiterAddress }: any) {
+  const { CONTACT_TEXT, MAIL_TEXT, EMAIL, LOCATION, LOCATION_TEXT } =
+    RECRUITER_APPLICATION_PAGE_CONFIG;
+  const recruiterDetailContactInformation = [
+    {
+      icon: <EmailIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: MAIL_TEXT,
+      textProps: EMAIL(recruiterEmail),
+    },
+    {
+      icon: <LocationOnIcon sx={{ color: colorStyles.filterTagsTextColor }} />,
+      subTextProps: LOCATION_TEXT,
+      textProps: LOCATION(recruiterAddress),
+    },
+  ];
 
   return (
     <Stack stackProps={{ className: "p-4 border-2 rounded-md" }}>
       <Typography {...CONTACT_TEXT} />
       <Stack stackProps={{ className: "mt-4", gap: 2 }}>
-        {/* {recruiterDetailContactInformation.map((detail, index) => (
+        {recruiterDetailContactInformation.map((detail, index) => (
           <TextAndSubtextWithIcon
             textWithIconProps={{ direction: "row" }}
             key={`recruiterDetailOverview-${index}`}
@@ -84,7 +36,7 @@ function RecruiterContactCard({ recruiter }: RecruiterContactCardProps) {
             subTextProps={detail.subTextProps}
             textProps={detail.textProps}
           />
-        ))} */}
+        ))}
       </Stack>
     </Stack>
   );

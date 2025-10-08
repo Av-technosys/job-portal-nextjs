@@ -11,7 +11,6 @@ import {
 import { APPLIED_JOB_PAGE_CONFIG } from "@/constants";
 import AppliedJobCard from "./AppliedJobCard";
 import EmptyAppliedJobs from "../EmptyStates/EmptyAppliedJobs";
-// import { colorStyles } from "@/styles";
 
 function AppliedJobs() {
   const { TITLE_COUNT, TITLE_HEADER } = APPLIED_JOB_PAGE_CONFIG;

@@ -133,9 +133,9 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
     return {
       avatarProps: {
         variant: AvatarVariantEnum.CIRCULAR,
-        src: recruiter?.company_profile_image, // Default image if none is provided
+        src: recruiter?.profile_picture, // Default image if none is provided
         alt: recruiter?.company_name || "Company logo",
-        children: recruiter?.company_profile_image,
+        children: recruiter?.profile_picture,
         sx: {
           width: 100,
           height: 100,
@@ -144,18 +144,18 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
       },
     };
   },
-  DESIGNATION: (recruiter: CommonObjectType) => {
-    return {
-      typographyProps: {
-        children: recruiter?.designation,
-        variant: TypographyVariantEnum.H5,
-      },
-    } as TypographyProps;
+  DESIGNATION: {
+    typographyProps: {
+      children: " HR Manager",
+      variant: TypographyVariantEnum.BODY2,
+    },
+    fontSize: TypographyFontSize.large,
   },
+
   NAME: (recruiter: CommonObjectType) => {
     return {
       typographyProps: {
-        children: recruiter?.name,
+        children: recruiter?.first_name,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.large,
@@ -164,7 +164,7 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
   },
   PROFESSIONAL_OVERVIEW_TEXT: {
     typographyProps: {
-      children: "Professional Overview",
+      children: "Company Website",
       variant: TypographyVariantEnum.BODY2,
     },
     fontSize: TypographyFontSize.large,
@@ -172,7 +172,7 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
   PROFESSIONAL_OVERVIEW: (recruiter: CommonObjectType) => {
     return {
       typographyProps: {
-        children: recruiter?.overview,
+        children: recruiter?.company_website,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -180,7 +180,7 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
   },
   CARRER_TEXT: {
     typographyProps: {
-      children: "career Experience",
+      children: "Company Mission",
       variant: TypographyVariantEnum.BODY2,
     },
     fontSize: TypographyFontSize.large,
@@ -188,7 +188,7 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
   CARRER_EXPERIENCE: (recruiter: CommonObjectType) => {
     return {
       typographyProps: {
-        children: recruiter?.carrer_experience,
+        children: recruiter?.mission,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -196,7 +196,7 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
   },
   SKILLS_TEXT: {
     typographyProps: {
-      children: "Core Skills & Expertise",
+      children: "Company Vision",
       variant: TypographyVariantEnum.BODY2,
     },
     fontSize: TypographyFontSize.large,
@@ -204,7 +204,7 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
   SKILLS: (recruiter: CommonObjectType) => {
     return {
       typographyProps: {
-        children: recruiter?.skills,
+        children: recruiter?.vision,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -293,10 +293,10 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
     },
     fontSize: TypographyFontSize.large,
   },
-  EMAIL: (recruiter: CommonObjectType) => {
+  EMAIL: (address: string) => {
     return {
       typographyProps: {
-        children: recruiter?.email,
+        children: address,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
@@ -310,14 +310,33 @@ export const RECRUITER_APPLICATION_PAGE_CONFIG = {
     fontSize: TypographyFontSize.large,
   },
   LOCATION: (recruiter: CommonObjectType) => {
+    const addressKeys = ["address_line_1", "address_line_2", "city", "state"];
     return {
       typographyProps: {
-        children: recruiter?.location,
+        children: formatAddress(addressKeys, recruiter as Record<string, []>),
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
     } as TypographyProps;
   },
+
+  // ADDRESS: (candidate: CommonObjectType) => {
+  //       const addressKeys = [
+  //         "address_line_1",
+  //         "address_line_2",
+  //         "city",
+  //         "state",
+  //         "postal_code",
+  //       ];
+
+  //       return {
+  //         typographyProps: {
+  //           children: formatAddress(addressKeys, candidate as Record<string, []>), // Format address dynamically using the keys
+  //           variant: TypographyVariantEnum.BODY2,
+  //         },
+  //       } as TypographyProps;
+  //     },
+
   MOBILE: (recruiter: CommonObjectType) => {
     return {
       typographyProps: {

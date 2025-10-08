@@ -17,8 +17,6 @@ const AdminSideBarDrawer = ({
   setSideBarStatus,
   UserType,
 }: any) => {
-  // console.log("selecteuser", selectedUser); // ye id hai uss user ki jiski details show hogi
-
   const { HEADING_TEXT, MAIN_HEADING_TEXT } = ADMIN_DRAWER_CONFIG;
   const id = selectedUser;
 
