@@ -170,7 +170,7 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       },
     } as TypographyProps;
   },
-  NAME: (first_name) => {
+  NAME: (first_name: string) => {
     return {
       typographyProps: {
         children: first_name,
@@ -273,6 +273,15 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       variant: TypographyVariantEnum.BODY2,
     },
     fontSize: TypographyFontSize.large,
+  },
+  RESUME: (filename: string) => {
+    return {
+      typographyProps: {
+        children: filename,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
   },
   CONTACT_TEXT: {
     typographyProps: {

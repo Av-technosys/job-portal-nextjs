@@ -20,6 +20,7 @@ import { CandidateDetailOverviewCard } from "..";
 import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
 import CandidateAcademicCard from "./CandidateAcademicInfo";
 import CandidateProfessionalCard from "./CandidateProfessionalInfo";
+import { useGetApplicantDetails } from "@/services/useGetApplicantDetails";
 
 interface ApplicationPopupProps {
   open: boolean;
@@ -98,9 +99,9 @@ ApplicationPopupProps) {
                     {...IMAGE(aplicantPersonalDetails?.profile_picture)
                       .avatarProps}
                   >
-                    {/* {getInitials({
+                    {getInitials({
                       name: String(aplicantPersonalDetails?.first_name || ""),
-                    })} */}
+                    })}
                   </Avatar>
                 </Stack>
                 <Stack
@@ -153,7 +154,9 @@ ApplicationPopupProps) {
                   aplicantPersonalDetails={aplicantPersonalDetails}
                 />
                 <ResumeDownloadCard candidateId={userId} />
-                <CandidateContactCard candidateId={userId} />
+                <CandidateContactCard
+                  aplicantPersonalDetails={aplicantPersonalDetails}
+                />
               </Stack>
             </Stack>
           </Stack>
