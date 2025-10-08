@@ -1,4 +1,8 @@
-import { APPLICATION_MODAL, CANDIDATE_DETAILS_PAGE_CONFIG } from "@/constants";
+import {
+  APPLICATION_MODAL,
+  CANDIDATE_DETAILS_PAGE_CONFIG,
+  CANDIDATE_NOTIFICATION_CONFIG,
+} from "@/constants";
 import {
   Avatar,
   Button,
@@ -11,7 +15,7 @@ import {
 import { CommonObjectType, Job } from "@/types";
 // import Messaging from "../Messaging";
 import { CancelOutlinedIcon } from "@/assets";
-import { getInitials } from "@/helper";
+import { getErrorMessageFromAPI, getInitials } from "@/helper";
 import { colorStyles } from "@/styles";
 import SocialLinksCard from "../SocialLinksCard";
 import CandidateContactCard from "../CandidateDetailContactIInfo";
@@ -21,6 +25,8 @@ import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPerson
 import CandidateAcademicCard from "./CandidateAcademicInfo";
 import CandidateProfessionalCard from "./CandidateProfessionalInfo";
 import { useGetApplicantDetails } from "@/services/useGetApplicantDetails";
+import { useNotification, useUpdateCandidateStatus } from "@/services";
+import { useRouter } from "next/router";
 
 interface ApplicationPopupProps {
   open: boolean;
@@ -37,13 +43,11 @@ export default function ApplicationPopup({
 // candidateDetails,
 ApplicationPopupProps) {
   const { MODAL_STYLES } = APPLICATION_MODAL;
-  const {
-    IMAGE,
-    NAME,
-    NOT_SHORTLISTED_BUTTON,
-    SAVE_FOR_LATER_BUTTON,
-    SCEHDULE_INTERVIEW_BUTTON,
-  } = CANDIDATE_DETAILS_PAGE_CONFIG;
+  const { IMAGE, NAME, NOT_SHORTLISTED_BUTTON, SCEHDULE_INTERVIEW_BUTTON } =
+    CANDIDATE_DETAILS_PAGE_CONFIG;
+
+  const router = useRouter();
+  const { id } = router.query;
 
   const userId =
     typeof candidateDetails?.user === "object"
@@ -57,6 +61,30 @@ ApplicationPopupProps) {
   });
 
   const aplicantPersonalDetails = ApplicantFullData?.data?.data;
+
+  const updateCandidateStatusMutate = useUpdateCandidateStatus();
+  const { showNotification } = useNotification();
+
+  function updateCandidateStatus(candidateId: number, status: number) {
+    updateCandidateStatusMutate.mutate(
+      {
+        student_id: candidateId,
+        job_id: Number(id),
+        status: status,
+      },
+      {
+        onSuccess: () => {
+          showNotification(CANDIDATE_NOTIFICATION_CONFIG.SUCCESS);
+        },
+        onError: (error) => {
+          showNotification({
+            ...getErrorMessageFromAPI(error),
+          });
+          console.error(error, "error");
+        },
+      }
+    );
+  }
 
   return (
     <>
@@ -118,9 +146,18 @@ ApplicationPopupProps) {
                   direction: { xs: "column", md: "row" },
                 }}
               >
-                <Button {...NOT_SHORTLISTED_BUTTON} />
-                <Button {...SAVE_FOR_LATER_BUTTON} />
-                <Button {...SCEHDULE_INTERVIEW_BUTTON} />
+                <Button
+                  onClick={() =>
+                    updateCandidateStatus(aplicantPersonalDetails?.id, 5)
+                  }
+                  {...NOT_SHORTLISTED_BUTTON}
+                />
+                <Button
+                  onClick={() =>
+                    updateCandidateStatus(aplicantPersonalDetails?.id, 4)
+                  }
+                  {...SCEHDULE_INTERVIEW_BUTTON}
+                />
               </Stack>
             </Stack>
             {/* main Stack */}

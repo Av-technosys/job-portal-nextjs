@@ -176,8 +176,9 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
         children: first_name,
         variant: TypographyVariantEnum.BODY2,
       },
-      fontSize: TypographyFontSize.large,
-      fontColor: TypographyFontColor.grey,
+      fontWeight: TypographyFontWeight.bold,
+      fontSize: TypographyFontSize.extralarge,
+      fontColor: TypographyFontColor.black,
     } as TypographyProps;
   },
   BIOGRAPHY_TEXT: {

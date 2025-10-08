@@ -15,12 +15,11 @@ const candidateUpdateStatus = async (
   return api.patch(`${apiConstantsURL.profile.updateCandidateStatus}`, data);
 };
 
-
 type UseUpdateCandidateStatusOptions = {
   mutationConfig?: MutationConfig<typeof candidateUpdateStatus>;
 };
 
-export const useUpdateCandidateStatus = ({  
+export const useUpdateCandidateStatus = ({
   mutationConfig,
 }: UseUpdateCandidateStatusOptions = {}) => {
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};
@@ -36,4 +35,3 @@ export const useUpdateCandidateStatus = ({
     ...restConfig,
   });
 };
-
