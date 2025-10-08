@@ -170,14 +170,15 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       },
     } as TypographyProps;
   },
-  NAME: (first_name) => {
+  NAME: (first_name: string) => {
     return {
       typographyProps: {
         children: first_name,
         variant: TypographyVariantEnum.BODY2,
       },
-      fontSize: TypographyFontSize.large,
-      fontColor: TypographyFontColor.grey,
+      fontWeight: TypographyFontWeight.bold,
+      fontSize: TypographyFontSize.extralarge,
+      fontColor: TypographyFontColor.black,
     } as TypographyProps;
   },
   BIOGRAPHY_TEXT: {
@@ -273,6 +274,15 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
       variant: TypographyVariantEnum.BODY2,
     },
     fontSize: TypographyFontSize.large,
+  },
+  RESUME: (filename: string) => {
+    return {
+      typographyProps: {
+        children: filename,
+        variant: TypographyVariantEnum.BODY2,
+      },
+      fontSize: TypographyFontSize.small,
+    } as TypographyProps;
   },
   CONTACT_TEXT: {
     typographyProps: {

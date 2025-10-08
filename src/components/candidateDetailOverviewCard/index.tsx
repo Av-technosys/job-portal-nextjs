@@ -1,13 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { CakeIcon, FlagIcon, Man2Icon, PhoneInTalkRoundedIcon } from "@/assets";
 import { colorStyles } from "@/styles";
 import { CANDIDATE_DETAILS_PAGE_CONFIG } from "@/constants";
 import { Stack, TextWithIcon } from "../common";
-import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
-
-export interface CandidateOverviewCardProps {
-  candidateId: number | string | string[] | boolean;
-}
 
 function CandidateOverviewCard({ aplicantPersonalDetails }: any) {
   const {
