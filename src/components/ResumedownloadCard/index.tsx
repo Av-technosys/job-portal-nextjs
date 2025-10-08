@@ -17,37 +17,39 @@ function ResumeDownloadCard({ candidateId }: CandidateOverviewCardProps) {
 
   const resumeFiles = ApplicantDetails?.data?.data?.files;
 
-  return (
-    <Stack
-      stackProps={{
-        className: "p-4 border-2 rounded-md",
-      }}
-    >
-      <Typography {...DOWNLOAD_RESUME_TEXT} />
+  if (resumeFiles?.length > 0) {
+    return (
       <Stack
         stackProps={{
-          direction: "row",
-          gap: 3,
-          justifyContent: "space-around",
-          alignItems: "center",
+          className: "p-4 border-2 rounded-md",
         }}
       >
-        <AccountBalanceWalletOutlinedIcon />
-        <Stack stackProps={{ className: "p-3 border-2 border-dashed" }}>
-          {resumeFiles?.map((file: any, index: number) => {
-            return (
-              <Link
-                target="_blank"
-                href={`https://av-job-portal.s3.amazonaws.com/${file?.file}`}
-              >
-                <Typography key={index} {...RESUME(file?.file)} />
-              </Link>
-            );
-          })}
+        <Typography {...DOWNLOAD_RESUME_TEXT} />
+        <Stack
+          stackProps={{
+            direction: "row",
+            gap: 3,
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <AccountBalanceWalletOutlinedIcon />
+          <Stack stackProps={{ className: "p-3 border-2 border-dashed" }}>
+            {resumeFiles?.map((file: any, index: number) => {
+              return (
+                <Link
+                  target="_blank"
+                  href={`https://av-job-portal.s3.amazonaws.com/${file?.file}`}
+                >
+                  <Typography key={index} {...RESUME(file?.file)} />
+                </Link>
+              );
+            })}
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
-  );
+    );
+  }
 }
 
 export default ResumeDownloadCard;

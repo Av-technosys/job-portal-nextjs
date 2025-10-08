@@ -57,7 +57,6 @@ ApplicationPopupProps) {
   });
 
   const aplicantPersonalDetails = ApplicantFullData?.data?.data;
-  console.log("AplicantPersonalDetails: ", aplicantPersonalDetails);
 
   return (
     <>
