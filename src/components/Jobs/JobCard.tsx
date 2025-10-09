@@ -19,7 +19,6 @@ import {
 } from "@/assets";
 import { colorStyles } from "@/styles";
 import { getInitials } from "@/helper";
-
 export default function JobCard({
   job,
   handleSaveUnSave,
@@ -82,138 +81,140 @@ export default function JobCard({
   }, [DEPARTMENT, JOB_TYPE, LOCATION, SALARY_RANGE, job]);
 
   return (
-    <Stack
-      stackProps={{
-        className:
-          " my-2 py-11 px-10 shadow-lg p-4 rounded-lg border hover:border capitalize",
-        direction: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        sx: {
-          borderColor: colorStyles.cardBorderColor,
-          "&:hover": {
-            borderColor: colorStyles.cardHoverBorderColor,
-          },
-        },
-      }}
-    >
+    <>
       <Stack
         stackProps={{
-          width: "100%",
-          justifyContent: "center",
+          className:
+            " my-6 py-11 px-10 shadow-lg p-4 rounded-lg border hover:border capitalize",
+          direction: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+          sx: {
+            borderColor: colorStyles.cardBorderColor,
+            "&:hover": {
+              borderColor: colorStyles.cardHoverBorderColor,
+            },
+          },
         }}
       >
         <Stack
           stackProps={{
-            direction: "row",
-            alignItems: "center",
             width: "100%",
-            justifyContent: "space-between",
-          }}
-        >
-          <Stack
-            stackProps={{
-              className: "rounded-lg p-1",
-              bgcolor: colorStyles.filterTagsBackgroundColor,
-              color: colorStyles.filterTagsTextColor,
-            }}
-          >
-            <Typography {...TIME_STAMP(job)} />
-          </Stack>
-
-          {/* Save or Unsave Job */}
-          <When condition={job?.id !== undefined && showSaveUnSaveButton}>
-            <When condition={!job?.is_saved as boolean}>
-              <BookmarkBorderIcon
-                onClick={() => {
-                  handleSaveUnSave(job);
-                }}
-                sx={{
-                  cursor: "pointer",
-                }}
-              />
-            </When>
-            <When condition={job?.is_saved as boolean}>
-              <TurnedInIcon
-                onClick={() => {
-                  handleSaveUnSave(job);
-                }}
-                sx={{
-                  cursor: "pointer",
-                }}
-              />
-            </When>
-          </When>
-        </Stack>
-
-        <Stack
-          stackProps={{
-            className: "mt-6 ",
-            direction: "row",
-            gap: 1,
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <Stack
-            stackProps={{
-              className: "border rounded-full",
-            }}
-          >
-            <Avatar {...IMAGE(job).avatarProps}>
-              {getInitials({ name: String(job?.company_name || "") })}
-            </Avatar>
-          </Stack>
-          <Stack
-            stackProps={{
-              width: "100%",
-            }}
-          >
-            <Typography {...DESIGNATION(job)} />
-            <Typography {...COMPANY_NAME(job)} />
-          </Stack>
-        </Stack>
-
-        <Stack
-          stackProps={{
-            className: "mt-6",
-            direction: "row",
-            gap: 3,
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-            flexWrap: "wrap",
+            justifyContent: "center",
           }}
         >
           <Stack
             stackProps={{
               direction: "row",
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <Stack
+              stackProps={{
+                className: "rounded-lg p-1",
+                bgcolor: colorStyles.filterTagsBackgroundColor,
+                color: colorStyles.filterTagsTextColor,
+              }}
+            >
+              <Typography {...TIME_STAMP(job)} />
+            </Stack>
+
+            {/* Save or Unsave Job */}
+            <When condition={job?.id !== undefined && showSaveUnSaveButton}>
+              <When condition={!job?.is_saved as boolean}>
+                <BookmarkBorderIcon
+                  onClick={() => {
+                    handleSaveUnSave(job);
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                />
+              </When>
+              <When condition={job?.is_saved as boolean}>
+                <TurnedInIcon
+                  onClick={() => {
+                    handleSaveUnSave(job);
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                />
+              </When>
+            </When>
+          </Stack>
+
+          <Stack
+            stackProps={{
+              className: "mt-6 ",
+              direction: "row",
+              gap: 1,
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Stack
+              stackProps={{
+                className: "border rounded-full",
+              }}
+            >
+              <Avatar {...IMAGE(job).avatarProps}>
+                {getInitials({ name: String(job?.company_name || "") })}
+              </Avatar>
+            </Stack>
+            <Stack
+              stackProps={{
+                width: "100%",
+              }}
+            >
+              <Typography {...DESIGNATION(job)} />
+              <Typography {...COMPANY_NAME(job)} />
+            </Stack>
+          </Stack>
+
+          <Stack
+            stackProps={{
+              className: "mt-6",
+              direction: "row",
               gap: 3,
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
               flexWrap: "wrap",
             }}
           >
-            {/* {jobDetails.map((detail, index) => (
+            <Stack
+              stackProps={{
+                direction: "row",
+                gap: 3,
+                flexWrap: "wrap",
+              }}
+            >
+              {/* {jobDetails.map((detail, index) => (
               <TextWithIcon
                 key={`jobDetails-${index}`}
                 icon={detail.icon}
                 textProps={detail.textProps}
               />
             ))} */}
-          </Stack>
+            </Stack>
 
-          {/* Apply Button */}
-          <Stack
-            stackProps={{
-              marginTop: -1,
-            }}
-          >
-            <Button
-              {...APPLY_BUTTON}
-              onClick={() => handleJobDetailsClick(job)}
-            />
+            {/* Apply Button */}
+            <Stack
+              stackProps={{
+                marginTop: -1,
+              }}
+            >
+              <Button
+                {...APPLY_BUTTON}
+                onClick={() => handleJobDetailsClick(job)}
+              />
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 }

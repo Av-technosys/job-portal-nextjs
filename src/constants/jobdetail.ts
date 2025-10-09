@@ -65,6 +65,14 @@ export const JOB_DETAIL_PAGE_CONFIG = {
       size: ButtonSizeEnum.LARGE,
     },
   },
+  BACK_BUTTON: {
+    buttonProps: {
+      children: "Back",
+      variant: ButtonVariantEnum.OUTLINED,
+      color: ButtonColorEnum.ERROR,
+      size: ButtonSizeEnum.LARGE,
+    },
+  },
   DESCRIPTION_TEXT: () => {
     return {
       typographyProps: {

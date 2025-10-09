@@ -44,6 +44,14 @@ export const LIST_JOB_PAGE_CONFIG = {
       },
     };
   },
+  SEARCH_TEXT: {
+    typographyProps: {
+      children: "Sort By Name",
+    },
+    fontWeight: TypographyFontWeight.bold,
+    fontSize: TypographyFontSize.small,
+    fontColor: TypographyFontColor.black15,
+  },
   JOB_LISTING_SORT_DROPDOWN: {
     selectProps: {
       name: "sortby",

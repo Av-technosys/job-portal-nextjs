@@ -59,6 +59,7 @@ function Jobs() {
 
   const {
     TITLE_COUNT,
+    SEARCH_TEXT,
     TITLE_HEADER,
     JOB_LISTING_SORT_DROPDOWN,
     JOB_LIST_CARD,
@@ -174,7 +175,7 @@ function Jobs() {
       <Stack
         stackProps={{
           direction: "row",
-          gap: 1,
+          gap: 4,
           alignItems: "center",
           justifyContent: "space-between", // Ensures space between text and dropdown
           width: "100%", // Ensures the stack spans the full width
@@ -196,6 +197,7 @@ function Jobs() {
           <Typography {...TITLE_HEADER(totalLength)} />
         </Stack>
         <Stack>
+          <Typography {...SEARCH_TEXT} />
           <FormControl
             sx={{ width: { xs: "20ch", sm: "30ch" } }}
             variant="outlined"

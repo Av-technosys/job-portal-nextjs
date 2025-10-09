@@ -3,7 +3,14 @@ import {
   JOBS_URL,
   PAGIANTION_LIMIT,
 } from "@/constants";
-import { Avatar, Loader, LoadingButton, Stack, Typography } from "../common";
+import {
+  Avatar,
+  Button,
+  Loader,
+  LoadingButton,
+  Stack,
+  Typography,
+} from "../common";
 import {
   getErrorMessageFromAPI,
   getInitials,
@@ -45,6 +52,7 @@ function JobDetail({ jobId }: { jobId: number }) {
     DESIGNATION,
     JOB_TYPE,
     APPLY_BUTTON,
+    BACK_BUTTON,
     DESCRIPTION_TEXT,
     JOB_DESCRIPTION,
     NOTIFICATION_CONFIG,
@@ -105,79 +113,88 @@ function JobDetail({ jobId }: { jobId: number }) {
   }
 
   return (
-    <Stack stackProps={{ gap: 4, className: "capitalize" }}>
-      <Stack
-        stackProps={{
-          direction: { xs: "column", md: "row" },
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Stack stackProps={{ direction: "row", gap: 2, alignItems: "center" }}>
-          <Avatar {...IMAGE(job).avatarProps}>
-            {getInitials({ name: String(job?.company_name || "") })}
-          </Avatar>
+    <>
+      <Stack stackProps={{ gap: 4, className: "capitalize " }}>
+        <Stack
+          stackProps={{
+            direction: { xs: "column", md: "row" },
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Stack
-            stackProps={{
-              className: "-mt-4 md:-mt-0",
-            }}
+            stackProps={{ direction: "row", gap: 2, alignItems: "center" }}
           >
-            <Typography {...DESIGNATION(job)} />
+            <Avatar {...IMAGE(job).avatarProps}>
+              {getInitials({ name: String(job?.company_name || "") })}
+            </Avatar>
             <Stack
               stackProps={{
-                className: "pt-2 md:pt-0",
-                direction: "row",
-                gap: 1,
+                className: "-mt-4 md:-mt-0",
               }}
             >
-              <Typography {...COMPANY_NAME(job)} />
+              <Typography {...DESIGNATION(job)} />
               <Stack
                 stackProps={{
-                  className: "rounded-sm px-2",
-                  bgcolor: colorStyles.green,
+                  className: "pt-2 md:pt-0",
+                  direction: "row",
+                  gap: 1,
                 }}
               >
-                <Typography {...JOB_TYPE(job)} />
+                <Typography {...COMPANY_NAME(job)} />
+                <Stack
+                  stackProps={{
+                    className: "rounded-sm px-2",
+                    bgcolor: colorStyles.green,
+                  }}
+                >
+                  <Typography {...JOB_TYPE(job)} />
+                </Stack>
               </Stack>
             </Stack>
           </Stack>
-        </Stack>
-        <LoadingButton
-          {...APPLY_BUTTON}
-          onClick={onApplyClick}
-          loading={jobApplyMutate.isPending}
-        />
-      </Stack>
-
-      {/* full Stack */}
-      <Stack
-        stackProps={{
-          direction: { xs: "column", md: "row" },
-          gap: 2,
-          justifyContent: "space-between",
-        }}
-      >
-        {/*Left Side Description Stack */}
-        <Stack stackProps={{ width: { xs: "100%", md: "60%" } }}>
-          <Stack>
-            <Typography {...DESCRIPTION_TEXT()} />
-            <Typography {...JOB_DESCRIPTION(job)} />
+          <Stack
+            stackProps={{ direction: "row", alignItems: "center", gap: 2 }}
+          >
+            <Button onClick={() => router.back()} {...BACK_BUTTON} />
+            <LoadingButton
+              {...APPLY_BUTTON}
+              onClick={onApplyClick}
+              loading={jobApplyMutate.isPending}
+            />
           </Stack>
         </Stack>
-        {/* Right side logo and text Stack */}
+
+        {/* full Stack */}
         <Stack
           stackProps={{
-            direction: "column",
+            direction: { xs: "column", md: "row" },
             gap: 2,
-            width: { xs: "100%", md: "40%" },
+            justifyContent: "space-between",
           }}
         >
-          <SalaryLocationCard job={job} />
-          <JobOverviewCard job={job} />
-          {/* <SocialLinksCard job={job} /> */}
+          {/*Left Side Description Stack */}
+          <Stack stackProps={{ width: { xs: "100%", md: "60%" } }}>
+            <Stack>
+              <Typography {...DESCRIPTION_TEXT()} />
+              <Typography {...JOB_DESCRIPTION(job)} />
+            </Stack>
+          </Stack>
+          {/* Right side logo and text Stack */}
+          <Stack
+            stackProps={{
+              direction: "column",
+              gap: 2,
+              width: { xs: "100%", md: "40%" },
+            }}
+          >
+            <SalaryLocationCard job={job} />
+            <JobOverviewCard job={job} />
+            {/* <SocialLinksCard job={job} /> */}
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 }
 export default JobDetail;

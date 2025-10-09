@@ -33,7 +33,7 @@ export enum TypographyFontSize {
   extralarge = "20px",
   large = "18px",
   normal = "16px",
-  small = "14px",
+  small = "13px",
   extraSmall = "12px",
 }
 export enum TypographyMargin {

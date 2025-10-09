@@ -44,9 +44,10 @@ const FilterDrawer = ({
         sx: {
           bgcolor: colorStyles.filterSidebarBackgroundColor,
           scrollbarWidth: "none",
+          marginTop: { xs: "60px", lg: "80px" },
         },
       }}
-      className="  overflow-x-hidden   "
+      className="  overflow-x-hidden "
     >
       <Stack {...SIDEBAR_CONTAINER_STYLE.stackProps}>
         <Stack
@@ -55,7 +56,8 @@ const FilterDrawer = ({
             bgcolor: colorStyles.filterSidebarBackgroundColor,
             gap: 3,
             px: 2.5,
-            py: 3,
+            pt: 3,
+            pb: 12,
           }}
         >
           {Object.entries(SIDEBAR_SECTIONS).map(([key, { title }]) => (
