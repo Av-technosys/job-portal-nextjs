@@ -38,10 +38,11 @@ function ResumeDownloadCard({ candidateId }: CandidateOverviewCardProps) {
             {resumeFiles?.map((file: any, index: number) => {
               return (
                 <Link
+                  key={index}
                   target="_blank"
                   href={`https://av-job-portal.s3.amazonaws.com/${file?.file}`}
                 >
-                  <Typography key={index} {...RESUME(file?.file)} />
+                  <Typography {...RESUME(file?.file)} />
                 </Link>
               );
             })}
