@@ -37,7 +37,6 @@ function FindRecruiter() {
   }
 
   function showSearchedData(data: any) {
-    console.log("searchedData", data?.apiData?.data?.pages[0]?.data?.data);
     setSearchedData(data?.apiData?.data?.pages[0]?.data?.data);
   }
 
@@ -47,8 +46,6 @@ function FindRecruiter() {
       sort: selectedSort,
     },
   });
-
-  console.log("finddresdcdfdfsd", findRecruiterAPIData);
 
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: findRecruiterAPIData,

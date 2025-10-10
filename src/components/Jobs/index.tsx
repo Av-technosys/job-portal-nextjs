@@ -63,7 +63,6 @@ function Jobs() {
   const { userType } = useCommonDetails();
 
   function showSearchedData(data: any) {
-    console.log("searchedData", data?.apiData?.data?.pages[0]?.data?.data);
     setSearchedData(data?.apiData?.data?.pages[0]?.data?.data);
   }
 
