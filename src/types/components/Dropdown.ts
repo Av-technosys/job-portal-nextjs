@@ -19,4 +19,5 @@ export interface DropdownProps {
   error?: boolean;
   helperText?: string;
   value?: string;
+  name?: string;
 }

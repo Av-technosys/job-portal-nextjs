@@ -14,6 +14,9 @@ function Radio({
   onBlur,
   helperText,
   error,
+  label,
+  name,
+  value,
 }: RadioProps) {
   return (
     <FormControl {...formControlProps} error={error}>
@@ -26,10 +29,13 @@ function Radio({
               onChange={onChange}
               onBlur={onBlur}
               checked={checked}
+              name={name}
+              value={value}
             />
             {helperText}
           </>
         }
+        label={label}
       />
     </FormControl>
   );

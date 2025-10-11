@@ -154,6 +154,8 @@ function Jobs() {
     },
   });
 
+  console.log("message", jobInfoAPIData);
+
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: jobInfoAPIData,
   });
@@ -178,6 +180,7 @@ function Jobs() {
             direction: "row",
             gap: 1,
             alignItems: totalLength === 0 ? "center" : "baseline",
+            visibility: { xs: "hidden", md: "visible" },
           }}
         >
           <When condition={totalLength !== 0}>
@@ -198,6 +201,25 @@ function Jobs() {
             value={selectedSort?.[0]}
           />
         </Stack>
+      </Stack>
+      <Stack
+        stackProps={{
+          direction: "row",
+          gap: 1,
+          alignItems: totalLength === 0 ? "center" : "baseline",
+          visibility: { xs: "visible", md: "hidden" },
+          justifyItems: "flex-end",
+          mt: "10px",
+          className: "w-full",
+        }}
+      >
+        <When condition={totalLength !== 0}>
+          <Typography {...TITLE_COUNT(totalLength)} />
+        </When>
+        <When condition={totalLength === 0}>
+          <Skeleton variant={SkeletonVariantEnum.TEXT} />
+        </When>
+        <Typography {...TITLE_HEADER(totalLength)} />
       </Stack>
       <InfinitePagination
         dataLength={paginatedInfoData?.length}

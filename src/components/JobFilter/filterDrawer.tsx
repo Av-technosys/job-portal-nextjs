@@ -5,6 +5,7 @@ import {
   Typography,
   FormGroup,
   Checkbox,
+  Radio,
   Slider,
   Button,
   Chip,
@@ -20,6 +21,7 @@ import {
   FILTER_KEYS,
   SALARY_SLIDER_CONFIG,
   LOCATION_SELECT_CONFIG,
+  SALARY_SELECT_CONFIG,
   SEARCH_INPUT_CONFIG,
   CATEGORY_CHECKBOX_CONFIG,
   JOB_TYPE_CHECKBOX_CONFIG,
@@ -30,6 +32,7 @@ import {
   JOB_TYPE_OPTIONS,
   EXPERIENCE_OPTIONS,
 } from "@/constants";
+import { RadioProps } from "@/types";
 
 const FilterDrawer = ({
   open,
@@ -42,15 +45,30 @@ const FilterDrawer = ({
 }) => {
   const [filterSearchString, setFilterSearchString] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedDropdown, setSelectedDropdown] = useState("");
 
   const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked, name } = event.target;
 
     const localString = `&${name}=${filterRemoveSpace(value)}`;
 
-    if (checked) {
+    if (checked || value) {
+      setSelectedDropdown(value);
       setFilterSearchString((prev) => prev.concat(localString));
       setSelectedFilters((prev) => [...prev, value]);
+    } else {
+      setFilterSearchString((prev) => prev.replace(localString, ""));
+      setSelectedFilters((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const onFilterDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked, name } = event.target;
+    const localString = `&${name}=${filterRemoveSpace(value)}`;
+
+    if (checked) {
+      setFilterSearchString(() => localString);
+      setSelectedFilters(() => [value]);
     } else {
       setFilterSearchString((prev) => prev.replace(localString, ""));
       setSelectedFilters((prev) => prev.filter((item) => item !== value));
@@ -83,26 +101,20 @@ const FilterDrawer = ({
             bgcolor: colorStyles.filterSidebarBackgroundColor,
             gap: 3,
             px: 2.5,
-            py: 3,
+            pt: 3,
+            mt: { xs: 7, md: 10 },
+            pb: 10,
           }}
         >
           {Object.entries(SIDEBAR_SECTIONS).map(([key, { title }]) => (
             <Stack key={`filterDrawerEntries-${key}`}>
               <Typography {...SIDEBAR_TITLE_CONFIG({ text: title })} />
-
-              <When condition={key === FILTER_KEYS.SEARCH}>
-                <Input
-                  inputProps={{
-                    ...SEARCH_INPUT_CONFIG.textFieldProps,
-                    size: "medium",
-                  }}
-                />
-              </When>
               <When condition={key === FILTER_KEYS.LOCATION}>
                 <FormGroup>
                   <Dropdown
-                    value={" "}
-                    onChange={() => {}}
+                    name="location"
+                    value={selectedDropdown}
+                    onChange={onFilterChange}
                     options={LOCATION_SELECT_CONFIG.menuItems.map((item) => ({
                       ...item,
                       key: item.value,
@@ -166,13 +178,13 @@ const FilterDrawer = ({
                 <FormGroup>
                   {DATE_POSTED_CHECKBOX_CONFIG.options.map(
                     (option: string, index: number) => (
-                      <Checkbox
+                      <Radio
                         key={`datePosted-${index}`}
                         label={option}
                         name="datePosted"
                         value={option}
                         checked={selectedFilters.includes(option)}
-                        onChange={onFilterChange}
+                        onChange={onFilterDateChange}
                       />
                     )
                   )}
@@ -180,56 +192,20 @@ const FilterDrawer = ({
               </When>
 
               <When condition={key === FILTER_KEYS.SALARY}>
-                <>
-                  <Slider
-                    //   {...SALARY_SLIDER_CONFIG.sliderProps}
-                    defaultValue={50}
-                    min={0}
-                    max={100}
-                    marks
-                    valueLabelDisplay="auto"
+                <FormGroup>
+                  <Dropdown
+                    name="salary"
+                    value={selectedDropdown}
+                    onChange={onFilterChange}
+                    options={SALARY_SELECT_CONFIG.menuItems.map((item) => ({
+                      ...item,
+                      key: item.value,
+                    }))}
+                    formControlProps={SALARY_SELECT_CONFIG.formControlProps}
+                    inputLabelProps={SALARY_SELECT_CONFIG.inputLabelProps}
                   />
-                  <Stack
-                    stackProps={{
-                      direction: "row",
-                      spacing: 1,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography
-                      typographyProps={{
-                        variant: "body2",
-                        component: "span",
-                        children: SALARY_SLIDER_CONFIG.label,
-                      }}
-                    />
-                    <Button buttonProps={SALARY_SLIDER_CONFIG.buttonProps} />
-                  </Stack>
-                </>
+                </FormGroup>
               </When>
-
-              {/* <When condition={key === FILTER_KEYS.TAGS}>
-                <Stack
-                  stackProps={{
-                    flexDirection: "row",
-                    width: "280px",
-                    className: " flex flex-wrap gap-1.5",
-                  }}
-                >
-                  {TAGS_CONFIG.tags.map((tag: string, index: number) => (
-                    <Chip
-                      key={`filterDrawerChip-${index}`}
-                      label={tag}
-                      size="small"
-                      sx={{
-                        bgcolor: colorStyles.filterTagsBackgroundColor,
-                        color: colorStyles.filterTagsTextColor,
-                      }}
-                      className="w-fit cursor-pointer p-1 gap-1 text-sm"
-                    />
-                  ))}
-                </Stack>
-              </When> */}
             </Stack>
           ))}
         </Stack>
