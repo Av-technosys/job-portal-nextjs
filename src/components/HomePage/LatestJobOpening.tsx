@@ -77,7 +77,7 @@ function LatestJobOpenings() {
       <Stack
         stackProps={{
           width: "90vw",
-          marginTop: "-96px",
+          marginTop: "-40px",
         }}
       >
         <Stack

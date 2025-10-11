@@ -1,15 +1,5 @@
-import { useState } from "react";
-import {
-  AutoComplete,
-  BreadCrumb,
-  Divider,
-  Dropdown,
-  IconButton,
-  NextImage,
-  Stack,
-  Typography,
-  When,
-} from "../common";
+import { useEffect, useState } from "react";
+import { BreadCrumb, Stack, Typography, When } from "../common";
 import { colorStyles, dimensionStyle } from "@/styles";
 import {
   BREADCRUMB_LINK_TITLE_CONFIG,
@@ -21,8 +11,8 @@ import {
   useCommonDetails,
   useGetSearchDetailsAsPerURLOrUserType,
 } from "@/services";
-import { INDIA_FLAG, SearchIcon } from "@/assets/icons";
-import { AutoCompleteListItem, CommonObjectType } from "@/types";
+import { SearchIcon } from "@/assets/icons";
+import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
 
 function BreadcrumbLink({ pathname }: { pathname: string }) {
   return (
@@ -39,103 +29,44 @@ function BreadcrumbLink({ pathname }: { pathname: string }) {
   );
 }
 
-function SearchInput() {
-  const [searchString, setSearchString] = useState<string>("");
-  const { apiData, searchProps, searchOptions } =
-    useGetSearchDetailsAsPerURLOrUserType({
-      searchString,
-    });
-  const { SEARCH_FIELD_HEIGHT, COUNTRY_FIELD, FIELD_DIVIDER } =
-    HEADER_SEARCH_SECTION_CONFIG;
-
-  return (
-    <div
-      style={{
-        backgroundColor: colorStyles.white,
-        color: colorStyles.topRibbonColor,
-        borderRadius: "5px",
-      }}
-    >
-      <Stack
-        stackProps={{
-          direction: "row",
-          spacing: 1,
-          height: SEARCH_FIELD_HEIGHT,
-          sx: {
-            "& > *:first-child": {
-              width: "170px",
-            },
-          },
-        }}
-      >
-        <Dropdown
-          {...COUNTRY_FIELD}
-          options={[
-            {
-              label: "India",
-              value: "india",
-              key: "india",
-              icon: (
-                <IconButton disableRipple>
-                  <NextImage
-                    props={{
-                      width: 24,
-                      alt: "india_flag",
-                      src: INDIA_FLAG,
-                      height: 16,
-                    }}
-                  />
-                </IconButton>
-              ),
-            },
-          ]}
-        />
-        <Divider {...FIELD_DIVIDER} />
-        <AutoComplete
-          {...(searchProps.autoComplete as CommonObjectType)}
-          searchOptions={searchString?.length > 2 ? searchOptions : undefined}
-          handleDebouncedInputChange={(debouncedSearchValue: string = "") => {
-            setSearchString(debouncedSearchValue);
-          }}
-          getOptionLabel={(option: AutoCompleteListItem) => {
-            return option.title as string;
-          }}
-          textfieldProps={{
-            ...(searchProps.input as CommonObjectType),
-            slotProps: {
-              input: {
-                startAdornment: <SearchIcon color={"primary"} />,
-              },
-            },
-          }}
-          styles={{
-            autocompleteStyles: {
-              width: "100%",
-              "& .MuiOutlinedInput-root": {
-                height: SEARCH_FIELD_HEIGHT,
-                "& fieldset": {
-                  borderColor: "transparent",
-                },
-                "&:hover fieldset": {
-                  borderColor: "transparent",
-                },
-                "&.Mui-focused:not(.Mui-error) fieldset": {
-                  borderColor: "transparent",
-                },
-              },
-            },
-          }}
-          isLoading={apiData?.isLoading || apiData?.isFetchingNextPage}
-        />
-      </Stack>
-    </div>
-  );
-}
-
-function BreadcumbRibbon({ pathname }: { pathname: string }) {
+function BreadcumbRibbon({
+  pathname,
+  showSearchedData,
+}: {
+  pathname: string;
+  showSearchedData: any;
+}) {
   const { userType } = useCommonDetails();
 
   if ([LANDING_URL].includes(pathname)) return null;
+
+  const [searchString, setSearchString] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  // Debounce effect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchString(searchValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue]);
+
+  const SearchData = useGetSearchDetailsAsPerURLOrUserType({
+    searchString,
+  });
+
+  useEffect(() => {
+    showSearchedData(SearchData);
+  }, [SearchData]);
+
+  const searchProps = {
+    input: {
+      placeholder: "Search name",
+    },
+  };
 
   return (
     <>
@@ -143,19 +74,41 @@ function BreadcumbRibbon({ pathname }: { pathname: string }) {
         stackProps={{
           bgcolor: colorStyles.topRibbonColor,
           minHeight: dimensionStyle.topRibbonHeight,
-          className: "w-full px-2 md:px-20 py-2 md:py-0 gap-2 md:gap-0",
+          className: "w-full mb-10  px-2 md:px-20 py-2 md:py-0 gap-2 md:gap-0",
           alignItems: "center",
           justifyContent: "space-between",
           direction: "row",
-          flexWrap: "wrap",
+          // flexWrap: "wrap",
         }}
       >
         <div className="w-full md:w-1/4">
           <BreadcrumbLink pathname={pathname} />
         </div>
-        <div className="w-full md:w-2/4">
+        <div className="w-full md:w-2/4 flex justify-center items-center">
           <When condition={userType !== -1}>
-            <SearchInput />
+            <FormControl
+              sx={{
+                width: { xs: "20ch", sm: "30ch" },
+                backgroundColor: "white",
+              }}
+              variant="outlined"
+            >
+              <OutlinedInput
+                id="outlined-adornment-search"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder={searchProps.input.placeholder}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                }
+                aria-describedby="outlined-search-helper-text"
+                inputProps={{
+                  "aria-label": "search",
+                }}
+              />
+            </FormControl>
           </When>
         </div>
         <div className="w-full md:w-1/4" />

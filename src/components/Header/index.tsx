@@ -1,13 +1,11 @@
 import { AppBar, Toolbar } from "@mui/material";
 import { colorStyles, useThemeContext } from "@/styles";
 // import TopRibbon from "./TopRibbon";
-import BreadcrumbRibbon from "./BreadcrumbRibbon";
 import LogoAndSearchRibbon from "./LogoAndSearchRibbon";
 import { useRouter } from "next/router";
 
 function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
   const { theme } = useThemeContext();
-  const { pathname } = useRouter();
 
   return (
     <>
@@ -22,7 +20,7 @@ function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
         <Toolbar sx={{ padding: "0px!important", flexDirection: "column" }}>
           <LogoAndSearchRibbon isAuthenticated={isAuthenticated} />
           {/* <TopRibbon /> */}
-          <BreadcrumbRibbon pathname={pathname} />
+          {/* <BreadcrumbRibbon pathname={pathname} /> */}
         </Toolbar>
       </AppBar>
     </>

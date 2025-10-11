@@ -12,6 +12,8 @@ import RecruiterCard from "./RecruiterCard";
 import RecruiterApplicationPopup from "./RecruiterApplicationPopup";
 import { CommonObjectType, RecruiterListSortEnum } from "@/types";
 import { SelectChangeEvent } from "@mui/material";
+import { useRouter } from "next/router";
+import BreadcrumbRibbon from "../Header/BreadcrumbRibbon";
 // import RecruiterApplicationPopup from "./RecruiterApplicationPopup";
 
 function FindRecruiter() {
@@ -19,9 +21,11 @@ function FindRecruiter() {
     FIND_RECRUITER_PAGE_CONFIG;
   const [isRecruiterPopupOpen, setRecruiterPopupStatus] = useState(false);
   const selectedRecruiter = useRef({} as CommonObjectType);
+  const { pathname } = useRouter();
   const [selectedSort, setSelectedSort] = useState<RecruiterListSortEnum[]>([
     RecruiterListSortEnum.CREATED_DATE_ASC,
   ]);
+  const [searchedData, setSearchedData] = useState(null);
 
   const handleSortChange = (event: SelectChangeEvent<unknown>) => {
     const newSort = event.target.value;
@@ -32,18 +36,27 @@ function FindRecruiter() {
     setRecruiterPopupStatus(true);
   }
 
+  function showSearchedData(data: any) {
+    setSearchedData(data?.apiData?.data?.pages[0]?.data?.data);
+  }
+
   const findRecruiterAPIData = useGetFindRecruiterList({
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
     },
   });
+
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: findRecruiterAPIData,
   });
 
   return (
     <>
+      <BreadcrumbRibbon
+        showSearchedData={showSearchedData}
+        pathname={pathname}
+      />
       <When condition={totalLength !== 0}>
         <Stack
           stackProps={{
@@ -80,15 +93,25 @@ function FindRecruiter() {
         isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
       >
         <Stack>
-          {paginatedInfoData?.map((recruiter) => (
-            <RecruiterCard
-              recruiter={recruiter}
-              key={`recruiters-${recruiter?.id}`}
-              openRecruiterApplicationPopup={() =>
-                openRecruiterPopup(recruiter)
-              }
-            />
-          ))}
+          {Array.isArray(searchedData) && searchedData.length > 0
+            ? searchedData?.map((recruiter) => (
+                <RecruiterCard
+                  recruiter={recruiter}
+                  key={`recruiters-${recruiter?.id}`}
+                  openRecruiterApplicationPopup={() =>
+                    openRecruiterPopup(recruiter)
+                  }
+                />
+              ))
+            : paginatedInfoData?.map((recruiter) => (
+                <RecruiterCard
+                  recruiter={recruiter}
+                  key={`recruiters-${recruiter?.id}`}
+                  openRecruiterApplicationPopup={() =>
+                    openRecruiterPopup(recruiter)
+                  }
+                />
+              ))}
         </Stack>
       </InfinitePagination>
       <RecruiterApplicationPopup

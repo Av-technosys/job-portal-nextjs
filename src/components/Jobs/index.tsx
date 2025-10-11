@@ -29,6 +29,7 @@ import {
   SkeletonVariantEnum,
 } from "@/types";
 import FilterButton from "../JobFilter";
+import BreadcrumbRibbon from "../Header/BreadcrumbRibbon";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   getErrorMessageFromAPI,
@@ -49,12 +50,21 @@ function Jobs() {
   const [selectedSort, setSelectedSort] = useState<JobListSortEnum[]>([
     JobListSortEnum.CREATED_DATE_DESC,
   ]);
+
+  const [searchedData, setSearchedData] = useState(null);
+
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { pathname } = useRouter();
+
   const { showNotification } = useNotification();
   const createSaveJobMutate = useCreateSavedJob();
   const deleteSaveJobMutate = useDeleteSavedJob();
   const { userType } = useCommonDetails();
+
+  function showSearchedData(data: any) {
+    setSearchedData(data?.apiData?.data?.pages[0]?.data?.data);
+  }
 
   function onSaveUnSaveMutateSuccess({ job }: { job: CommonObjectType }) {
     const jobListingQueryKey = getInfiniteJobListQueryOptions({
@@ -145,6 +155,10 @@ function Jobs() {
 
   return (
     <>
+      <BreadcrumbRibbon
+        showSearchedData={showSearchedData}
+        pathname={pathname}
+      />
       <Stack
         stackProps={{
           direction: "row",
@@ -187,15 +201,25 @@ function Jobs() {
         isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
       >
         <Stack>
-          {paginatedInfoData?.map((job) => (
-            <JobCard
-              job={job}
-              key={`jobs-${job?.id}-${job?.is_saved}`}
-              handleSaveUnSave={handleSaveUnSave}
-              showSaveUnSaveButton={showSaveUnSaveButton}
-              handleJobDetailsClick={handleJobDetailsClick}
-            />
-          ))}
+          {Array.isArray(searchedData) && searchedData.length > 0
+            ? searchedData?.map((job) => (
+                <JobCard
+                  job={job}
+                  key={`jobs-${job?.id}-${job?.is_saved}`}
+                  handleSaveUnSave={handleSaveUnSave}
+                  showSaveUnSaveButton={showSaveUnSaveButton}
+                  handleJobDetailsClick={handleJobDetailsClick}
+                />
+              ))
+            : paginatedInfoData?.map((job) => (
+                <JobCard
+                  job={job}
+                  key={`jobs-${job?.id}-${job?.is_saved}`}
+                  handleSaveUnSave={handleSaveUnSave}
+                  showSaveUnSaveButton={showSaveUnSaveButton}
+                  handleJobDetailsClick={handleJobDetailsClick}
+                />
+              ))}
         </Stack>
       </InfinitePagination>
     </>
