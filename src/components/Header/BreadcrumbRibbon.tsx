@@ -74,11 +74,11 @@ function BreadcumbRibbon({
         stackProps={{
           bgcolor: colorStyles.topRibbonColor,
           minHeight: dimensionStyle.topRibbonHeight,
-          className: "w-full m-0 px-2 md:px-20 py-2 md:py-0 gap-2 md:gap-0",
+          className: "w-full mb-10  px-2 md:px-20 py-2 md:py-0 gap-2 md:gap-0",
           alignItems: "center",
           justifyContent: "space-between",
           direction: "row",
-          flexWrap: "wrap",
+          // flexWrap: "wrap",
         }}
       >
         <div className="w-full md:w-1/4">
@@ -87,7 +87,10 @@ function BreadcumbRibbon({
         <div className="w-full md:w-2/4 flex justify-center items-center">
           <When condition={userType !== -1}>
             <FormControl
-              sx={{ width: { xs: "20ch", sm: "30ch" } }}
+              sx={{
+                width: { xs: "20ch", sm: "30ch" },
+                backgroundColor: "white",
+              }}
               variant="outlined"
             >
               <OutlinedInput
