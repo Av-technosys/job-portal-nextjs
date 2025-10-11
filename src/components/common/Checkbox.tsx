@@ -1,37 +1,38 @@
-import { CheckBoxProps } from "@/types";
-import {
-  Checkbox as MUICheckbox,
-  FormControl,
-  FormControlLabel,
-} from "@mui/material";
+// components/CommonCheckbox.tsx
+import React from "react";
+import { Checkbox as MUICheckbox, FormControlLabel } from "@mui/material";
 
-function CheckBox({
-  checkboxProps,
-  formControlProps,
-  formControlLabelProps,
-  onChange,
+type CommonCheckboxProps = {
+  label: string;
+  name?: string;
+  value?: string | number;
+  checked?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+};
+
+const Checkbox: React.FC<CommonCheckboxProps> = ({
+  label,
+  name,
+  value,
   checked,
-  onBlur,
-  helperText,
-  error,
-}: CheckBoxProps) {
+  onChange,
+  disabled = false,
+}) => {
   return (
-    <FormControl {...formControlProps} error={error}>
-      <FormControlLabel
-        {...formControlLabelProps}
-        control={
-          <>
-            <MUICheckbox
-              {...checkboxProps}
-              onChange={onChange}
-              onBlur={onBlur}
-              checked={checked}
-            />
-            {helperText}
-          </>
-        }
-      />
-    </FormControl>
+    <FormControlLabel
+      control={
+        <MUICheckbox
+          name={name}
+          value={value}
+          checked={checked}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      }
+      label={label}
+    />
   );
-}
-export default CheckBox;
+};
+
+export default Checkbox;

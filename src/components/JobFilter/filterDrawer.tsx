@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { colorStyles } from "@/styles";
 import {
   Stack,
@@ -26,15 +26,43 @@ import {
   EXPERIENCE_LEVEL_CHECKBOX_CONFIG,
   TAGS_CONFIG,
   DATE_POSTED_CHECKBOX_CONFIG,
+  JOB_ROLE_OPTIONS,
+  JOB_TYPE_OPTIONS,
+  EXPERIENCE_OPTIONS,
 } from "@/constants";
 
 const FilterDrawer = ({
   open,
   onClose,
+  handleFilterChange,
 }: {
   open: boolean;
   onClose: () => void;
+  handleFilterChange: (filterChange: string | null) => void;
 }) => {
+  const [filterSearchString, setFilterSearchString] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked, name } = event.target;
+
+    const localString = `&${name}=${filterRemoveSpace(value)}`;
+
+    if (checked) {
+      setFilterSearchString((prev) => prev.concat(localString));
+      setSelectedFilters((prev) => [...prev, value]);
+    } else {
+      setFilterSearchString((prev) => prev.replace(localString, ""));
+      setSelectedFilters((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  handleFilterChange(filterSearchString);
+
+  const filterRemoveSpace = (filterString: string) => {
+    return filterString.replaceAll(" ", "_");
+  };
+
   return (
     <Drawer
       anchor="left"
@@ -87,50 +115,50 @@ const FilterDrawer = ({
 
               <When condition={key === FILTER_KEYS.CATEGORY}>
                 <FormGroup>
-                  {CATEGORY_CHECKBOX_CONFIG.options.map(
-                    (option: string, index: number) => (
-                      <Checkbox
-                        key={`filterDrawerCategory-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
-                      />
-                    )
-                  )}
-                  <Button buttonProps={CATEGORY_CHECKBOX_CONFIG.buttonProps} />
+                  {/* {CATEGORY_CHECKBOX_CONFIG.options.map((option, index) => ( */}
+                  {JOB_ROLE_OPTIONS.map(({ key, value, label }) => (
+                    <Checkbox
+                      key={key}
+                      label={label}
+                      name="category"
+                      value={value}
+                      checked={selectedFilters.includes(value)}
+                      onChange={onFilterChange}
+                    />
+                  ))}
+                  {/* <Button buttonProps={CATEGORY_CHECKBOX_CONFIG.buttonProps} /> */}
                 </FormGroup>
               </When>
 
               <When condition={key === FILTER_KEYS.JOB_TYPE}>
                 <FormGroup>
-                  {JOB_TYPE_CHECKBOX_CONFIG.options.map(
-                    (option: string, index: number) => (
-                      <Checkbox
-                        key={`filterDrawerJobType-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
-                      />
-                    )
-                  )}
+                  {JOB_TYPE_OPTIONS.map(({ key, value, label }) => (
+                    <Checkbox
+                      key={key}
+                      label={label}
+                      name="jobType"
+                      value={value}
+                      checked={selectedFilters.includes(value)}
+                      onChange={onFilterChange}
+                    />
+                  ))}
                 </FormGroup>
               </When>
 
               <When condition={key === FILTER_KEYS.EXPERIENCE}>
                 <FormGroup>
-                  {EXPERIENCE_LEVEL_CHECKBOX_CONFIG.options.map(
-                    (option: string, index: number) => (
-                      <Checkbox
-                        key={`filterDrawerExperience-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
-                      />
-                    )
-                  )}
+                  {EXPERIENCE_OPTIONS.map(({ key, value, label }) => (
+                    <Checkbox
+                      key={key}
+                      label={label}
+                      name="experience"
+                      value={value}
+                      checked={selectedFilters.includes(
+                        value.toString() as string
+                      )}
+                      onChange={onFilterChange}
+                    />
+                  ))}
                 </FormGroup>
               </When>
 
@@ -139,11 +167,12 @@ const FilterDrawer = ({
                   {DATE_POSTED_CHECKBOX_CONFIG.options.map(
                     (option: string, index: number) => (
                       <Checkbox
-                        key={`filterDrawerDatePosted-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
+                        key={`datePosted-${index}`}
+                        label={option}
+                        name="datePosted"
+                        value={option}
+                        checked={selectedFilters.includes(option)}
+                        onChange={onFilterChange}
                       />
                     )
                   )}
@@ -179,7 +208,7 @@ const FilterDrawer = ({
                 </>
               </When>
 
-              <When condition={key === FILTER_KEYS.TAGS}>
+              {/* <When condition={key === FILTER_KEYS.TAGS}>
                 <Stack
                   stackProps={{
                     flexDirection: "row",
@@ -200,7 +229,7 @@ const FilterDrawer = ({
                     />
                   ))}
                 </Stack>
-              </When>
+              </When> */}
             </Stack>
           ))}
         </Stack>

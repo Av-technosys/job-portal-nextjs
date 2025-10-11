@@ -4,7 +4,11 @@ import FilterDrawer from "./filterDrawer";
 import { ButtonSizeEnum, ButtonVariantEnum } from "@/types";
 import { colorStyles } from "@/styles";
 
-const FilterButton = () => {
+const FilterButton = ({
+  handleFilterChange,
+}: {
+  handleFilterChange: (filterChange: string) => void;
+}) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const handleOpenFilter = () => setIsFilterOpen(true);
@@ -25,7 +29,11 @@ const FilterButton = () => {
       />
 
       {/* Filter Drawer */}
-      <FilterDrawer open={isFilterOpen} onClose={handleCloseFilter} />
+      <FilterDrawer
+        open={isFilterOpen}
+        onClose={handleCloseFilter}
+        handleFilterChange={handleFilterChange}
+      />
     </Stack>
   );
 };

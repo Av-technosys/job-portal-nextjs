@@ -185,11 +185,18 @@ function Login() {
                         flexWrap: "wrap",
                       }}
                     >
-                      <Checkbox
+                      {/* <Checkbox
                         formControlLabelProps={{
                           label: "Remember Me",
                           control: <input type="checkbox" />,
                         }}
+                      /> */}
+
+                      <Checkbox
+                        key={`remember-me`}
+                        label={"Remember Me"}
+                        name="datePosted"
+                        value={"remember-me"}
                       />
                       <Link
                         {...FORGOT_PASSWORD_LINK({

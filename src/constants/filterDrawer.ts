@@ -68,9 +68,10 @@ export const CATEGORY_CHECKBOX_CONFIG = {
   options: [
     "Commerce",
     "Telecommunications",
-    "Hotels & Tourism",
+    "Hotels and Tourism",
     "Education",
     "Financial Services",
+    "software-engineer",
   ],
   buttonProps: {
     children: "Show More",

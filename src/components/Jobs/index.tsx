@@ -49,6 +49,7 @@ function Jobs() {
   const [selectedSort, setSelectedSort] = useState<JobListSortEnum[]>([
     JobListSortEnum.CREATED_DATE_DESC,
   ]);
+  const [filterSearch, setFilterSearch] = useState<string>("");
   const queryClient = useQueryClient();
   const router = useRouter();
   const { showNotification } = useNotification();
@@ -132,10 +133,14 @@ function Jobs() {
     const newSort = event.target.value;
     setSelectedSort([newSort] as JobListSortEnum[]);
   };
+  const handleFilterChange = (filterChange: string | null) => {
+    setFilterSearch(filterChange);
+  };
   const jobInfoAPIData = useGetJobList({
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      filterSearch: filterSearch,
     },
   });
 
@@ -172,7 +177,7 @@ function Jobs() {
         <Stack
           stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}
         >
-          <FilterButton />
+          <FilterButton handleFilterChange={handleFilterChange} />
           <Dropdown
             {...JOB_LISTING_SORT_DROPDOWN}
             onChange={handleSortChange}
