@@ -31,6 +31,7 @@ import {
   JOB_ROLE_OPTIONS,
   JOB_TYPE_OPTIONS,
   EXPERIENCE_OPTIONS,
+  MIN_SALARY_RANGE_OPTIONS,
 } from "@/constants";
 import { RadioProps } from "@/types";
 
@@ -50,7 +51,7 @@ const FilterDrawer = ({
   const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked, name } = event.target;
 
-    const localString = `&${name}=${filterRemoveSpace(value)}`;
+    const localString = `&${name}=${filterRemoveSpace(value.toString())}`;
 
     if (checked || value) {
       setSelectedDropdown(value);
@@ -78,7 +79,7 @@ const FilterDrawer = ({
   handleFilterChange(filterSearchString);
 
   const filterRemoveSpace = (filterString: string) => {
-    return filterString.replaceAll(" ", "_");
+    return filterString?.replaceAll(" ", "_");
   };
 
   return (
@@ -197,7 +198,7 @@ const FilterDrawer = ({
                     name="salary"
                     value={selectedDropdown}
                     onChange={onFilterChange}
-                    options={SALARY_SELECT_CONFIG.menuItems.map((item) => ({
+                    options={MIN_SALARY_RANGE_OPTIONS.map((item) => ({
                       ...item,
                       key: item.value,
                     }))}

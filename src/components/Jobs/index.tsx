@@ -154,8 +154,6 @@ function Jobs() {
     },
   });
 
-  console.log("message", jobInfoAPIData);
-
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: jobInfoAPIData,
   });

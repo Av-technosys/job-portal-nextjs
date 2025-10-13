@@ -3,9 +3,9 @@ import { ElementRenderType } from "../common";
 import { ChangeEventHandler } from "react";
 
 export interface Option {
-  value: string;
+  value: string | number;
   label: ElementRenderType;
-  key: string;
+  key: string | number;
   icon?: ElementRenderType;
 }
 
