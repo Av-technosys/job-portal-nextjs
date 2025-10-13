@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiConstantsURL } from "@/constants";
-import { QueryConfig, SuccessResponseType } from "@/types";
+import { QueryConfig } from "@/types";
 import { api } from "@/helper";
 
 export type GetRecruiterFullInfoQueryParams = {

@@ -43,6 +43,7 @@ export const ADDRESS_KEY_CONFIG: string[] = [
 
 export const JOB_SEEKER_TITLE = "Job Seeker";
 export const RECRUITER_TITLE = "Recruiter";
+export const ADMIN_TITLE = "Admin";
 
 export const USER_TYPE: Option[] = [
   {
@@ -54,6 +55,19 @@ export const USER_TYPE: Option[] = [
     label: RECRUITER_TITLE,
     key: "recruiter",
     value: UserType.RECUITER_TYPE,
+  },
+  {
+    label: ADMIN_TITLE,
+    key: "admin",
+    value: UserType.ADMIN_TYPE,
+  },
+];
+
+export const ADMIN_USER_TYPE: Option[] = [
+  {
+    label: ADMIN_TITLE,
+    key: "admin",
+    value: UserType.ADMIN_TYPE,
   },
 ];
 

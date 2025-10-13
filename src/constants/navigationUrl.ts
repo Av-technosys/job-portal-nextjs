@@ -1,6 +1,8 @@
 export const LANDING_URL: string = "/";
 export const LOGIN_URL: string = "/login";
+export const ADMIN_LOGIN_URL: string = "/admin/login";
 export const REGISTER_URL: string = "/register";
+export const ADMIN_REGISTER_URL: string = "/admin/register";
 export const PROFILE_URL: string = "/dashboard/profile";
 export const ADMIN_PROFILE_URL: string = "/admin/profile";
 export const BACK_TO_ADMIN_URL: string = "/admin";

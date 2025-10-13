@@ -1,8 +1,10 @@
 export const apiConstantsURL = {
   authentication: {
     login: `accounts/login/`,
+    adminLogin: `accounts/login/`,
     logout: `accounts/logout/`,
     register: `accounts/register/`,
+    adminRegister: `accounts/register/`,
     activate: `accounts/activate/`,
     deactivate: `accounts/deactivate/`,
     allContactDetails: `accounts/get_contacts/`,
