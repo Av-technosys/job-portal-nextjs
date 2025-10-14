@@ -6,10 +6,6 @@ import {
   FormGroup,
   Checkbox,
   Radio,
-  Slider,
-  Button,
-  Chip,
-  Input,
   When,
   Dropdown,
   Drawer,
@@ -19,21 +15,14 @@ import {
   SIDEBAR_CONTAINER_STYLE,
   SIDEBAR_TITLE_CONFIG,
   FILTER_KEYS,
-  SALARY_SLIDER_CONFIG,
   LOCATION_SELECT_CONFIG,
   SALARY_SELECT_CONFIG,
-  SEARCH_INPUT_CONFIG,
-  CATEGORY_CHECKBOX_CONFIG,
-  JOB_TYPE_CHECKBOX_CONFIG,
-  EXPERIENCE_LEVEL_CHECKBOX_CONFIG,
-  TAGS_CONFIG,
   DATE_POSTED_CHECKBOX_CONFIG,
   JOB_ROLE_OPTIONS,
   JOB_TYPE_OPTIONS,
   EXPERIENCE_OPTIONS,
   MIN_SALARY_RANGE_OPTIONS,
 } from "@/constants";
-import { RadioProps } from "@/types";
 
 const FilterDrawer = ({
   open,
@@ -52,11 +41,20 @@ const FilterDrawer = ({
     const { value, checked, name } = event.target;
 
     const localString = `&${name}=${filterRemoveSpace(value.toString())}`;
+    console.log(value, checked, name, localString);
 
     if (checked || value) {
       setSelectedDropdown(value);
-      setFilterSearchString((prev) => prev.concat(localString));
-      setSelectedFilters((prev) => [...prev, value]);
+      setFilterSearchString((prev: string) =>
+        !checked
+          ? filterRemoveSpace(prev, localString, "")
+          : prev.concat(localString)
+      );
+      setSelectedFilters((prev) =>
+        prev.includes(value)
+          ? prev.filter((item) => item !== value)
+          : [...prev, value]
+      );
     } else {
       setFilterSearchString((prev) => prev.replace(localString, ""));
       setSelectedFilters((prev) => prev.filter((item) => item !== value));
@@ -78,8 +76,12 @@ const FilterDrawer = ({
 
   handleFilterChange(filterSearchString);
 
-  const filterRemoveSpace = (filterString: string) => {
-    return filterString?.replaceAll(" ", "_");
+  const filterRemoveSpace = (
+    filterString: string,
+    stringToReplace: string = " ",
+    stringReplaceWith: string = "_"
+  ) => {
+    return filterString?.replaceAll(stringToReplace, stringReplaceWith);
   };
 
   return (

@@ -30,9 +30,11 @@ function BreadcrumbLink({ pathname }: { pathname: string }) {
 }
 
 function BreadcumbRibbon({
+  isFilterOpen,
   pathname,
   showSearchedData,
 }: {
+  isFilterOpen: boolean;
   pathname: string;
   showSearchedData: any;
 }) {
@@ -42,6 +44,10 @@ function BreadcumbRibbon({
 
   const [searchString, setSearchString] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
+
+  useEffect(() => {
+    setSearchValue("");
+  }, [isFilterOpen]);
 
   // Debounce effect
   useEffect(() => {

@@ -11,6 +11,7 @@ import {
 import {
   Dropdown,
   InfinitePagination,
+  Loader,
   Skeleton,
   Stack,
   Typography,
@@ -53,6 +54,8 @@ function Jobs() {
 
   const [searchedData, setSearchedData] = useState(null);
   const [filterSearch, setFilterSearch] = useState("");
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -161,6 +164,7 @@ function Jobs() {
   return (
     <>
       <BreadcrumbRibbon
+        isFilterOpen={isFilterOpen}
         showSearchedData={showSearchedData}
         pathname={pathname}
       />
@@ -192,7 +196,11 @@ function Jobs() {
         <Stack
           stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}
         >
-          <FilterButton handleFilterChange={handleFilterChange} />
+          <FilterButton
+            isFilterOpen={isFilterOpen}
+            setIsFilterOpen={setIsFilterOpen}
+            handleFilterChange={handleFilterChange}
+          />
           <Dropdown
             {...JOB_LISTING_SORT_DROPDOWN}
             onChange={handleSortChange}
@@ -250,4 +258,5 @@ function Jobs() {
     </>
   );
 }
+
 export default Jobs;

@@ -6,11 +6,13 @@ import { colorStyles } from "@/styles";
 
 const FilterButton = ({
   handleFilterChange,
+  isFilterOpen,
+  setIsFilterOpen,
 }: {
   handleFilterChange: (filterChange: string) => void;
+  isFilterOpen: boolean;
+  setIsFilterOpen: any;
 }) => {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-
   const handleOpenFilter = () => setIsFilterOpen(true);
   const handleCloseFilter = () => setIsFilterOpen(false);
 
