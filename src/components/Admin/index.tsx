@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import AdminRecruiterComponent from "./AdminRecruiterComponent";
 import AdminJobseekerComponent from "./AdminJobseekerComponent";
 import AdminAssessmentComponent from "./AdminAssessmentComponent";
+import AdminComponent from "./AdminComponent";
 import { useRouter } from "next/router";
 import AdminContactDetailsComponent from "./AdminContactDetailsComponent";
 
@@ -29,6 +30,15 @@ function AdminTabs() {
         children: <AdminJobseekerComponent />,
         onClick: () => {
           router.push("/admin?tab=jobSeeker");
+        },
+      },
+      {
+        label: "Admin",
+        value: "admin",
+        key: "admin",
+        children: <AdminComponent />,
+        onClick: () => {
+          router.push("/admin?tab=admin");
         },
       },
       {

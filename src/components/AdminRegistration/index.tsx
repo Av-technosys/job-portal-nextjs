@@ -1,9 +1,9 @@
 import {
   ADMIN_LOGIN_URL,
   ADMIN_REGISTRATION_PAGE_CONFIG,
-  ENTER_OTP,
   SSO_REDIRECT_URL,
   BACK_TO_ADMIN_URL,
+  ADMIN_ENTER_OTP,
 } from "@/constants";
 import {
   Checkbox,
@@ -70,10 +70,10 @@ function AdminRegistration() {
           );
           router.push(
             {
-              pathname: ENTER_OTP,
+              pathname: ADMIN_ENTER_OTP,
               query: { email: res?.data?.email as string },
             },
-            ENTER_OTP
+            ADMIN_ENTER_OTP
           );
         }
       },
@@ -101,7 +101,7 @@ function AdminRegistration() {
   const { onChange, onBlur, onSubmit, errorObj, formValuesObj, resetError } =
     useForm({
       initialValues: {
-        userType: UserType.JOB_SEEKER_TYPE,
+        userType: UserType.ADMIN_TYPE,
         name: "",
         email: "",
         password: "",

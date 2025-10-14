@@ -56,11 +56,11 @@ export const USER_TYPE: Option[] = [
     key: "recruiter",
     value: UserType.RECUITER_TYPE,
   },
-  {
-    label: ADMIN_TITLE,
-    key: "admin",
-    value: UserType.ADMIN_TYPE,
-  },
+  // {
+  //   label: ADMIN_TITLE,
+  //   key: "admin",
+  //   value: UserType.ADMIN_TYPE,
+  // },
 ];
 
 export const ADMIN_USER_TYPE: Option[] = [

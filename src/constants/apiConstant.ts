@@ -16,6 +16,8 @@ export const apiConstantsURL = {
     details: `accounts/details/`,
     notification: `accounts/notifications/`,
     sso: `accounts/sso/`,
+    listAllAdmin: `accounts/get_all_admin/`,
+    deleteAdmin: `accounts/remove_user/`,
   },
   profile: {
     personalInfo: `user_profiles/job_seeker_personal/`,

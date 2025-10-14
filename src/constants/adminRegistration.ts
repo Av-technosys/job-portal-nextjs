@@ -9,7 +9,7 @@ import {
   TypographyProps,
   TypographyVariantEnum,
 } from "@/types";
-import { ADMIN_USER_TYPE, USER_TYPE } from "./common";
+import { ADMIN_USER_TYPE } from "./common";
 
 export const ADMIN_REGISTRATION_PAGE_CONFIG = {
   HEADER_TEXT: () => {
@@ -42,7 +42,7 @@ export const ADMIN_REGISTRATION_PAGE_CONFIG = {
     inputLabelProps: {
       children: "User Type *",
     },
-    options: USER_TYPE,
+    options: ADMIN_USER_TYPE,
   },
   FIRST_NAME_FIELD: {
     inputProps: {

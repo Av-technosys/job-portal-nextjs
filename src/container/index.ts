@@ -30,3 +30,4 @@ export { default as AdminAssessmentQuestionsContainer } from "./AdminAssessmentQ
 export { default as AdminAssessmentEditQuestionsContainer } from "./AdminAssessmentEditQuestionsContainer";
 export { default as AdminLoginContainer } from "./AdminLoginContainer";
 export { default as AdminRegistrationContainer } from "./AdminRegistrationContainer";
+export { default as AdminOTPContainer } from "./AdminOTPContainer";

@@ -14,7 +14,7 @@ export const FIND_STUDENT_PAGE_CONFIG = {
   TITLE_HEADER: (totalLength: number) => {
     return {
       typographyProps: {
-        children: `Total Job Seeker${getPluralForm({ totalLength })} `,
+        children: `Total Admin${getPluralForm({ totalLength })} `,
         variant: TypographyVariantEnum.BODY2,
       },
     };
