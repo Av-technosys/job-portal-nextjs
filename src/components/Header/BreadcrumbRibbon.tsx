@@ -34,7 +34,7 @@ function BreadcumbRibbon({
   pathname,
   showSearchedData,
 }: {
-  isFilterOpen: boolean;
+  isFilterOpen?: boolean;
   pathname: string;
   showSearchedData: any;
 }) {

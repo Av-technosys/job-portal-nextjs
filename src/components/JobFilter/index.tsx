@@ -10,8 +10,8 @@ const FilterButton = ({
   setIsFilterOpen,
 }: {
   handleFilterChange: (filterChange: string) => void;
-  isFilterOpen: boolean;
-  setIsFilterOpen: any;
+  isFilterOpen?: boolean;
+  setIsFilterOpen?: any;
 }) => {
   const handleOpenFilter = () => setIsFilterOpen(true);
   const handleCloseFilter = () => setIsFilterOpen(false);
