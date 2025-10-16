@@ -20,6 +20,7 @@ function Dropdown({
   error,
   helperText,
   value,
+  name,
 }: DropdownProps) {
   const getSelectedOptionObject = useCallback(
     (valueToBeSearched: string) => {
@@ -46,6 +47,7 @@ function Dropdown({
         {...selectProps}
         onChange={onChange}
         onBlur={onBlur}
+        name={name}
         value={selectedValue}
         error={error}
         renderValue={(valueToBeRendered) => {

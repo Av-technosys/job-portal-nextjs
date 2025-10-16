@@ -35,6 +35,7 @@ export default function JobCard({
   const {
     DESIGNATION,
     COMPANY_NAME,
+    EXPERIENCE_TIME,
     APPLY_BUTTON,
     DEPARTMENT,
     JOB_TYPE,
@@ -171,6 +172,7 @@ export default function JobCard({
           >
             <Typography {...DESIGNATION(job)} />
             <Typography {...COMPANY_NAME(job)} />
+            <Typography {...EXPERIENCE_TIME(job)} />
           </Stack>
         </Stack>
 

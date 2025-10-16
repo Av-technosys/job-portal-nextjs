@@ -98,6 +98,18 @@ export const LIST_JOB_PAGE_CONFIG = {
         fontColor: TypographyFontColor.black,
       } as TypographyProps;
     },
+    EXPERIENCE_TIME: (job: CommonObjectType) => {
+      return {
+        typographyProps: {
+          children: `Experience Required : ${job?.experience} Year`,
+          variant: TypographyVariantEnum.BODY2,
+        },
+        fontWeight: TypographyFontWeight.normal,
+        fontSize: TypographyFontSize.small,
+        fontColor: TypographyFontColor.black,
+      } as TypographyProps;
+    },
+
     DEPARTMENT: (job: CommonObjectType) => {
       return {
         typographyProps: {

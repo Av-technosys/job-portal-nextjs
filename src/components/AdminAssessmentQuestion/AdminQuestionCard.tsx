@@ -143,7 +143,7 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
             }}
             key={key}
           >
-            <Radio
+            {/* <Radio
               formControlLabelProps={{
                 label: `${key}. ${value}`,
                 sx: { width: "100%", margin: 0 },
@@ -153,9 +153,12 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
               radioProps={{
                 name: questionData.id,
                 value: key,
+
                 disabled: normalizeAnswer !== key,
               }}
-            />
+              helperText={value}
+            /> */}
+            <p>{`${value}`}</p>
           </Paper>
         ))}
       </Stack>

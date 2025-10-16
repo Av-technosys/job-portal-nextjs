@@ -11,6 +11,7 @@ import {
 import {
   Dropdown,
   InfinitePagination,
+  Loader,
   Skeleton,
   Stack,
   Typography,
@@ -52,6 +53,9 @@ function Jobs() {
   ]);
 
   const [searchedData, setSearchedData] = useState(null);
+  const [filterSearch, setFilterSearch] = useState("");
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -142,10 +146,14 @@ function Jobs() {
     const newSort = event.target.value;
     setSelectedSort([newSort] as JobListSortEnum[]);
   };
+  const handleFilterChange = (filterChange: string | null) => {
+    setFilterSearch(filterChange);
+  };
   const jobInfoAPIData = useGetJobList({
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      filterSearch: filterSearch,
     },
   });
 
@@ -156,6 +164,7 @@ function Jobs() {
   return (
     <>
       <BreadcrumbRibbon
+        isFilterOpen={isFilterOpen}
         showSearchedData={showSearchedData}
         pathname={pathname}
       />
@@ -173,6 +182,7 @@ function Jobs() {
             direction: "row",
             gap: 1,
             alignItems: totalLength === 0 ? "center" : "baseline",
+            visibility: { xs: "hidden", md: "visible" },
           }}
         >
           <When condition={totalLength !== 0}>
@@ -186,13 +196,36 @@ function Jobs() {
         <Stack
           stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}
         >
-          <FilterButton />
+          <FilterButton
+            isFilterOpen={isFilterOpen}
+            setIsFilterOpen={setIsFilterOpen}
+            handleFilterChange={handleFilterChange}
+          />
           <Dropdown
             {...JOB_LISTING_SORT_DROPDOWN}
             onChange={handleSortChange}
             value={selectedSort?.[0]}
           />
         </Stack>
+      </Stack>
+      <Stack
+        stackProps={{
+          direction: "row",
+          gap: 1,
+          alignItems: totalLength === 0 ? "center" : "baseline",
+          visibility: { xs: "visible", md: "hidden" },
+          justifyItems: "flex-end",
+          mt: "10px",
+          className: "w-full",
+        }}
+      >
+        <When condition={totalLength !== 0}>
+          <Typography {...TITLE_COUNT(totalLength)} />
+        </When>
+        <When condition={totalLength === 0}>
+          <Skeleton variant={SkeletonVariantEnum.TEXT} />
+        </When>
+        <Typography {...TITLE_HEADER(totalLength)} />
       </Stack>
       <InfinitePagination
         dataLength={paginatedInfoData?.length}
@@ -225,4 +258,5 @@ function Jobs() {
     </>
   );
 }
+
 export default Jobs;
