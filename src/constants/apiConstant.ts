@@ -1,8 +1,10 @@
 export const apiConstantsURL = {
   authentication: {
     login: `accounts/login/`,
+    adminLogin: `accounts/login/`,
     logout: `accounts/logout/`,
     register: `accounts/register/`,
+    adminRegister: `accounts/register/`,
     activate: `accounts/activate/`,
     deactivate: `accounts/deactivate/`,
     allContactDetails: `accounts/get_contacts/`,
@@ -14,6 +16,8 @@ export const apiConstantsURL = {
     details: `accounts/details/`,
     notification: `accounts/notifications/`,
     sso: `accounts/sso/`,
+    listAllAdmin: `accounts/get_all_admin/`,
+    deleteAdmin: `accounts/remove_user/`,
   },
   profile: {
     personalInfo: `user_profiles/job_seeker_personal/`,

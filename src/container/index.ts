@@ -28,3 +28,6 @@ export { default as AboutUsContainer } from "./AboutUsContainer";
 export { default as MainAssessmentContainer } from "./MainAssessmentContainer";
 export { default as AdminAssessmentQuestionsContainer } from "./AdminAssessmentQuestionsContainer";
 export { default as AdminAssessmentEditQuestionsContainer } from "./AdminAssessmentEditQuestionsContainer";
+export { default as AdminLoginContainer } from "./AdminLoginContainer";
+export { default as AdminRegistrationContainer } from "./AdminRegistrationContainer";
+export { default as AdminOTPContainer } from "./AdminOTPContainer";

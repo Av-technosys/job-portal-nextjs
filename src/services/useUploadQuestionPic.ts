@@ -10,7 +10,6 @@ import {
   MutationConfig,
   QueryConfig,
   SuccessResponseType,
-  CreateOrUpdateProfilePicInput,
   CreateOrUpdateQuestionPicInput,
 } from "@/types";
 import { api } from "@/helper";
