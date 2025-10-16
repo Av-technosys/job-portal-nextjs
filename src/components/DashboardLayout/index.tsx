@@ -46,7 +46,7 @@ function DashboardLayout({
         <When condition={isSidebar}>
           <Sidebar />
         </When>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 4 }}>
           <Toolbar
             sx={{
               minHeight: `${dimensionStyle.headerHeight} !important`,
