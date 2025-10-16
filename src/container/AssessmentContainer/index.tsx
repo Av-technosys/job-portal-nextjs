@@ -15,8 +15,8 @@ function AssessmentContainer() {
   //   );
   // }
 
-  if (accessType !== -1) {
-    // if (true) {
+  // if (accessType !== -1) {
+  if (false) {
     return (
       <Stack>
         <FeatureWIP
