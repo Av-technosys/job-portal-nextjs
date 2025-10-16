@@ -30,18 +30,22 @@ function BreadcrumbLink({ pathname }: { pathname: string }) {
 }
 
 function BreadcumbRibbon({
+  isFilterOpen,
   pathname,
   showSearchedData,
 }: {
+  isFilterOpen?: boolean;
   pathname: string;
   showSearchedData: any;
 }) {
   const { userType } = useCommonDetails();
 
-  if ([LANDING_URL].includes(pathname)) return null;
-
   const [searchString, setSearchString] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
+
+  useEffect(() => {
+    setSearchValue("");
+  }, [isFilterOpen]);
 
   // Debounce effect
   useEffect(() => {
@@ -68,6 +72,8 @@ function BreadcumbRibbon({
     },
   };
 
+  if ([LANDING_URL].includes(pathname)) return null;
+
   return (
     <>
       <Stack
@@ -78,7 +84,7 @@ function BreadcumbRibbon({
           alignItems: "center",
           justifyContent: "space-between",
           direction: "row",
-          // flexWrap: "wrap",
+          flexWrap: "wrap",
         }}
       >
         <div className="w-full md:w-1/4">
@@ -88,7 +94,7 @@ function BreadcumbRibbon({
           <When condition={userType !== -1}>
             <FormControl
               sx={{
-                width: { xs: "20ch", sm: "30ch" },
+                width: "30ch",
                 backgroundColor: "white",
               }}
               variant="outlined"

@@ -259,11 +259,17 @@ function Registration() {
                         divider: <span>|</span>,
                       }}
                     >
-                      <Checkbox
+                      {/* <Checkbox
                         formControlLabelProps={{
                           label: "I accept the Terms of Services",
                           control: <input type="checkbox" />,
                         }}
+                      /> */}
+                      <Checkbox
+                        key={`accept-terms-of-services`}
+                        label={"I accept the Terms of Services"}
+                        name="accept-terms-of-services"
+                        value={"accept-terms-of-services"}
                       />
                     </Stack>
                     <LoadingButton

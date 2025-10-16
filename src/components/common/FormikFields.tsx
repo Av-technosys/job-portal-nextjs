@@ -176,7 +176,7 @@ function FormikFields({
           }}
         </FieldArray>
       </When>
-      <When condition={fieldType === FormikFieldsEnum.CHECKBOX}>
+      {/* <When condition={fieldType === FormikFieldsEnum.CHECKBOX}>
         <CheckBox
           {...(rest as CheckBoxProps)}
           onChange={(event) => {
@@ -187,7 +187,7 @@ function FormikFields({
           }}
           checked={field.value as boolean}
         />
-      </When>
+      </When> */}
       <When condition={fieldType === FormikFieldsEnum.UPLOAD_DOCUMENT}>
         <UploadDocument {...(rest as UploadDocumentProps)} />
       </When>

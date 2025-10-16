@@ -119,6 +119,7 @@ export const useGetSearchDetailsAsPerURLOrUserType = ({
   const searchOptions = useMemo(() => {
     function getTitle(data: CommonObjectType) {
       let keyArr: string[] = [];
+      // if (!data || (data?.length as number) < 0) return { key: "", title: "" };
       if (isJobSearchEnabled) {
         keyArr = jobSearch.searchMappingKey;
       } else if (isRecruiterSearchEnabled) {

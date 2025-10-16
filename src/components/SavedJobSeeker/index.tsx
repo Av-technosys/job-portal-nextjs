@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGetSavedJobSeeker, usePagination } from "@/services";
 import {
   InfinitePagination,
@@ -14,7 +14,9 @@ import FilterButton from "../JobFilter";
 
 function SavedJobSeeker() {
   const { TITLE_COUNT, TITLE_HEADER } = SAVED_JOB_SEEKER_PAGE_COFIG;
+  const [filterSearch, setFilterSearch] = useState<string>("");
 
+  // apply filter job logic here
   const savedJobSeekerAPIData = useGetSavedJobSeeker({
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
@@ -23,6 +25,11 @@ function SavedJobSeeker() {
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: savedJobSeekerAPIData,
   });
+
+  const handleFilterChange = (filterChange: string | null) => {
+    setFilterSearch(filterChange);
+  };
+
   return (
     <>
       <Stack
@@ -52,7 +59,7 @@ function SavedJobSeeker() {
         <Stack
           stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}
         >
-          <FilterButton />
+          <FilterButton handleFilterChange={handleFilterChange} />
         </Stack>
       </Stack>
       <InfinitePagination

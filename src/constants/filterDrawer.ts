@@ -63,14 +63,34 @@ export const LOCATION_SELECT_CONFIG = {
   ],
 };
 
+export const SALARY_SELECT_CONFIG = {
+  formControlProps: {
+    fullWidth: true,
+    size: "medium" as const,
+    sx: {
+      bgcolor: "white",
+      borderRadius: 1,
+    },
+  },
+  inputLabelProps: {
+    children: "Choose range",
+  },
+  menuItems: [
+    { value: "0-25000", label: "0-25000" },
+    { value: "25000-50000", label: "25000-50000" },
+    { value: "50000-100000", label: "50000-100000" },
+  ],
+};
+
 // Checkbox Configurations
 export const CATEGORY_CHECKBOX_CONFIG = {
   options: [
     "Commerce",
     "Telecommunications",
-    "Hotels & Tourism",
+    "Hotels and Tourism",
     "Education",
     "Financial Services",
+    "software-engineer",
   ],
   buttonProps: {
     children: "Show More",
@@ -118,7 +138,6 @@ export const TAGS_CONFIG = {
 
 // Sidebar Renderer
 export const SIDEBAR_SECTIONS = {
-  SEARCH: { title: "Search by Job Title" },
   LOCATION: { title: "Location" },
   CATEGORY: { title: "Category" },
   JOB_TYPE: { title: "Job Type" },
@@ -127,16 +146,13 @@ export const SIDEBAR_SECTIONS = {
   },
   DATE_POSTED: { title: "Date Posted" },
   SALARY: { title: "Salary" },
-  TAGS: { title: "Tags" },
 };
 
 export const FILTER_KEYS = {
-  SEARCH: "SEARCH",
   LOCATION: "LOCATION",
   CATEGORY: "CATEGORY",
   JOB_TYPE: "JOB_TYPE",
   EXPERIENCE: "EXPERIENCE",
   DATE_POSTED: "DATE_POSTED",
   SALARY: "SALARY",
-  TAGS: "TAGS",
 };

@@ -11,12 +11,13 @@ export function usePagination({
       paginatedInfoData: [] as CommonObjectType[],
       hasMore: true,
       totalLength: 0,
+      // message: "No Job Found",
     };
     if (!paginatedAPIData?.data?.pages) return initialPagiantionInfoData;
     const pageArr = paginatedAPIData?.data?.pages;
     return {
       paginatedInfoData: pageArr?.flatMap((page) =>
-        (page.data.data as CommonObjectType[]).map((item) => {
+        (page.data.data as CommonObjectType[])?.map((item) => {
           return {
             ...item,
             pageIndex: page?.data?.current_page,

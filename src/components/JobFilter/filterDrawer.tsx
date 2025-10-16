@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { colorStyles } from "@/styles";
 import {
   Stack,
   Typography,
   FormGroup,
   Checkbox,
-  Slider,
-  Button,
-  Chip,
-  Input,
+  Radio,
   When,
   Dropdown,
   Drawer,
@@ -18,23 +15,75 @@ import {
   SIDEBAR_CONTAINER_STYLE,
   SIDEBAR_TITLE_CONFIG,
   FILTER_KEYS,
-  SALARY_SLIDER_CONFIG,
   LOCATION_SELECT_CONFIG,
-  SEARCH_INPUT_CONFIG,
-  CATEGORY_CHECKBOX_CONFIG,
-  JOB_TYPE_CHECKBOX_CONFIG,
-  EXPERIENCE_LEVEL_CHECKBOX_CONFIG,
-  TAGS_CONFIG,
+  SALARY_SELECT_CONFIG,
   DATE_POSTED_CHECKBOX_CONFIG,
+  JOB_ROLE_OPTIONS,
+  JOB_TYPE_OPTIONS,
+  EXPERIENCE_OPTIONS,
+  MIN_SALARY_RANGE_OPTIONS,
 } from "@/constants";
 
 const FilterDrawer = ({
   open,
   onClose,
+  handleFilterChange,
 }: {
   open: boolean;
   onClose: () => void;
+  handleFilterChange: (filterChange: string | null) => void;
 }) => {
+  const [filterSearchString, setFilterSearchString] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedDropdown, setSelectedDropdown] = useState("");
+
+  const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked, name } = event.target;
+
+    const localString = `&${name}=${filterRemoveSpace(value.toString())}`;
+    console.log(value, checked, name, localString);
+
+    if (checked || value) {
+      setSelectedDropdown(value);
+      setFilterSearchString((prev: string) =>
+        !checked
+          ? filterRemoveSpace(prev, localString, "")
+          : prev.concat(localString)
+      );
+      setSelectedFilters((prev) =>
+        prev.includes(value)
+          ? prev.filter((item) => item !== value)
+          : [...prev, value]
+      );
+    } else {
+      setFilterSearchString((prev) => prev.replace(localString, ""));
+      setSelectedFilters((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const onFilterDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked, name } = event.target;
+    const localString = `&${name}=${filterRemoveSpace(value)}`;
+
+    if (checked) {
+      setFilterSearchString(() => localString);
+      setSelectedFilters(() => [value]);
+    } else {
+      setFilterSearchString((prev) => prev.replace(localString, ""));
+      setSelectedFilters((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  handleFilterChange(filterSearchString);
+
+  const filterRemoveSpace = (
+    filterString: string,
+    stringToReplace: string = " ",
+    stringReplaceWith: string = "_"
+  ) => {
+    return filterString?.replaceAll(stringToReplace, stringReplaceWith);
+  };
+
   return (
     <Drawer
       anchor="left"
@@ -55,26 +104,20 @@ const FilterDrawer = ({
             bgcolor: colorStyles.filterSidebarBackgroundColor,
             gap: 3,
             px: 2.5,
-            py: 3,
+            pt: 3,
+            mt: { xs: 7, md: 10 },
+            pb: 10,
           }}
         >
           {Object.entries(SIDEBAR_SECTIONS).map(([key, { title }]) => (
             <Stack key={`filterDrawerEntries-${key}`}>
               <Typography {...SIDEBAR_TITLE_CONFIG({ text: title })} />
-
-              <When condition={key === FILTER_KEYS.SEARCH}>
-                <Input
-                  inputProps={{
-                    ...SEARCH_INPUT_CONFIG.textFieldProps,
-                    size: "medium",
-                  }}
-                />
-              </When>
               <When condition={key === FILTER_KEYS.LOCATION}>
                 <FormGroup>
                   <Dropdown
-                    value={" "}
-                    onChange={() => {}}
+                    name="location"
+                    value={selectedDropdown}
+                    onChange={onFilterChange}
                     options={LOCATION_SELECT_CONFIG.menuItems.map((item) => ({
                       ...item,
                       key: item.value,
@@ -87,50 +130,50 @@ const FilterDrawer = ({
 
               <When condition={key === FILTER_KEYS.CATEGORY}>
                 <FormGroup>
-                  {CATEGORY_CHECKBOX_CONFIG.options.map(
-                    (option: string, index: number) => (
-                      <Checkbox
-                        key={`filterDrawerCategory-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
-                      />
-                    )
-                  )}
-                  <Button buttonProps={CATEGORY_CHECKBOX_CONFIG.buttonProps} />
+                  {/* {CATEGORY_CHECKBOX_CONFIG.options.map((option, index) => ( */}
+                  {JOB_ROLE_OPTIONS.map(({ key, value, label }) => (
+                    <Checkbox
+                      key={key}
+                      label={label}
+                      name="category"
+                      value={value}
+                      checked={selectedFilters.includes(value)}
+                      onChange={onFilterChange}
+                    />
+                  ))}
+                  {/* <Button buttonProps={CATEGORY_CHECKBOX_CONFIG.buttonProps} /> */}
                 </FormGroup>
               </When>
 
               <When condition={key === FILTER_KEYS.JOB_TYPE}>
                 <FormGroup>
-                  {JOB_TYPE_CHECKBOX_CONFIG.options.map(
-                    (option: string, index: number) => (
-                      <Checkbox
-                        key={`filterDrawerJobType-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
-                      />
-                    )
-                  )}
+                  {JOB_TYPE_OPTIONS.map(({ key, value, label }) => (
+                    <Checkbox
+                      key={key}
+                      label={label}
+                      name="jobType"
+                      value={value}
+                      checked={selectedFilters.includes(value)}
+                      onChange={onFilterChange}
+                    />
+                  ))}
                 </FormGroup>
               </When>
 
               <When condition={key === FILTER_KEYS.EXPERIENCE}>
                 <FormGroup>
-                  {EXPERIENCE_LEVEL_CHECKBOX_CONFIG.options.map(
-                    (option: string, index: number) => (
-                      <Checkbox
-                        key={`filterDrawerExperience-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
-                      />
-                    )
-                  )}
+                  {EXPERIENCE_OPTIONS.map(({ key, value, label }) => (
+                    <Checkbox
+                      key={key}
+                      label={label}
+                      name="experience"
+                      value={value}
+                      checked={selectedFilters.includes(
+                        value.toString() as string
+                      )}
+                      onChange={onFilterChange}
+                    />
+                  ))}
                 </FormGroup>
               </When>
 
@@ -138,12 +181,13 @@ const FilterDrawer = ({
                 <FormGroup>
                   {DATE_POSTED_CHECKBOX_CONFIG.options.map(
                     (option: string, index: number) => (
-                      <Checkbox
-                        key={`filterDrawerDatePosted-${index}`}
-                        formControlLabelProps={{
-                          label: option,
-                          control: <input type="checkbox" />,
-                        }}
+                      <Radio
+                        key={`datePosted-${index}`}
+                        label={option}
+                        name="datePosted"
+                        value={option}
+                        checked={selectedFilters.includes(option)}
+                        onChange={onFilterDateChange}
                       />
                     )
                   )}
@@ -151,55 +195,19 @@ const FilterDrawer = ({
               </When>
 
               <When condition={key === FILTER_KEYS.SALARY}>
-                <>
-                  <Slider
-                    //   {...SALARY_SLIDER_CONFIG.sliderProps}
-                    defaultValue={50}
-                    min={0}
-                    max={100}
-                    marks
-                    valueLabelDisplay="auto"
+                <FormGroup>
+                  <Dropdown
+                    name="salary"
+                    value={selectedDropdown}
+                    onChange={onFilterChange}
+                    options={MIN_SALARY_RANGE_OPTIONS.map((item) => ({
+                      ...item,
+                      key: item.value,
+                    }))}
+                    formControlProps={SALARY_SELECT_CONFIG.formControlProps}
+                    inputLabelProps={SALARY_SELECT_CONFIG.inputLabelProps}
                   />
-                  <Stack
-                    stackProps={{
-                      direction: "row",
-                      spacing: 1,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography
-                      typographyProps={{
-                        variant: "body2",
-                        component: "span",
-                        children: SALARY_SLIDER_CONFIG.label,
-                      }}
-                    />
-                    <Button buttonProps={SALARY_SLIDER_CONFIG.buttonProps} />
-                  </Stack>
-                </>
-              </When>
-
-              <When condition={key === FILTER_KEYS.TAGS}>
-                <Stack
-                  stackProps={{
-                    flexDirection: "row",
-                    width: "280px",
-                    className: " flex flex-wrap gap-1.5",
-                  }}
-                >
-                  {TAGS_CONFIG.tags.map((tag: string, index: number) => (
-                    <Chip
-                      key={`filterDrawerChip-${index}`}
-                      label={tag}
-                      size="small"
-                      sx={{
-                        bgcolor: colorStyles.filterTagsBackgroundColor,
-                        color: colorStyles.filterTagsTextColor,
-                      }}
-                      className="w-fit cursor-pointer p-1 gap-1 text-sm"
-                    />
-                  ))}
-                </Stack>
+                </FormGroup>
               </When>
             </Stack>
           ))}
