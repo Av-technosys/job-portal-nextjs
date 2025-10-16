@@ -160,7 +160,7 @@ function SubmitButton({
           >
             <Typography
               typographyProps={{
-                children: "Start Next Section",
+                children: "Are You Sure For Submit Test",
                 variant: TypographyVariantEnum.H6,
                 color: "text.secondary",
                 className: "text-center ",
@@ -169,7 +169,7 @@ function SubmitButton({
             <Typography
               typographyProps={{
                 children:
-                  "Your Attempt for this section is successfully submitted. You Can Now Take a Break Before Starting Next Section. Do you Want to start the Next Section Now ?",
+                  "Once You Submit the Test then it will Permanently Submit..",
                 variant: TypographyVariantEnum.H6,
                 color: "text.secondary",
                 className: "text-center mt-4",
