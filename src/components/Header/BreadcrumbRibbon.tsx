@@ -40,8 +40,6 @@ function BreadcumbRibbon({
 }) {
   const { userType } = useCommonDetails();
 
-  if ([LANDING_URL].includes(pathname)) return null;
-
   const [searchString, setSearchString] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -73,6 +71,8 @@ function BreadcumbRibbon({
       placeholder: "Search name",
     },
   };
+
+  if ([LANDING_URL].includes(pathname)) return null;
 
   return (
     <>
