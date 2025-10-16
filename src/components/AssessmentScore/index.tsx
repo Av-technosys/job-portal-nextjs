@@ -16,8 +16,19 @@ function AssessmentScore({ id }: paramID) {
     queryParams: { id },
   });
 
+  // useEffect(() => {
+  //   setScoreDetails(assessmentScoreDetails?.data?.data);
+  // }, [assessmentScoreDetails]);
   useEffect(() => {
-    setScoreDetails(assessmentScoreDetails?.data?.data);
+    if (assessmentScoreDetails?.data?.data) {
+      const fixedData = {
+        ...assessmentScoreDetails.data.data,
+        assesment_total:
+          assessmentScoreDetails.data.data["assesment_total "] ||
+          assessmentScoreDetails.data.data.assesment_total,
+      };
+      setScoreDetails(fixedData);
+    }
   }, [assessmentScoreDetails]);
 
   const { SCORE_VALUE_1, SCORE_VALUE_2, CONGRATS_TEXT, CONTINUE_BUTTON } =

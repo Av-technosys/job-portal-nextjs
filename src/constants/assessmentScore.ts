@@ -21,7 +21,7 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
       },
     };
   },
-  SCORE_VALUE_1: (marks) => {
+  SCORE_VALUE_1: (marks: CommonObjectType) => {
     return {
       typographyProps: {
         children: `${marks}`,
@@ -32,10 +32,10 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
       fontWeight: TypographyFontWeight.extrabold,
     };
   },
-  SCORE_VALUE_2: (totalMarks) => {
+  SCORE_VALUE_2: (assesment_total: CommonObjectType) => {
     return {
       typographyProps: {
-        children: `of ${totalMarks}`,
+        children: `of ${assesment_total}`,
         variant: TypographyVariantEnum.H6,
       },
       fontSize: TypographyFontSize.extralarge,
@@ -93,17 +93,28 @@ export const ASSESSMENT_SCORE_PAGE_CONFIG = {
       },
     };
   },
-  CONGRATS_TEXT: (scoredMarks, totalMarks) => {
+  // CONGRATS_TEXT: (scoredMarks, totalMarks) => {
+  //   return {
+  //     typographyProps: {
+  //       children: ` Congratulations, your score exceeds ${
+  //         (scoredMarks / totalMarks) * 100
+  //       }% and you are cleared to move forward with the next phase of the process. `,
+  //       variant: TypographyVariantEnum.CAPTION,
+  //     },
+  //     fontWeight: TypographyFontWeight.extrabold,
+  //   };
+  // },
+  CONGRATS_TEXT: (scoredMarks = 0, totalMarks = 1) => {
+    const percentage = totalMarks ? ((scoredMarks / totalMarks) * 100).toFixed(2) : 0;
     return {
       typographyProps: {
-        children: ` Congratulations, your score exceeds ${
-          (scoredMarks / totalMarks) * 100
-        }% and you are cleared to move forward with the next phase of the process. `,
+        children: `Congratulations, your score exceeds ${percentage}% and you are cleared to move forward with the next phase of the process.`,
         variant: TypographyVariantEnum.CAPTION,
       },
       fontWeight: TypographyFontWeight.extrabold,
     };
   },
+  
   SUMMERY: (section: CommonObjectType) => {
     return {
       typographyProps: {
