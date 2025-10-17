@@ -72,6 +72,7 @@ export const apiConstantsURL = {
   },
   payment: {
     orderId: `payment/create_order/`,
+    transactionId: `payment/create_transaction/`,
     captureTransaction: `payment/capture_transaction/`,
   },
   assessment: {
