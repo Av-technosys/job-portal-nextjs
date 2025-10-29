@@ -14,7 +14,7 @@ function CompanyCard({
   return (
     <Stack
       stackProps={{
-        className: "relative flex-shrink-0 w-80 h-96 overflow-hidden",
+        className: "relative flex-shrink-0 w-[300px] h-[370px] overflow-hidden",
       }}
     >
       <Avatar
