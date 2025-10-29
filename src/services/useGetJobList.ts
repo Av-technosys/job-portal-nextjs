@@ -30,7 +30,6 @@ export const getJobList = ({
 
 export const getInfiniteJobListQueryOptions = (metaData: GetJobListParams) => {
   const { pageLimit, search = "", sort, enabled, filterSearch } = metaData;
-  // console.log("filterSearch: ", filterSearch);
   return infiniteQueryOptions({
     queryKey: ["job_list", search, sort, pageLimit, filterSearch],
     queryFn: ({ pageParam = 1 }) => {

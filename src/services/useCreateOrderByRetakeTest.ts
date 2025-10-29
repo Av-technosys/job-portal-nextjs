@@ -22,7 +22,7 @@ type UseCreateOrderByRetakeTestOptions = {
   mutationConfig?: MutationConfig<typeof createOrderByRetakeTest>;
 };
 
-export const UseCreateOrderByRetakeTest = ({
+export const useCreateOrderByRetakeTest = ({
   mutationConfig,
 }: UseCreateOrderByRetakeTestOptions) => {
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};

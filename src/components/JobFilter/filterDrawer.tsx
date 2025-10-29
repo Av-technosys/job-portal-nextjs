@@ -41,7 +41,6 @@ const FilterDrawer = ({
     const { value, checked, name } = event.target;
 
     const localString = `&${name}=${filterRemoveSpace(value.toString())}`;
-    console.log(value, checked, name, localString);
 
     if (checked || value) {
       setSelectedDropdown(value);

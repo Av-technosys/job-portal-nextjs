@@ -5,7 +5,7 @@ import { StopWatchIcon, TotalQuestionsIcon } from "@/assets";
 import { useGetAssessmentAttemptsInfo } from "@/services/useGetAssessmentAttempts";
 import { useGetSubjectList } from "@/services/useGetFindSubject";
 import { useRouter } from "next/navigation";
-import { UseCreateOrderByRetakeTest } from "@/services/useCreateOrderByRetakeTest";
+import { useCreateOrderByRetakeTest } from "@/services/useCreateOrderByRetakeTest";
 import { useNotification } from "@/services";
 import { getErrorMessageFromAPI } from "@/helper";
 
@@ -50,14 +50,9 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
     queryParams: { id },
   });
 
-  const createOrderId = UseCreateOrderByRetakeTest({
+  const createOrderId = useCreateOrderByRetakeTest({
     mutationConfig: {
-      onSuccess: (res) => {
-        console.log("response", res);
-        // if (res?.data?.gateway_order_id as string) {
-        //   initializeRazorpay(res?.data?.gateway_order_id as string);
-        // }
-      },
+      onSuccess: (res) => {},
       onError: (error) => {
         showNotification({
           ...getErrorMessageFromAPI(error),
