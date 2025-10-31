@@ -1,32 +1,32 @@
-import { CheckCircleSharpIcon } from "@/assets";
 import { Button, Modal, Stack, Typography } from "@/components";
-import { PAYMENT_CARD_TEXT_CONFIG, MODAL_STYLES } from "@/constants";
-import { colorStyles } from "@/styles";
+import { PAYMENT_CARD_TEXT_CONFIG, SECOND_MODAL_STYLES } from "@/constants";
 
 function PaymentCard({
   open,
   handleClose,
   setPaymentModalOpen,
-  features,
 }: {
   open: boolean;
   handleClose: () => void;
   setPaymentModalOpen: (open: boolean) => void;
-  features: string[];
 }) {
-  const { HEADER, AMOUNT, FEATURES, BUTTON_PROPS } = PAYMENT_CARD_TEXT_CONFIG;
+  const {
+    DESCRIPTION_TEXT,
+    DESCRIPTION_TITLE,
+    BUTTON_PROPS,
+    CANCEL_PAYMENT_PROPS,
+  } = PAYMENT_CARD_TEXT_CONFIG;
   return (
     <>
       <Modal open={open} onClose={handleClose}>
-        <Stack stackProps={{ sx: MODAL_STYLES }}>
-          <Typography {...HEADER} />
-          <Typography {...AMOUNT} />
+        <Stack stackProps={{ sx: SECOND_MODAL_STYLES }}>
           <Stack
             stackProps={{
               direction: "column",
-              gap: { xs: 0.5, sm: 1 },
+              alignItems: "center",
+              justifyItems: "center",
+              gap: { xs: 1, sm: 2 },
               margin: { xs: "15px 0", sm: "30px 0" },
-              overflow: "hidden",
               sx: {
                 background: "white",
                 padding: { xs: "15px", sm: "20px" },
@@ -34,24 +34,22 @@ function PaymentCard({
               },
             }}
           >
-            {features.map((feature) => (
-              <Stack
-                stackProps={{ direction: "row", gap: 1, marginTop: "20px" }}
-                key={`paymentCard-${feature}`}
-              >
-                <CheckCircleSharpIcon
-                  sx={{
-                    color: colorStyles.blue,
-                    fontSize: "medium",
-                  }}
-                />
-                <Typography {...FEATURES(feature)} />
-              </Stack>
-            ))}
-            <Button
-              {...BUTTON_PROPS}
-              onClick={() => setPaymentModalOpen(true)}
-            />
+            <Typography {...DESCRIPTION_TITLE} />
+            <Typography {...DESCRIPTION_TEXT} />
+            <Stack
+              stackProps={{
+                direction: "row",
+                alignItems: "center",
+                justifyItems: "center",
+                spacing: 2,
+              }}
+            >
+              <Button {...CANCEL_PAYMENT_PROPS} onClick={handleClose} />
+              <Button
+                {...BUTTON_PROPS}
+                onClick={() => setPaymentModalOpen(true)}
+              />
+            </Stack>
           </Stack>
         </Stack>
       </Modal>

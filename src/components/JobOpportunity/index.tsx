@@ -1,63 +1,34 @@
-import React, { useState } from "react";
-import { IconButton, Stack } from "../common";
+import React from "react";
+import { Carousel, CarouselCard, Stack } from "../common";
 import JOBOPPORTUNITY from "@/constants/jobOppotunity.json";
 import LatestJobCard from "../LatestJobCard";
-import { ChevronLeftIcon, ChevronRightIcon } from "@/assets";
 
 interface JobOpportunityProps {
   jobFilterKey?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  sliderRef?: any;
 }
 
-function JobOpportunity({ jobFilterKey }: JobOpportunityProps) {
-  const [slideCount, setSlideCount] = useState(0);
+function JobOpportunity({ jobFilterKey, sliderRef }: JobOpportunityProps) {
   const filteredJobs = JOBOPPORTUNITY.jobs.filter(
     ({ categoryName }) => categoryName === jobFilterKey
   );
-
-  const handleSliderNext = () => {
-    setSlideCount((prev) => prev < filteredJobs.length - 3 && prev + 1);
-  };
-
-  const handleSliderPrevious = () => {
-    setSlideCount((prev) => prev > 0 && prev - 1);
-  };
-
   return (
     <>
-      <div className="w-full flex items-center justify-end pr-10 md:pr-0">
-        <Stack
-          stackProps={{
-            width: "10%",
-            direction: "row",
-          }}
-        >
-          <IconButton onClick={() => handleSliderPrevious()}>
-            <ChevronLeftIcon />
-          </IconButton>
-          <IconButton onClick={() => handleSliderNext()}>
-            <ChevronRightIcon />
-          </IconButton>
-        </Stack>
-      </div>
       <Stack
         stackProps={{
           direction: "row",
-          alignItems: "center",
-          justifyItems: "center",
-          gap: 1,
-          className: "max-w-6xl  mb-8   overflow-hidden p-2",
+          gap: 2,
+          className: "mb-8",
         }}
       >
-        {filteredJobs.map((job, jobIndex) => (
-          <div
-            key={jobIndex}
-            className=" transition-transform duration-500"
-            style={{ transform: `translateX(-${slideCount * 100}%)` }}
-          >
-            <LatestJobCard job={job} index={jobIndex} />
-          </div>
-        ))}
+        <Carousel width="75vw" sliderRef={sliderRef}>
+          {filteredJobs.map((job, jobIndex) => (
+            <CarouselCard key={`${jobIndex}-${job?.postedDate}`}>
+              <LatestJobCard job={job} index={jobIndex} />
+            </CarouselCard>
+          ))}
+        </Carousel>
       </Stack>
     </>
   );

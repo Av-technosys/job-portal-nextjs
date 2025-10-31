@@ -101,7 +101,7 @@ function LogoAndSearchRibbon({
     <>
       <Stack
         stackProps={{
-          className: "items-center w-full justify-between px-2 ",
+          className: "items-center w-full justify-between px-2 md:px-20",
           direction: "row",
         }}
       >
@@ -152,10 +152,10 @@ function LogoAndSearchRibbon({
                 {...LOGIN_BUTTON}
                 onClick={() => handleClick(LOGIN_URL)}
               />
-              {/* <Button
+              <Button
                 {...REGISTER_BUTTON}
                 onClick={() => handleClick(REGISTER_URL)}
-              /> */}
+              />
             </Stack>
           </When>
         </Stack>

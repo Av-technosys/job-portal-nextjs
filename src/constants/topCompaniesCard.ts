@@ -13,9 +13,9 @@ export const TOP_COMPANY_CARD_CONFIG = {
   HEADER_TEXT: () => {
     return {
       typographyProps: {
-        // sx: {
-        //   marginBottom: "32px",
-        // },
+        sx: {
+          marginBottom: "32px",
+        },
         children: "Top Companies",
         variant: TypographyVariantEnum.H5,
       },

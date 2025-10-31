@@ -49,7 +49,7 @@ function Tabs({ items = [], tabsProps, handleTabChange }: TabsProps) {
           />
         ))}
       </MUITabs>
-      <div className="w-full">
+      <div className={"w-full"}>
         {items.map((item) => (
           <CustomTabPanel
             key={`ja-CustomTabPanel-${item.key}`}

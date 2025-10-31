@@ -58,8 +58,7 @@ function Testimonial() {
         <Stack
           stackProps={{
             className: "mt-6 ",
-            direction: { xs: "column", sm: "row" },
-            flexWrap: "wrap",
+            direction: { xs: "column", md: "row" },
             width: "100%",
             gap: 1,
             justifyContent: "center",

@@ -27,7 +27,7 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
       stackProps={{
         direction: "column",
         width: "300px",
-        height: "370px",
+        height: "350px",
         gap: 2,
         className: "cursor-pointer rounded-lg p-4",
         sx: {

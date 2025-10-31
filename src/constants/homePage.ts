@@ -440,7 +440,7 @@ export const JOB_OPPPORTUNITY_PAGE_CONFIG = {
         sx: {
           overflow: "hidden",
           textOverflow: "ellipsis",
-          whiteSpace: "wrap",
+          whiteSpace: "nowrap",
         },
       },
       fontSize: TypographyFontSize.extralarge,
@@ -462,7 +462,7 @@ export const JOB_OPPPORTUNITY_PAGE_CONFIG = {
         children: job?.salaryRange,
         variant: TypographyVariantEnum.BODY2,
       },
-      fontSize: TypographyFontSize.large,
+      fontSize: TypographyFontSize.extralarge,
     } as TypographyProps;
   },
   POSTED_DATE: (job: CommonObjectType) => {
