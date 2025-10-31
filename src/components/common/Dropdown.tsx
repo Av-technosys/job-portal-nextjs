@@ -33,6 +33,7 @@ function Dropdown({
     const optionMatched = getSelectedOptionObject((value as string) || "");
     return optionMatched?.value || "";
   }, [getSelectedOptionObject, value]);
+  const selectName = selectProps?.name || name;
 
   return (
     <FormControl {...formControlProps} error={error}>
@@ -47,7 +48,7 @@ function Dropdown({
         {...selectProps}
         onChange={onChange}
         onBlur={onBlur}
-        name={name}
+        name={selectName}
         value={selectedValue}
         error={error}
         renderValue={(valueToBeRendered) => {
