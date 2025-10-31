@@ -8,7 +8,6 @@ import {
 } from "@/components";
 import {
   SUBSCRIPTION_PAGE_CONFIG,
-  TEST_TYPES,
   SUBSCRIPTION_CONFIG,
   DASHBOARD_URL,
 } from "@/constants";
@@ -98,7 +97,6 @@ export default function Subscription() {
         open={open}
         handleClose={() => setOpen(false)}
         setPaymentModalOpen={handlePaymentModalOpen}
-        features={TEST_TYPES}
       />
       <PaymentModal
         open={paymentModalOpen}

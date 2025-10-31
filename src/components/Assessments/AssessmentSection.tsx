@@ -5,6 +5,9 @@ import { StopWatchIcon, TotalQuestionsIcon } from "@/assets";
 import { useGetAssessmentAttemptsInfo } from "@/services/useGetAssessmentAttempts";
 import { useGetSubjectList } from "@/services/useGetFindSubject";
 import { useRouter } from "next/navigation";
+import { useCreateOrderByRetakeTest } from "@/services/useCreateOrderByRetakeTest";
+import { useNotification } from "@/services";
+import { getErrorMessageFromAPI } from "@/helper";
 
 type testProps = {
   id: string | string[] | undefined | number;
@@ -23,6 +26,7 @@ const {
 
 const AssessmentSection = ({ id, assessmentType }: testProps) => {
   const router = useRouter();
+  const { showNotification } = useNotification();
 
   const allSubjectList = useGetSubjectList();
   const subdata = allSubjectList.data?.data;
@@ -45,6 +49,23 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
   const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
     queryParams: { id },
   });
+
+  const createOrderId = useCreateOrderByRetakeTest({
+    mutationConfig: {
+      onSuccess: (res) => {},
+      onError: (error) => {
+        showNotification({
+          ...getErrorMessageFromAPI(error),
+        });
+        console.error(error, "error");
+      },
+    },
+  });
+
+  const handleRetakeTest = (assesment_session_id, subject_id) => {
+    const planId = "ja_test";
+    createOrderId.mutate({ planId, assesment_session_id, subject_id });
+  };
 
   if (!data || !assessmentAttemptsDetails) {
     return (
@@ -134,7 +155,15 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
                           spacing: "8px",
                         }}
                       >
-                        <Button {...RETAKE_TEST} />
+                        <Button
+                          onClick={() =>
+                            handleRetakeTest(
+                              attempt.assessment_session,
+                              attempt.subject_id
+                            )
+                          }
+                          {...RETAKE_TEST}
+                        />
                         <Button
                           onClick={() =>
                             router.push(
