@@ -5,6 +5,7 @@ import {
   NextImage,
   Divider,
   TextWithIcon,
+  Button,
 } from "@/components/common"; // Adjust the path for your common components
 import {
   EmailIcon,
@@ -25,9 +26,11 @@ import {
 } from "@/constants";
 import { constructClassName } from "@/helper";
 import { colorStyles, useThemeContext } from "@/styles";
+import { useRouter } from "next/navigation";
 
 const Footer: React.FC = () => {
   const { theme } = useThemeContext();
+  const router = useRouter();
 
   const {
     COPYRIGHT_TEXT,
@@ -124,44 +127,72 @@ const Footer: React.FC = () => {
           >
             <Stack
               stackProps={{
+                direction: "column",
+                alignItems: "start",
                 gap: { xs: 1, md: 2 },
               }}
             >
               <Typography {...QUICK_LINKS_TEXT} />
-              <Typography {...HOME_TEXT} />
-              <Typography {...ABOUT_US_TEXT} />
+              <button onClick={() => router.push("/")}>
+                {" "}
+                <Typography {...HOME_TEXT} />
+              </button>
+              <button onClick={() => router.push("about-us")}>
+                {" "}
+                <Typography {...ABOUT_US_TEXT} />
+              </button>
             </Stack>
             <Stack
               stackProps={{
+                direction: "column",
+                alignItems: "start",
                 gap: { xs: 1, md: 2 },
               }}
             >
               <Typography {...JOB_SEEKER_TEXT} />
-              <Typography {...SEARCH_JOB_TEXT} />
-              <Typography {...SEARCH_RECRUITER_TEXT} />
-              <Typography {...JOBSEERKER_DASHBOARD_TEXT} />
-              <Typography {...SAVED_JOBS_TEXT} />
+              <button onClick={() => router.push("/dashboard")}>
+                <Typography {...JOBSEERKER_DASHBOARD_TEXT} />
+              </button>
+              <button onClick={() => router.push("/dashboard/saved-job")}>
+                <Typography {...SAVED_JOBS_TEXT} />
+              </button>
             </Stack>
             <Stack
               stackProps={{
+                direction: "column",
+                alignItems: "start",
                 gap: { xs: 1, md: 2 },
               }}
             >
               <Typography {...RECRUITER_TEXT} />
-              <Typography {...POST_JOB_TEXT} />
-              <Typography {...SEARCH_JOBSEEKER_TEXT} />
-              <Typography {...RECUITER_DASHBOARD_TEXT} />
-              <Typography {...APPLICATION_TEXT} />
+              <button onClick={() => router.push("/dashboard/create-job")}>
+                <Typography {...POST_JOB_TEXT} />
+              </button>
+              <button onClick={() => router.push("/dashboard")}>
+                <Typography {...RECUITER_DASHBOARD_TEXT} />
+              </button>
+              <button onClick={() => router.push("/dashboard/my-posted-jobs")}>
+                {" "}
+                <Typography {...APPLICATION_TEXT} />
+              </button>
             </Stack>
             <Stack
               stackProps={{
+                direction: "column",
+                alignItems: "start",
                 gap: { xs: 1, md: 2 },
               }}
             >
               <Typography {...SUPPORT_TEXT} />
-              <Typography {...CONTACT_US_TEXT} />
-              <Typography {...PRIVACY_POLICY_TEXT} />
-              <Typography {...TERMS_CONDITION_TEXT} />
+              <button onClick={() => router.push("/contact-us")}>
+                <Typography {...CONTACT_US_TEXT} />
+              </button>
+              <button onClick={() => router.push("/privacy-policy")}>
+                <Typography {...PRIVACY_POLICY_TEXT} />
+              </button>
+              <button onClick={() => router.push("/terms-and-conditions")}>
+                <Typography {...TERMS_CONDITION_TEXT} />
+              </button>
             </Stack>
           </Stack>
         </Stack>

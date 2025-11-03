@@ -47,7 +47,7 @@ export const PAGE_BODY_CONFIG = {
       variant: TypographyVariantEnum.H5,
     },
     fontWeight: TypographyFontWeight.bold,
-    fontSize: TypographyFontSize.extraTitle,
+    fontSize: TypographyFontSize.title,
     fontColor: TypographyFontColor.black15,
   },
   BODY_TEXT_2: {
@@ -57,7 +57,7 @@ export const PAGE_BODY_CONFIG = {
       variant: TypographyVariantEnum.H6,
     },
     fontWeight: TypographyFontWeight.normal,
-    fontSize: TypographyFontSize.extralarge,
+    fontSize: TypographyFontSize.large,
     fontColor: TypographyFontColor.grey1,
   },
   BODY_TEXT_3: {
@@ -67,7 +67,7 @@ export const PAGE_BODY_CONFIG = {
       variant: TypographyVariantEnum.H6,
     },
     fontWeight: TypographyFontWeight.normal,
-    fontSize: TypographyFontSize.extralarge,
+    fontSize: TypographyFontSize.large,
     fontColor: TypographyFontColor.grey1,
   },
 };

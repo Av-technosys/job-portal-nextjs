@@ -15,29 +15,41 @@ function SocialLogin({
 
   const socialLoginMap = useMemo(() => {
     const commonStyles = {
-      fontSize: "40px",
-      color: "white",
+      fontSize: "30px",
+      color: "black",
     };
 
     return [
       {
-        key: "facebook-sso",
-        icon: <FacebookIcon sx={commonStyles} />,
-      },
-      {
         key: "google-sso",
         icon: <GoogleIcon sx={commonStyles} />,
       },
-      {
-        key: "instagram-sso",
-        icon: <InstagramIcon sx={commonStyles} />,
-      },
-      {
-        key: "twitter-sso",
-        icon: <TwitterIcon sx={commonStyles} />,
-      },
     ];
   }, []);
+
+  // const commonStyles = {
+  //   fontSize: "30px",
+  //   color: "black",
+  // };
+
+  // const socialLoginMap = [
+  //   {
+  //     key: "facebook-sso",
+  //     icon: <FacebookIcon sx={commonStyles} />,
+  //   },
+  //   {
+  //     key: "google-sso",
+  //     icon: <GoogleIcon sx={commonStyles} />,
+  //   },
+  //   {
+  //     key: "instagram-sso",
+  //     icon: <InstagramIcon sx={commonStyles} />,
+  //   },
+  //   {
+  //     key: "twitter-sso",
+  //     icon: <TwitterIcon sx={commonStyles} />,
+  //   },
+  // ];
 
   function handleSSOClick(key: string) {
     switch (key) {
@@ -74,6 +86,7 @@ function SocialLogin({
         }}
       >
         {socialLoginMap?.map(({ key, icon }) => {
+          console.log("data", icon);
           return (
             <IconButton
               key={`socialLoginMap-${key}`}

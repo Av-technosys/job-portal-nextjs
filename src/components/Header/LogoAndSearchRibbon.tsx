@@ -44,7 +44,6 @@ function LogoAndSearchRibbon({
     [DASHBOARD_URL]: <DeveloperBoardOutlinedIcon />,
     [CONTACT_US_URL]: <ContactPhoneOutlinedIcon />,
     [ABOUT_US_URL]: <ContactPhoneOutlinedIcon />,
-    [HOW_IT_WORKS_URL]: <ContactPhoneOutlinedIcon />,
   };
   const userWiseTopRibbon = useMemo(() => {
     const ribbonDetails = getTopRibbonDetails({ userType });
@@ -145,17 +144,18 @@ function LogoAndSearchRibbon({
             <Stack
               stackProps={{
                 flexDirection: "row",
-                gap: 4,
+                alignItems: "center",
+                gap: { xs: 0, md: 3 },
               }}
             >
               <Button
                 {...LOGIN_BUTTON}
                 onClick={() => handleClick(LOGIN_URL)}
               />
-              {/* <Button
+              <Button
                 {...REGISTER_BUTTON}
                 onClick={() => handleClick(REGISTER_URL)}
-              /> */}
+              />
             </Stack>
           </When>
         </Stack>

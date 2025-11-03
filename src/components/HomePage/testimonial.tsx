@@ -36,7 +36,13 @@ function Testimonial() {
   return (
     <>
       <Stack
-        stackProps={{ gap: 4, marginLeft: 2, width: "90vw", marginTop: 2 }}
+        stackProps={{
+          gap: 4,
+          marginLeft: 2,
+          width: "90vw",
+          marginTop: 2,
+          className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl !mx-auto",
+        }}
       >
         <Stack
           stackProps={{
@@ -47,6 +53,7 @@ function Testimonial() {
             stackProps={{
               width: { xs: "100%", md: "50%" },
               gap: 2,
+              className: " p-3",
             }}
           >
             <Typography {...HEADER_TEXT()} />

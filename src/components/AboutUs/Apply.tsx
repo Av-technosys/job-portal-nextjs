@@ -21,12 +21,11 @@ function Apply() {
     <>
       <Stack
         stackProps={{
-          className: "mt-2",
-          direction: "row",
+          className: "mb-5 w-full ",
+          direction: { xs: "column", md: "row" },
           alignItems: "center",
           justifyContent: "center",
           flexWrap: "wrap",
-          width: "100vw",
         }}
       >
         <Container
@@ -42,7 +41,7 @@ function Apply() {
           >
             <Stack
               stackProps={{
-                direction: "row",
+                direction: { xs: "column", md: "row" },
                 gap: 4,
               }}
             >

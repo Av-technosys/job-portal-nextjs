@@ -17,9 +17,11 @@ function ForceUserLoginPopup({
   const { TITLE, SUBTITLE, BUTTON, MODAL_STYLES } = FORCE_USER_LOGIN_MODAL;
   return (
     <Modal open={open} onClose={handleClose}>
-      <Stack stackProps={{ sx: MODAL_STYLES }}>
+      <Stack
+        stackProps={{ sx: MODAL_STYLES, className: "rounded-lg !border-none" }}
+      >
         <Typography {...TITLE} />
-        <Divider className="my-4" />
+        <Divider className="!my-2" />
         <Typography {...SUBTITLE} />
         <Button
           {...BUTTON}

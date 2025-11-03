@@ -37,7 +37,7 @@ import {
   isLoggedInUserJobSeeker,
 } from "@/helper";
 import { CommonObjectType, ShowNotificationProps, UserType } from "@/types";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { JA_LOGO } from "@/assets";
 
 function Registration() {
@@ -60,6 +60,8 @@ function Registration() {
   const router = useRouter();
   const { showNotification } = useNotification();
   const { isExtraSmallScreen } = useScreen();
+
+  const [termsCondition, setTermsCondition] = useState(false);
 
   const registerUser = useRegisterUser({
     mutationConfig: {
@@ -87,15 +89,20 @@ function Registration() {
   });
 
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
-    registerUser.mutate({
-      data: {
-        first_name: values.name as string,
-        user_type: Number(values.userType) as number,
-        email: values.email as string,
-        password: values.password as string,
-        phone_number: values.mobileNumber.toString() as string,
-      },
-    });
+    if (termsCondition) {
+      registerUser.mutate({
+        data: {
+          first_name: values.name as string,
+          user_type: Number(values.userType) as number,
+          email: (values.email as string).toLowerCase(),
+          password: values.password as string,
+          phone_number: values.mobileNumber.toString() as string,
+        },
+      });
+    } else {
+      // alert("Please accept terms of services before registration...");
+      showNotification(NOTIFICATION_CONFIG.ERROR as ShowNotificationProps);
+    }
   }
 
   const { onChange, onBlur, onSubmit, errorObj, formValuesObj, resetError } =
@@ -265,12 +272,20 @@ function Registration() {
                           control: <input type="checkbox" />,
                         }}
                       /> */}
-                      <Checkbox
-                        key={`accept-terms-of-services`}
-                        label={"I accept the Terms of Services"}
-                        name="accept-terms-of-services"
-                        value={"accept-terms-of-services"}
-                      />
+                      <Stack
+                        stackProps={{
+                          className: "text-[#1976D2]",
+                        }}
+                      >
+                        <Checkbox
+                          key={`accept-terms-of-services`}
+                          label={"I accept the Terms of Services"}
+                          name="accept-terms-of-services"
+                          // value={"accept-terms-of-services"}
+                          // value={termsCondition}
+                          onChange={() => setTermsCondition(!termsCondition)}
+                        />
+                      </Stack>
                     </Stack>
                     <LoadingButton
                       {...REGISTER_BUTTON}
@@ -279,7 +294,9 @@ function Registration() {
                   </Stack>
                 </form>
                 <When condition={isJobSeekerSelected}>
-                  <Divider {...SIGN_IN_DIVIDER_CONFIG} />
+                  <Stack stackProps={{ className: "my-3" }}>
+                    <Divider {...SIGN_IN_DIVIDER_CONFIG} />
+                  </Stack>
                   <SocialLogin callbackUrl={`${SSO_REDIRECT_URL}`} />
                 </When>
               </Paper>
