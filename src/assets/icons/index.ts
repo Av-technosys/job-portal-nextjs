@@ -12,7 +12,7 @@ import testimonial_3 from "./testimonial-img-3.png";
 import AboutUs1 from "./AboutUs1.png";
 import Video from "./Video.png";
 import AboutUs2 from "./AboutUs2.png";
-import AboutUs3 from "./group-friendly-business-people.jpg";
+import AboutUs3 from "./group-friendly-business-people1.1.jpg";
 import applyjob from "./applyJob.png";
 import savedJob from "./savedJob.png";
 import postedJob from "./postedJob.png";
