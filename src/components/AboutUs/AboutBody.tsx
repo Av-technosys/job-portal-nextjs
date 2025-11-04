@@ -8,31 +8,28 @@ function AboutBody() {
     <>
       <Stack
         stackProps={{
+          className: "max-w-7xl mx-auto",
           direction: { xs: "column", md: "row" },
           gap: 3,
         }}
       >
-        <Paper
-          paperProps={{ className: "w-full flex items-center justify-center" }}
+        <Stack
+          stackProps={{
+            className:
+              "mb-8 w-full p-6 flex flex-col items-center justify-center",
+          }}
         >
-          <Stack
-            stackProps={{
-              className:
-                "mb-8 w-full p-6 flex flex-col items-center justify-center",
+          <NextImage
+            props={{
+              alt: "Video",
+              src: Video,
+              width: 550,
+              height: 400,
+              className: "w-full max-w-xl h-auto object-cover rounded-lg ",
             }}
-          >
-            <NextImage
-              props={{
-                alt: "Video",
-                src: Video,
-                width: 550,
-                height: 400,
-                className:
-                  "w-full max-w-xl h-auto object-cover rounded-lg shadow-md",
-              }}
-            />
-          </Stack>
-        </Paper>
+          />
+        </Stack>
+
         <Container
           containerProps={{
             maxWidth: "lg",

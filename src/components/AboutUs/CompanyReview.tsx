@@ -1,6 +1,6 @@
 import { COMPANY_REVIEW_CONFIG } from "@/constants";
 import { Container, NextImage, Paper, Stack, Typography } from "../common";
-import { AboutUs2 } from "@/assets";
+import { AboutUs3 } from "@/assets";
 import { colorStyles } from "@/styles";
 
 function CompanyReview() {
@@ -11,7 +11,7 @@ function CompanyReview() {
       <Stack
         stackProps={{
           direction: { xs: "column", md: "row" },
-          className: "my-12 p-4 w-full",
+          className: "my-12 p-4 max-w-7xl mx-auto",
         }}
       >
         <Container
@@ -65,23 +65,18 @@ function CompanyReview() {
             <Typography {...REIVEW_TEXT} />
           </Stack>
         </Container>
-        <Paper
-          paperProps={{
-            className: "w-full mt-5 md:mt-0 flex items-center justify-center",
-          }}
-        >
-          <Stack stackProps={{ className: "w-full h-96" }}>
-            <NextImage
-              props={{
-                alt: "AboutUs2",
-                src: AboutUs2,
-                width: 400,
-                height: 300,
-                className: "w-full   h-full object-cover ",
-              }}
-            />
-          </Stack>
-        </Paper>
+
+        <Stack stackProps={{ className: "w-full h-96" }}>
+          <NextImage
+            props={{
+              alt: "AboutUs2",
+              src: AboutUs3,
+              width: 400,
+              height: 300,
+              className: "w-full   h-full object-cover ",
+            }}
+          />
+        </Stack>
       </Stack>
     </>
   );

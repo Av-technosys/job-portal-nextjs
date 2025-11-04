@@ -1,12 +1,43 @@
-import React from "react";
-import { ContactUsContainer } from "@/container";
+// import React from "react";
+// import { ContactUsContainer } from "@/container";
 
-function ContactUsPage() {
-  return (
-    <>
-      <ContactUsContainer />
-    </>
-  );
+// function ContactUsPage() {
+//   return (
+//     <>
+//       {/* <ContactUsContainer /> */}
+//     </>
+//   );
+// }
+
+// export default ContactUsPage;
+
+import React, { ReactElement, useState } from "react";
+import { DashboardLayout } from "@/components";
+import { getDehydratedStateForCommonDetails } from "@/services";
+import { GetServerSidePropsContext } from "next";
+import { ContactUsContainer, HomePageContainer } from "@/container";
+import Footer from "@/components/HomePage/footer";
+// import Footer from "@/components/HomePage/Footer";
+
+function Page() {
+  return <ContactUsContainer />;
 }
 
-export default ContactUsPage;
+Page.getLayout = (page: ReactElement) => (
+  <>
+    <DashboardLayout pageProps={page.props}>{page}</DashboardLayout>
+    <Footer />
+  </>
+);
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const commonDetails = await getDehydratedStateForCommonDetails(context);
+
+  return {
+    props: {
+      ...commonDetails,
+    },
+  };
+}
+
+export default Page;

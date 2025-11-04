@@ -12,7 +12,6 @@ function AboutUs() {
       <AboutBody />
       <CompanyReview />
       <ApplyAs />
-      <Footer />
     </>
   );
 }

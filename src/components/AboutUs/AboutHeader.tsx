@@ -6,7 +6,7 @@ function AboutHeader() {
   return (
     <>
       <Stack>
-        <section className="flex flex-col-reverse lg:flex-row items-center justify-between w-full px-6 md:px-12 py-12 gap-8">
+        <section className="flex flex-col-reverse lg:flex-row items-center justify-between  max-w-7xl mx-auto px-6 md:px-12 py-12 gap-8">
           <div className="flex flex-col gap-4 text-center lg:text-left w-full lg:w-1/2">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               Who We Are
@@ -27,7 +27,7 @@ function AboutHeader() {
               alt="About Us"
               width={500}
               height={400}
-              className="w-full max-w-md h-auto object-cover rounded-2xl shadow-md"
+              className="w-full max-w-md h-auto object-cover rounded-2xl "
             />
           </div>
         </section>

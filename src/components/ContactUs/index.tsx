@@ -91,7 +91,7 @@ function ContactUs() {
       <Container
         containerProps={{
           maxWidth: "lg",
-          className: "w-full py-12",
+          className: "w-full ",
         }}
       >
         <Paper
