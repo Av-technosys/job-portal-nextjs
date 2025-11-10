@@ -5,17 +5,21 @@ import {
   LOGIN_PAGE_CONFIG,
   PROFILE_URL,
   REGISTER_URL,
+  SSO_REDIRECT_URL,
 } from "@/constants";
 import {
   Checkbox,
   Container,
+  Divider,
   Input,
   Link,
   LoadingButton,
   NextImage,
   Paper,
+  SocialLogin,
   Stack,
   Typography,
+  When,
 } from "../common";
 import { useRouter } from "next/router";
 import { loginValidationSchema } from "@/validator";
@@ -44,6 +48,7 @@ function Login() {
     CREATE_ACCOUNT_LINK,
     FORGOT_PASSWORD_LINK,
     NOTIFICATION_CONFIG,
+    SIGN_IN_DIVIDER_CONFIG,
   } = LOGIN_PAGE_CONFIG;
 
   const router = useRouter();
@@ -210,6 +215,10 @@ function Login() {
                     />
                   </Stack>
                 </form>
+                <Stack stackProps={{ className: "my-3" }}>
+                  <Divider {...SIGN_IN_DIVIDER_CONFIG} />
+                </Stack>
+                <SocialLogin callbackUrl={`${SSO_REDIRECT_URL}`} />
               </Paper>
             </Container>
           </Stack>

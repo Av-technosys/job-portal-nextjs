@@ -80,4 +80,7 @@ export const LOGIN_PAGE_CONFIG = {
       message: "Logged In Successfully",
     },
   },
+  SIGN_IN_DIVIDER_CONFIG: {
+    children: "Or Sign In With",
+  },
 };

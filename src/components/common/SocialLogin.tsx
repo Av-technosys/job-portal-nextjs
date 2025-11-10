@@ -86,7 +86,6 @@ function SocialLogin({
         }}
       >
         {socialLoginMap?.map(({ key, icon }) => {
-          console.log("data", icon);
           return (
             <IconButton
               key={`socialLoginMap-${key}`}

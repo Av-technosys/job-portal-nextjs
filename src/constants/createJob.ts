@@ -272,19 +272,33 @@ export const JOB_DETAILS_CONFIG = {
       },
       options: STATE_OPTIONS,
     },
+    // CITY_FIELD: {
+    //   fieldType: FormikFieldsEnum.DROPDOWN,
+    //   selectProps: {
+    //     name: "city",
+    //   },
+    //   inputLabelProps: {
+    //     children: "City",
+    //     shrink: true,
+    //   },
+    //   formControlProps: {
+    //     sx: FIELD_WIDTHS.MEDIUM,
+    //   },
+    //   options: CITY_OPTIONS,
+    // },
     CITY_FIELD: {
-      fieldType: FormikFieldsEnum.DROPDOWN,
-      selectProps: {
+      fieldType: FormikFieldsEnum.TEXT_FIELD,
+      inputProps: {
         name: "city",
+        placeholder: "Enter Your City",
       },
       inputLabelProps: {
         children: "City",
         shrink: true,
       },
       formControlProps: {
-        sx: FIELD_WIDTHS.MEDIUM,
+        sx: FIELD_WIDTHS.LARGE,
       },
-      options: CITY_OPTIONS,
     },
 
     // Detailed Information

@@ -33,7 +33,7 @@ export default function RecruiterApplicationPopup({
 
   const companyProfileQuery = useGetCompanyProfileById({
     queryParams: {
-      UserId: userId,
+      UserId: userId ?? "",
     },
   });
 
