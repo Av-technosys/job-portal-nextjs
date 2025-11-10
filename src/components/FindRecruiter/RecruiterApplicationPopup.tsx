@@ -31,8 +31,6 @@ export default function RecruiterApplicationPopup({
       ? (recruiterDetails?.user as { id?: string | number })?.id
       : recruiterDetails?.user;
 
-  console.log("userId", userId);
-
   const companyProfileQuery = useGetCompanyProfileById({
     queryParams: {
       UserId: userId ?? "",

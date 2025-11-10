@@ -13,8 +13,6 @@ const ExcelUploader = () => {
   const { showNotification } = useNotification();
   const [exceljsondata, setexceljsondata] = useState<any>();
 
-  console.log("exceljsondata", exceljsondata);
-
   const router = useRouter();
   const { id } = router.query;
 
