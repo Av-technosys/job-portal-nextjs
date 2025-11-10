@@ -161,7 +161,16 @@ function Jobs() {
     paginatedAPIData: jobInfoAPIData,
   });
 
-  console.log("paginatedInfoData", paginatedInfoData);
+  if (paginatedInfoData[0] == undefined) {
+    return (
+      <Loader
+        loaderProps={{
+          open: true,
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <BreadcrumbRibbon

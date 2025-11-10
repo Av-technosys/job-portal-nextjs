@@ -3,6 +3,7 @@ import { useGetFindRecruiterList, usePagination } from "@/services";
 import {
   Dropdown,
   InfinitePagination,
+  Loader,
   Stack,
   Typography,
   When,
@@ -50,6 +51,16 @@ function FindRecruiter() {
   const { paginatedInfoData, hasMore, totalLength } = usePagination({
     paginatedAPIData: findRecruiterAPIData,
   });
+
+  if (paginatedInfoData.length == 0) {
+    return (
+      <Loader
+        loaderProps={{
+          open: true,
+        }}
+      />
+    );
+  }
 
   return (
     <>
