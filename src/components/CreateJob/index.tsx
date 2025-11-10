@@ -33,8 +33,7 @@ function JobDetails() {
     DESCRIPTION_FIELD,
     VACANCY_FIELD,
     POST_JOB_BUTTON,
-    DATE_OF_BIRTH_FIELD,
-    TIME_DURATION
+    TIME_DURATION,
   } = FORM_CONFIG;
 
   const { showNotification } = useNotification();
@@ -49,7 +48,7 @@ function JobDetails() {
   const createOrUpdateJobDetails = useCreateOrUpdateJobPost({
     mutationConfig: {
       onSuccess: () => {
-        setIsModalOpen(true); 
+        setIsModalOpen(true);
       },
       onError: (error) => {
         showNotification({
@@ -86,7 +85,6 @@ function JobDetails() {
           EXPERIENCE_FIELD,
           JOB_TYPE_FIELD,
           VACANCY_FIELD,
-          DATE_OF_BIRTH_FIELD,
           JOB_LEVEL_FIELD,
           LOCATION_HEADING,
           CITY_FIELD,
@@ -96,7 +94,7 @@ function JobDetails() {
           SKILLS_FIELD,
           DESCRIPTION_HEADING,
           DESCRIPTION_FIELD,
-          TIME_DURATION
+          TIME_DURATION,
         ]}
         formFooterArray={[POST_JOB_BUTTON]}
       />

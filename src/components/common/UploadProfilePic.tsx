@@ -72,6 +72,7 @@ function UploadProfilePic() {
 
   function handleProfilePictureChange(file: File) {
     if (file) {
+      console.log("file", file);
       createOrUpdateProfilePicture.mutate({
         data: {
           file_type: ProfileImageEnum.PROFILE_IMAGE,

@@ -1,5 +1,6 @@
 import { LOCAL_STORAGE_KEY, OTP_PAGE_CONFIG, PROFILE_URL } from "@/constants";
 import {
+  Button,
   Container,
   Input,
   LoadingButton,
@@ -25,6 +26,7 @@ interface OTPProps {
 function OTP({ email }: OTPProps) {
   const {
     HEADER_TEXT,
+    BACK_BUTTON,
     SUB_TITLE_TEXT,
     NOTIFICATION_CONFIG,
     OTP_INPUT_FIELD,
@@ -110,16 +112,20 @@ function OTP({ email }: OTPProps) {
           >
             <Stack
               stackProps={{
+                direction: "row",
+                alignItems: "center",
+                className: "flex items-center justify-between",
                 gap: "4px",
               }}
             >
               <Typography {...HEADER_TEXT()} />
+              <div className="font-bold text-[#1976D2]">Email: {email}</div>
             </Stack>
             <form autoComplete="off" onSubmit={onSubmit}>
               <Stack
                 stackProps={{
                   paddingTop: "16px",
-                  gap: "24px",
+                  gap: "12px",
                 }}
               >
                 <Input
@@ -129,6 +135,10 @@ function OTP({ email }: OTPProps) {
                   {...getErrorConfig(errorObj, "emailOtp")}
                 />
                 <Typography {...SUB_TITLE_TEXT()} />
+                <Button
+                  {...BACK_BUTTON}
+                  onClick={() => router.push("/register")}
+                />
                 <LoadingButton
                   {...CONTINUE_BUTTON}
                   loading={verifyOtp?.isPending}

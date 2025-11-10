@@ -8,11 +8,10 @@ import Footer from "../HomePage/footer";
 function AboutUs() {
   return (
     <>
-      <AboutHeader />;
+      <AboutHeader />
       <AboutBody />
       <CompanyReview />
       <ApplyAs />
-      <Footer />
     </>
   );
 }

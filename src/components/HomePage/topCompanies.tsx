@@ -37,7 +37,7 @@ function TopCompanies({
   return (
     <>
       <div
-        className="p-3 "
+        className="p-3 max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto"
         style={{
           width: "100%",
         }}

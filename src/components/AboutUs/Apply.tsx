@@ -21,12 +21,11 @@ function Apply() {
     <>
       <Stack
         stackProps={{
-          className: "mt-2",
-          direction: "row",
+          className: "mb-5 max-w-7xl mx-auto  ",
+          direction: { xs: "column", md: "row" },
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "space-between",
           flexWrap: "wrap",
-          width: "100vw",
         }}
       >
         <Container
@@ -35,57 +34,51 @@ function Apply() {
             className: "flex justify-center items-center",
           }}
         >
-          <Paper
-            paperProps={{
-              className: "p-4 w-full shadow-none",
+          <Stack
+            stackProps={{
+              direction: { xs: "column", md: "row" },
+              gap: 4,
             }}
           >
             <Stack
               stackProps={{
-                direction: "row",
-                gap: 4,
+                className: "p-4 rounded-lg ",
+                direction: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                gap: 1,
+                sx: {
+                  bgcolor: colorStyles.listTitleBackgroundColor,
+                },
               }}
             >
-              <Stack
-                stackProps={{
-                  className: "p-4 rounded-lg ",
-                  direction: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  gap: 1,
-                  sx: {
-                    bgcolor: colorStyles.listTitleBackgroundColor,
-                  },
-                }}
-              >
-                <Typography {...SEEKER_TITLE_FIELD} />
-                <Typography {...SEEKER_TEXT_FIELD} />
-                <Button
-                  {...SEEKER_REGISTER_BUTTON}
-                  onClick={navigateToJobSeeker}
-                />
-              </Stack>
-              <Stack
-                stackProps={{
-                  className: "p-4 rounded-lg",
-                  direction: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  gap: 1,
-                  sx: {
-                    bgcolor: colorStyles.listTitleBackgroundColor1,
-                  },
-                }}
-              >
-                <Typography {...RECRUTITER_TITLE_FIELD} />
-                <Typography {...RECRUITER_TEXT_FIELD} />
-                <Button
-                  {...RECRUITER_REGISTER_BUTTON}
-                  onClick={navigateToRecruiter}
-                />
-              </Stack>
+              <Typography {...SEEKER_TITLE_FIELD} />
+              <Typography {...SEEKER_TEXT_FIELD} />
+              <Button
+                {...SEEKER_REGISTER_BUTTON}
+                onClick={navigateToJobSeeker}
+              />
             </Stack>
-          </Paper>
+            <Stack
+              stackProps={{
+                className: "p-4 rounded-lg",
+                direction: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                gap: 1,
+                sx: {
+                  bgcolor: colorStyles.listTitleBackgroundColor1,
+                },
+              }}
+            >
+              <Typography {...RECRUTITER_TITLE_FIELD} />
+              <Typography {...RECRUITER_TEXT_FIELD} />
+              <Button
+                {...RECRUITER_REGISTER_BUTTON}
+                onClick={navigateToRecruiter}
+              />
+            </Stack>
+          </Stack>
         </Container>
       </Stack>
     </>

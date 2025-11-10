@@ -1,15 +1,17 @@
 import * as yup from "yup";
 import {
   emailValidationSchema,
+  firstNameValidationSchema,
+  lastNameValidationSchema,
   minMaxValidationSchema,
-  nameValidationSchema,
+  phoneNumberValidationSchema,
 } from "./common";
 
 export const contactUsFormSchema = yup.object({
-  first_name: nameValidationSchema,
-  last_name: nameValidationSchema,
+  first_name: firstNameValidationSchema,
+  last_name: lastNameValidationSchema,
   email: emailValidationSchema,
-  phone_number: yup.number().required("Contact number is required"),
+  phone_number: phoneNumberValidationSchema,
 
   subject: minMaxValidationSchema({
     min: 1,
@@ -19,6 +21,6 @@ export const contactUsFormSchema = yup.object({
   message: minMaxValidationSchema({
     min: 1,
     max: 500,
-    fieldName: "Subject",
+    fieldName: "Message",
   }),
 });

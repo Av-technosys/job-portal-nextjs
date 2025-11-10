@@ -3,63 +3,62 @@ import { Container, NextImage, Paper, Stack, Typography } from "../common";
 import { Video } from "@/assets";
 
 function AboutBody() {
-  const { BODY_TEXT_1, BODY_TEXT_2, BODY_TEXT_3 } = PAGE_BODY_CONFIG;
+  const { BODY_TEXT_1, BODY_TEXT_2 } = PAGE_BODY_CONFIG;
   return (
     <>
       <Stack
         stackProps={{
-          className: "mb-8",
-          direction: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          width: "100vw",
+          className: "max-w-7xl mx-auto",
+          direction: { xs: "column", md: "row" },
+          gap: 3,
         }}
       >
-        <NextImage
-          props={{
-            alt: "Video",
-            src: Video,
-            width: 550,
-            height: 40,
+        <Stack
+          stackProps={{
+            className:
+              "mb-8 w-full p-6 flex flex-col items-center justify-center",
           }}
-        />
-      </Stack>
-      <Container
-        containerProps={{
-          maxWidth: "lg",
-          className: "flex justify-center items-center",
-        }}
-      >
-        <Paper
-          paperProps={{
-            className: "p-4 w-full shadow-none",
+        >
+          <NextImage
+            props={{
+              alt: "Video",
+              src: Video,
+              width: 550,
+              height: 400,
+              className: "w-full max-w-xl h-auto object-cover rounded-lg ",
+            }}
+          />
+        </Stack>
+
+        <Container
+          containerProps={{
+            maxWidth: "lg",
+            className: "flex justify-center items-center px-4 md:px-8",
           }}
         >
           <Stack
             stackProps={{
-              gap: 6,
               direction: "column",
-              justifyContent: "space-around",
               alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
             }}
           >
+            {/* Top body text */}
             <Typography {...BODY_TEXT_1} />
+
+            {/* Two-column section */}
             <Stack
               stackProps={{
-                className: "",
-                gap: 24,
-                direction: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
+                className:
+                  "flex flex-col md:flex-row justify-between items-start gap-6 md:gap-12 w-full",
               }}
             >
               <Typography {...BODY_TEXT_2} />
-              <Typography {...BODY_TEXT_3} />
             </Stack>
           </Stack>
-        </Paper>
-      </Container>
+        </Container>
+      </Stack>
     </>
   );
 }

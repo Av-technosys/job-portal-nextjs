@@ -3,8 +3,7 @@ import * as yup from "yup";
 export const BUSINESS_EMAIL_REGEX =
   /^(?!.+@(gmail|google|yahoo|outlook|hotmail|msn)\..+)(.+@.+\..+)$/;
 
-export const PHONE_NUMBER_REGEX =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+export const PHONE_NUMBER_REGEX = /^[0-9+-]+$/;
 
 export const emailValidationSchema = yup
   .string()
@@ -36,20 +35,32 @@ export const phoneNumberValidationSchema = yup
   .string()
   .matches(PHONE_NUMBER_REGEX, "Phone number is not valid")
   .required("Phone number is required")
-  .min(10, "Phone number is too small")
-  .max(10, "Phone nunber is too large");
+  .min(10, "Please enter your 10 digit mobile number")
+  .max(10, "Please enter your 10 digit mobile numbe");
 
 export const nameValidationSchema = yup
   .string()
-  .min(3, "Name is too small")
+  .min(3, "Please enter minimum 3 characters")
   .max(100, "Name is too large")
   .required("Name is required");
 
+export const firstNameValidationSchema = yup
+  .string()
+  .min(3, "First name is too small")
+  .max(100, "First name is too large")
+  .required("First name is required");
+
+export const lastNameValidationSchema = yup
+  .string()
+  .min(3, "Last name is too small")
+  .max(100, "Last name is too large")
+  .required("Last name is required");
+
 export const otpValidationSchema = yup
   .string()
-  .min(6, "Otp is too small")
-  .max(6, "Otp is too large")
-  .required("Otp is required");
+  .min(6, "OTP is too small")
+  .max(6, "OTP is too large")
+  .required("OTP is required");
 
 export const dateOfBirthValidationSchema = yup
   .date()
@@ -75,7 +86,7 @@ export const scoreValidationSchema = yup
   .positive("Score must be a positive number")
   .typeError("Score must be a valid number");
 
-  export const examTimeValidationSchema = yup
+export const examTimeValidationSchema = yup
   .number()
   .required("Exam Time is required")
   .min(1, "Exam Time must be at least 1")

@@ -77,3 +77,15 @@ label.MuiFormLabel-root[data-shrink="true"].label-shrink + div {
   line-height: 24px;
   color: $black;
 }
+
+/* Remove number input arrows (Chrome, Safari, Edge, Opera) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove number input arrows (Firefox) */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

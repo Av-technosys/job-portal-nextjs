@@ -1043,7 +1043,7 @@ export const JOB_SEEKER_SOCIAL_LINKS_CONFIG = {
   },
   NOTIFICATION_CONFIG: {
     SUCCESS: {
-      message: "Socail Links Updated Successfully",
+      message: "Social Links Updated Successfully",
     } as ShowNotificationProps,
   },
 };

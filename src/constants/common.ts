@@ -276,7 +276,7 @@ export const TOP_RIBBON_AUTH_REDIRECT_CONFIG = {
       children: "Register",
       variant: ButtonVariantEnum.CONTAINED,
       color: ButtonColorEnum.PRIMARY,
-      size: ButtonSizeEnum.LARGE,
+      size: ButtonSizeEnum.SMALL,
     },
   },
 };
@@ -298,12 +298,6 @@ export const TOP_RIBBON_CONFIG_FOR_NON_AUTHENTICATED_USER = [
     label: "Contact Us",
     value: CONTACT_US_URL,
     key: CONTACT_US_URL,
-    children: null,
-  },
-  {
-    label: "How it works",
-    value: HOW_IT_WORKS_URL,
-    key: HOW_IT_WORKS_URL,
     children: null,
   },
 ];
@@ -955,8 +949,11 @@ export const FORCE_USER_LOGIN_MODAL = {
   },
   SUBTITLE: {
     typographyProps: {
-      children: "This is content that only logged-in users can see.",
+      children: "This content is visible only to logged-in users.",
       variant: TypographyVariantEnum.BODY2,
+      sx: {
+        textAlign: "center",
+      },
     },
   },
   BUTTON: {

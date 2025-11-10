@@ -13,6 +13,8 @@ const ExcelUploader = () => {
   const { showNotification } = useNotification();
   const [exceljsondata, setexceljsondata] = useState<any>();
 
+  console.log("exceljsondata", exceljsondata);
+
   const router = useRouter();
   const { id } = router.query;
 
@@ -48,6 +50,7 @@ const ExcelUploader = () => {
         const updatedJsonData = jsonData.map((item: any) => ({
           ...item,
           subject: id,
+          question_image: null,
         }));
         setexceljsondata(updatedJsonData);
       } catch (error) {
@@ -81,6 +84,18 @@ const ExcelUploader = () => {
     <>
       <Stack
         stackProps={{
+          direction: "column",
+          alignItems: "start",
+          className: "max-w-6xl mx-auto",
+        }}
+      >
+        <Button
+          onClick={() => router.push(ADMIN_QUESTION_URL(Number(id)))}
+          {...BACK_BUTTON}
+        />
+      </Stack>
+      <Stack
+        stackProps={{
           padding: 4,
           className: "max-w-6xl mx-auto border border-gray-400 mt-4 rounded-md",
         }}
@@ -88,38 +103,43 @@ const ExcelUploader = () => {
         <Stack stackProps={{ direction: "column", spacing: 3 }}>
           <Typography {...HEADER_TEXT} />
           <Typography {...SUMMERY_TEXT} />
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleFileUpload}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-          />
-          {fileName && (
-            <>
-              <Stack
-                stackProps={{
-                  padding: 2,
-                  className:
-                    "rounded-md  border border-green-500 text-green-500",
-                }}
-              >
-                File Uploaded:{fileName}
-              </Stack>
-            </>
-          )}
+
           <Stack stackProps={{ direction: "row", spacing: 2 }}>
-            <Button
-              onClick={() => router.push(ADMIN_QUESTION_URL(Number(id)))}
-              {...BACK_BUTTON}
+            <button
+              className="px-2 py-1 rounded border border-blue-500 text-blue-500"
+              onClick={() => {
+                const downloadUrl =
+                  "https://docs.google.com/spreadsheets/d/1KpnKijVJ6aIOaWkwbaarwgKoAiRJ2UfGN2w22_91d7g/export?format=xlsx";
+                window.open(downloadUrl, "_blank"); // opens and triggers download
+              }}
+            >
+              Download Sample
+            </button>
+          </Stack>
+          <Stack
+            stackProps={{
+              className: "w-full  items-start gap-3 ",
+            }}
+          >
+            <input
+              type="file"
+              accept=".xlsx,.xls"
+              onChange={handleFileUpload}
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
             />
-            <Button
-              onClick={() =>
-                router.push(
-                  "https://docs.google.com/spreadsheets/d/1KpnKijVJ6aIOaWkwbaarwgKoAiRJ2UfGN2w22_91d7g/edit?usp=sharing"
-                )
-              }
-              {...SAMPLE_EXCEL_BUTTON}
-            />
+            {fileName && (
+              <>
+                <Stack
+                  stackProps={{
+                    padding: 2,
+                    className:
+                      "rounded-md  border border-green-500 text-green-500",
+                  }}
+                >
+                  File Uploaded:{fileName}
+                </Stack>
+              </>
+            )}
             <Button onClick={submithandler} {...SUBMIT_BUTTON} />
           </Stack>
         </Stack>

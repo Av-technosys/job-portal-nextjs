@@ -92,7 +92,7 @@ export const RESET_PASSWORD_CONFIG = {
   },
   OTP_INPUT_FIELD: {
     inputProps: {
-      label: "Otp *",
+      label: "OTP *",
       type: "number",
       name: "emailOtp",
     },
@@ -129,7 +129,7 @@ export const RESET_PASSWORD_CONFIG = {
   },
   RESEND_OTP_BUTTON: {
     buttonProps: {
-      children: "Resend Otp",
+      children: "Resend OTP",
       color: ButtonColorEnum.PRIMARY,
       size: ButtonSizeEnum.LARGE,
       type: "submit",

@@ -1,6 +1,6 @@
 import { COMPANY_REVIEW_CONFIG } from "@/constants";
 import { Container, NextImage, Paper, Stack, Typography } from "../common";
-import { AboutUs2 } from "@/assets";
+import { AboutUs3 } from "@/assets";
 import { colorStyles } from "@/styles";
 
 function CompanyReview() {
@@ -10,75 +10,73 @@ function CompanyReview() {
     <>
       <Stack
         stackProps={{
-          className: "mt-12",
-          direction: "row",
-          justifyContent: "space-between",
-          width: "100%",
-          sx: {
-            bgcolor: colorStyles.listTitleBackgroundColor,
-          },
+          direction: { xs: "column", md: "row" },
+          className: "my-12 p-4 max-w-7xl mx-auto",
         }}
       >
-        <Stack
-          stackProps={{
-            className: " ml-8",
-            alignItems: "center",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          <NextImage
-            props={{
-              alt: "AboutUs2",
-              src: AboutUs2,
-              width: 550,
-              height: 100,
-            }}
-          />
-        </Stack>
         <Container
           containerProps={{
             maxWidth: "lg",
-            className: "flex justify-center items-center",
+            className:
+              "flex justify-center  items-center w-full lg:w-1/2 px-6 lg:px-0",
           }}
         >
-          <Paper
-            paperProps={{
-              className: "p-4 w-full shadow-none ",
+          <Stack
+            stackProps={{
+              direction: "column",
+              gap: 4,
+              justifyContent: "center",
+              alignItems: "flex-start",
             }}
           >
+            {/* Title */}
+            <Typography {...TITLE_TEXT} />
+
+            {/* Name & Job Section */}
             <Stack
               stackProps={{
-                direction: "column",
+                direction: "row",
+                alignItems: "center",
                 gap: 2,
-                justifyContent: "space-between",
-                alignItems: "flex-start",
               }}
             >
-              <Typography {...TITLE_TEXT} />
+              {/* Vertical Line */}
               <Stack
                 stackProps={{
-                  direction: "row",
-                  alignItems: "center",
+                  className: "w-1 h-10 md:h-12",
+                  sx: {
+                    bgcolor: colorStyles.listTitleBackgroundColor1,
+                  },
+                }}
+              />
+              {/* Name & Job Title */}
+              <Stack
+                stackProps={{
+                  direction: "column",
+                  gap: 0.5,
                 }}
               >
-                <Stack
-                  stackProps={{
-                    className: "w-10 h-1 rotate-90",
-                    sx: {
-                      bgcolor: colorStyles.listTitleBackgroundColor1,
-                    },
-                  }}
-                />
-                <Stack>
-                  <Typography {...NAME_TEXT} />
-                  <Typography {...JOB_TITLE_TEXT} />
-                </Stack>
+                <Typography {...NAME_TEXT} />
+                <Typography {...JOB_TITLE_TEXT} />
               </Stack>
-              <Typography {...REIVEW_TEXT} />
             </Stack>
-          </Paper>
+
+            {/* Review / Description */}
+            <Typography {...REIVEW_TEXT} />
+          </Stack>
         </Container>
+
+        <Stack stackProps={{ className: "w-full h-96" }}>
+          <NextImage
+            props={{
+              alt: "AboutUs2",
+              src: AboutUs3,
+              width: 400,
+              height: 300,
+              className: "w-full   h-full object-cover ",
+            }}
+          />
+        </Stack>
       </Stack>
     </>
   );

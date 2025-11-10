@@ -27,7 +27,7 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
       stackProps={{
         direction: "column",
         width: "300px",
-        height: "370px",
+        height: "380px",
         gap: 2,
         className: "cursor-pointer rounded-lg p-4",
         sx: {
@@ -46,7 +46,12 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
         },
       }}
     >
-      <Stack stackProps={{ gap: 3 }}>
+      <Stack
+        stackProps={{
+          gap: 3,
+          className: "w-full h-full flex flex-col items-start",
+        }}
+      >
         <Typography {...DESIGNATION(job)} />
         <div
           className="job-type pl-2 p-1 h-7 w-20 rounded-3xl"
@@ -65,21 +70,13 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
             gap: 2,
           }}
         >
-          <Divider
-            sx={{
-              backgroundColor: colorStyles.white,
-              height: 1.5,
-              width: "60%",
-              display: "flex",
-              alignItems: "center",
-            }}
-          />
           <Typography {...POSTED_DATE(job)} />
         </Stack>
         <Stack
           stackProps={{
-            className: "mt-8",
+            className: "mt-8  my-auto",
             direction: "row",
+            alignItems: "center",
             gap: 2,
           }}
         >
@@ -88,7 +85,7 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
           </Avatar>
           <Stack>
             <Typography {...COMPANY_NAME(job)} />
-            <Typography {...EMPLOYEE_COUNT(job)} />
+            {/* <Typography {...EMPLOYEE_COUNT(job)} /> */}
           </Stack>
           <Stack
             stackProps={{

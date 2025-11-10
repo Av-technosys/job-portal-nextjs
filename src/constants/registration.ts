@@ -36,11 +36,11 @@ export const REGISTRATION_PAGE_CONFIG = {
   },
   USER_DROPDOWN_FIELD: {
     selectProps: {
-      label: "User Type *",
+      label: "User Type ",
       name: "userType",
     },
     inputLabelProps: {
-      children: "User Type *",
+      children: "User Type",
     },
     options: USER_TYPE,
   },
@@ -74,7 +74,7 @@ export const REGISTRATION_PAGE_CONFIG = {
   },
   PASSWORD_FIELD: {
     inputProps: {
-      label: "Password",
+      label: "Password *",
       type: "password",
       name: "password",
     },
@@ -124,10 +124,13 @@ export const REGISTRATION_PAGE_CONFIG = {
     SUCCESS: {
       message: "Thanks! Please verify the email.",
     },
+    ERROR: {
+      message: "Please accept terms of services before registration..",
+    },
   },
+
   SIGN_IN_DIVIDER_CONFIG: {
     children: "Or Sign In With",
-    className: "py-4",
   },
 };
 
@@ -135,7 +138,7 @@ export const OTP_PAGE_CONFIG = {
   HEADER_TEXT: () => {
     return {
       typographyProps: {
-        children: "Continue with email",
+        children: "Continue with OTP",
         variant: TypographyVariantEnum.H5,
       },
     };
@@ -151,7 +154,7 @@ export const OTP_PAGE_CONFIG = {
   },
   OTP_INPUT_FIELD: {
     inputProps: {
-      label: "Otp *",
+      label: "OTP *",
       type: "number",
       name: "emailOtp",
     },
@@ -167,11 +170,19 @@ export const OTP_PAGE_CONFIG = {
   },
   RESEND_OTP_BUTTON: {
     buttonProps: {
-      children: "Resend Otp",
+      children: "Resend OTP",
       variant: ButtonVariantEnum.CONTAINED,
       color: ButtonColorEnum.PRIMARY,
       size: ButtonSizeEnum.LARGE,
       type: "submit",
+    },
+  },
+  BACK_BUTTON: {
+    buttonProps: {
+      children: "Back",
+      variant: ButtonVariantEnum.CONTAINED,
+      color: ButtonColorEnum.ERROR,
+      size: ButtonSizeEnum.LARGE,
     },
   },
   NOTIFICATION_CONFIG: {

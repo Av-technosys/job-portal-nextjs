@@ -443,7 +443,7 @@ export const JOB_OPPPORTUNITY_PAGE_CONFIG = {
           whiteSpace: "wrap",
         },
       },
-      fontSize: TypographyFontSize.extralarge,
+      fontSize: TypographyFontSize.large,
       fontWeight: TypographyFontWeight.bold,
     } as TypographyProps;
   },

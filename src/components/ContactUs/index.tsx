@@ -91,7 +91,7 @@ function ContactUs() {
       <Container
         containerProps={{
           maxWidth: "lg",
-          className: "w-full py-12",
+          className: "w-full ",
         }}
       >
         <Paper
@@ -142,7 +142,7 @@ function ContactUs() {
 
                 <Stack
                   stackProps={{
-                    gap: 4,
+                    gap: 2,
                     className: "mb-6",
                   }}
                 >
@@ -153,9 +153,8 @@ function ContactUs() {
                       textProps={detail.textProps}
                     />
                   ))}
+                  {/* <SocialLogin callbackUrl={`${SSO_REDIRECT_URL}`} /> */}
                 </Stack>
-
-                <SocialLogin callbackUrl={`${SSO_REDIRECT_URL}`} />
               </Stack>
             </Stack>
 

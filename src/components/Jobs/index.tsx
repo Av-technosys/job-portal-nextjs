@@ -161,6 +161,7 @@ function Jobs() {
     paginatedAPIData: jobInfoAPIData,
   });
 
+  console.log("paginatedInfoData", paginatedInfoData);
   return (
     <>
       <BreadcrumbRibbon
@@ -227,34 +228,38 @@ function Jobs() {
         </When>
         <Typography {...TITLE_HEADER(totalLength)} />
       </Stack>
-      <InfinitePagination
-        dataLength={paginatedInfoData?.length}
-        next={jobInfoAPIData?.fetchNextPage}
-        hasMore={hasMore}
-        isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
-      >
-        <Stack>
-          {Array.isArray(searchedData) && searchedData.length > 0
-            ? searchedData?.map((job) => (
-                <JobCard
-                  job={job}
-                  key={`jobs-${job?.id}-${job?.is_saved}`}
-                  handleSaveUnSave={handleSaveUnSave}
-                  showSaveUnSaveButton={showSaveUnSaveButton}
-                  handleJobDetailsClick={handleJobDetailsClick}
-                />
-              ))
-            : paginatedInfoData?.map((job) => (
-                <JobCard
-                  job={job}
-                  key={`jobs-${job?.id}-${job?.is_saved}`}
-                  handleSaveUnSave={handleSaveUnSave}
-                  showSaveUnSaveButton={showSaveUnSaveButton}
-                  handleJobDetailsClick={handleJobDetailsClick}
-                />
-              ))}
-        </Stack>
-      </InfinitePagination>
+      {paginatedInfoData[0] != undefined ? (
+        <InfinitePagination
+          dataLength={paginatedInfoData?.length}
+          next={jobInfoAPIData?.fetchNextPage}
+          hasMore={hasMore}
+          isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
+        >
+          <Stack>
+            {Array.isArray(searchedData) && searchedData.length > 0
+              ? searchedData?.map((job) => (
+                  <JobCard
+                    job={job}
+                    key={`jobs-${job?.id}-${job?.is_saved}`}
+                    handleSaveUnSave={handleSaveUnSave}
+                    showSaveUnSaveButton={showSaveUnSaveButton}
+                    handleJobDetailsClick={handleJobDetailsClick}
+                  />
+                ))
+              : paginatedInfoData?.map((job) => (
+                  <JobCard
+                    job={job}
+                    key={`jobs-${job?.id}-${job?.is_saved}`}
+                    handleSaveUnSave={handleSaveUnSave}
+                    showSaveUnSaveButton={showSaveUnSaveButton}
+                    handleJobDetailsClick={handleJobDetailsClick}
+                  />
+                ))}
+          </Stack>
+        </InfinitePagination>
+      ) : (
+        <div className="text-xl font-bold">No Job Found</div>
+      )}
     </>
   );
 }
