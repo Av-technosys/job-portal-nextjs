@@ -52,7 +52,7 @@ function FindRecruiter() {
     paginatedAPIData: findRecruiterAPIData,
   });
 
-  if (paginatedInfoData.length == 0) {
+  if (findRecruiterAPIData?.isLoading) {
     return (
       <Loader
         loaderProps={{
@@ -97,34 +97,38 @@ function FindRecruiter() {
         </Stack>
       </When>
 
-      <InfinitePagination
-        dataLength={paginatedInfoData?.length}
-        next={findRecruiterAPIData?.fetchNextPage}
-        hasMore={hasMore}
-        isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
-      >
-        <Stack>
-          {Array.isArray(searchedData) && searchedData.length > 0
-            ? searchedData?.map((recruiter) => (
-                <RecruiterCard
-                  recruiter={recruiter}
-                  key={`recruiters-${recruiter?.id}`}
-                  openRecruiterApplicationPopup={() =>
-                    openRecruiterPopup(recruiter)
-                  }
-                />
-              ))
-            : paginatedInfoData?.map((recruiter) => (
-                <RecruiterCard
-                  recruiter={recruiter}
-                  key={`recruiters-${recruiter?.id}`}
-                  openRecruiterApplicationPopup={() =>
-                    openRecruiterPopup(recruiter)
-                  }
-                />
-              ))}
-        </Stack>
-      </InfinitePagination>
+      {paginatedInfoData?.length > 0 ? (
+        <InfinitePagination
+          dataLength={paginatedInfoData?.length}
+          next={findRecruiterAPIData?.fetchNextPage}
+          hasMore={hasMore}
+          isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
+        >
+          <Stack>
+            {Array.isArray(searchedData) && searchedData.length > 0
+              ? searchedData?.map((recruiter) => (
+                  <RecruiterCard
+                    recruiter={recruiter}
+                    key={`recruiters-${recruiter?.id}`}
+                    openRecruiterApplicationPopup={() =>
+                      openRecruiterPopup(recruiter)
+                    }
+                  />
+                ))
+              : paginatedInfoData?.map((recruiter) => (
+                  <RecruiterCard
+                    recruiter={recruiter}
+                    key={`recruiters-${recruiter?.id}`}
+                    openRecruiterApplicationPopup={() =>
+                      openRecruiterPopup(recruiter)
+                    }
+                  />
+                ))}
+          </Stack>
+        </InfinitePagination>
+      ) : (
+        <div className="text-xl font-bold">No Recruiter Found</div>
+      )}
       <RecruiterApplicationPopup
         open={isRecruiterPopupOpen}
         handleClose={() => setRecruiterPopupStatus(false)}
