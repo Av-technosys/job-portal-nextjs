@@ -79,11 +79,10 @@ function Registration() {
           );
         }
       },
-      onError: (error) => {
+      onError: (res: any) => {
         showNotification({
-          ...getErrorMessageFromAPI(error),
+          ...getErrorMessageFromAPI(res?.response?.data?.message?.message),
         });
-        console.error(error, "error");
       },
     },
   });
