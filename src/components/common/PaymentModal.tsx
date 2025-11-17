@@ -1,7 +1,7 @@
 import { LoadingButton, Modal, Stack, Typography } from "@/components";
 import { BRAND_LOGO_URL, MODAL_STYLES, PAYMENT_MODAL_TEXT } from "@/constants";
 import { colorStyles } from "@/styles";
-import { CommonObjectType, RazorpayResponse } from "@/types";
+import { RazorpayResponse } from "@/types";
 import {
   useCreateOrderId,
   useCaptureTransaction,
@@ -10,6 +10,14 @@ import {
 } from "@/services";
 import Script from "next/script";
 import { getErrorMessageFromAPI } from "@/helper";
+import { useEffect, useState } from "react";
+
+// Add Razorpay type declaration
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 const PaymentModal = ({
   open,
@@ -31,99 +39,150 @@ const PaymentModal = ({
     PLAN_TYPE_LABEL,
     PRICING_LABEL,
     TOTAL_LABEL,
-    // EXPIRY_TEXT,
     PAY_BUTTON,
     AMOUNT_LABEL,
     TOTAL_AMOUNT_LABEL,
     PAYMENT_NOTIFICATION,
   } = PAYMENT_MODAL_TEXT;
+  
   const { showNotification } = useNotification();
   const { name, phoneNumber, email, refetchCommonDetails } = useCommonDetails();
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+
+  console.log("PaymentModal mounted with props:", { open, amount, planType, planId });
+  console.log("User details:", { name, phoneNumber, email });
+
+  // Create order mutation
   const createOrderId = useCreateOrderId({
+    
     mutationConfig: {
-      onSuccess: (res) => {
-        if (res?.data?.gateway_order_id as string) {
-          initializeRazorpay(res?.data?.gateway_order_id as string);
+      onSuccess: (res:any) => {
+        console.log("Order ID Response (onSuccess):", res);
+        if (res?.data?.gateway_order_id) {
+          console.log("Order ID found, initializing Razorpay:", res.data.gateway_order_id);
+          initializeRazorpay(res.data.gateway_order_id);
+        } else {
+          console.error("Order ID missing in response:", res);
+          showNotification({
+            message: "Failed to create payment order",
+            
+          });
         }
       },
       onError: (error) => {
+        console.error("createOrderId onError:", error);
         showNotification({
           ...getErrorMessageFromAPI(error),
         });
-        console.error(error, "error");
       },
     },
   });
-
+ 
+   useEffect(() => {  
+    createOrderId?.isPending ? (console.log("can not create payment")) :  console.log("can create payment");
+  }, [createOrderId]);
+  // Capture transaction mutation  
+  
   const captureTransaction = useCaptureTransaction({
     mutationConfig: {
       onSuccess: () => {
+        console.log("captureTransaction onSuccess");
         refetchCommonDetails();
         showNotification(PAYMENT_NOTIFICATION.SUCCESS_CONFIG);
-        handlePaymentComplete && handlePaymentComplete();
+        handlePaymentComplete?.();
       },
       onError: (error) => {
+        console.error("captureTransaction onError:", error);
         showNotification({
           ...getErrorMessageFromAPI(error),
         });
-        console.error(error, "error");
       },
     },
   });
 
+  // Check if Razorpay is available
+  const isRazorpayAvailable = () => {
+    return typeof window !== 'undefined' && window.Razorpay;
+  };
+
+  // Initialize Razorpay payment
   function initializeRazorpay(orderId: string) {
+    console.log("Initializing Razorpay with Order ID:", orderId);
+    
+    if (!isRazorpayAvailable()) {
+      console.error("Razorpay not loaded");
+      showNotification({
+        message: "Payment gateway not available. Please refresh and try again.",
+      
+      });
+      return;
+    }
+console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
+
+    if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
+      console.error("Razorpay key not configured");
+      showNotification({
+        message: "Payment configuration error",
+    
+      });
+      return;
+    }
+
     try {
       const options = {
         name: "Job Assured",
         image: BRAND_LOGO_URL,
-        key: process.env.RAZORPAY_KEY_ID as string,
+        amount: Math.round(amount), // Convert to paise and ensure integer
+        currency: "INR",
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         description: `Plan Type: ${planType}`,
         order_id: orderId,
         prefill: {
-          name,
-          email,
-          contact: phoneNumber,
+          name: name || "Customer",
+          email: email || "customer@example.com",
+          contact: phoneNumber || "9999999999",
         },
         readonly: {
           name: true,
           email: true,
           contact: true,
         },
-        config: {
-          display: {
-            hide: [
-              {
-                method: "paylater",
-              },
-            ],
-            preferences: {
-              show_default_blocks: true,
-            },
-          },
-        },
         handler: (response: RazorpayResponse) => {
+          console.log("Razorpay handler invoked with response:", response);
           handleCaptureTransaction(response);
         },
         modal: {
-          ondismiss: function () {
+          ondismiss: () => {
+            console.log("Razorpay modal dismissed");
             showNotification(PAYMENT_NOTIFICATION.CANCELLED_CONFIG);
           },
-          oncancel: function () {
-            showNotification(PAYMENT_NOTIFICATION.CANCELLED_CONFIG);
-          },
-          onpaymentfailed: function (responseErr: CommonObjectType) {
-            showNotification(PAYMENT_NOTIFICATION.FAILED_CONFIG);
-            console.error("Payment failed:", responseErr);
+          onclose: () => {
+            console.log("Razorpay modal closed");
+            // Handle modal close if needed
           },
         },
         theme: {
           color: colorStyles.authPageTiltBgColor,
         },
       };
+      console.log("Razorpay options prepared:", options);
+      console.log("Opening Razorpay modal...");
       const rzp1 = new window.Razorpay(options);
+      
+      // Add error handlers
+      rzp1.on('payment.failed', function (response: any) {
+        console.error('Payment failed:', response);
+        showNotification(PAYMENT_NOTIFICATION.FAILED_CONFIG);
+      });
+
       rzp1.open();
+      
     } catch (err) {
-      console.error(err);
+      console.error("Error initializing Razorpay:", err);
+      showNotification({
+        message: "Failed to initialize payment",
+        
+      });
     }
   }
 
@@ -136,6 +195,20 @@ const PaymentModal = ({
     razorpay_payment_id: string;
     razorpay_signature: string;
   }) {
+    console.log("handleCaptureTransaction called with:", {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    });
+    
+    if (!razorpay_payment_id) {
+      console.error("Missing payment ID");
+      showNotification({
+        message: "Payment verification failed",
+      });
+      return;
+    }
+
     captureTransaction.mutate({
       razorpay_order_id,
       razorpay_payment_id,
@@ -144,59 +217,96 @@ const PaymentModal = ({
   }
 
   function handleRazorPaymentMethod() {
+    console.log("handleRazorPaymentMethod invoked, creating order for planId:", planId);
+    
+    if (!razorpayLoaded) {
+      console.error("Razorpay not loaded yet");
+      showNotification({
+        message: "Payment gateway is still loading. Please wait.",
+      
+      });
+      return;
+    }
+
     createOrderId.mutate({ planId });
   }
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Stack stackProps={{ sx: MODAL_STYLES }}>
-        <Typography {...TITLE} />
-        <Typography {...PLAN_TYPE_LABEL(planType)} />
-        <Stack
-          stackProps={{
-            direction: "column",
-            gap: { xs: 0.5, sm: 1 },
-            margin: { xs: "15px 0", sm: "30px 0" },
-            overflow: "hidden",
-            sx: {
-              background: "white",
-              padding: { xs: "15px", sm: "20px" },
-              borderRadius: "10px",
-            },
-          }}
-        >
+    <>
+      {/* Load Razorpay script once at app level or layout level */}
+      <Script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        strategy="lazyOnload"
+        onLoad={() => {
+          console.log("Razorpay script loaded successfully");
+          setRazorpayLoaded(true);
+        }}
+        onError={() => {
+          console.error("Failed to load Razorpay script");
+          setRazorpayLoaded(false);
+        }}
+      />
+      
+      <Modal open={open} onClose={handleClose}>
+        <Stack stackProps={{ sx: MODAL_STYLES }}>
+          <Typography {...TITLE} />
+          <Typography {...PLAN_TYPE_LABEL(planType)} />
           <Stack
             stackProps={{
               direction: "column",
-              border: `1px solid ${colorStyles.borderGreyColor}`,
-              p: 3,
-              borderRadius: "10px",
-              gap: 2,
+              gap: { xs: 0.5, sm: 1 },
+              margin: { xs: "15px 0", sm: "30px 0" },
+              overflow: "hidden",
+              sx: {
+                background: "white",
+                padding: { xs: "15px", sm: "20px" },
+                borderRadius: "10px",
+              },
             }}
           >
             <Stack
-              stackProps={{ direction: "row", justifyContent: "space-between" }}
+              stackProps={{
+                direction: "column",
+                border: `1px solid ${colorStyles.borderGreyColor}`,
+                p: 3,
+                borderRadius: "10px",
+                gap: 2,
+              }}
             >
-              <Typography {...PRICING_LABEL(planType)} />
-              <Typography {...AMOUNT_LABEL(amount)} />
+              <Stack
+                stackProps={{ direction: "row", justifyContent: "space-between" }}
+              >
+                <Typography {...PRICING_LABEL(planType)} />
+                <Typography {...AMOUNT_LABEL(amount)} />
+              </Stack>
+              <Stack
+                stackProps={{ direction: "row", justifyContent: "space-between" }}
+              >
+                <Typography {...TOTAL_LABEL} />
+                <Typography {...TOTAL_AMOUNT_LABEL(amount)} />
+              </Stack>
+              
+              <LoadingButton
+                loading={createOrderId?.isPending}
+                {...PAY_BUTTON}
+                buttonProps={{
+                  ...PAY_BUTTON.buttonProps,
+                  disabled: !razorpayLoaded || createOrderId?.isPending,
+                }}
+                onClick={handleRazorPaymentMethod}
+              />
+              
+              {!razorpayLoaded && (
+                <div 
+                >
+                  Loading payment gateway...
+                </div>
+              )}
             </Stack>
-            <Stack
-              stackProps={{ direction: "row", justifyContent: "space-between" }}
-            >
-              <Typography {...TOTAL_LABEL} />
-              <Typography {...TOTAL_AMOUNT_LABEL(amount)} />
-            </Stack>
-            <Script src="https://checkout.razorpay.com/v1/checkout.js" />
-            <LoadingButton
-              loading={createOrderId?.isPending}
-              {...PAY_BUTTON}
-              onClick={handleRazorPaymentMethod}
-            />
-            {/* <Typography {...EXPIRY_TEXT} /> */}
           </Stack>
         </Stack>
-      </Stack>
-    </Modal>
+      </Modal>
+    </>
   );
 };
 

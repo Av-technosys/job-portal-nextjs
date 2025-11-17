@@ -36,6 +36,7 @@ export default function Subscription() {
 
   function handlePaymentComplete() {
     setOpen(false);
+    
     setPaymentModalOpen(false);
     router.push(DASHBOARD_URL);
   }

@@ -5,31 +5,48 @@ import { colorStyles } from "@/styles";
 
 type StopWatchHandlerProps = {
   getStopWatchTime: (time: number) => void;
+  maxTime?: number; // optional for fallback
+  isLoading?: boolean;
 };
 
-const StopWatchHandler = ({ getStopWatchTime }: StopWatchHandlerProps) => {
-  const MAX_TIME = 20 * 60;
-  const [stopwatchTime, setStopwatchTime] = useState(MAX_TIME);
+const StopWatchHandler = ({
+  getStopWatchTime,
+  maxTime,
+  isLoading = false,
+}: StopWatchHandlerProps) => {
+  const [stopwatchTime, setStopwatchTime] = useState<number | null>(null);
 
+  // ✅ Initialize time only after loading finishes
   useEffect(() => {
-    let timeoutId: any;
-
-    if (stopwatchTime > 0) {
-      timeoutId = setTimeout(() => {
-        setStopwatchTime((prev) => prev - 1);
-      }, 1000);
+    if (!isLoading && maxTime) {
+      setStopwatchTime(maxTime * 60);
+      console.log("✅ Timer started with backend time:", maxTime, "minutes");
     }
+  }, [isLoading, maxTime]);
+
+  // ✅ Start countdown only when stopwatchTime is set and not loading
+  useEffect(() => {
+    if (isLoading || stopwatchTime === null || stopwatchTime <= 0) return;
+
+    const timeoutId = setTimeout(() => {
+      setStopwatchTime((prev) => (prev ? prev - 1 : prev));
+    }, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [stopwatchTime]);
+  }, [stopwatchTime, isLoading]);
 
-  getStopWatchTime(stopwatchTime);
+  // ✅ Pass current time up
+  useEffect(() => {
+    if (stopwatchTime !== null) getStopWatchTime(stopwatchTime);
+  }, [stopwatchTime, getStopWatchTime]);
 
-  return (
-    <>
+  // ⏳ Show loading UI while waiting for questions
+  if (isLoading || stopwatchTime === null) {
+    return (
       <Stack
         stackProps={{
-          alignItems: "end",
+          alignItems: "center",
+          justifyContent: "center",
           sx: {
             width: "100%",
             padding: "10px 10px",
@@ -39,16 +56,39 @@ const StopWatchHandler = ({ getStopWatchTime }: StopWatchHandlerProps) => {
       >
         <Typography
           typographyProps={{
-            children: `Time left: ${String(
-              Math.floor(stopwatchTime / 60)
-            ).padStart(2, "0")}:${String(stopwatchTime % 60).padStart(2, "0")}`,
-            variant: TypographyVariantEnum.H5,
+            children: "Loading questions...",
+            variant: TypographyVariantEnum.H6,
             color: "text.secondary",
-            className: "text-center ",
+            className: "text-center",
           }}
         />
       </Stack>
-    </>
+    );
+  }
+
+  // 🕒 Timer display
+  return (
+    <Stack
+      stackProps={{
+        alignItems: "end",
+        sx: {
+          width: "100%",
+          padding: "10px 10px",
+          backgroundColor: colorStyles.latestJobCardBackground,
+        },
+      }}
+    >
+      <Typography
+        typographyProps={{
+          children: `Time left: ${String(
+            Math.floor(stopwatchTime / 60)
+          ).padStart(2, "0")}:${String(stopwatchTime % 60).padStart(2, "0")}`,
+          variant: TypographyVariantEnum.H5,
+          color: "text.secondary",
+          className: "text-center",
+        }}
+      />
+    </Stack>
   );
 };
 
