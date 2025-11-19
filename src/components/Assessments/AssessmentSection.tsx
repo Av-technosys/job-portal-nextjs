@@ -1,6 +1,6 @@
 import { ASSESSMENT_SECTION_PAGE_CONFIG } from "@/constants/assessmentSection";
 import React, { useState } from "react";
-import { Button, Loader, Paper, Stack, Typography } from "../common";
+import { Button, Loader, Paper, Stack, Typography, Modal, LoadingButton } from "../common";
 import { StopWatchIcon, TotalQuestionsIcon } from "@/assets";
 import { useGetAssessmentAttemptsInfo } from "@/services/useGetAssessmentAttempts";
 import { useGetSubjectList } from "@/services/useGetFindSubject";
@@ -10,6 +10,7 @@ import { useCaptureTransaction, useNotification } from "@/services";
 import { getErrorMessageFromAPI } from "@/helper";
 import Script from "next/script";
 import { useQueryClient } from "@tanstack/react-query";
+import { colorStyles } from "@/styles";
 
 declare global {
   interface Window {
@@ -22,6 +23,19 @@ type testProps = {
   assessmentType: string;
 };
 
+type RetakeData = {
+  assesment_session_id: string;
+  subject_id: string;
+};
+
+type OrderData = {
+  gateway_order_id: any;
+  amount: any;
+  assesment_session_id: any;
+  subject_id: any;
+  planId: any;
+};
+
 const {
   SECTION_HEADER,
   START_TEST,
@@ -32,10 +46,39 @@ const {
   TOTAL_QUESTIONS,
 } = ASSESSMENT_SECTION_PAGE_CONFIG;
 
+// Add modal styles
+const MODAL_STYLES = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: { xs: "90%", sm: 400 },
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  borderRadius: 2,
+  outline: "none",
+};
+
+// Add your label configurations (adjust as needed)
+const TITLE = { typographyProps: { variant: "h6", children: "Confirm Payment" } };
+const PLAN_TYPE_LABEL = (planType: string) => ({ typographyProps: { variant: "body2", children: `Plan: ${planType}` } });
+const PRICING_LABEL = (planType: string) => ({ typographyProps: { variant: "body1", children: `${planType}` } });
+const AMOUNT_LABEL = (amount: number | string) => ({ typographyProps: { variant: "body1", children: `₹${amount}` } });
+const TOTAL_LABEL = { typographyProps: { variant: "h6", children: "Total" } };
+const TOTAL_AMOUNT_LABEL = (amount: number | string) => ({ typographyProps: { variant: "h6", children: `₹${amount}` } });
+
+
 const AssessmentSection = ({ id, assessmentType }: testProps) => {
   const router = useRouter();
   const { showNotification } = useNotification();
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [selectedRetakeData, setSelectedRetakeData] = useState<RetakeData | null>(null);
+  const [amount, setAmount] = useState(null);
+  const [isLoadingRetake, setIsLoadingRetake] = useState(false);
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
+
   const queryClient = useQueryClient();
   const allSubjectList = useGetSubjectList();
   const subdata = allSubjectList.data?.data;
@@ -46,22 +89,29 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
   } else {
     data = subdata?.filter((item: any) => item?.is_paid === false);
   }
-  console.log("Filtered subject data: this is where will get the number of questions ", data);
-  const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
-    queryParams: { id },
-  });
 
+const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
+  queryParams: { id },
+  queryConfig: {
+    staleTime: 0,
+    refetchOnMount: true, 
+    refetchOnWindowFocus: true,
+  },
+});
   // ✅ Capture payment mutation
   const captureTransaction = useCaptureTransaction({
     mutationConfig: {
       onSuccess: () => {
         showNotification({ message: "Payment captured successfully!" });
+        setOpenPaymentModal(false);
+        setIsLoadingRetake(false);
       },
       onError: (error) => {
         console.error("captureTransaction error:", error);
         showNotification({
           ...getErrorMessageFromAPI(error),
         });
+        setIsLoadingRetake(false);
       },
     },
   });
@@ -70,42 +120,46 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
   const createOrderId = useCreateOrderByRetakeTest({
     mutationConfig: {
       onSuccess: (res, variables) => {
-
-        const gateway_order_id = res?.data?.gateway_order_id;
         const amount = res?.data?.amount;
-
+        const gateway_order_id = res?.data?.gateway_order_id;
 
         if (!gateway_order_id) {
           showNotification({ message: "Order creation failed" });
+          setIsLoadingRetake(false);
           return;
         }
 
-        // ✅ Take values directly from variables (not from res)
-        const { assesment_session_id, subject_id, planId } = variables;
-
-        initializeRazorpay({
+        // ✅ Store order data for later use when user clicks Pay Now
+        setOrderData({
           gateway_order_id,
           amount,
-          assesment_session_id,
-          subject_id,
-          planId
+          assesment_session_id: variables.assesment_session_id,
+          subject_id: variables.subject_id,
+          planId: variables.planId
         });
+
+        setAmount(amount);
+        setIsLoadingRetake(false);
       },
       onError: (error) => {
         showNotification({
           ...getErrorMessageFromAPI(error),
         });
         console.error(error, "error");
+        setIsLoadingRetake(false);
+        setOpenPaymentModal(false);
       },
     },
   });
 
-  // ✅ Initialize Razorpay like PaymentModal
-  function initializeRazorpay({ gateway_order_id, amount, assesment_session_id, subject_id, planId }) {
-    if (!window.Razorpay || !process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
+  // ✅ Initialize Razorpay - This will be called only when user clicks Pay Now
+  function initializeRazorpay() {
+    if (!orderData || !window.Razorpay || !process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
       showNotification({ message: "Payment gateway not available" });
       return;
     }
+
+    const { gateway_order_id, amount } = orderData;
 
     const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
@@ -114,27 +168,40 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
       name: "Job Portal",
       description: "Retake Assessment Test",
       order_id: gateway_order_id,
-      planId: planId,
       handler: function (response) {
-        captureTransaction.mutate(
-          {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          },
-          {
-            onSuccess: () => {
-              // 🔥 force refresh the attempts API
-              queryClient.invalidateQueries({ queryKey: ["assessmentAttempts"] });
-
-              // then redirect
+// ✅ In the captureTransaction onSuccess callback
+      captureTransaction.mutate(
+        {
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+        },
+        {
+          onSuccess: () => {
+            // ✅ Force refresh the attempts API with proper invalidation
+            queryClient.invalidateQueries({ 
+              queryKey: ["assessmentAttempts", id] 
+            });
+            queryClient.refetchQueries({ 
+              queryKey: ["assessmentAttempts", id] 
+            });
+            
+            setIsLoadingRetake(false);
+            showNotification({ message: "Payment successful! Redirecting..." });
+            
+            // Small delay to ensure data is refreshed before redirect
+            setTimeout(() => {
               router.push(`/dashboard/assessment`);
-            },
-          }
-        );
+            }, 1000);
+          },
+        }
+      );
       },
       modal: {
-        ondismiss: () => showNotification({ message: "Payment cancelled" }),
+        ondismiss: () => {
+          showNotification({ message: "Payment cancelled" });
+          setIsLoadingRetake(false);
+        },
       },
       theme: { color: "#3399cc" },
     };
@@ -143,20 +210,48 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
     rzp1.on("payment.failed", function (response) {
       console.error("Payment failed:", response);
       showNotification({ message: "Payment failed. Please try again." });
+      setIsLoadingRetake(false);
     });
 
     rzp1.open();
   }
 
-  const handleRetakeTest = (assesment_session_id, subject_id) => {
-    const planId = "js_test";
-    createOrderId.mutate({ planId, assesment_session_id, subject_id });
+  const handleRetakeTest = async (assesment_session_id: string, subject_id: string) => {
+    setIsLoadingRetake(true);
+    setSelectedRetakeData({ assesment_session_id, subject_id });
+    setOpenPaymentModal(true);
+    setAmount(null); // Reset amount to show loading state
+    setOrderData(null); // Reset previous order data
+
+    // Call create order API to get amount and order ID
+    createOrderId.mutate({
+      planId: "js_test",
+      assesment_session_id,
+      subject_id
+    });
   };
 
-  if (!data || !assessmentAttemptsDetails) {
-    return <Loader loaderProps={{ open: true }} />;
-  }
+  const handleClosePaymentModal = () => {
+    setOpenPaymentModal(false);
+    setSelectedRetakeData(null);
+    setAmount(null);
+    setOrderData(null);
+    setIsLoadingRetake(false);
+  };
 
+  const handleProceedToPayment = () => {
+    if (!orderData || !razorpayLoaded) {
+      showNotification({ message: "Payment details not ready. Please try again." });
+      return;
+    }
+
+    // Now initialize and open Razorpay
+    initializeRazorpay();
+  };
+
+if (assessmentAttemptsDetails.isLoading || allSubjectList.isLoading || assessmentAttemptsDetails.isFetching) {
+  return <Loader loaderProps={{ open: true }} />;
+}
   return (
     <>
       <Script
@@ -166,6 +261,105 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
         onError={() => setRazorpayLoaded(false)}
       />
 
+      {/* Payment Modal */}
+      <Modal open={openPaymentModal} onClose={handleClosePaymentModal}>
+        <Stack stackProps={{ sx: MODAL_STYLES }}>
+          <Typography {...TITLE} />
+          <Typography {...PLAN_TYPE_LABEL("Retake Test")} />
+
+          <Stack
+            stackProps={{
+              direction: "column",
+              gap: { xs: 0.5, sm: 1 },
+              margin: { xs: "15px 0", sm: "30px 0" },
+              overflow: "hidden",
+              sx: {
+                background: "white",
+                padding: { xs: "15px", sm: "20px" },
+                borderRadius: "10px",
+              },
+            }}
+          >
+            <Stack
+              stackProps={{
+                direction: "column",
+                border: `1px solid ${colorStyles.borderGreyColor}`,
+                p: 3,
+                borderRadius: "10px",
+                gap: 2,
+              }}
+            >
+              {amount === null ? (
+                // 👉 Show loading when amount is being fetched
+                <div style={{ textAlign: "center", padding: "20px" }}>
+                  <Loader loaderProps={{ open: true }} />
+                  <Typography
+                    typographyProps={{
+                      variant: "body2",
+                      children: "Loading price details..."
+                    }}
+                  />
+                </div>
+              ) : (
+                <>
+                  <Stack
+                    stackProps={{ direction: "row", justifyContent: "space-between" }}
+                  >
+                    <Typography {...PRICING_LABEL('Retake Test')} />
+                    <Typography {...AMOUNT_LABEL(amount)} />
+                  </Stack>
+
+                  <Stack
+                    stackProps={{ direction: "row", justifyContent: "space-between" }}
+                  >
+                    <Typography {...TOTAL_LABEL} />
+                    <Typography {...TOTAL_AMOUNT_LABEL(amount)} />
+                  </Stack>
+
+                  <button
+                    style={{
+                      width: "100%",
+                      padding: "12px",
+                      borderRadius: "8px",
+                      border: "none",
+                      backgroundColor: createOrderId?.isPending
+                        ? "#90caf9"
+                        : "#1976d2",
+                      color: "white",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                      cursor:
+                        amount === null ||
+                          !razorpayLoaded ||
+                          createOrderId?.isPending
+                          ? "not-allowed"
+                          : "pointer",
+                      opacity:
+                        amount === null ||
+                          !razorpayLoaded ||
+                          createOrderId?.isPending
+                          ? 0.6
+                          : 1,
+                    }}
+                    disabled={
+                      !razorpayLoaded ||
+                      createOrderId?.isPending
+                    }
+                    onClick={handleProceedToPayment}
+                  >
+                    {createOrderId?.isPending ? "Processing..." : "Pay Now"}
+                  </button>
+
+                </>
+              )}
+
+    
+            </Stack>
+          </Stack>
+        </Stack>
+      </Modal>
+
+      {/* Main Content */}
       <Stack
         stackProps={{
           direction: "column",
@@ -190,9 +384,12 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
           }}
         >
           {data?.map((item) => {
-            const attempt = assessmentAttemptsDetails?.data?.data?.find(
-              (att) => att?.subject_id === item?.id
-            );
+          const responseData = assessmentAttemptsDetails?.data as { data?: any[] } | undefined;
+          const attempt = responseData?.data?.find(
+            (att: any) => att?.subject_id === item?.id
+          );
+            const isCurrentRetakeLoading = isLoadingRetake &&
+              selectedRetakeData?.subject_id === item?.id;
 
             return (
               <Paper key={item.id} paperProps={{ className: "p-3" }}>
@@ -242,7 +439,8 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
                         spacing: "8px",
                       }}
                     >
-                      <Button
+                      <LoadingButton
+                        loading={isCurrentRetakeLoading}
                         onClick={() =>
                           handleRetakeTest(
                             attempt.assessment_session,
@@ -252,6 +450,7 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
                         {...RETAKE_TEST}
                         buttonProps={{
                           ...(RETAKE_TEST as any).buttonProps,
+                          disabled: isCurrentRetakeLoading,
                         }}
                       />
                       <Button

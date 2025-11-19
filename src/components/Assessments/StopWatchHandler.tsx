@@ -20,7 +20,6 @@ const StopWatchHandler = ({
   useEffect(() => {
     if (!isLoading && maxTime) {
       setStopwatchTime(maxTime * 60);
-      console.log("✅ Timer started with backend time:", maxTime, "minutes");
     }
   }, [isLoading, maxTime]);
 

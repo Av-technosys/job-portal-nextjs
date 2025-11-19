@@ -21,14 +21,12 @@ declare global {
 
 const PaymentModal = ({
   open,
-  amount,
   planType,
   planId,
   handleClose,
   handlePaymentComplete,
 }: {
   open: boolean;
-  amount: number;
   planType: string;
   planId: string;
   handleClose?: VoidFunction;
@@ -48,24 +46,39 @@ const PaymentModal = ({
   const { showNotification } = useNotification();
   const { name, phoneNumber, email, refetchCommonDetails } = useCommonDetails();
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [amount, setAmount] = useState<number | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [isOrderReady, setIsOrderReady] = useState(false);
 
-  console.log("PaymentModal mounted with props:", { open, amount, planType, planId });
-  console.log("User details:", { name, phoneNumber, email });
+  // Watch for amount and orderId changes to determine if order is ready
+  useEffect(() => {
+    if (amount !== null && orderId !== null) {
+      setIsOrderReady(true);
+    } else {
+      setIsOrderReady(false);
+    }
+  }, [amount, orderId]);
+
+  // Fetch order details when modal opens
+  useEffect(() => {
+    if (open) {
+      setAmount(null);
+      setOrderId(null);
+      setIsOrderReady(false);
+      createOrderId.mutate({ planId });
+    }
+  }, [open, planId]);
 
   // Create order mutation
   const createOrderId = useCreateOrderId({
-    
     mutationConfig: {
-      onSuccess: (res:any) => {
-        console.log("Order ID Response (onSuccess):", res);
-        if (res?.data?.gateway_order_id) {
-          console.log("Order ID found, initializing Razorpay:", res.data.gateway_order_id);
-          initializeRazorpay(res.data.gateway_order_id);
+      onSuccess: (res: any) => {
+        if (res?.data?.gateway_order_id && res?.data?.amount) {
+          setAmount(res.data.amount);
+          setOrderId(res.data.gateway_order_id);
         } else {
-          console.error("Order ID missing in response:", res);
           showNotification({
             message: "Failed to create payment order",
-            
           });
         }
       },
@@ -77,16 +90,11 @@ const PaymentModal = ({
       },
     },
   });
- 
-   useEffect(() => {  
-    createOrderId?.isPending ? (console.log("can not create payment")) :  console.log("can create payment");
-  }, [createOrderId]);
+
   // Capture transaction mutation  
-  
   const captureTransaction = useCaptureTransaction({
     mutationConfig: {
       onSuccess: () => {
-        console.log("captureTransaction onSuccess");
         refetchCommonDetails();
         showNotification(PAYMENT_NOTIFICATION.SUCCESS_CONFIG);
         handlePaymentComplete?.();
@@ -105,25 +113,28 @@ const PaymentModal = ({
     return typeof window !== 'undefined' && window.Razorpay;
   };
 
-  // Initialize Razorpay payment
-  function initializeRazorpay(orderId: string) {
-    console.log("Initializing Razorpay with Order ID:", orderId);
-    
+  // Initialize Razorpay payment - ONLY when user clicks Pay Now
+  function initializeRazorpay() {
+    if (!orderId || amount === null) {
+      console.error("Order ID or amount not available");
+      showNotification({
+        message: "Payment details not ready",
+      });
+      return;
+    }
+
     if (!isRazorpayAvailable()) {
       console.error("Razorpay not loaded");
       showNotification({
         message: "Payment gateway not available. Please refresh and try again.",
-      
       });
       return;
     }
-console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
 
     if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
       console.error("Razorpay key not configured");
       showNotification({
         message: "Payment configuration error",
-    
       });
       return;
     }
@@ -148,16 +159,13 @@ console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
           contact: true,
         },
         handler: (response: RazorpayResponse) => {
-          console.log("Razorpay handler invoked with response:", response);
           handleCaptureTransaction(response);
         },
         modal: {
           ondismiss: () => {
-            console.log("Razorpay modal dismissed");
             showNotification(PAYMENT_NOTIFICATION.CANCELLED_CONFIG);
           },
           onclose: () => {
-            console.log("Razorpay modal closed");
             // Handle modal close if needed
           },
         },
@@ -165,8 +173,6 @@ console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
           color: colorStyles.authPageTiltBgColor,
         },
       };
-      console.log("Razorpay options prepared:", options);
-      console.log("Opening Razorpay modal...");
       const rzp1 = new window.Razorpay(options);
       
       // Add error handlers
@@ -181,7 +187,6 @@ console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
       console.error("Error initializing Razorpay:", err);
       showNotification({
         message: "Failed to initialize payment",
-        
       });
     }
   }
@@ -195,12 +200,6 @@ console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
     razorpay_payment_id: string;
     razorpay_signature: string;
   }) {
-    console.log("handleCaptureTransaction called with:", {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-    });
-    
     if (!razorpay_payment_id) {
       console.error("Missing payment ID");
       showNotification({
@@ -216,41 +215,43 @@ console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
     });
   }
 
-  function handleRazorPaymentMethod() {
-    console.log("handleRazorPaymentMethod invoked, creating order for planId:", planId);
-    
-    if (!razorpayLoaded) {
-      console.error("Razorpay not loaded yet");
+  // Handle Pay Now button click
+  const handlePayNow = () => {
+    if (isOrderReady) {
+      initializeRazorpay();
+    } else {
       showNotification({
-        message: "Payment gateway is still loading. Please wait.",
-      
+        message: "Payment details are still loading. Please wait...",
       });
-      return;
     }
+  };
 
-    createOrderId.mutate({ planId });
-  }
+  // Reset state when modal closes
+  const handleModalClose = () => {
+    setAmount(null);
+    setOrderId(null);
+    setIsOrderReady(false);
+    handleClose?.();
+  };
 
   return (
     <>
-      {/* Load Razorpay script once at app level or layout level */}
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="lazyOnload"
         onLoad={() => {
-          console.log("Razorpay script loaded successfully");
           setRazorpayLoaded(true);
         }}
         onError={() => {
-          console.error("Failed to load Razorpay script");
           setRazorpayLoaded(false);
         }}
       />
       
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleModalClose}>
         <Stack stackProps={{ sx: MODAL_STYLES }}>
           <Typography {...TITLE} />
           <Typography {...PLAN_TYPE_LABEL(planType)} />
+
           <Stack
             stackProps={{
               direction: "column",
@@ -273,35 +274,39 @@ console.log("Razorpay Key:", process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
                 gap: 2,
               }}
             >
-              <Stack
-                stackProps={{ direction: "row", justifyContent: "space-between" }}
-              >
-                <Typography {...PRICING_LABEL(planType)} />
-                <Typography {...AMOUNT_LABEL(amount)} />
-              </Stack>
-              <Stack
-                stackProps={{ direction: "row", justifyContent: "space-between" }}
-              >
-                <Typography {...TOTAL_LABEL} />
-                <Typography {...TOTAL_AMOUNT_LABEL(amount)} />
-              </Stack>
-              
-              <LoadingButton
-                loading={createOrderId?.isPending}
-                {...PAY_BUTTON}
-                buttonProps={{
-                  ...PAY_BUTTON.buttonProps,
-                  disabled: !razorpayLoaded || createOrderId?.isPending,
-                }}
-                onClick={handleRazorPaymentMethod}
-              />
-              
-              {!razorpayLoaded && (
-                <div 
-                >
-                  Loading payment gateway...
+              {!isOrderReady ? (
+                <div style={{ textAlign: "center", padding: "20px" }}>
+                  {createOrderId.isPending ? "Loading price details..." : "Failed to load payment details"}
                 </div>
+              ) : (
+                <>
+                  <Stack
+                    stackProps={{ direction: "row", justifyContent: "space-between" }}
+                  >
+                    <Typography {...PRICING_LABEL(planType)} />
+                    <Typography {...AMOUNT_LABEL(amount!)} />
+                  </Stack>
+
+                  <Stack
+                    stackProps={{ direction: "row", justifyContent: "space-between" }}
+                  >
+                    <Typography {...TOTAL_LABEL} />
+                    <Typography {...TOTAL_AMOUNT_LABEL(amount!)} />
+                  </Stack>
+
+                  <LoadingButton
+                    loading={captureTransaction?.isPending}
+                    {...PAY_BUTTON}
+                    buttonProps={{
+                      ...PAY_BUTTON.buttonProps,
+                      disabled: !razorpayLoaded || captureTransaction?.isPending || !isOrderReady,
+                    }}
+                    onClick={handlePayNow}
+                  />
+                </>
               )}
+
+ 
             </Stack>
           </Stack>
         </Stack>

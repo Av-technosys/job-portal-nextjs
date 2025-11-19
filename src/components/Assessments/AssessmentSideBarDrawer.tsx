@@ -79,14 +79,22 @@ function SubmitButton({
   //   tabSwitchCount: tabSwitchCount,
   //   is_completed: true,
   // };
-  useEffect(() => {
+useEffect(() => {
   if (timeForSubmit === 0) {
     showNotification({
       message: "Time is over! Auto-submitting your test...",
     });
     handleSubmitTest();
   }
-}, [timeForSubmit]);
+
+  if (tabSwitchCount >= 3) {
+    showNotification({
+      message: "You switched tabs 3 times. Auto-submitting your test...",
+    });
+    handleSubmitTest();
+  }
+}, [timeForSubmit, tabSwitchCount]);
+
 
   const answerMap: Record<string, number> = {
     A: 0,

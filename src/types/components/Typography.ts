@@ -1,7 +1,7 @@
 import { TypographyProps as MUITypographyProps } from "@mui/material";
 
 export interface TypographyProps {
-  typographyProps: MUITypographyProps;
+  typographyProps: any;
   fontSize?: TypographyFontSize;
   fontWeight?: TypographyFontWeight;
   fontColor?: TypographyFontColor;

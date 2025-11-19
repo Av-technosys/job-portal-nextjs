@@ -12,11 +12,6 @@ export const createOrderByRetakeTest = ({
   assesment_session_id: string | number;
   subject_id: string | number;
 }): Promise<{ data: CommonObjectType; success: boolean }> => {
-  console.log("Creating order for retake test with:", {
-    planId,
-    assesment_session_id,
-    subject_id,
-  });
 
   return api.post(`${apiConstantsURL.payment.transactionId}`, {
     planId,
@@ -37,13 +32,13 @@ export const useCreateOrderByRetakeTest = ({
   return useMutation({
     mutationFn: createOrderByRetakeTest,
 
-    onSuccess: (response, variables, context) => {
+    onSuccess: (...args) => {
       // Call user-provided success handler
-      onSuccess?.(response, variables, context);
+      onSuccess?.(...args);
     },
 
-    onError: (error, variables, context) => {
-      onError?.(error, variables, context);
+    onError: (...args) => {
+      onError?.(...args);
     },
 
     ...restConfig,
