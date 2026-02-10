@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { examTimeValidationSchema, minMaxValidationSchema } from "./common";
+import { minMaxValidationSchema } from "./common";
 
 // export const assessmentEditSchema = yup.object({
 //   exam_name: minMaxValidationSchema({

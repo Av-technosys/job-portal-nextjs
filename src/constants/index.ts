@@ -33,3 +33,5 @@ export * from "./topCompaniesCard";
 export * from "./aboutUs";
 export * from "./admin";
 export * from "./adminAssessmentQuestion";
+export * from "./adminLogin";
+export * from "./adminRegistration";

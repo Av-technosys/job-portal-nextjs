@@ -80,6 +80,9 @@ function Table({
     },
   });
 
+  console.log("dattaaa", data);
+  console.log("coloumn", columns);
+
   const DeactivateUserMutate = useDeactivateUser({
     mutationConfig: {
       onSuccess: async () => {
@@ -204,6 +207,31 @@ function Table({
                             Female
                           </When>
                           <When condition={row[column.field] === 2}>Other</When>
+                        </Stack>
+                      ) : column.field == "is_active" ? (
+                        <Stack
+                          stackProps={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <When
+                            condition={
+                              row[column.field] === true ||
+                              row[column.field] === "true"
+                            }
+                          >
+                            Active
+                          </When>
+                          <When
+                            condition={
+                              row[column.field] === false ||
+                              row[column.field] === "false"
+                            }
+                          >
+                            Inactive
+                          </When>
                         </Stack>
                       ) : (
                         row[column.field]
