@@ -14,6 +14,7 @@ import {
 } from "@/types";
 import {
   CITY_OPTIONS,
+  CITY_OPTIONS_BY_STATE,
   COUNTRY_OPTIONS,
   GENDER_OPTIONS,
   NOTICE_PERIOD_OPTIONS,
@@ -237,6 +238,10 @@ export const STUDENT_PROFILE_PERSONAL_CONFIG = {
     CITY_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       options: CITY_OPTIONS,
+      dependentOptions: {
+        fieldName: "state",
+        optionsByValue: CITY_OPTIONS_BY_STATE,
+      },
       selectProps: {
         label: "City",
         name: "city",

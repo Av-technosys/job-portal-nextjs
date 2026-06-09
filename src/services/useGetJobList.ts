@@ -24,7 +24,7 @@ export const getJobList = ({
   filterSearch = "",
 }: GetJobListParams): Promise<{ data: PaginationSuccessResponseType }> => {
   return api.get(
-    `${apiConstantsURL.jobs.jobList}?page=${page}&page_size=${pageLimit}&sort=${sort}&search=${search}${filterSearch}`
+    `${apiConstantsURL.jobs.jobList}?page=${page}&page_size=${pageLimit}&sort=${sort}&search=${encodeURIComponent(search)}${filterSearch}`
   );
 };
 

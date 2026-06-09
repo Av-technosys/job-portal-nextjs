@@ -138,8 +138,8 @@ function UploadQuestionPic() {
         sx={{
           width: "100%",
           flexBasis: isRecruiter ? "100%" : "100%",
-          height: "50px",
-          marginBottom: "180px",
+          minHeight: "280px",
+          marginBottom: "24px",
         }}
       >
         <InputLabel shrink className={"mb-4 label-shrink"}>
@@ -149,7 +149,7 @@ function UploadQuestionPic() {
         </InputLabel>
         <Stack
           stackProps={{
-            className: "md:absolute relative",
+            className: "absolute",
             sx: {
               height: 250,
               border: isProfileImageAvailable
