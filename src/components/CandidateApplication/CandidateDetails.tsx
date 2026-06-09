@@ -20,7 +20,7 @@ import {
   CANDIDATE_NOTIFICATION_CONFIG,
 } from "@/constants";
 import CandidateApplicationCard from "./CandidateCard";
-import { CommonAllDataType, CommonObjectType, Job } from "@/types";
+import { CommonObjectType, Job } from "@/types";
 import ApplicationPopup from "./ApplicationPopup";
 import { MenuItem } from "@mui/material";
 import { getErrorMessageFromAPI } from "@/helper";
@@ -134,25 +134,45 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
           candidateDetails={selectedCandidate.current}
         />
       </When>
-      <InfinitePagination
-        dataLength={paginatedInfoData?.length}
-        next={candidateApplicationAPIData?.fetchNextPage}
-        hasMore={hasMore}
-        isFetchingMore={candidateApplicationAPIData?.isFetchingNextPage}
+      <When
+        condition={candidateApplicationAPIData?.isFetched && totalLength === 0}
       >
-        <Stack>
-          {paginatedInfoData?.map((candidate) => (
-            <CandidateApplicationCard
-              candidate={candidate}
-              key={`candidateApplication-${candidate?.id}`}
-              openApplicationPopup={() => openApplicationPopup(candidate)}
-              handleIconButtonClick={(event) =>
-                handleIconButtonClick(event, candidate)
-              }
-            />
-          ))}
+        <Stack
+          stackProps={{
+            alignItems: "center",
+            justifyContent: "center",
+            py: 6,
+          }}
+        >
+          <Typography
+            typographyProps={{
+              children: "No candidates to show yet.",
+              variant: "h6",
+            }}
+          />
         </Stack>
-      </InfinitePagination>
+      </When>
+      <When condition={totalLength > 0}>
+        <InfinitePagination
+          dataLength={paginatedInfoData?.length}
+          next={candidateApplicationAPIData?.fetchNextPage}
+          hasMore={hasMore}
+          isFetchingMore={candidateApplicationAPIData?.isFetchingNextPage}
+        >
+          <Stack>
+            {paginatedInfoData?.map((candidate) => (
+              <CandidateApplicationCard
+                candidate={candidate}
+                key={`candidateApplication-${candidate?.id}`}
+                openApplicationPopup={() => openApplicationPopup(candidate)}
+                handleIconButtonClick={(event) =>
+                  handleIconButtonClick(event, candidate)
+                }
+              />
+            ))}
+          </Stack>
+        </InfinitePagination>
+      </When>
       <Menu
         handleClose={handleClose}
         anchorEl={anchorEl}
