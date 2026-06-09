@@ -20,7 +20,6 @@ import {
   VACANCY_OPTIONS,
   MAX_SALARY_RANGE_OPTIONS,
   MIN_SALARY_RANGE_OPTIONS,
-  SKILLS_OPTIONS,
 } from "./common";
 
 const FIELD_WIDTHS = {
@@ -232,15 +231,14 @@ export const JOB_DETAILS_CONFIG = {
       options: JOB_TYPE_OPTIONS,
     },
     SKILLS_FIELD: {
-      fieldType: FormikFieldsEnum.MULTI_SELECT_DROPDOWN,
-      multiSelectProps: {
+      fieldType: FormikFieldsEnum.SKILLS_INPUT,
+      inputProps: {
         name: "skills",
-        multiple: true,
+        placeholder: "Type a skill and press Enter",
       },
       formControlProps: {
         sx: FIELD_WIDTHS.EXTRA_LARGE,
       },
-      options: SKILLS_OPTIONS,
     },
 
     // Location Information

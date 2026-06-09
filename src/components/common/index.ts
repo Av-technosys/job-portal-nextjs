@@ -42,6 +42,7 @@ export { default as Drawer } from "./Drawer";
 export { default as TextWithIcon } from "./TextWithIcon";
 export { default as SocialLogin } from "./SocialLogin";
 export { default as MultiSelectDropdown } from "./MultiSelectDropdown";
+export { default as SkillsInput } from "./SkillsInput";
 export { default as PaymentModal } from "./PaymentModal";
 export { default as SubscriptionCard } from "./SubscriptionCard";
 export { default as PaymentCard } from "./PaymentCard";

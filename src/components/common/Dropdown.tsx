@@ -22,9 +22,18 @@ function Dropdown({
   value,
   name,
 }: DropdownProps) {
+  const normalizeOptionValue = (optionValue: string | number) =>
+    `${optionValue}`.toLowerCase().replace(/[^a-z0-9]/g, "");
+
   const getSelectedOptionObject = useCallback(
     (valueToBeSearched: string) => {
-      return options?.find(({ value }) => value === valueToBeSearched);
+      return options?.find(
+        ({ label, value }) =>
+          value === valueToBeSearched ||
+          normalizeOptionValue(value) === normalizeOptionValue(valueToBeSearched) ||
+          normalizeOptionValue(label as string) ===
+            normalizeOptionValue(valueToBeSearched)
+      );
     },
     [options]
   );
@@ -66,7 +75,7 @@ function Dropdown({
         }}
       >
         {options?.map((option) => (
-          <MenuItem key={`ja-option-${option.value}`} value={option.value}>
+          <MenuItem key={`ja-option-${option.key}`} value={option.value}>
             <When condition={option?.icon !== undefined}>
               <span className={"mr-2"}>{option.icon}</span>
             </When>

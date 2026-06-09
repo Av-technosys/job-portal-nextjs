@@ -11,6 +11,10 @@ export interface Option {
 
 export interface DropdownProps {
   options?: Option[];
+  dependentOptions?: {
+    fieldName: string;
+    optionsByValue: Record<string, Option[]>;
+  };
   inputLabelProps?: InputLabelProps;
   formControlProps?: FormControlProps;
   selectProps?: SelectProps;

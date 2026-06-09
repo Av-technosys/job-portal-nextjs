@@ -10,11 +10,11 @@ export const emailValidationSchema = yup
   .required("Email is required")
   .email("Enter a valid email");
 
-export const businessEmailValidationSchema = yup
-  .string()
-  .required("Business email is required")
-  .email("Enter a valid business email")
-  .matches(BUSINESS_EMAIL_REGEX, "Please enter business email");
+// export const businessEmailValidationSchema = yup
+//   .string()
+//   .required("Business email is required")
+//   .email("Enter a valid business email")
+//   .matches(BUSINESS_EMAIL_REGEX, "Please enter business email");
 
 export const passwordValidationSchema = yup
   .string()
@@ -95,7 +95,10 @@ export const examTimeValidationSchema = yup
   .typeError("Exam Time must be a valid number");
 
 export const skillsValidationSchema = () =>
-  yup.array().required("Skills are required");
+  yup
+    .array()
+    .min(1, "At least one skill is required")
+    .required("Skills are required");
 
 export const onlyRequiredValidationSchema = ({
   fieldName,
