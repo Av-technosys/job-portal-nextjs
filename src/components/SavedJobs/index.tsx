@@ -8,7 +8,11 @@ import {
   usePagination,
 } from "@/services";
 import { InfinitePagination, Stack, Typography, When, Loader } from "../common";
-import { SAVED_JOB_PAGE_COFIG, PAGIANTION_LIMIT } from "@/constants";
+import {
+  PAGIANTION_LIMIT,
+  PROFILE_URL,
+  SAVED_JOB_PAGE_COFIG,
+} from "@/constants";
 import SavedJobCard from "./SavedJobCard";
 import { CommonObjectType } from "@/types";
 import {
@@ -19,6 +23,7 @@ import {
 } from "@/helper";
 import { useQueryClient } from "@tanstack/react-query";
 import EmptySavedJobs from "../EmptyStates/EmptySavedjob";
+import { useRouter } from "next/router";
 
 function SavedJobs() {
   const { TITLE_COUNT, TITLE_HEADER, JOB_SAVE_CARD } = SAVED_JOB_PAGE_COFIG;
@@ -27,6 +32,7 @@ function SavedJobs() {
   const jobApplyMutate = useJobApply();
   const deleteSavedJobMutate = useDeleteSavedJob();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   function onUnSaveMutateSuccess({ job }: { job: CommonObjectType }) {
     const savedJobListingQueryKey = getInfiniteSaveJobQueryOptions({
@@ -64,9 +70,17 @@ function SavedJobs() {
             showNotification(NOTIFICATION_CONFIG.APPLIED);
           },
           onError: (error) => {
+            const errorMessage = getErrorMessageFromAPI(error);
             showNotification({
-              ...getErrorMessageFromAPI(error),
+              ...errorMessage,
             });
+            if (
+              errorMessage.message.includes(
+                "Complete your profile before applying for jobs."
+              )
+            ) {
+              router.push(PROFILE_URL);
+            }
             console.error(error, "error");
           },
         }
