@@ -123,9 +123,9 @@ export function FormikForm({
       options: dependentOptions.optionsByValue[dependentFieldValue] || [],
       selectProps: {
         ...selectProps,
-        disabled: selectProps.disabled || !Boolean(dependentFieldValue),
+        disabled: Boolean((selectProps as any).disabled) || !Boolean(dependentFieldValue),
       },
-    };
+    } as typeof fieldDetail;
   }
 
   return (

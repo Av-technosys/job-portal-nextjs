@@ -43,7 +43,7 @@ const FilterDrawer = ({
     const localString = `&${name}=${filterRemoveSpace(value.toString())}`;
     console.log(value, checked, name, localString);
 
-    if (checked || value) {
+    if (checked) {
       setSelectedDropdown(value);
       setFilterSearchString((prev: string) =>
         !checked
@@ -74,7 +74,10 @@ const FilterDrawer = ({
     }
   };
 
+ useEffect(() => {
   handleFilterChange(filterSearchString);
+}, [filterSearchString, handleFilterChange]);
+
 
   const filterRemoveSpace = (
     filterString: string,

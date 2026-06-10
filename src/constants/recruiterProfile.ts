@@ -178,6 +178,7 @@ export const RECRUITER_COMPANY_PROFILE_CONFIG = {
     STATE_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       selectProps: {
+        label: "State",
         name: "state",
       },
       inputLabelProps: {

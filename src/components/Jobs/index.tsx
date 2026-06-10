@@ -74,6 +74,8 @@ function Jobs() {
     const jobListingQueryKey = getInfiniteJobListQueryOptions({
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
+      filterSearch,
     }).queryKey;
     // Update the cache to reflect the changes on UI
     queryClient.setQueryData(jobListingQueryKey, (oldData) =>
@@ -162,20 +164,18 @@ function Jobs() {
     paginatedAPIData: jobInfoAPIData,
   });
 
-  const visibleJobs =
-    Array.isArray(searchedData) && searchedData.length > 0
-      ? searchedData
-      : paginatedInfoData;
-
-  if (jobInfoAPIData?.isLoading) {
-    return (
-      <Loader
-        loaderProps={{
-          open: true,
-        }}
-      />
-    );
-  }
+  if (
+  jobInfoAPIData.isLoading &&
+  paginatedInfoData.length === 0
+) {
+  return (
+    <Loader
+      loaderProps={{
+        open: true,
+      }}
+    />
+  );
+}
 
   return (
     <>
@@ -205,9 +205,7 @@ function Jobs() {
             <Typography {...TITLE_COUNT(totalLength)} />
           </When>
           <When condition={totalLength === 0}>
-            <When condition={!jobInfoAPIData?.isFetched}>
-              <Skeleton variant={SkeletonVariantEnum.TEXT} />
-            </When>
+            <Skeleton variant={SkeletonVariantEnum.TEXT} />
           </When>
           <Typography {...TITLE_HEADER(totalLength)} />
         </Stack>
@@ -241,15 +239,13 @@ function Jobs() {
           <Typography {...TITLE_COUNT(totalLength)} />
         </When>
         <When condition={totalLength === 0}>
-          <When condition={!jobInfoAPIData?.isFetched}>
-            <Skeleton variant={SkeletonVariantEnum.TEXT} />
-          </When>
+          <Skeleton variant={SkeletonVariantEnum.TEXT} />
         </When>
         <Typography {...TITLE_HEADER(totalLength)} />
       </Stack>
-      {visibleJobs.length > 0 ? (
+      {paginatedInfoData[0] != undefined ? (
         <InfinitePagination
-          dataLength={visibleJobs.length}
+          dataLength={paginatedInfoData?.length}
           next={jobInfoAPIData?.fetchNextPage}
           hasMore={hasMore}
           isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
@@ -266,9 +262,9 @@ function Jobs() {
             ))}
           </Stack>
         </InfinitePagination>
-      ) : jobInfoAPIData?.isFetched ? (
+      ) : (
         <div className="text-xl font-bold">No Job Found</div>
-      ) : null}
+      )}
     </>
   );
 }

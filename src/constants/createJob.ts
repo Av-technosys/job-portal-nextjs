@@ -17,6 +17,7 @@ import {
   STATE_OPTIONS,
   COUNTRY_OPTIONS,
   CITY_OPTIONS,
+  CITY_OPTIONS_BY_STATE,
   VACANCY_OPTIONS,
   MAX_SALARY_RANGE_OPTIONS,
   MIN_SALARY_RANGE_OPTIONS,
@@ -259,6 +260,7 @@ export const JOB_DETAILS_CONFIG = {
     STATE_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       selectProps: {
+        label: "State",
         name: "state",
       },
       inputLabelProps: {
@@ -285,17 +287,22 @@ export const JOB_DETAILS_CONFIG = {
     //   options: CITY_OPTIONS,
     // },
     CITY_FIELD: {
-      fieldType: FormikFieldsEnum.TEXT_FIELD,
-      inputProps: {
+      fieldType: FormikFieldsEnum.DROPDOWN,
+      options: CITY_OPTIONS,
+      dependentOptions: {
+        fieldName: "state",
+        optionsByValue: CITY_OPTIONS_BY_STATE,
+      },
+      selectProps: {
+        label: "City",
         name: "city",
-        placeholder: "Enter Your City",
       },
       inputLabelProps: {
         children: "City",
         shrink: true,
       },
       formControlProps: {
-        sx: FIELD_WIDTHS.LARGE,
+        sx: FIELD_WIDTHS.MEDIUM,
       },
     },
 
