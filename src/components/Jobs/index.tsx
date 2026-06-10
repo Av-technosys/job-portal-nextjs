@@ -74,6 +74,8 @@ function Jobs() {
     const jobListingQueryKey = getInfiniteJobListQueryOptions({
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
+      filterSearch,
     }).queryKey;
     // Update the cache to reflect the changes on UI
     queryClient.setQueryData(jobListingQueryKey, (oldData) =>
@@ -162,15 +164,18 @@ function Jobs() {
     paginatedAPIData: jobInfoAPIData,
   });
 
-  if (paginatedInfoData[0] == undefined) {
-    return (
-      <Loader
-        loaderProps={{
-          open: true,
-        }}
-      />
-    );
-  }
+  if (
+  jobInfoAPIData.isLoading &&
+  paginatedInfoData.length === 0
+) {
+  return (
+    <Loader
+      loaderProps={{
+        open: true,
+      }}
+    />
+  );
+}
 
   return (
     <>

@@ -62,13 +62,13 @@ function BreadcumbRibbon({
     };
   }, [onSearchChange, searchValue, showSearchedData]);
 
-  const SearchData = useGetSearchDetailsAsPerURLOrUserType({
-    searchString,
-  });
+  // const SearchData = useGetSearchDetailsAsPerURLOrUserType({
+  //   searchString,
+  // });
 
-  useEffect(() => {
-    showSearchedData?.(SearchData);
-  }, [SearchData, showSearchedData]);
+  // useEffect(() => {
+  //   showSearchedData?.(SearchData);
+  // }, [SearchData, showSearchedData]);
 
   const searchProps = {
     input: {

@@ -61,6 +61,7 @@ type UseGetJobList = {
 export const useGetJobList = (queryConfig?: UseGetJobList) => {
   return useInfiniteQuery({
     ...getInfiniteJobListQueryOptions(queryConfig?.queryFnParams || {}),
+    placeholderData: (previousData) => previousData,
     ...queryConfig?.queryConfig,
   });
 };
