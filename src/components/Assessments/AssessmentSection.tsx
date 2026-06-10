@@ -63,7 +63,7 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
   });
 
   const handleRetakeTest = (assesment_session_id, subject_id) => {
-    const planId = "ja_test";
+    const planId = "js_test";
     createOrderId.mutate({ planId, assesment_session_id, subject_id });
   };
 
