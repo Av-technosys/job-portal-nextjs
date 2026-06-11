@@ -108,6 +108,8 @@ function LogoAndSearchRibbon({
           props={{
             alt: "ja_logo",
             src: JA_LOGO,
+            onClick: () => handleClick(LANDING_URL),
+            style: { cursor: "pointer" },
           }}
         />
         <Stack

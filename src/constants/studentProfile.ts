@@ -969,6 +969,9 @@ export const JOB_SEEKER_UPLOAD_PROFILE_CONFIG = {
 
 export const QUESTION_UPLOAD_CONFIG = {
   fieldType: FormikFieldsEnum.UPLOAD_QUESTION_IMAGE,
+  inputProps: {
+    name: "question_image",
+  },
 };
 
 export const JOB_SEEKER_UPLOAD_DOCUMENT_CONFIG = {

@@ -114,6 +114,8 @@ const Footer: React.FC = () => {
                 className: "-mt-4",
                 alt: "ja_logo",
                 src: JA_LOGO_white,
+                onClick: () => router.push("/"),
+                style: { cursor: "pointer" },
               }}
             />
           </Stack>

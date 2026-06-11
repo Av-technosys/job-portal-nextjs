@@ -20,9 +20,14 @@ const Index = ({
   subjectId: number;
   questionMethod: string;
 }) => {
+  const isUpdateMode = questionMethod === "update-question";
+
   const questionAPIData = useGetAssesmentQuestionDetails({
     queryParams: {
       id: subjectId,
+    },
+    queryConfig: {
+      enabled: isUpdateMode && Boolean(subjectId),
     },
   });
 
@@ -30,8 +35,8 @@ const Index = ({
   const queryClient = useQueryClient();
 
   const questionData = useMemo(() => {
-    return questionAPIData?.data?.data;
-  }, [questionAPIData]);
+    return isUpdateMode ? questionAPIData?.data?.data : undefined;
+  }, [isUpdateMode, questionAPIData]);
 
   const { NOTIFICATION_CONFIG } = QUESTION_CONFIG;
   const { showNotification } = useNotification();
@@ -83,7 +88,7 @@ const Index = ({
     }
   }
 
-  if (subjectId && !questionData && questionMethod == "update-question") {
+  if (isUpdateMode && subjectId && !questionData) {
     return (
       <Loader
         loaderProps={{
@@ -110,7 +115,7 @@ const Index = ({
         />
         <Formik
           initialValues={
-            subjectId && questionData
+            isUpdateMode && questionData
               ? {
                   id: questionData.id,
                   question_text: questionData.question_text,
