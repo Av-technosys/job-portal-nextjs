@@ -72,11 +72,13 @@ const PaymentModal = ({
   });
 
   function initializeRazorpay(orderId: string) {
+
+    console.log(process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, "key id")
     try {
       const options = {
         name: "Job Assured",
         image: BRAND_LOGO_URL,
-        key: process.env.RAZORPAY_KEY_ID as string,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID as string,
         description: `Plan Type: ${planType}`,
         order_id: orderId,
         prefill: {
