@@ -57,6 +57,11 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
     setValue(value);
   };
 
+  const assessmentCreateHandler = () => {
+    setIsEditDialogOpen(true);
+    setValue({ mode: "create_subject", is_paid: btntype });
+  };
+
   const deleteSubjectMutation = useDeleteSubject();
   const { showNotification } = useNotification();
   const { SUCCESS_SUBJECT } = FIND_STUDENT_PAGE_CONFIG;
@@ -110,13 +115,7 @@ const AssessmentContent: React.FC<AssessmentContentProps> = ({
         }}
       >
         <Typography {...assessmentContent} />
-        <When condition={btntype}>
-          {" "}
-          <Button
-            onClick={() => assessmentEditHandler({ value: "create_subject" })}
-            {...ASSESSMENT_ADD_BUTTON}
-          />
-        </When>
+        <Button onClick={assessmentCreateHandler} {...ASSESSMENT_ADD_BUTTON} />
       </Stack>
       <Stack>
         {paidAssessment?.map((assesment, index) => (

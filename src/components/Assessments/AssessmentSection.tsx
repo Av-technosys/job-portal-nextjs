@@ -237,6 +237,9 @@ const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
     setAmount(null);
     setOrderData(null);
     setIsLoadingRetake(false);
+  const handleRetakeTest = (assesment_session_id, subject_id) => {
+    const planId = "js_test";
+    createOrderId.mutate({ planId, assesment_session_id, subject_id });
   };
 
   const handleProceedToPayment = () => {

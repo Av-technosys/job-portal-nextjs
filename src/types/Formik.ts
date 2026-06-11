@@ -7,6 +7,7 @@ import {
   DropdownProps,
   InputProps,
   MultiSelectDropdownProps,
+  SkillsInputProps,
   TypographyProps,
 } from "./components";
 import { UploadDocumentProps } from "./profilePicture";
@@ -20,6 +21,7 @@ export enum FormikFieldsEnum {
   UPLOAD_QUESTION_IMAGE = "UploadQuestionImage",
   UPLOAD_DOCUMENT = "uploadDocument",
   MULTI_SELECT_DROPDOWN = "multiSelectDropdown",
+  SKILLS_INPUT = "skillsInput",
   ARRAY_FIELD = "formikArrayField",
   SOCIAL_URL_INPUT = "socialUrlInput",
   CHECKBOX = "checkbox",
@@ -54,6 +56,10 @@ export interface FormikMultiSelectDropdownProps
   fieldType?: FormikFieldsEnum;
 }
 
+export interface FormikSkillsInputProps extends SkillsInputProps {
+  fieldType?: FormikFieldsEnum;
+}
+
 export interface FormikCheckboxProps extends CheckBoxProps {
   fieldType?: FormikFieldsEnum;
 }
@@ -76,6 +82,7 @@ export interface FormikProps {
     | FormikDropdownProps[]
     | FormikTypographyProps[]
     | FormikMultiSelectDropdownProps[]
+    | FormikSkillsInputProps[]
     | FormikArrayFieldProps[]
     | FormikCheckboxProps[]
     | FormikUploadDocumentProps[];
@@ -91,6 +98,7 @@ export interface FormikFormProps {
   fieldDetailsArray: FormikProps["fieldDetailsArray"];
   errors: CommonObjectType;
   setFieldValue: FormikHelpers<CommonObjectType>["setFieldValue"];
+  values?: CommonObjectType;
   parentFieldName?: string;
   classNames?: FormikProps["classNames"];
 }

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   useDeleteSavedJob,
   useCreateSavedJob,
@@ -52,8 +52,8 @@ function Jobs() {
     JobListSortEnum.CREATED_DATE_DESC,
   ]);
 
-  const [searchedData, setSearchedData] = useState(null);
   const [filterSearch, setFilterSearch] = useState("");
+  const [searchString, setSearchString] = useState("");
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -66,14 +66,16 @@ function Jobs() {
   const deleteSaveJobMutate = useDeleteSavedJob();
   const { userType } = useCommonDetails();
 
-  function showSearchedData(data: any) {
-    setSearchedData(data?.apiData?.data?.pages[0]?.data?.data);
-  }
+  const handleSearchChange = useCallback((nextSearchString: string) => {
+    setSearchString(nextSearchString);
+  }, []);
 
   function onSaveUnSaveMutateSuccess({ job }: { job: CommonObjectType }) {
     const jobListingQueryKey = getInfiniteJobListQueryOptions({
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
+      filterSearch,
     }).queryKey;
     // Update the cache to reflect the changes on UI
     queryClient.setQueryData(jobListingQueryKey, (oldData) =>
@@ -154,6 +156,7 @@ function Jobs() {
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
       filterSearch: filterSearch,
+      search: searchString,
     },
   });
 
@@ -161,21 +164,24 @@ function Jobs() {
     paginatedAPIData: jobInfoAPIData,
   });
 
-  if (paginatedInfoData[0] == undefined) {
-    return (
-      <Loader
-        loaderProps={{
-          open: true,
-        }}
-      />
-    );
-  }
+  if (
+  jobInfoAPIData.isLoading &&
+  paginatedInfoData.length === 0
+) {
+  return (
+    <Loader
+      loaderProps={{
+        open: true,
+      }}
+    />
+  );
+}
 
   return (
     <>
       <BreadcrumbRibbon
         isFilterOpen={isFilterOpen}
-        showSearchedData={showSearchedData}
+        onSearchChange={handleSearchChange}
         pathname={pathname}
       />
       <Stack
@@ -245,25 +251,15 @@ function Jobs() {
           isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
         >
           <Stack>
-            {Array.isArray(searchedData) && searchedData.length > 0
-              ? searchedData?.map((job) => (
-                  <JobCard
-                    job={job}
-                    key={`jobs-${job?.id}-${job?.is_saved}`}
-                    handleSaveUnSave={handleSaveUnSave}
-                    showSaveUnSaveButton={showSaveUnSaveButton}
-                    handleJobDetailsClick={handleJobDetailsClick}
-                  />
-                ))
-              : paginatedInfoData?.map((job) => (
-                  <JobCard
-                    job={job}
-                    key={`jobs-${job?.id}-${job?.is_saved}`}
-                    handleSaveUnSave={handleSaveUnSave}
-                    showSaveUnSaveButton={showSaveUnSaveButton}
-                    handleJobDetailsClick={handleJobDetailsClick}
-                  />
-                ))}
+            {paginatedInfoData?.map((job) => (
+              <JobCard
+                job={job}
+                key={`jobs-${job?.id}-${job?.is_saved}`}
+                handleSaveUnSave={handleSaveUnSave}
+                showSaveUnSaveButton={showSaveUnSaveButton}
+                handleJobDetailsClick={handleJobDetailsClick}
+              />
+            ))}
           </Stack>
         </InfinitePagination>
       ) : (

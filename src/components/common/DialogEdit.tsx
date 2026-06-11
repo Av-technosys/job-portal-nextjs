@@ -69,7 +69,7 @@ export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
 
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
     if (Array.isArray(values.work_experiences)) {
-      if (AssessmentValue == "create_subject") {
+      if (AssessmentValue?.mode == "create_subject") {
         CreateSubjectInfoMutate.mutate({
           data: values?.work_experiences[0] as CreateOrUpdateSubjectInfoInput,
         });
@@ -112,7 +112,7 @@ export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
         <DialogContent dividers>
           <Formik
             initialValues={
-              AssessmentValue != "create_subject"
+              AssessmentValue?.mode != "create_subject"
                 ? {
                     work_experiences: [AssessmentValue],
                   }
@@ -121,7 +121,7 @@ export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
                       {
                         exam_name: "",
                         section_name: "",
-                        is_paid: true,
+                        is_paid: AssessmentValue?.is_paid ?? true,
                         duration_minutes: "",
                         easy_question_count: "",
                         medium_question_count: "",
