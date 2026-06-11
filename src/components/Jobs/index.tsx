@@ -74,6 +74,7 @@ function Jobs() {
     const jobListingQueryKey = getInfiniteJobListQueryOptions({
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      filterSearch: filterSearch,
     }).queryKey;
     // Update the cache to reflect the changes on UI
     queryClient.setQueryData(jobListingQueryKey, (oldData) =>

@@ -137,11 +137,20 @@ export function getErrorMessageFromAPI(error: any): {
   message: string;
 } {
   const isString = typeof error?.response?.data?.message === "string";
-  return {
-    message: isString
-      ? error?.response?.data?.message || "Internal Server Error"
-      : "Internal Server Error",
-  };
+  if (isString == false) {
+    return {
+      message:
+        isString == false
+          ? error || "Internal Server Error"
+          : "Internal Server Error",
+    };
+  } else {
+    return {
+      message: isString
+        ? error?.response?.data?.message || "Internal Server Error"
+        : "Internal Server Error",
+    };
+  }
 }
 
 export function isLoggedInUserJobSeeker({ userType }: { userType: UserType }) {
