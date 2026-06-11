@@ -25,7 +25,7 @@ export const getAssessmentAttemptsInfoQueryOptions = (
 };
 
 type useGetAssessmentAttemptsInfoQueryOptions = {
-  queryConfig?: QueryConfig<typeof getAssessmentAttemptsInfo>;
+  queryConfig?: any;
   queryParams: getAssessmentAttemptsInfoQueryParams;
 };
 

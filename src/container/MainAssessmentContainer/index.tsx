@@ -38,7 +38,6 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const prevTypeRef = useRef<"blur" | "focus" | null>(null);
   const [timeForSubmit, setTimeForSubmit] = useState<number | null>(null);
-
   const router = useRouter();
   const { assesment_session_id, subject_id } = router.query;
   let StudentAssessmentQuestions;
@@ -69,7 +68,11 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   const AllStudentAssessmentQuestionsLength =
     getAllStudentAssessmentQuestions?.length;
 
+
+  const isQuestionsLoading = StudentAssessmentQuestions.isLoading;
+
   const attempt_id = StudentAssessmentQuestions.data?.data?.attempt_id;
+  const maxTimeFromBackend = StudentAssessmentQuestions.data?.data?.duration_minutes;
 
   useEffect(() => {
     const handleFocus = () => {
@@ -99,8 +102,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   useEffect(() => {
     setCurrentSelectedOption(
       userAnsweredData?.[
-        `${
-          getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        `${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
         }_${currentQIndex}`
       ]?.answer || "0"
     );
@@ -116,12 +118,12 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
     }
   }
 
+
   function handleMarkForReviewAndNext(answeredValue: string) {
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${
-        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
-      }_${currentQIndex}`]: {
+      [`${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        }_${currentQIndex}`]: {
         answer: answeredValue,
         status: 1,
       },
@@ -133,9 +135,8 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
     setCurrentSelectedOption("0");
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${
-        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
-      }_${currentQIndex}`]: {
+      [`${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        }_${currentQIndex}`]: {
         answer: "0",
         status: 2,
       },
@@ -146,9 +147,8 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
     if (!answeredValue || answeredValue === "0") return;
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${
-        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
-      }_${currentQIndex}`]: {
+      [`${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        }_${currentQIndex}`]: {
         answer: answeredValue,
         status: 0,
       },
@@ -217,20 +217,24 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
             <Stack>
               <Stack>Question No. {currentQIndex}</Stack>
               <Stack>Total Tab switched {tabSwitchCount}</Stack>
-              <StopWatchHandler getStopWatchTime={getStopWatchTimeValue} />
+              <StopWatchHandler
+                maxTime={maxTimeFromBackend}
+                getStopWatchTime={getStopWatchTimeValue}
+                isLoading={isQuestionsLoading}
+              />
               {getAllStudentAssessmentQuestions?.[currentQIndex - 1]
                 ?.question_paragraph && (
-                <Typography
-                  typographyProps={{
-                    children:
-                      getAllStudentAssessmentQuestions?.[currentQIndex - 1]
-                        ?.question_paragraph,
-                    variant: TypographyVariantEnum.H6,
-                    color: "text.secondary",
-                    className: "text-start mt-4",
-                  }}
-                />
-              )}
+                  <Typography
+                    typographyProps={{
+                      children:
+                        getAllStudentAssessmentQuestions?.[currentQIndex - 1]
+                          ?.question_paragraph,
+                      variant: TypographyVariantEnum.H6,
+                      color: "text.secondary",
+                      className: "text-start mt-4",
+                    }}
+                  />
+                )}
 
               <Typography
                 typographyProps={{
@@ -299,6 +303,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
             tabSwitchCount={tabSwitchCount}
             attemptId={attempt_id}
             questionData={getAllStudentAssessmentQuestions}
+ 
           />
         </Grid>
       </Grid>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AssessmentNavigation from "./Navigation";
 import { useRouter } from "next/router";
 import { useNotification } from "@/services";
@@ -7,6 +7,7 @@ import { getErrorMessageFromAPI } from "@/helper";
 import { Button, Modal, Stack, Typography } from "../common";
 import { ButtonVariantEnum, TypographyVariantEnum } from "@/types";
 import { ChevronRightIcon } from "@/assets";
+
 
 const AssessmentSideBarDrawer = ({
   isExpanded,
@@ -78,6 +79,22 @@ function SubmitButton({
   //   tabSwitchCount: tabSwitchCount,
   //   is_completed: true,
   // };
+useEffect(() => {
+  if (timeForSubmit === 0) {
+    showNotification({
+      message: "Time is over! Auto-submitting your test...",
+    });
+    handleSubmitTest();
+  }
+
+  if (tabSwitchCount >= 3) {
+    showNotification({
+      message: "You switched tabs 3 times. Auto-submitting your test...",
+    });
+    handleSubmitTest();
+  }
+}, [timeForSubmit, tabSwitchCount]);
+
 
   const answerMap: Record<string, number> = {
     A: 0,
