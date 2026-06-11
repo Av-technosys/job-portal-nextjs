@@ -66,10 +66,10 @@ export const RECRUITER_PROFILE_SIDEBAR_CONFIG = [
     text: "Posted Jobs",
     listValue: MY_POSTED_JOBS_URL,
   },
-  {
-    text: "Subscription",
-    listValue: SUBSCRIPTION_URL,
-  },
+  // {
+  //   text: "Subscription",
+  //   listValue: SUBSCRIPTION_URL,
+  // },
   {
     text: "Recruiter's Profile",
     listValue: PROFILE_URL,

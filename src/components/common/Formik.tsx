@@ -140,10 +140,11 @@ export function FormikForm({
             FormikFieldsEnum.TYPOGRAPHY,
             FormikFieldsEnum.UPLOAD_DOCUMENT,
             FormikFieldsEnum.UPLOAD_PROFILE_IMAGE,
+            FormikFieldsEnum.UPLOAD_QUESTION_IMAGE,
           ].includes(fieldDetail?.fieldType as FormikFieldsEnum)
         ) {
           return (
-            <Field key={`ja-form-${fieldDetail?.fieldType}_${idx}`}>
+            <Field key={`ja-form-${fieldDetail?.fieldType}_${idx}`} name={getFieldName(resolvedFieldDetail)}>
               {({ field }: { field: CommonObjectType }) => {
                 return (
                   <FormikFields

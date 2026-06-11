@@ -40,7 +40,10 @@ function AdminHeader({ isAuthenticated }: { isAuthenticated: boolean }) {
               props={{
                 alt: "ja_logo",
                 src: JA_LOGO,
+                onClick: () => handleClick("/"),
+                style: { cursor: "pointer" },
               }}
+            
             />
 
             <When condition={!isAuthenticated}>
