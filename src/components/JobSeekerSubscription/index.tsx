@@ -14,30 +14,40 @@ import {
 import { useGetResumeTestDataInfo } from "@/services/useGetResumeTestDetails";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Loader} from "../common";
 
 export default function Subscription() {
   const [open, setOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [isTestEnd, setIsTestEnd] = useState<null | boolean>(null);
   const [testId, setTestId] = useState<null | number | string>(null);
-  const router = useRouter();
 
+  const router = useRouter();
   const resumeTestDetails = useGetResumeTestDataInfo();
 
-  useEffect(() => {
-    setIsTestEnd(resumeTestDetails?.data?.data[0]?.is_test_end);
-    setTestId(resumeTestDetails?.data?.data[0]?.id);
-  }, [resumeTestDetails]);
-
-  const handlePaymentModalOpen = () => {
-    setOpen(false);
-    setPaymentModalOpen(true);
-  };
-
+  // ⭐ IMPORTANT: This function MUST be above loading return
   function handlePaymentComplete() {
     setOpen(false);
     setPaymentModalOpen(false);
     router.push(DASHBOARD_URL);
+  }
+
+  // Set values only after data is fully loaded
+  useEffect(() => {
+    if (resumeTestDetails.data?.data?.[0]) {
+      setIsTestEnd(resumeTestDetails.data.data[0].is_test_end);
+      setTestId(resumeTestDetails.data.data[0].id);
+    }
+  }, [resumeTestDetails.data]);
+
+  // ⭐ Loading UI to prevent jumping between 2 → 3 cards
+  if (resumeTestDetails.isLoading || isTestEnd === null) {
+    return (
+     <Loader  
+       loaderProps={{
+          open: true,
+        }} />
+    );
   }
 
   const {
@@ -61,6 +71,7 @@ export default function Subscription() {
         >
           <Typography {...HEADER_TEXT} />
           <Typography {...HEADER_SUB_TEXT} />
+
           <Stack
             stackProps={{
               direction: { xs: "column", md: "row" },
@@ -69,6 +80,7 @@ export default function Subscription() {
               marginTop: "50px",
             }}
           >
+            {/* FREE TEST CARD */}
             <SubscriptionCard
               avatarUrl={free_assessment?.src}
               onButtonClick={() =>
@@ -76,7 +88,9 @@ export default function Subscription() {
               }
               buttonConfig={BUTTON_CONFIG}
             />
-            {isTestEnd == false && (
+
+            {/* CONDITIONAL RESUME TEST CARD */}
+            {isTestEnd === false && (
               <SubscriptionCard
                 avatarUrl={resume_assessment?.src}
                 onButtonClick={() =>
@@ -85,6 +99,8 @@ export default function Subscription() {
                 buttonConfig={RESUME_BUTTON_CONFIG}
               />
             )}
+
+            {/* PAID TEST CARD */}
             <SubscriptionCard
               avatarUrl={paid_assessment?.src}
               onButtonClick={() => setOpen(true)}
@@ -93,11 +109,18 @@ export default function Subscription() {
           </Stack>
         </Stack>
       </Stack>
+
+      {/* PAYMENT CARD */}
       <PaymentCard
         open={open}
         handleClose={() => setOpen(false)}
-        setPaymentModalOpen={handlePaymentModalOpen}
+        setPaymentModalOpen={() => {
+          setOpen(false);
+          setPaymentModalOpen(true);
+        }}
       />
+
+      {/* PAYMENT MODAL */}
       <PaymentModal
         open={paymentModalOpen}
         {...SUBSCRIPTION_CONFIG.JOB_SEEKER_ASSESSMENT}
