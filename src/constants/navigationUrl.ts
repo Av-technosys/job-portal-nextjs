@@ -4,6 +4,7 @@ export const REGISTER_URL: string = "/register";
 export const PROFILE_URL: string = "/dashboard/profile";
 export const ADMIN_PROFILE_URL: string = "/admin/profile";
 export const BACK_TO_ADMIN_URL: string = "/admin";
+export const ADMIN_URL: string = "/admin";
 // export const ADMIN_QUESTION_URL: string = "/admin/assessment/26/excelupload";
 export const ADMIN_QUESTION_URL = (id: number) => `/admin/assessment/${id}`;
 
@@ -33,10 +34,19 @@ export const JOB_DETAILS_URL: string = "/job-details/[id]";
 export const CANDIATE_APPLICATIONS_PARTIAL_URL: string =
   "/dashboard/candidate-applications";
 export const JOB_DETAILS_PARTIAL_URL: string = "/job-details";
+export const ADMIN_ASSESSMENT_URL: string = "/admin/assessment";
+export const ADMIN_QUESTION_LIST_URL: string = "/admin/question";
+export const ADMIN_RECRUITER_URL: string = "/admin/recruiter";
+export const ADMIN_JOBSEEKER_URL: string = "/admin/jobseeker";
 
 export const PRIVATE_ROUTES_CONFIG: string[] = [
   HOME_URL,
   PROFILE_URL,
+  ADMIN_URL,
+  ADMIN_ASSESSMENT_URL,
+  ADMIN_QUESTION_LIST_URL,
+  ADMIN_RECRUITER_URL,
+  ADMIN_JOBSEEKER_URL,
   JOBS_URL,
   JOB_DETAILS_URL,
   JOB_DETAILS_PARTIAL_URL,
@@ -72,10 +82,16 @@ export const NON_PRIVATE_PUBLIC_ROUTES_CONFIG: string[] = [
 
 export const JOB_SEEKER_USER_TYPE_PERMISSION_ID: number = 1;
 export const RECRUITER_USER_TYPE_PERMISSION_ID: number = 2;
+export const ADMIN_USER_TYPE_PERMISSION_ID: number = 3;
 
 export const ALL_USER_PERMISSION: number[] = [
   JOB_SEEKER_USER_TYPE_PERMISSION_ID,
   RECRUITER_USER_TYPE_PERMISSION_ID,
+];
+export const ALL_AUTHENTICATED_USER_PERMISSION: number[] = [
+  JOB_SEEKER_USER_TYPE_PERMISSION_ID,
+  RECRUITER_USER_TYPE_PERMISSION_ID,
+  ADMIN_USER_TYPE_PERMISSION_ID,
 ];
 export const ONLY_JOB_SEEKER_USER_PERMISSION: number[] = [
   JOB_SEEKER_USER_TYPE_PERMISSION_ID,
@@ -83,13 +99,21 @@ export const ONLY_JOB_SEEKER_USER_PERMISSION: number[] = [
 export const ONLY_RECRUITER_USER_PERMISSION: number[] = [
   RECRUITER_USER_TYPE_PERMISSION_ID,
 ];
+export const ONLY_ADMIN_USER_PERMISSION: number[] = [
+  ADMIN_USER_TYPE_PERMISSION_ID,
+];
 
 export const PRIVATE_ROUTE_USER_TYPE_CONFIG: {
   [P: string]: number[];
 } = {
   [HOME_URL]: ALL_USER_PERMISSION,
-  [NO_PERMISSION_URL]: ALL_USER_PERMISSION,
+  [NO_PERMISSION_URL]: ALL_AUTHENTICATED_USER_PERMISSION,
   [PROFILE_URL]: ALL_USER_PERMISSION,
+  [ADMIN_URL]: ONLY_ADMIN_USER_PERMISSION,
+  [ADMIN_ASSESSMENT_URL]: ONLY_ADMIN_USER_PERMISSION,
+  [ADMIN_QUESTION_LIST_URL]: ONLY_ADMIN_USER_PERMISSION,
+  [ADMIN_RECRUITER_URL]: ONLY_ADMIN_USER_PERMISSION,
+  [ADMIN_JOBSEEKER_URL]: ONLY_ADMIN_USER_PERMISSION,
   [JOBS_URL]: ONLY_JOB_SEEKER_USER_PERMISSION,
   [JOB_DETAILS_URL]: ONLY_JOB_SEEKER_USER_PERMISSION,
   [JOB_DETAILS_PARTIAL_URL]: ONLY_JOB_SEEKER_USER_PERMISSION,
