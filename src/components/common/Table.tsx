@@ -69,6 +69,15 @@ function Table({
           queryClient.invalidateQueries({
             queryKey: ["recruiter_full_details"],
           }),
+          queryClient.invalidateQueries({
+            queryKey: ["find_recruiter_list"],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["find_student_list"],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["admin_meta_data_info_details"],
+          }),
         ]);
       },
       onError: (error) => {
@@ -90,6 +99,15 @@ function Table({
           }),
           queryClient.invalidateQueries({
             queryKey: ["recruiter_full_details"],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["find_recruiter_list"],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["find_student_list"],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["admin_meta_data_info_details"],
           }),
         ]);
       },

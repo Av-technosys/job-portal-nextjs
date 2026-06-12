@@ -6,25 +6,19 @@ import {
   usePagination,
 } from "@/services";
 import { RecruiterListSortEnum } from "@/types";
-import {
-  FormControl,
-  InputAdornment,
-  OutlinedInput,
-  SelectChangeEvent,
-} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   Dropdown,
   InfinitePagination,
-  Stack,
   Table,
   Typography,
   When,
 } from "@/components";
-import { SearchIcon } from "@/assets";
 import { FIND_STUDENT_PAGE_CONFIG } from "@/constants/findstudent";
 import { getErrorMessageFromAPI } from "@/helper";
 import { useDeleteRecruiter } from "@/services/useDeleteRecruiter";
+import AdminListToolbar from "./AdminListToolbar";
 
 const AdminRecruiterComponent = () => {
   const [searchString, setSearchString] = useState<string>("");
@@ -104,62 +98,20 @@ const AdminRecruiterComponent = () => {
   return (
     <>
       <When condition={true}>
-        <Stack
-          stackProps={{
-            direction: "row",
-            gap: 1,
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Stack
-            stackProps={{
-              width: "100%",
-              direction: { xs: "column", sm: "row" },
-              gap: { xs: 2, sm: 4 },
-              alignItems: "start",
-              justifyContent: "space-between",
-            }}
-          >
-            <Stack
-              stackProps={{
-                direction: "row",
-                gap: 1,
-                alignItems: "baseline",
-              }}
-            >
-              <Typography {...TITLE_COUNT(totalLength)} />
-              <Typography {...TITLE_HEADER(totalLength)} />
-            </Stack>
-            <FormControl
-              sx={{ width: { xs: "20ch", sm: "30ch" } }}
-              variant="outlined"
-            >
-              <OutlinedInput
-                id="outlined-adornment-search"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder={searchProps.input.placeholder}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                }
-                aria-describedby="outlined-search-helper-text"
-                inputProps={{
-                  "aria-label": "search",
-                }}
-              />
-            </FormControl>
-
+        <AdminListToolbar
+          countContent={<Typography {...TITLE_COUNT(totalLength)} />}
+          titleContent={<Typography {...TITLE_HEADER(totalLength)} />}
+          searchValue={searchValue}
+          searchPlaceholder={searchProps.input.placeholder}
+          onSearchChange={setSearchValue}
+          actions={
             <Dropdown
               {...RECRUITER_LISTING_SORT_DROPDOWN}
               onChange={handleSortChange}
               value={selectedSort?.[0]}
             />
-          </Stack>
-        </Stack>
+          }
+        />
       </When>
 
       <InfinitePagination

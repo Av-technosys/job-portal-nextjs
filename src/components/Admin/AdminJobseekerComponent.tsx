@@ -3,24 +3,18 @@ import { FIND_STUDENT_PAGE_CONFIG } from "@/constants/findstudent";
 import { useCommonDetails, useNotification, usePagination } from "@/services";
 import { useGetFindStudentList } from "@/services/useGetFindStudent";
 import { StudentListSortEnum } from "@/types";
-import {
-  FormControl,
-  InputAdornment,
-  OutlinedInput,
-  SelectChangeEvent,
-} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   Dropdown,
   InfinitePagination,
-  Stack,
   Table,
   Typography,
   When,
 } from "@/components";
-import { SearchIcon } from "@/assets";
 import { useDeleteJobseeker } from "@/services/useDeleteJobseeker";
 import { getErrorMessageFromAPI } from "@/helper";
+import AdminListToolbar from "./AdminListToolbar";
 
 function AdminJobseekerComponent() {
   const [searchString, setSearchString] = useState<string>("");
@@ -100,67 +94,20 @@ function AdminJobseekerComponent() {
   return (
     <>
       <When condition={true}>
-        <Stack
-          stackProps={{
-            direction: "row",
-            gap: 1,
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Stack
-            stackProps={{
-              width: "100%",
-              direction: { xs: "column", sm: "row" },
-              gap: { xs: 2, sm: 4 },
-              alignItems: "start",
-              justifyContent: "space-between",
-            }}
-          >
-            <Stack
-              stackProps={{
-                direction: "row",
-                gap: 1,
-                alignItems: "center",
-              }}
-            >
-              <Typography {...TITLE_COUNT(totalLength)} />
-              <Typography {...TITLE_HEADER(totalLength)} />
-            </Stack>
-
-            <Stack
-              stackProps={{ direction: { xs: "column", sm: "row" }, gap: 1 }}
-            >
-              <FormControl
-                sx={{ m: 1, width: { xs: "20ch", sm: "30ch" } }}
-                variant="outlined"
-              >
-                <OutlinedInput
-                  id="outlined-adornment-search"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder={searchProps.input.placeholder}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  }
-                  aria-describedby="outlined-search-helper-text"
-                  inputProps={{
-                    "aria-label": "search",
-                  }}
-                />
-              </FormControl>
-
-              <Dropdown
-                {...STUDENT_LISTING_SORT_DROPDOWN}
-                onChange={handleSortChange}
-                value={selectedSort?.[0]}
-              />
-            </Stack>
-          </Stack>
-        </Stack>
+        <AdminListToolbar
+          countContent={<Typography {...TITLE_COUNT(totalLength)} />}
+          titleContent={<Typography {...TITLE_HEADER(totalLength)} />}
+          searchValue={searchValue}
+          searchPlaceholder={searchProps.input.placeholder}
+          onSearchChange={setSearchValue}
+          actions={
+            <Dropdown
+              {...STUDENT_LISTING_SORT_DROPDOWN}
+              onChange={handleSortChange}
+              value={selectedSort?.[0]}
+            />
+          }
+        />
       </When>
 
       <InfinitePagination

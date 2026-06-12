@@ -57,15 +57,40 @@ function Login() {
   const { showNotification } = useNotification();
   const { isExtraSmallScreen } = useScreen();
 
+  const showAdminVerificationNotification = () => {
+    showNotification(NOTIFICATION_CONFIG.ADMIN_VERIFICATION_REQUIRED);
+  };
+
+  const isAdminVerificationError = (error: unknown) => {
+    const errorMessage = getErrorMessageFromAPI(error)?.message?.toLowerCase();
+    return (
+      errorMessage?.includes("active") ||
+      errorMessage?.includes("activate") ||
+      errorMessage?.includes("verified") ||
+      errorMessage?.includes("verification") ||
+      errorMessage?.includes("admin")
+    );
+  };
+
   const validateUser = useValidateUser({
     mutationConfig: {
       onSuccess: async (res) => {
         if (res?.data?.token) {
-          showNotification(NOTIFICATION_CONFIG.SUCCESS);
           const accessToken = res?.data?.token as string;
           setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken);
 
           const userDetails = await getUserDetails(accessToken, false);
+          const isRecruiterNotActivated =
+            userDetails?.data?.user_type?.toString() ===
+              UserType.RECUITER_TYPE && userDetails?.data?.is_active === false;
+
+          if (isRecruiterNotActivated) {
+            clearAllCookie();
+            showAdminVerificationNotification();
+            return;
+          }
+
+          showNotification(NOTIFICATION_CONFIG.SUCCESS);
           setItem(
             LOCAL_STORAGE_KEY.CURRENT_USER_TYPE,
             userDetails?.data?.user_type as string
@@ -84,6 +109,11 @@ function Login() {
         }
       },
       onError: (error) => {
+        if (isAdminVerificationError(error)) {
+          showAdminVerificationNotification();
+          return;
+        }
+
         showNotification({
           ...getErrorMessageFromAPI(error),
         });
