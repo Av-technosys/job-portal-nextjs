@@ -12,11 +12,11 @@ export const questionSchema = yup.object({
     .max(500, "Enter Your Paragraph must be at most 500 characters")
     .nullable()
     .notRequired(),
-  question_image: yup
-    .string()
-    .max(100, "Click to upload or drag and drop must be at most 100 characters")
-    .nullable()
-    .notRequired(),
+  question_image: yup.mixed().nullable().notRequired(),
+  difficulty_level: yup
+    .number()
+    .oneOf([1, 2, 3], "Select a valid difficulty")
+    .required("Difficulty is required"),
   option_1: minMaxValidationSchema({
     min: 1,
     max: 100,

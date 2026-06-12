@@ -8,9 +8,9 @@ import {
 } from "@/components";
 import {
   SUBSCRIPTION_PAGE_CONFIG,
-  SUBSCRIPTION_CONFIG,
   DASHBOARD_URL,
 } from "@/constants";
+import { useGetPaymentPlans } from "@/services";
 import { useGetResumeTestDataInfo } from "@/services/useGetResumeTestDetails";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -24,6 +24,10 @@ export default function Subscription() {
 
   const router = useRouter();
   const resumeTestDetails = useGetResumeTestDataInfo();
+  const paymentPlans = useGetPaymentPlans();
+  const paidAssessmentPlan = paymentPlans.data?.data?.find(
+    (plan) => plan.name === "js_assesment"
+  );
 
   // ⭐ IMPORTANT: This function MUST be above loading return
   function handlePaymentComplete() {
@@ -34,11 +38,19 @@ export default function Subscription() {
 
   // Set values only after data is fully loaded
   useEffect(() => {
-    if (resumeTestDetails.data?.data?.[0]) {
-      setIsTestEnd(resumeTestDetails.data.data[0].is_test_end);
-      setTestId(resumeTestDetails.data.data[0].id);
+    const resumeSession = resumeTestDetails.data?.data?.[0];
+
+    if (resumeSession) {
+      setIsTestEnd(resumeSession.is_test_end);
+      setTestId(resumeSession.id);
+      return;
     }
-  }, [resumeTestDetails.data]);
+
+    if (resumeTestDetails.isSuccess) {
+      setIsTestEnd(true);
+      setTestId(null);
+    }
+  }, [resumeTestDetails.data, resumeTestDetails.isSuccess]);
 
   // ⭐ Loading UI to prevent jumping between 2 → 3 cards
   if (resumeTestDetails.isLoading || isTestEnd === null) {
@@ -103,7 +115,14 @@ export default function Subscription() {
             {/* PAID TEST CARD */}
             <SubscriptionCard
               avatarUrl={paid_assessment?.src}
-              onButtonClick={() => setOpen(true)}
+              onButtonClick={() => {
+                if (isTestEnd === false) {
+                  setOpen(true);
+                  return;
+                }
+
+                setPaymentModalOpen(true);
+              }}
               buttonConfig={ACTUAL_APTITUDE_TEST_BUTTON_CONFIG}
             />
           </Stack>
@@ -114,6 +133,8 @@ export default function Subscription() {
       <PaymentCard
         open={open}
         handleClose={() => setOpen(false)}
+        amount={paidAssessmentPlan?.price}
+        isAmountLoading={paymentPlans.isLoading}
         setPaymentModalOpen={() => {
           setOpen(false);
           setPaymentModalOpen(true);
@@ -121,11 +142,14 @@ export default function Subscription() {
       />
 
       {/* PAYMENT MODAL */}
-      <PaymentModal
-        open={paymentModalOpen}
-        {...SUBSCRIPTION_CONFIG.JOB_SEEKER_ASSESSMENT}
-        handlePaymentComplete={handlePaymentComplete}
-      />
+      {paidAssessmentPlan && (
+        <PaymentModal
+          open={paymentModalOpen}
+          planId={paidAssessmentPlan.name}
+          planType={paidAssessmentPlan.name}
+          handlePaymentComplete={handlePaymentComplete}
+        />
+      )}
     </>
   );
 }

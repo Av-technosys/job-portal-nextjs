@@ -13,8 +13,8 @@ export enum QuestionImageEnum {
   QUESTION_IMAGE = "question_image",
 }
 export type CreateOrUpdateQuestionPicInput = {
-  file_type: QuestionImageEnum.QUESTION_IMAGE;
-  file: File;
+  question_id: number | string;
+  question_image: File;
 };
 
 export type CreateOrUpdateDocumentInput = {

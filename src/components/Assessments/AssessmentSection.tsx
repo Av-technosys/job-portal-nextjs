@@ -85,9 +85,9 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
   let data = [];
 
   if (assessmentType == "paid") {
-    data = subdata?.filter((item: any) => item?.is_paid === true);
+    data = subdata?.filter((item: any) => item?.is_paid === true && item?.is_live === true);
   } else {
-    data = subdata?.filter((item: any) => item?.is_paid === false);
+    data = subdata?.filter((item: any) => item?.is_paid === false && item?.is_live === true);
   }
 
 const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({

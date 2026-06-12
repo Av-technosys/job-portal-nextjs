@@ -73,6 +73,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
 
   const attempt_id = StudentAssessmentQuestions.data?.data?.attempt_id;
   const maxTimeFromBackend = StudentAssessmentQuestions.data?.data?.duration_minutes;
+  const currentQuestion = getAllStudentAssessmentQuestions?.[currentQIndex - 1];
 
   // Redirect if this attempt was already submitted (prevents returning via back)
   useEffect(() => {
@@ -237,25 +238,43 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
                 getStopWatchTime={getStopWatchTimeValue}
                 isLoading={isQuestionsLoading}
               />
-              {getAllStudentAssessmentQuestions?.[currentQIndex - 1]
-                ?.question_paragraph && (
-                  <Typography
-                    typographyProps={{
-                      children:
-                        getAllStudentAssessmentQuestions?.[currentQIndex - 1]
-                          ?.question_paragraph,
-                      variant: TypographyVariantEnum.H6,
-                      color: "text.secondary",
-                      className: "text-start mt-4",
+              {currentQuestion?.question_paragraph && (
+	                  <Typography
+	                    typographyProps={{
+	                      children: currentQuestion.question_paragraph,
+	                      variant: TypographyVariantEnum.H6,
+	                      color: "text.secondary",
+	                      className: "text-start mt-4",
+	                    }}
+	                  />
+	                )}
+
+              {currentQuestion?.question_image && (
+                <Stack
+                  stackProps={{
+                    className: "mt-4",
+                    sx: {
+                      width: "100%",
+                      maxWidth: 720,
+                    },
+                  }}
+                >
+                  <img
+                    src={currentQuestion.question_image}
+                    alt={`Question ${currentQIndex}`}
+                    style={{
+                      width: "100%",
+                      maxHeight: 360,
+                      objectFit: "contain",
+                      borderRadius: 8,
                     }}
                   />
-                )}
+                </Stack>
+              )}
 
               <Typography
                 typographyProps={{
-                  children:
-                    getAllStudentAssessmentQuestions?.[currentQIndex - 1]
-                      ?.question_text,
+                  children: currentQuestion?.question_text,
                   variant: TypographyVariantEnum.H6,
                   color: "text.secondary",
                   className: "text-start mt-4",

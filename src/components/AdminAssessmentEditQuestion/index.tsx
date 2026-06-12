@@ -6,6 +6,7 @@ import { getErrorMessageFromAPI } from "@/helper";
 import { useGetAssesmentQuestionDetails, useNotification } from "@/services";
 import { useUpdateQuestionInfo } from "@/services/useUpdateQuestion";
 import { useCreateQuestionInfo } from "@/services/useCreateQuestion";
+import { useCreateOrUpdateQuestionPicture } from "@/services/useUploadQuestionPic";
 
 import { CommonObjectType, CreateOrUpdateQuestionInfoInput } from "@/types";
 import { questionSchema } from "@/validator/question";
@@ -40,15 +41,49 @@ const Index = ({
 
   const { NOTIFICATION_CONFIG } = QUESTION_CONFIG;
   const { showNotification } = useNotification();
+
+  async function uploadQuestionImage(questionId: number | string, image: unknown) {
+    if (!(image instanceof File)) {
+      return;
+    }
+
+    await UploadQuestionImageMutate.mutateAsync({
+      data: {
+        question_id: questionId,
+        question_image: image,
+      },
+    });
+  }
+
+  function getQuestionPayload(values: CommonObjectType) {
+    const { question_image, ...payload } = values;
+    return {
+      payload,
+      questionImage: question_image,
+    };
+  }
+
+  function handleSuccessRedirect(path: string) {
+    showNotification(NOTIFICATION_CONFIG.SUCCESS);
+    queryClient.invalidateQueries({
+      queryKey: ["question_by_subject_id"],
+    });
+    router.push(path);
+  }
+
+  const UploadQuestionImageMutate = useCreateOrUpdateQuestionPicture({
+    mutationConfig: {
+      onError: (error) => {
+        showNotification({
+          ...getErrorMessageFromAPI(error),
+        });
+        console.error(error, "error");
+      },
+    },
+  });
+
   const UpdateQuestionInfoMutate = useUpdateQuestionInfo({
     mutationConfig: {
-      onSuccess: () => {
-        showNotification(NOTIFICATION_CONFIG.SUCCESS);
-        router.push(`/admin/assessment/${questionData?.subject}`);
-        queryClient.invalidateQueries({
-          queryKey: ["question_by_subject_id"],
-        });
-      },
       onError: (error) => {
         showNotification({
           ...getErrorMessageFromAPI(error),
@@ -60,13 +95,6 @@ const Index = ({
 
   const CreateQuestionInfoMutate = useCreateQuestionInfo({
     mutationConfig: {
-      onSuccess: () => {
-        showNotification(NOTIFICATION_CONFIG.SUCCESS);
-        queryClient.invalidateQueries({
-          queryKey: ["question_by_subject_id"],
-        });
-        router.push(`/admin/assessment/${subjectId}`);
-      },
       onError: (error) => {
         showNotification({
           ...getErrorMessageFromAPI(error),
@@ -77,13 +105,33 @@ const Index = ({
   });
 
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
+    const { payload, questionImage } = getQuestionPayload(values);
+
     if (questionMethod == "create-question") {
       CreateQuestionInfoMutate.mutate({
-        data: values as CreateOrUpdateQuestionInfoInput,
+        data: payload as CreateOrUpdateQuestionInfoInput,
+      }, {
+        onSuccess: async (response) => {
+          const questionId = response?.data?.id;
+
+          if (questionId) {
+            await uploadQuestionImage(questionId, questionImage);
+          }
+
+          handleSuccessRedirect(`/admin/assessment/${subjectId}`);
+        },
       });
     } else {
       UpdateQuestionInfoMutate.mutate({
-        data: values as CreateOrUpdateQuestionInfoInput,
+        data: payload as CreateOrUpdateQuestionInfoInput,
+      }, {
+        onSuccess: async () => {
+          if (questionData?.id) {
+            await uploadQuestionImage(questionData.id, questionImage);
+          }
+
+          handleSuccessRedirect(`/admin/assessment/${questionData?.subject}`);
+        },
       });
     }
   }
@@ -100,7 +148,8 @@ const Index = ({
   return (
     <>
       {(CreateQuestionInfoMutate.isPending ||
-        UpdateQuestionInfoMutate.isPending) && (
+        UpdateQuestionInfoMutate.isPending ||
+        UploadQuestionImageMutate.isPending) && (
         <Loader
           loaderProps={{
             open: true,
@@ -145,6 +194,7 @@ const Index = ({
           onSuccess={handleFormSuccess}
           fieldDetailsArray={[
             QUESTION_CONFIG.FORM_CONFIG.QUESTION_TEXT_FIELD,
+            QUESTION_CONFIG.FORM_CONFIG.QUESTION_DIFFICULTY_FIELD,
             QUESTION_CONFIG.FORM_CONFIG.QUESTION_PARAGRAPH_FIELD,
             QUESTION_CONFIG.FORM_CONFIG.QUESTION_PARAGRAPH_HEADING,
             QUESTION_UPLOAD_CONFIG,

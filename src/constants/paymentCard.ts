@@ -41,20 +41,20 @@ export const PAYMENT_CARD_TEXT_CONFIG = {
       fontColor: TypographyFontColor.white,
     },
   },
-  AMOUNT: {
+  AMOUNT: (amount: string) => ({
     typographyProps: {
-      children: "₹ 999",
+      children: amount,
       variant: TypographyVariantEnum.H5,
       className: "mt-4",
       sx: {
-        color: "#fff",
+        color: "#123a59",
         textAlign: "center",
       },
       fontWeight: TypographyFontWeight.normal,
       fontSize: TypographyFontSize.extraTitle,
       fontColor: TypographyFontColor.white,
     },
-  },
+  }),
   FEATURES: (features: string) => ({
     typographyProps: {
       children: features,

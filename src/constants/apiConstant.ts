@@ -49,7 +49,7 @@ export const apiConstantsURL = {
     socialUrlsRecruiterById: `user_profiles/social_urls_recruiter/`,
     socialUrlsJobSeeker: `user_profiles/social_urls_job_seeker/`,
     profileImage: `user_profiles/upload_profile_image/`,
-    questionImage: `user_profiles/upload_question_image/`,
+    questionImage: `assessment/upload_question_image/`,
     updateCandidateStatus: `jobs/application_status/`,
   },
   jobs: {
@@ -71,6 +71,7 @@ export const apiConstantsURL = {
     jobDetailsById: `jobs/`,
   },
   payment: {
+    plans: `payment/plans/`,
     orderId: `payment/create_order/`,
     transactionId: `payment/create_transaction/`,
     captureTransaction: `payment/capture_transaction/`,
