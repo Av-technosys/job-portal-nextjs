@@ -9,6 +9,7 @@ import {
   PRIVATE_PUBLIC_ROUTES_CONFIG,
   PRIVATE_ROUTE_USER_TYPE_CONFIG,
   PRIVATE_ROUTES_CONFIG,
+  ADMIN_URL,
   RECRUITER_PROFILE_SIDEBAR_CONFIG,
   SHOW_SIDEBAR_NON_AUTHENTICATED_CONFIG,
   STUDENT_PROFILE_SIDEBAR_CONFIG,
@@ -45,7 +46,10 @@ export function isUserAuthenticatedWithServer(
 }
 
 export function isPrivateRoute(routePath: string): boolean {
-  return PRIVATE_ROUTES_CONFIG.includes(routePath);
+  return (
+    PRIVATE_ROUTES_CONFIG.includes(routePath) ||
+    routePath.startsWith(`${ADMIN_URL}/`)
+  );
 }
 
 export function isNonPrivateRoute(routePath: string): boolean {
@@ -73,11 +77,13 @@ export function checkIfRouteAllowedForCurrentUserType({
   currentUserType,
 }: {
   routePath: string;
-  currentUserType: typeof UserType;
+  currentUserType: UserType | string;
 }): boolean {
-  return PRIVATE_ROUTE_USER_TYPE_CONFIG?.[routePath]?.includes(
-    Number(currentUserType)
-  );
+  const allowedUserTypes = routePath.startsWith(`${ADMIN_URL}/`)
+    ? PRIVATE_ROUTE_USER_TYPE_CONFIG[ADMIN_URL]
+    : PRIVATE_ROUTE_USER_TYPE_CONFIG[routePath];
+
+  return allowedUserTypes?.includes(Number(currentUserType));
 }
 
 export function isSidebarVisible(

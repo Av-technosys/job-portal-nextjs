@@ -1,4 +1,5 @@
 import {
+  ADMIN_URL,
   FORGOT_PASSWORD,
   LANDING_URL,
   LOCAL_STORAGE_KEY,
@@ -25,6 +26,7 @@ import { useRouter } from "next/router";
 import { loginValidationSchema } from "@/validator";
 import {
   useForm,
+  getUserDetails,
   useNotification,
   useScreen,
   useValidateUser,
@@ -35,7 +37,7 @@ import {
   getErrorMessageFromAPI,
   setItem,
 } from "@/helper";
-import { CommonObjectType } from "@/types";
+import { CommonObjectType, UserType } from "@/types";
 import { JA_LOGO } from "@/assets";
 
 function Login() {
@@ -57,11 +59,28 @@ function Login() {
 
   const validateUser = useValidateUser({
     mutationConfig: {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         if (res?.data?.token) {
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
-          setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, res?.data?.token as string);
-          router.push(PROFILE_URL);
+          const accessToken = res?.data?.token as string;
+          setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken);
+
+          const userDetails = await getUserDetails(accessToken, false);
+          setItem(
+            LOCAL_STORAGE_KEY.CURRENT_USER_TYPE,
+            userDetails?.data?.user_type as string
+          );
+          setItem(
+            LOCAL_STORAGE_KEY.CURRENT_ACCESS_TYPE,
+            userDetails?.data?.access_type as string
+          );
+
+          const redirectUrl =
+            userDetails?.data?.user_type?.toString() === UserType.ADMIN_TYPE
+              ? ADMIN_URL
+              : PROFILE_URL;
+
+          router.push(redirectUrl);
         }
       },
       onError: (error) => {
