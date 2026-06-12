@@ -26,10 +26,10 @@ export const PLAN_CARD_TEXT = {
     fontSize: TypographyFontSize.small,
     fontColor: TypographyFontColor.black3,
   }),
-  PRICE: (number: number) => ({
+  PRICE: (price: number | string) => ({
     typographyProps: {
       variant: TypographyVariantEnum.H5,
-      children: `₹ ${number}`,
+      children: typeof price === "number" ? `₹ ${price}` : price,
       color: "text.primary",
     },
     fontWeight: TypographyFontWeight.semibold,

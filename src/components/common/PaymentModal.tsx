@@ -234,18 +234,24 @@ const PaymentModal = ({
     handleClose?.();
   };
 
+  if (!open) {
+    return null;
+  }
+
   return (
     <>
-      <Script
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="lazyOnload"
-        onLoad={() => {
-          setRazorpayLoaded(true);
-        }}
-        onError={() => {
-          setRazorpayLoaded(false);
-        }}
-      />
+      {open && (
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="afterInteractive"
+          onLoad={() => {
+            setRazorpayLoaded(true);
+          }}
+          onError={() => {
+            setRazorpayLoaded(false);
+          }}
+        />
+      )}
       
       <Modal open={open} onClose={handleModalClose}>
         <Stack stackProps={{ sx: MODAL_STYLES }}>

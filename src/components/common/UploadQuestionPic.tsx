@@ -1,20 +1,17 @@
-import { useCommonDetails, useNotification } from "@/services";
+import { useCommonDetails } from "@/services";
 import { ChangeEvent, useMemo, useState } from "react";
 import {
   ButtonColorEnum,
   ButtonSizeEnum,
   ButtonVariantEnum,
   CommonObjectType,
-  CreateOrUpdateQuestionPicInput,
-  QuestionImageEnum,
 } from "@/types";
 import {
   IMAGE,
-  QUESTION_PICTURE_UPLOAD_CONFIG,
   TYPO_DRAG_DROP_UPLOAD_CONFIG,
   TYPO_SIZE_UPLOAD_CONFIG,
 } from "@/constants";
-import { getErrorMessageFromAPI, getInitials } from "@/helper";
+import { getInitials } from "@/helper";
 import When from "./When";
 import Stack from "./Stack";
 import Typography from "./Typography";
@@ -24,10 +21,6 @@ import Avatar from "./Avatar";
 import { FormControl, InputLabel } from "@mui/material";
 import IconButton from "./IconButton";
 import { colorStyles } from "@/styles";
-import {
-  useCreateOrUpdateQuestionPicture,
-  useDeleteQuestionPicture,
-} from "@/services/useUploadQuestionPic";
 
 function UploadQuestionPic({
   field,
@@ -36,89 +29,32 @@ function UploadQuestionPic({
   field?: CommonObjectType;
   setFieldValue?: (fieldName: string, value: unknown) => void;
 }) {
-  const { showNotification } = useNotification();
-  const { NOTIFICATION_CONFIG } = QUESTION_PICTURE_UPLOAD_CONFIG;
   const [isDragOver, setIsDragOver] = useState(false);
-  const { name, refetchCommonDetails } = useCommonDetails();
-  const questionImageUrl = (field?.value as string | null | undefined) || null;
+  const { name } = useCommonDetails();
+  const questionImageValue = field?.value as File | string | null | undefined;
+  const questionImageUrl = useMemo(() => {
+    if (questionImageValue instanceof File) {
+      return URL.createObjectURL(questionImageValue);
+    }
 
-  const createOrUpdateQuestionPicture = useCreateOrUpdateQuestionPicture({
-    mutationConfig: {
-      onSuccess: (response) => {
-        const responseData = response as CommonObjectType & {
-          data?: CommonObjectType & {
-            question_image?: string;
-            questionImage?: string;
-            image?: string;
-            url?: string;
-          };
-        };
-
-        const uploadedQuestionImage =
-          responseData?.data?.question_image ||
-          responseData?.data?.questionImage ||
-          responseData?.data?.image ||
-          responseData?.data?.url ||
-          responseData?.data ||
-          response;
-
-        if (typeof field?.name === "string" && setFieldValue) {
-          setFieldValue(field.name, uploadedQuestionImage ?? null);
-        }
-
-        refetchCommonDetails();
-        showNotification(NOTIFICATION_CONFIG.SUCCESS);
-      },
-      onError: (error) => {
-        showNotification({
-          ...getErrorMessageFromAPI(error),
-        });
-        console.error(error, "error");
-      },
-    },
-  });
-
-  const deleteQuestionPicture = useDeleteQuestionPicture({
-    mutationConfig: {
-      onSuccess: () => {
-        if (typeof field?.name === "string" && setFieldValue) {
-          setFieldValue(field.name, null);
-        }
-
-        refetchCommonDetails();
-        showNotification(NOTIFICATION_CONFIG.DELETE_SUCCESS);
-      },
-      onError: (error) => {
-        showNotification({
-          ...getErrorMessageFromAPI(error),
-        });
-        console.error(error, "error");
-      },
-    },
-  });
+    return questionImageValue || null;
+  }, [questionImageValue]);
 
   function handleQuestionPictureChange(file: File) {
     if (file) {
       try {
-        const previewUrl = URL.createObjectURL(file);
         if (typeof field?.name === "string" && setFieldValue) {
-          setFieldValue(field.name, previewUrl);
+          setFieldValue(field.name, file);
         }
       } catch (e) {
         // ignore preview creation errors
       }
-      createOrUpdateQuestionPicture.mutate({
-        data: {
-          file_type: QuestionImageEnum.QUESTION_IMAGE,
-          file,
-        } as CreateOrUpdateQuestionPicInput,
-      });
     }
   }
 
   function handleDeleteClick() {
-    if (questionImageUrl) {
-      deleteQuestionPicture.mutate({});
+    if (typeof field?.name === "string" && setFieldValue) {
+      setFieldValue(field.name, null);
     }
   }
 

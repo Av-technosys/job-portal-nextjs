@@ -53,6 +53,7 @@ export * from "./useSocialLinksRecruiter";
 export * from "./useSocialLinksJobSeeker";
 export * from "./useCreateOrderId";
 export * from "./useCaptureTransaction";
+export * from "./useGetPaymentPlans";
 export * from "./useUpdateJobStatus";
 export * from "./useUpdateCandidateStatus";
 export * from "./useDeleteAssessmentQuestion";
