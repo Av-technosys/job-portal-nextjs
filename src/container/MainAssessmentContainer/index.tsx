@@ -74,6 +74,21 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   const attempt_id = StudentAssessmentQuestions.data?.data?.attempt_id;
   const maxTimeFromBackend = StudentAssessmentQuestions.data?.data?.duration_minutes;
 
+  // Redirect if this attempt was already submitted (prevents returning via back)
+  useEffect(() => {
+    try {
+      if (attempt_id) {
+        const key = `assessment_submitted_${attempt_id}`;
+        const val = localStorage.getItem(key);
+        if (val === "1") {
+          router.replace(`/dashboard/assessment-summary/${attempt_id}`);
+        }
+      }
+    } catch (e) {
+      // ignore localStorage errors
+    }
+  }, [attempt_id]);
+
   useEffect(() => {
     const handleFocus = () => {
       // Only count if we previously lost focus

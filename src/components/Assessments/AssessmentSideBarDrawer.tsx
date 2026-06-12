@@ -118,14 +118,21 @@ useEffect(() => {
     answers: transformedAnswers,
     timeLeft: timeForSubmit,
     tabSwitchCount: tabSwitchCount,
-    is_completed: false,
+    is_completed: true,
   };
 
   const createStudentTestAnsweredData = UseCreateStudentAnsweredData({
     mutationConfig: {
       onSuccess: () => {
-        router.push(`/dashboard/assessment-summary/${attemptId}`);
-      },
+          try {
+            if (attemptId) {
+              localStorage.setItem(`assessment_submitted_${attemptId}`, "1");
+            }
+          } catch (e) {
+            // ignore localStorage errors
+          }
+          router.replace(`/dashboard/assessment-summary/${attemptId}`);
+        },
       onError: (error) => {
         showNotification({
           ...getErrorMessageFromAPI(error),
