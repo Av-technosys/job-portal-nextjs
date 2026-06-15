@@ -46,7 +46,7 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
       stackProps={{
         direction: "column",
         width: "300px",
-        minHeight: "360px",
+        minHeight: "300px",
         className: "group cursor-pointer rounded-lg p-5",
         onClick: handleJobDetailsClick,
         onKeyDown: (event) => {
