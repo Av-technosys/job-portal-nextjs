@@ -68,7 +68,13 @@ function getSkills(job: Job) {
   return [];
 }
 
-function JobDetail({ jobId }: { jobId: number }) {
+function JobDetail({
+  jobId,
+  hideApplyButton = false,
+}: {
+  jobId: number;
+  hideApplyButton?: boolean;
+}) {
   const jobDetailsAPIData = useGetDetailedJobDetails({
     queryParams: {
       jobId,
@@ -202,11 +208,13 @@ function JobDetail({ jobId }: { jobId: number }) {
             </Stack>
           </Stack>
         </Stack>
-        <LoadingButton
-          {...APPLY_BUTTON}
-          onClick={onApplyClick}
-          loading={jobApplyMutate.isPending}
-        />
+        {!hideApplyButton && (
+          <LoadingButton
+            {...APPLY_BUTTON}
+            onClick={onApplyClick}
+            loading={jobApplyMutate.isPending}
+          />
+        )}
       </Stack>
 
       {/* full Stack */}

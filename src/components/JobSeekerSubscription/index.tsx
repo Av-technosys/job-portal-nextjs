@@ -11,10 +11,12 @@ import {
   DASHBOARD_URL,
 } from "@/constants";
 import { useGetPaymentPlans } from "@/services";
+import { useGetSubjectList } from "@/services/useGetFindSubject";
 import { useGetResumeTestDataInfo } from "@/services/useGetResumeTestDetails";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Loader} from "../common";
+import { Loader } from "../common";
+import { CommonObjectType } from "@/types";
 
 export default function Subscription() {
   const [open, setOpen] = useState(false);
@@ -24,9 +26,18 @@ export default function Subscription() {
 
   const router = useRouter();
   const resumeTestDetails = useGetResumeTestDataInfo();
+  const subjectList = useGetSubjectList();
   const paymentPlans = useGetPaymentPlans();
   const paidAssessmentPlan = paymentPlans.data?.data?.find(
     (plan) => plan.name === "js_assesment"
+  );
+  const liveSubjects = ((subjectList.data?.data || []) as CommonObjectType[])
+    .filter((subject) => subject?.is_live === true);
+  const hasFreeAssessments = liveSubjects?.some(
+    (subject) => subject?.is_paid === false
+  );
+  const hasPaidAssessments = liveSubjects?.some(
+    (subject) => subject?.is_paid === true
   );
 
   // ⭐ IMPORTANT: This function MUST be above loading return
@@ -53,12 +64,17 @@ export default function Subscription() {
   }, [resumeTestDetails.data, resumeTestDetails.isSuccess]);
 
   // ⭐ Loading UI to prevent jumping between 2 → 3 cards
-  if (resumeTestDetails.isLoading || isTestEnd === null) {
+  if (
+    resumeTestDetails.isLoading ||
+    subjectList.isLoading ||
+    isTestEnd === null
+  ) {
     return (
-     <Loader  
-       loaderProps={{
+      <Loader
+        loaderProps={{
           open: true,
-        }} />
+        }}
+      />
     );
   }
 
@@ -93,13 +109,15 @@ export default function Subscription() {
             }}
           >
             {/* FREE TEST CARD */}
-            <SubscriptionCard
-              avatarUrl={free_assessment?.src}
-              onButtonClick={() =>
-                router.push("/dashboard/assessment/free-test")
-              }
-              buttonConfig={BUTTON_CONFIG}
-            />
+            {hasFreeAssessments && (
+              <SubscriptionCard
+                avatarUrl={free_assessment?.src}
+                onButtonClick={() =>
+                  router.push("/dashboard/assessment/free-test")
+                }
+                buttonConfig={BUTTON_CONFIG}
+              />
+            )}
 
             {/* CONDITIONAL RESUME TEST CARD */}
             {isTestEnd === false && (
@@ -113,18 +131,20 @@ export default function Subscription() {
             )}
 
             {/* PAID TEST CARD */}
-            <SubscriptionCard
-              avatarUrl={paid_assessment?.src}
-              onButtonClick={() => {
-                if (isTestEnd === false) {
-                  setOpen(true);
-                  return;
-                }
+            {hasPaidAssessments && (
+              <SubscriptionCard
+                avatarUrl={paid_assessment?.src}
+                onButtonClick={() => {
+                  if (isTestEnd === false) {
+                    setOpen(true);
+                    return;
+                  }
 
-                setPaymentModalOpen(true);
-              }}
-              buttonConfig={ACTUAL_APTITUDE_TEST_BUTTON_CONFIG}
-            />
+                  setPaymentModalOpen(true);
+                }}
+                buttonConfig={ACTUAL_APTITUDE_TEST_BUTTON_CONFIG}
+              />
+            )}
           </Stack>
         </Stack>
       </Stack>

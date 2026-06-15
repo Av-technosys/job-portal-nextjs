@@ -31,6 +31,8 @@ interface PaginationInfo {
 
 interface PaymentResponse {
   total_amount: number;
+  total_orders_count: number;
+  paid_total_count: number;
   pagination: PaginationInfo;
   data: PaymentOrder[];
 }
@@ -52,6 +54,9 @@ function AdminPaymentDetailsComponent() {
   const data = paymentApi.data;
   const currentPage = data?.pagination?.current_page || 1;
   const totalPages = data?.pagination?.total_pages || 1;
+  const totalOrdersCount =
+    data?.total_orders_count ?? data?.pagination?.total_count ?? 0;
+  const successfulPaymentsCount = data?.paid_total_count ?? 0;
 
   // Merge new orders with existing ones
   useEffect(() => {
@@ -87,13 +92,15 @@ function AdminPaymentDetailsComponent() {
       { threshold: 1.0 }
     );
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
+    const currentObserverTarget = observerTarget.current;
+
+    if (currentObserverTarget) {
+      observer.observe(currentObserverTarget);
     }
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
+      if (currentObserverTarget) {
+        observer.unobserve(currentObserverTarget);
       }
     };
   }, [hasMore, paymentApi.isFetching]);
@@ -163,12 +170,12 @@ function AdminPaymentDetailsComponent() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
-          <div className="text-2xl font-bold text-blue-600">{allOrders.length}</div>
+          <div className="text-2xl font-bold text-blue-600">{totalOrdersCount}</div>
           <div className="text-sm text-gray-600">Total Orders</div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
           <div className="text-2xl font-bold text-green-600">
-            {allOrders.filter(order => order.status.toLowerCase() === 'paid').length}
+            {successfulPaymentsCount}
           </div>
           <div className="text-sm text-gray-600">Successful Payments</div>
         </div>

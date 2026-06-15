@@ -58,6 +58,7 @@ export const apiConstantsURL = {
     applyJob: `jobs/apply_job/`,
     submittedJobs: `jobs/list_submitted_jobs/`,
     candidateApplication: `jobs/submitted_jobs_application/`,
+    applicationAssessmentScores: `jobs/application_assessment_scores/`,
     myPostedJobs: `jobs/my_posted_jobs/`,
     saveJobs: `jobs/save_job/`,
     overallJobSeekerRecruiterData: `jobs/summary/`,
@@ -96,6 +97,7 @@ export const apiConstantsURL = {
     getQuestionById: `assessment/get_question_by_id/`,
     getResumeTestDetails: `assessment/get_user_assesment_session/`,
     getAssessmentAttempts: `assessment/get_all_assesment_attempts/`,
+    getApplicantAssessmentAttempts: `assessment/get_applicant_assesment_attempts/`,
     getAssessmentResult: `assessment/get_results/`,
   },
 };

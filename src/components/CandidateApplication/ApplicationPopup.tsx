@@ -3,15 +3,7 @@ import {
   CANDIDATE_DETAILS_PAGE_CONFIG,
   CANDIDATE_NOTIFICATION_CONFIG,
 } from "@/constants";
-import {
-  Avatar,
-  Button,
-  IconButton,
-  Loader,
-  Modal,
-  Stack,
-  Typography,
-} from "../common";
+import { Avatar, Button, IconButton, Modal, Stack, Typography } from "../common";
 import { CommonObjectType, Job } from "@/types";
 // import Messaging from "../Messaging";
 import { CancelOutlinedIcon } from "@/assets";
@@ -24,15 +16,37 @@ import { CandidateDetailOverviewCard } from "..";
 import { useGetApplicantPersonalDetails } from "@/services/useGetApplicantPersonalDetails";
 import CandidateAcademicCard from "./CandidateAcademicInfo";
 import CandidateProfessionalCard from "./CandidateProfessionalInfo";
-import { useGetApplicantDetails } from "@/services/useGetApplicantDetails";
 import { useNotification, useUpdateCandidateStatus } from "@/services";
 import { useRouter } from "next/router";
+import CandidateAssessmentScores from "./CandidateAssessmentScores";
 
 interface ApplicationPopupProps {
   open: boolean;
   handleClose: VoidFunction;
   jobDetails: Job;
   candidateDetails: CommonObjectType;
+}
+
+function getCandidateId(value: unknown) {
+  if (typeof value === "string" || typeof value === "number") {
+    return value;
+  }
+
+  return undefined;
+}
+
+function getCandidateUserId(candidateDetails: CommonObjectType) {
+  const userId =
+    typeof candidateDetails?.user === "object"
+      ? getCandidateId((candidateDetails?.user as { id?: unknown })?.id)
+      : getCandidateId(candidateDetails?.user);
+
+  return (
+    userId ||
+    getCandidateId(candidateDetails?.user_id) ||
+    getCandidateId(candidateDetails?.student_id) ||
+    getCandidateId(candidateDetails?.id)
+  );
 }
 
 export default function ApplicationPopup({
@@ -49,10 +63,8 @@ ApplicationPopupProps) {
   const router = useRouter();
   const { id } = router.query;
 
-  const userId =
-    typeof candidateDetails?.user === "object"
-      ? (candidateDetails?.user as { id?: string | number })?.id
-      : candidateDetails?.user;
+  const userId = getCandidateUserId(candidateDetails);
+  const applicationId = getCandidateId(candidateDetails?.application_id);
 
   const ApplicantFullData = useGetApplicantPersonalDetails({
     queryParams: {
@@ -92,7 +104,6 @@ ApplicationPopupProps) {
         <>
           <Stack
             stackProps={{
-              width: "80%",
               sx: MODAL_STYLES,
             }}
           >
@@ -148,13 +159,13 @@ ApplicationPopupProps) {
               >
                 <Button
                   onClick={() =>
-                    updateCandidateStatus(aplicantPersonalDetails?.id, 5)
+                    updateCandidateStatus(Number(userId), 1)
                   }
                   {...NOT_SHORTLISTED_BUTTON}
                 />
                 <Button
                   onClick={() =>
-                    updateCandidateStatus(aplicantPersonalDetails?.id, 4)
+                    updateCandidateStatus(Number(userId), 2)
                   }
                   {...SCEHDULE_INTERVIEW_BUTTON}
                 />
@@ -163,9 +174,10 @@ ApplicationPopupProps) {
             {/* main Stack */}
             <Stack
               stackProps={{
-                className: "mt-10",
+                className: "mt-6",
                 direction: { xs: "column", md: "row" },
-                justifyContent: "space-between",
+                alignItems: "flex-start",
+                gap: 3,
               }}
             >
               {/* left Stack */}
@@ -176,6 +188,10 @@ ApplicationPopupProps) {
                 }}
               >
                 <CandidateAcademicCard candidateId={userId} />
+                <CandidateAssessmentScores
+                  applicationId={applicationId}
+                  candidateId={userId}
+                />
                 <CandidateProfessionalCard candidateId={userId} />
                 <SocialLinksCard userId={userId} />
               </Stack>
@@ -183,7 +199,8 @@ ApplicationPopupProps) {
               <Stack
                 stackProps={{
                   className: "mt-4 md:mt-0",
-                  gap: 3,
+                  width: { xs: "100%", md: "50%" },
+                  gap: 2,
                 }}
               >
                 <CandidateDetailOverviewCard

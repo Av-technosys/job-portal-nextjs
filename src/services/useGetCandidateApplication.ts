@@ -47,6 +47,6 @@ export const useGetCandidateApplication = (
 ) => {
   return useInfiniteQuery({
     ...getInfiniteCandidateApplicationQueryOptions(queryConfig.queryParams),
-    ...queryConfig,
+    ...queryConfig.queryConfig,
   });
 };

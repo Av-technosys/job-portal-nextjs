@@ -23,6 +23,7 @@ export { default as RecruiterSubscriptionContainer } from "./RecruiterSubscripti
 export { default as AssessmentScoreContainer } from "./AssessmentScoreContainer";
 export { default as AssessmentSummaryContainer } from "./AssessmentSummaryContainer";
 export { default as AssessmentContainer } from "./AssessmentContainer";
+export { default as ScoreContainer } from "./ScoreContainer";
 export { default as ContactUsContainer } from "./ContactUsContainer";
 export { default as AboutUsContainer } from "./AboutUsContainer";
 export { default as MainAssessmentContainer } from "./MainAssessmentContainer";
