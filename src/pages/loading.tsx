@@ -5,10 +5,27 @@ import { Loader } from "@/components";
 import { useRouter } from "next/router";
 import { useThemeContext } from "@/styles";
 
+const ASSESSMENT_ROUTE_PREFIXES = [
+  "/dashboard/assessment",
+  "/assessment/get_all_test_question",
+  "/assessment/get_free_test_question",
+];
+
+function isAssessmentFlowRoute(url: string) {
+  return ASSESSMENT_ROUTE_PREFIXES.some((routePrefix) =>
+    url.startsWith(routePrefix)
+  );
+}
+
 function Loading() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { theme } = useThemeContext();
+
+  useEffect(() => {
+    setLoading(false);
+  }, [router.asPath]);
+
   useEffect(() => {
     const handleStart = (
       url: string,
@@ -25,6 +42,10 @@ function Loading() {
           //   removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
           // }
         }
+      }
+      if (isAssessmentFlowRoute(url)) {
+        setLoading(false);
+        return;
       }
       if (!urlOptions?.shallow) {
         setLoading(true);
@@ -43,6 +64,16 @@ function Loading() {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
+
+  useEffect(() => {
+    if (!loading) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setLoading(false);
+    }, 8000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [loading]);
 
   if (!loading) return null;
 

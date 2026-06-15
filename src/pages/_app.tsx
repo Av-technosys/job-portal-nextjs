@@ -15,8 +15,10 @@ import { HydrationBoundary } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { getItem } from "@/helper";
 import { LOCAL_STORAGE_KEY } from "@/constants";
+import { useRouter } from "next/router";
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
   const [isDark, toggleIsDark] = useState(false);
   const getLayout = Component?.getLayout ?? ((page) => page);
   const accessTokenFromLocalStorage = getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
@@ -42,7 +44,9 @@ const App = ({ Component, pageProps }: AppProps) => {
                   >
                     <ThemeProvider theme={currentTheme}>
                       <Loading />
-                      {getLayout(<Component {...pageProps} />)}
+                      {getLayout(
+                        <Component key={router.asPath} {...pageProps} />
+                      )}
                     </ThemeProvider>
                   </GlobalTheme>
                 </NotificationProvider>

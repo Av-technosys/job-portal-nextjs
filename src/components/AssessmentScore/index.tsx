@@ -2,7 +2,7 @@ import { Button, Grid, Loader, Stack, Typography } from "../common";
 import { ASSESSMENT_SCORE_PAGE_CONFIG } from "@/constants";
 import { useGetAssessmentScoreInfo } from "@/services/useGetAssessmentScoreDetails";
 import { colorStyles } from "@/styles";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 type paramID = {
@@ -13,6 +13,7 @@ function AssessmentScore({ id }: paramID) {
   const router = useRouter();
   const [scoreDetails, setScoreDetails] = useState(null);
   const assessmentScoreDetails = useGetAssessmentScoreInfo({
+    enabled: Boolean(id),
     queryParams: { id },
   });
 
@@ -33,6 +34,10 @@ function AssessmentScore({ id }: paramID) {
 
   const { SCORE_VALUE_1, SCORE_VALUE_2, CONGRATS_TEXT, CONTINUE_BUTTON } =
     ASSESSMENT_SCORE_PAGE_CONFIG;
+
+  function handleContinueClick() {
+    router.push("/dashboard/assessment");
+  }
 
   if (!scoreDetails) {
     return (
@@ -119,11 +124,7 @@ function AssessmentScore({ id }: paramID) {
                   }}
                 >
                   <Button
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/assessment/${scoreDetails?.assesment_session_id}`
-                      )
-                    }
+                    onClick={handleContinueClick}
                     {...CONTINUE_BUTTON}
                   />
                 </Stack>

@@ -4,7 +4,7 @@ import { QueryConfig } from "@/types";
 import { api } from "@/helper";
 
 export type getAssessmentScoreInfoQueryParams = {
-  id: number | string | string[];
+  id?: number | string | string[];
 };
 
 export const getAssessmentScoreInfo = ({
@@ -25,16 +25,19 @@ export const getAssessmentScoreInfoQueryOptions = (
 };
 
 type useGetAssessmentScoreInfoQueryOptions = {
+  enabled?: boolean;
   queryConfig?: QueryConfig<typeof getAssessmentScoreInfo>;
   queryParams: getAssessmentScoreInfoQueryParams;
 };
 
 export const useGetAssessmentScoreInfo = ({
+  enabled,
   queryConfig,
   queryParams,
 }: useGetAssessmentScoreInfoQueryOptions) => {
   return useQuery({
     ...getAssessmentScoreInfoQueryOptions(queryParams),
+    enabled: enabled ?? Boolean(queryParams.id),
     ...queryConfig,
   });
 };

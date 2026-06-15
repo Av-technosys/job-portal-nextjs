@@ -4,13 +4,14 @@ import { Button, Loader, Paper, Stack, Typography, Modal, LoadingButton } from "
 import { StopWatchIcon, TotalQuestionsIcon } from "@/assets";
 import { useGetAssessmentAttemptsInfo } from "@/services/useGetAssessmentAttempts";
 import { useGetSubjectList } from "@/services/useGetFindSubject";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useCreateOrderByRetakeTest } from "@/services/useCreateOrderByRetakeTest";
 import { useCaptureTransaction, useNotification } from "@/services";
 import { getErrorMessageFromAPI } from "@/helper";
 import Script from "next/script";
 import { useQueryClient } from "@tanstack/react-query";
 import { colorStyles } from "@/styles";
+import { CircularProgress } from "@mui/material";
 
 declare global {
   interface Window {
@@ -250,8 +251,18 @@ const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
     initializeRazorpay();
   };
 
-if (assessmentAttemptsDetails.isLoading || allSubjectList.isLoading || assessmentAttemptsDetails.isFetching) {
-  return <Loader loaderProps={{ open: true }} />;
+if (assessmentAttemptsDetails.isLoading || allSubjectList.isLoading) {
+  return (
+    <Stack
+      stackProps={{
+        alignItems: "center",
+        justifyContent: "center",
+        sx: { minHeight: "55vh" },
+      }}
+    >
+      <CircularProgress />
+    </Stack>
+  );
 }
   return (
     <>

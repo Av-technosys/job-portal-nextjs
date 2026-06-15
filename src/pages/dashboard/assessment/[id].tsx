@@ -1,4 +1,4 @@
-import AdminLayout from "@/components/AdminLayout";
+import { DashboardLayout } from "@/components";
 import AssessmentSectionContainer from "@/container/AssessmentSectionContainer";
 
 import React, { ReactElement } from "react";
@@ -8,7 +8,7 @@ function AssessmentTestId() {
 }
 
 AssessmentTestId.getLayout = (page: ReactElement) => (
-  <AdminLayout pageProps={page.props}>{page}</AdminLayout>
+  <DashboardLayout pageProps={page.props}>{page}</DashboardLayout>
 );
 
 export default AssessmentTestId;
