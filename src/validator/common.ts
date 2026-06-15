@@ -10,11 +10,11 @@ export const emailValidationSchema = yup
   .required("Email is required")
   .email("Enter a valid email");
 
-// export const businessEmailValidationSchema = yup
-//   .string()
-//   .required("Business email is required")
-//   .email("Enter a valid business email")
-//   .matches(BUSINESS_EMAIL_REGEX, "Please enter business email");
+export const businessEmailValidationSchema = yup
+  .string()
+  .required("Business email is required")
+  .email("Enter a valid business email")
+  .matches(BUSINESS_EMAIL_REGEX, "Please enter business email");
 
 export const passwordValidationSchema = yup
   .string()

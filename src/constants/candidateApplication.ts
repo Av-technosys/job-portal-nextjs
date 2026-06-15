@@ -547,7 +547,7 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
   },
   NOT_SHORTLISTED_BUTTON: {
     buttonProps: {
-      children: "Not Shortlisted ",
+      children: "Mark In Review",
       variant: ButtonVariantEnum.OUTLINED,
       size: ButtonSizeEnum.LARGE,
     },
@@ -562,7 +562,7 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
   },
   SCEHDULE_INTERVIEW_BUTTON: {
     buttonProps: {
-      children: "Scehdule Interview ",
+      children: "Put On Hold",
       variant: ButtonVariantEnum.CONTAINED,
       color: ButtonColorEnum.PRIMARY,
       size: ButtonSizeEnum.LARGE,
@@ -577,11 +577,14 @@ export const APPLICATION_MODAL = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-    maxHeight: "80vh",
+    border: "none",
+    borderRadius: "8px",
+    boxShadow: "0 24px 72px rgba(24, 25, 28, 0.18)",
+    p: { xs: 2, md: 3 },
+    maxHeight: "88vh",
     overflow: "auto",
+    width: { xs: "94vw", md: "86vw", lg: "78vw" },
+    maxWidth: 1180,
   },
 };
 

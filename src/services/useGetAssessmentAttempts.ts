@@ -1,10 +1,9 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiConstantsURL } from "@/constants";
-import { QueryConfig } from "@/types";
 import { api } from "@/helper";
 
 export type getAssessmentAttemptsInfoQueryParams = {
-  id: number | string | string[];
+  id?: number | string | string[];
 };
 
 export const getAssessmentAttemptsInfo = ({
@@ -25,16 +24,19 @@ export const getAssessmentAttemptsInfoQueryOptions = (
 };
 
 type useGetAssessmentAttemptsInfoQueryOptions = {
+  enabled?: boolean;
   queryConfig?: any;
   queryParams: getAssessmentAttemptsInfoQueryParams;
 };
 
 export const useGetAssessmentAttemptsInfo = ({
+  enabled,
   queryConfig,
   queryParams,
 }: useGetAssessmentAttemptsInfoQueryOptions) => {
   return useQuery({
     ...getAssessmentAttemptsInfoQueryOptions(queryParams),
+    enabled: enabled ?? Boolean(queryParams.id),
     ...queryConfig,
   });
 };

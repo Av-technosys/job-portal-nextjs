@@ -40,10 +40,13 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   const [timeForSubmit, setTimeForSubmit] = useState<number | null>(null);
   const router = useRouter();
   const { assesment_session_id, subject_id } = router.query;
+  const hasPaidAssessmentParams = Boolean(assesment_session_id && subject_id);
+  const hasFreeAssessmentParams = Boolean(subject_id);
   let StudentAssessmentQuestions;
 
   // if (testType == "paid") {
   const paidAssesmentData = useGetStudentAssessmentQuestions({
+    enabled: testType == "paid" && hasPaidAssessmentParams,
     queryParams: {
       assesment_session_id: assesment_session_id,
       subject_id: subject_id,
@@ -51,6 +54,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   });
   // } else {
   const freeAssesmentData = useGetFreeAssessmentQuestions({
+    enabled: testType !== "paid" && hasFreeAssessmentParams,
     queryParams: {
       subject_id: subject_id,
     },
@@ -70,6 +74,11 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
 
 
   const isQuestionsLoading = StudentAssessmentQuestions.isLoading;
+  const isQuestionsError = StudentAssessmentQuestions.isError;
+  const questionErrorMessage =
+    (StudentAssessmentQuestions.error as any)?.response?.data?.message ||
+    (StudentAssessmentQuestions.error as any)?.message ||
+    "Unable to load assessment questions.";
 
   const attempt_id = StudentAssessmentQuestions.data?.data?.attempt_id;
   const maxTimeFromBackend = StudentAssessmentQuestions.data?.data?.duration_minutes;
@@ -204,6 +213,34 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
 
   function getStopWatchTimeValue(time: number) {
     setTimeForSubmit(time);
+  }
+
+  if (isQuestionsError) {
+    return (
+      <Stack
+        stackProps={{
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 2,
+          sx: { minHeight: "70vh", p: 3, textAlign: "center" },
+        }}
+      >
+        <Typography
+          typographyProps={{
+            children: questionErrorMessage,
+            variant: TypographyVariantEnum.H6,
+            color: "error",
+          }}
+        />
+        <Button
+          buttonProps={{
+            children: "Back to Assessments",
+            variant: ButtonVariantEnum.CONTAINED,
+          }}
+          onClick={() => router.replace("/dashboard/assessment")}
+        />
+      </Stack>
+    );
   }
 
   return (

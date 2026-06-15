@@ -29,6 +29,7 @@ import {
   MY_APPLIED_JOBS_URL,
   PROFILE_URL,
   SAVED_JOB_URL,
+  SCORE_URL,
 } from "./navigationUrl";
 import {
   getDefaultCertificationData,
@@ -883,6 +884,10 @@ export const STUDENT_PROFILE_SIDEBAR_CONFIG = [
   {
     text: "Assessments",
     listValue: ASSESSMENT_URL,
+  },
+  {
+    text: "Score",
+    listValue: SCORE_URL,
   },
   {
     text: "Job Seeker’s Information",

@@ -24,6 +24,7 @@ export const CANDIATE_APPLICATIONS_URL: string =
 export const SAVED_JOB_URL: string = "/dashboard/saved-job";
 export const SUBSCRIPTION_URL: string = "/dashboard/subscription";
 export const ASSESSMENT_URL: string = "/dashboard/assessment";
+export const SCORE_URL: string = "/dashboard/score";
 export const CONTACT_US_URL: string = "/contact-us";
 export const ABOUT_US_URL: string = "/about-us";
 export const PRIVACY_POLICY_URL: string = "/privacy-policy";
@@ -59,6 +60,7 @@ export const PRIVATE_ROUTES_CONFIG: string[] = [
   SAVED_JOB_URL,
   SUBSCRIPTION_URL,
   ASSESSMENT_URL,
+  SCORE_URL,
 ];
 
 export const PRIVATE_PUBLIC_ROUTES_CONFIG: string[] = [
@@ -126,6 +128,7 @@ export const PRIVATE_ROUTE_USER_TYPE_CONFIG: {
   [SAVED_JOB_URL]: ONLY_JOB_SEEKER_USER_PERMISSION,
   [SUBSCRIPTION_URL]: ONLY_RECRUITER_USER_PERMISSION,
   [ASSESSMENT_URL]: ONLY_JOB_SEEKER_USER_PERMISSION,
+  [SCORE_URL]: ONLY_JOB_SEEKER_USER_PERMISSION,
 };
 
 export const SHOW_SIDEBAR_NON_AUTHENTICATED_CONFIG: string[] = [];
@@ -245,5 +248,9 @@ export const NAVIGATION_PATH_MAPPING_CONFIG = {
   [ASSESSMENT_URL]: {
     title: `${STATIC_BRAND_TITLE} | Assessment`,
     breacrumbLinkTitle: ["Dashboard", "Assessment"],
+  },
+  [SCORE_URL]: {
+    title: `${STATIC_BRAND_TITLE} | Score`,
+    breacrumbLinkTitle: ["Dashboard", "Score"],
   },
 };
