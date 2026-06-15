@@ -1,7 +1,7 @@
 import { LoadingButton, Modal, Stack, Typography } from "@/components";
 import { BRAND_LOGO_URL, MODAL_STYLES, PAYMENT_MODAL_TEXT } from "@/constants";
 import { colorStyles } from "@/styles";
-import { RazorpayResponse } from "@/types";
+import { CommonObjectType, RazorpayResponse } from "@/types";
 import {
   useCreateOrderId,
   useCaptureTransaction,
@@ -30,7 +30,7 @@ const PaymentModal = ({
   planType: string;
   planId: string;
   handleClose?: VoidFunction;
-  handlePaymentComplete?: VoidFunction;
+  handlePaymentComplete?: (paymentData?: CommonObjectType) => void;
 }) => {
   const {
     TITLE,
@@ -59,16 +59,6 @@ const PaymentModal = ({
     }
   }, [amount, orderId]);
 
-  // Fetch order details when modal opens
-  useEffect(() => {
-    if (open) {
-      setAmount(null);
-      setOrderId(null);
-      setIsOrderReady(false);
-      createOrderId.mutate({ planId });
-    }
-  }, [open, planId]);
-
   // Create order mutation
   const createOrderId = useCreateOrderId({
     mutationConfig: {
@@ -90,14 +80,25 @@ const PaymentModal = ({
       },
     },
   });
+  const { mutate: createOrder } = createOrderId;
+
+  // Fetch order details when modal opens
+  useEffect(() => {
+    if (open) {
+      setAmount(null);
+      setOrderId(null);
+      setIsOrderReady(false);
+      createOrder({ planId });
+    }
+  }, [createOrder, open, planId]);
 
   // Capture transaction mutation  
   const captureTransaction = useCaptureTransaction({
     mutationConfig: {
-      onSuccess: () => {
+      onSuccess: (res) => {
         refetchCommonDetails();
         showNotification(PAYMENT_NOTIFICATION.SUCCESS_CONFIG);
-        handlePaymentComplete?.();
+        handlePaymentComplete?.(res?.data);
       },
       onError: (error) => {
         console.error("captureTransaction onError:", error);
