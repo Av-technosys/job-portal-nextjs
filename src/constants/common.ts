@@ -550,6 +550,11 @@ export const JOB_ROLE_OPTIONS = [
     value: "marketing-manager",
     label: "Marketing Manager",
   },
+  {
+    key: "customer-service",
+    value: "customer-service",
+    label: "Customer Service",
+  },
 ];
 
 export const MIN_SALARY_RANGE_OPTIONS = [

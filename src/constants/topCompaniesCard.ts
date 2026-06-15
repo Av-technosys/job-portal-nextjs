@@ -30,7 +30,7 @@ export const TOP_COMPANY_CARD_CONFIG = {
         onClick,
         className: "cursor-pointer",
       },
-      children: "Job Details",
+      children: "View Jobs",
     };
   },
   BACKGROUND_IMAGE: (background_image: string, name: string) => {
