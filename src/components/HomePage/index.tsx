@@ -4,6 +4,7 @@ import LatestJobOpenings from "./LatestJobOpening";
 import { isUserAuthenticated } from "@/helper";
 import TopCompanies from "./topCompanies";
 import Testimonial from "./testimonial";
+import AssessmentHighlight from "./AssessmentHighlight";
 
 function HomePage() {
   const [loginPopup, setLoginPopup] = useState(false);
@@ -16,6 +17,7 @@ function HomePage() {
         handleClose={() => setLoginPopup(false)}
       />
       <LatestJobOpenings />
+      <AssessmentHighlight />
 
       <TopCompanies
         isAuthenticated={isAuthenticated}
