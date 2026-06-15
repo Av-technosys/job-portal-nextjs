@@ -122,13 +122,13 @@ function AdminContainer() {
     {
       icon: <PersonIcon fontSize="large" />,
       count: jobSeekerCount,
-      label: "Student Count",
+      label: "Job Seeker Count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <SchoolIcon fontSize="large" />,
       count: assessmentCount,
-      label: "Total Assessment Taken",
+      label: "Total Assessment",
       bgColor: "#FFC1B2",
     },
   ];
