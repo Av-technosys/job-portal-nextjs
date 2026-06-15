@@ -56,6 +56,11 @@ function Login() {
   const router = useRouter();
   const { showNotification } = useNotification();
   const { isExtraSmallScreen } = useScreen();
+  const redirectTo =
+    typeof router.query.redirectTo === "string" &&
+    router.query.redirectTo.startsWith("/")
+      ? router.query.redirectTo
+      : "";
 
   const showAdminVerificationNotification = () => {
     showNotification(NOTIFICATION_CONFIG.ADMIN_VERIFICATION_REQUIRED);
@@ -100,9 +105,12 @@ function Login() {
             userDetails?.data?.access_type as string
           );
 
+          const userType = userDetails?.data?.user_type?.toString();
           const redirectUrl =
-            userDetails?.data?.user_type?.toString() === UserType.ADMIN_TYPE
+            userType === UserType.ADMIN_TYPE
               ? ADMIN_URL
+              : userType === UserType.JOB_SEEKER_TYPE && redirectTo
+              ? redirectTo
               : PROFILE_URL;
 
           router.push(redirectUrl);

@@ -1,9 +1,17 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AppProps } from "next/app";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { darkTheme, GlobalTheme, lightTheme } from "@/styles";
-import { ThemeProvider } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  ThemeProvider,
+  Typography,
+} from "@mui/material";
 import "../styles/global.scss";
 import Loading from "./loading";
 import {
@@ -13,16 +21,42 @@ import {
 } from "@/services";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
-import { getItem } from "@/helper";
+import { getItem, removeItem } from "@/helper";
 import { LOCAL_STORAGE_KEY } from "@/constants";
+import { useRouter } from "next/router";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [isDark, toggleIsDark] = useState(false);
+  const [forceLogoutMessage, setForceLogoutMessage] = useState("");
   const getLayout = Component?.getLayout ?? ((page) => page);
   const accessTokenFromLocalStorage = getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+  const router = useRouter();
   const currentTheme = useMemo(() => {
     return isDark ? darkTheme : lightTheme;
   }, [isDark]);
+
+  useEffect(() => {
+    const handleForceLogout = (event: Event) => {
+      const customEvent = event as CustomEvent<{ message?: string }>;
+      setForceLogoutMessage(
+        customEvent.detail?.message ||
+          "Your account has been deactivated by admin."
+      );
+    };
+
+    window.addEventListener("force-logout", handleForceLogout);
+    return () => {
+      window.removeEventListener("force-logout", handleForceLogout);
+    };
+  }, []);
+
+  const handleForceLogoutConfirm = useCallback(() => {
+    removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    removeItem(LOCAL_STORAGE_KEY.CURRENT_USER_TYPE);
+    removeItem(LOCAL_STORAGE_KEY.CURRENT_ACCESS_TYPE);
+    setForceLogoutMessage("");
+    router.push("/login");
+  }, [router]);
 
   return (
     <>
@@ -43,6 +77,28 @@ const App = ({ Component, pageProps }: AppProps) => {
                     <ThemeProvider theme={currentTheme}>
                       <Loading />
                       {getLayout(<Component {...pageProps} />)}
+                      <Dialog
+                        open={!!forceLogoutMessage}
+                        disableEscapeKeyDown
+                        onClose={(_, reason) => {
+                          if (reason !== "backdropClick") {
+                            setForceLogoutMessage("");
+                          }
+                        }}
+                      >
+                        <DialogTitle>Account deactivated</DialogTitle>
+                        <DialogContent>
+                          <Typography>{forceLogoutMessage}</Typography>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            variant="contained"
+                            onClick={handleForceLogoutConfirm}
+                          >
+                            Logout
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     </ThemeProvider>
                   </GlobalTheme>
                 </NotificationProvider>
