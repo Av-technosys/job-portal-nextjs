@@ -601,34 +601,42 @@ export const CANDIDATE_APPLICATION_MENU_ITEMS = [
   {
     label: "In Review",
     key: IN_REVIEW,
+    status: 1,
   },
   {
     label: "On Hold",
     key: ON_HOLD,
+    status: 2,
   },
   {
     label: "Shortlisted",
     key: SHORTLIST,
+    status: 3,
   },
   {
     label: "Interviewing",
     key: INTERVIEWING,
+    status: 4,
   },
   {
     label: "Rejected",
     key: REJECTED,
+    status: 5,
   },
   {
     label: "Salary Negotiation",
     key: SALARY_NEGOTIATION,
+    status: 6,
   },
   {
     label: "Offered",
     key: OFFERED,
+    status: 7,
   },
   {
     label: "Joined",
     key: JOINED,
+    status: 8,
   },
 ];
 

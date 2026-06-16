@@ -35,9 +35,18 @@ const App = ({ Component, pageProps }: AppProps) => {
     return isDark ? darkTheme : lightTheme;
   }, [isDark]);
 
-  useEffect(() => {
+  const syncAccessTokenFromCookie = useCallback(() => {
     setAccessTokenFromCookie(getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN));
   }, []);
+
+  useEffect(() => {
+    syncAccessTokenFromCookie();
+    router.events.on("routeChangeComplete", syncAccessTokenFromCookie);
+
+    return () => {
+      router.events.off("routeChangeComplete", syncAccessTokenFromCookie);
+    };
+  }, [router.events, syncAccessTokenFromCookie]);
 
   useEffect(() => {
     const handleForceLogout = (event: Event) => {

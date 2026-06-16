@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConstantsURL } from "@/constants";
 import { CommonObjectType, MutationConfig } from "@/types";
 import { api } from "@/helper";
@@ -26,9 +26,11 @@ export const useValidateUser = ({
   mutationConfig,
 }: UseValidateUserOptions = {}) => {
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};
+  const queryClient = useQueryClient();
 
   return useMutation({
     onSuccess: (...args) => {
+      queryClient.clear();
       onSuccess?.(...args);
     },
     onError: (...args) => {

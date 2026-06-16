@@ -9,14 +9,16 @@ import {
 } from "@/services";
 import { InfinitePagination, Stack, Typography, When, Loader } from "../common";
 import {
+  LOCAL_STORAGE_KEY,
   PAGIANTION_LIMIT,
   PROFILE_URL,
   SAVED_JOB_PAGE_COFIG,
 } from "@/constants";
 import SavedJobCard from "./SavedJobCard";
-import { CommonObjectType } from "@/types";
+import { CommonObjectType, UserType } from "@/types";
 import {
   getErrorMessageFromAPI,
+  getItem,
   isJobEligibleForSubmission,
   mutateJobListQueryDataForAppliedJobs,
   mutateSavedJobListQueryDataForSavedJobs,
@@ -24,6 +26,9 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import EmptySavedJobs from "../EmptyStates/EmptySavedjob";
 import { useRouter } from "next/router";
+
+const RECRUITER_APPLY_RESTRICTED_MESSAGE =
+  "Recruiters can't apply for jobs. Please use a job seeker account.";
 
 function SavedJobs() {
   const { TITLE_COUNT, TITLE_HEADER, JOB_SAVE_CARD } = SAVED_JOB_PAGE_COFIG;
@@ -57,6 +62,13 @@ function SavedJobs() {
   }
 
   function onApplyClick(job: CommonObjectType) {
+    if (getItem(LOCAL_STORAGE_KEY.CURRENT_USER_TYPE) === UserType.RECUITER_TYPE) {
+      showNotification({
+        message: RECRUITER_APPLY_RESTRICTED_MESSAGE,
+      });
+      return;
+    }
+
     if (isJobEligibleForSubmission(job)) {
       jobApplyMutate.mutate(
         {

@@ -96,11 +96,11 @@ useEffect(() => {
 }, [timeForSubmit, tabSwitchCount]);
 
 
-  const answerMap: Record<string, number> = {
-    A: 0,
-    B: 1,
-    C: 2,
-    D: 3,
+  const answerMap: Record<string, string> = {
+    A: "option_1",
+    B: "option_2",
+    C: "option_3",
+    D: "option_4",
   };
 
   // convert userAnsweredData into required format
@@ -109,7 +109,7 @@ useEffect(() => {
   ).reduce((acc, [key, value]: any) => {
     const answer = answerMap[value.answer] ?? null;
     if (answer !== null) {
-      acc[key] = `1_${answer}`;
+      acc[key] = answer;
     }
     return acc;
   }, {} as Record<string, string>);

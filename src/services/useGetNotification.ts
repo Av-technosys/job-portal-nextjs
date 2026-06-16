@@ -19,8 +19,11 @@ export const getInfiniteNotificationQueryOptions = () => {
     queryFn: ({ pageParam = 1 }) => {
       return getNotification({ page: pageParam as number });
     },
-    getNextPageParam: (lastPage, pages, lastPageParam) => {
-      return lastPageParam + 1;
+    getNextPageParam: (lastPage, _pages, lastPageParam) => {
+      const totalPages = lastPage?.data?.total_pages || 0;
+      const currentPage = lastPage?.data?.current_page || lastPageParam;
+
+      return currentPage < totalPages ? currentPage + 1 : undefined;
     },
     initialPageParam: 1,
     staleTime: 0,
