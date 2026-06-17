@@ -8,11 +8,18 @@ function CustomTabPanel(props: TabPanelProps) {
 
   return (
     <div
+      {...other}
       role="tabpanel"
       hidden={value !== selectedTab}
       id={`tabpanel-${value}`}
       aria-labelledby={`tab-${value}`}
-      {...other}
+      className="w-full"
+      style={{
+        width: "100%",
+        marginLeft: 0,
+        marginRight: "auto",
+        display: value === selectedTab ? "block" : "none",
+      }}
     >
       <When condition={selectedTab === value}>{children}</When>
     </div>
@@ -49,7 +56,7 @@ function Tabs({ items = [], tabsProps, handleTabChange }: TabsProps) {
           />
         ))}
       </MUITabs>
-      <div className="w-full">
+      <div className="w-full" style={{ width: "100%", marginLeft: 0 }}>
         {items.map((item) => (
           <CustomTabPanel
             key={`ja-CustomTabPanel-${item.key}`}

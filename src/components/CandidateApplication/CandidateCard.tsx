@@ -2,6 +2,7 @@ import { CommonObjectType } from "@/types";
 import {
   Avatar,
   Button,
+  Chip,
   Stack,
   TextWithIcon,
   Typography,
@@ -19,6 +20,33 @@ import {
 import { useMemo } from "react";
 import { colorStyles } from "@/styles";
 
+const APPLICATION_STATUS_LABELS: Record<number, string> = {
+  0: "Received",
+  1: "In Review",
+  2: "On Hold",
+  3: "Shortlisted",
+  4: "Interviewing",
+  5: "Rejected",
+  6: "Salary Negotiation",
+  7: "Offered",
+  8: "Joined",
+};
+
+const APPLICATION_STATUS_STYLES: Record<
+  number,
+  { backgroundColor: string; color: string }
+> = {
+  0: { backgroundColor: "#F1F2F4", color: "#474C54" },
+  1: { backgroundColor: "#E6F2FF", color: "#007AFF" },
+  2: { backgroundColor: "#FFF4E1", color: "#9A5B00" },
+  3: { backgroundColor: "#E8F4FF", color: "#0A65CC" },
+  4: { backgroundColor: "#EEF2FF", color: "#4F46E5" },
+  5: { backgroundColor: "#FDECEC", color: "#DC2626" },
+  6: { backgroundColor: "#FFF7ED", color: "#C2410C" },
+  7: { backgroundColor: "#E6FAE6", color: "#0BA02C" },
+  8: { backgroundColor: "#ECFDF5", color: "#047857" },
+};
+
 export default function CandidateApplicationCard({
   candidate,
   openApplicationPopup,
@@ -31,6 +59,12 @@ export default function CandidateApplicationCard({
   const { CANDIDATE_CARD } = CANDIDATE_APPLICATION_PAGE_CONFIG;
   const { IMAGE, NAME, JOB_TYPE, LOCATION, EXPERIENCE, BUTTON } =
     CANDIDATE_CARD;
+  const applicationStatus = Number(candidate?.application_status ?? 0);
+  const applicationStatusLabel =
+    APPLICATION_STATUS_LABELS[applicationStatus] || "Received";
+  const applicationStatusStyle =
+    APPLICATION_STATUS_STYLES[applicationStatus] ||
+    APPLICATION_STATUS_STYLES[0];
 
   const candidateDetails = useMemo(() => {
     return [
@@ -59,7 +93,7 @@ export default function CandidateApplicationCard({
         textProps: LOCATION(candidate),
       },
     ];
-  }, [EXPERIENCE, JOB_TYPE, LOCATION, , candidate]);
+  }, [EXPERIENCE, JOB_TYPE, LOCATION, candidate]);
 
   return (
     <>
@@ -100,9 +134,30 @@ export default function CandidateApplicationCard({
             }}
           >
             <Typography {...NAME(candidate.user as CommonObjectType)} />
-            <IconButton onClick={handleIconButtonClick}>
-              <MoreVertIcon />
-            </IconButton>
+            <Stack
+              stackProps={{
+                direction: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Chip
+                label={applicationStatusLabel}
+                size="small"
+                sx={{
+                  backgroundColor: applicationStatusStyle.backgroundColor,
+                  color: applicationStatusStyle.color,
+                  fontWeight: 600,
+                  fontSize: "13px",
+                  height: 28,
+                  borderRadius: "6px",
+                  px: 0.5,
+                }}
+              />
+              <IconButton onClick={handleIconButtonClick}>
+                <MoreVertIcon />
+              </IconButton>
+            </Stack>
           </Stack>
           <Stack
             stackProps={{

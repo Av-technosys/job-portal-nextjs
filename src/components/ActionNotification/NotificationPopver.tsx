@@ -6,13 +6,22 @@ import {
   When,
   Popover,
 } from "../common";
-import { useGetNotification, usePagination } from "@/services";
+import { useCommonDetails, useGetNotification, usePagination } from "@/services";
 import { CommonObjectType } from "@/types";
+import {
+  CANDIATE_APPLICATIONS_PARTIAL_URL,
+  DASHBOARD_URL,
+  JOB_DETAILS_PARTIAL_URL,
+} from "@/constants";
+import { isLoggedInUserJobSeeker, isLoggedInUserRecruiter } from "@/helper";
+import { useRouter } from "next/router";
 
 function NotificationCard({
   notification,
+  onClick,
 }: {
   notification: CommonObjectType;
+  onClick: () => void;
 }) {
   return (
     <Stack
@@ -21,6 +30,21 @@ function NotificationCard({
         direction: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        onClick,
+        role: "button",
+        tabIndex: 0,
+        sx: {
+          cursor: "pointer",
+          "&:hover": {
+            borderColor: "#007AFF",
+          },
+        },
+        onKeyDown: (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onClick();
+          }
+        },
       }}
     >
       <Stack stackProps={{ gap: 2, width: "100%" }}>
@@ -50,12 +74,40 @@ function NotificationPopover({
   handleClose: () => void;
 }) {
   const notificationAPIData = useGetNotification();
+  const router = useRouter();
+  const { userType } = useCommonDetails();
 
   const { paginatedInfoData, hasMore } = usePagination({
     paginatedAPIData: notificationAPIData,
   });
 
-  // no-op here; InfinitePagination will handle scroll-based fetching when height is provided
+  function getNotificationMetaData(notification: CommonObjectType) {
+    return typeof notification?.meta_data === "object" &&
+      notification?.meta_data !== null
+      ? (notification.meta_data as CommonObjectType)
+      : {};
+  }
+
+  function handleNotificationClick(notification: CommonObjectType) {
+    const metaData = getNotificationMetaData(notification);
+    const jobId = Number(metaData?.job_id);
+
+    handleClose();
+
+    if (!Number.isNaN(jobId) && jobId > 0) {
+      if (userType !== -1 && isLoggedInUserRecruiter({ userType })) {
+        router.push(`${CANDIATE_APPLICATIONS_PARTIAL_URL}/${jobId}`);
+        return;
+      }
+
+      if (userType !== -1 && isLoggedInUserJobSeeker({ userType })) {
+        router.push(`${JOB_DETAILS_PARTIAL_URL}/${jobId}`);
+        return;
+      }
+    }
+
+    router.push(DASHBOARD_URL);
+  }
 
   return (
     <>
@@ -90,6 +142,7 @@ function NotificationPopover({
                     <NotificationCard
                       notification={item}
                       key={`notification-${item?.id}`}
+                      onClick={() => handleNotificationClick(item)}
                     />
                   );
                 })}
@@ -100,6 +153,7 @@ function NotificationPopover({
                 notification={{
                   body: "Nothing to show here !!!",
                 }}
+                onClick={handleClose}
               />
             </When>
           </>
