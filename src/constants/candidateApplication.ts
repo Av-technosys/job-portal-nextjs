@@ -682,6 +682,12 @@ export const getCandidateApplicationStatusMenuItems = (
     return CANDIDATE_APPLICATION_MENU_ITEMS;
   }
 
+  if (statusValue === 5) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS.filter(
+      (item) => item.key === REJECTED
+    );
+  }
+
   const currentStatusIndex = CANDIDATE_APPLICATION_MENU_ITEMS.findIndex(
     (item) => item.status === statusValue
   );
