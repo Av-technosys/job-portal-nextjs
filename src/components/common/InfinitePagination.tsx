@@ -1,6 +1,6 @@
 import { InfinitePaginationProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 function InfinitePagination({
   children,
@@ -9,7 +9,6 @@ function InfinitePagination({
   hasMore,
   isFetchingMore,
   inverse = false,
-  showEndMessage = true,
   showLoader = true,
   height,
 }: InfinitePaginationProps) {
@@ -28,17 +27,20 @@ function InfinitePagination({
                 <CircularProgress size={24} />
               </Box>
             ) : (
-              <h4>Loading...</h4>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  py: 2,
+                  textAlign: "center",
+                }}
+              >
+                Loading more results...
+              </Typography>
             )
           ) : null
         }
-        endMessage={
-          showEndMessage ? (
-            dataLength > 10 ? (
-              <h4>You have reached the end</h4>
-            ) : null
-          ) : null
-        }
+        endMessage={null}
         inverse={inverse}
       >
         {children}

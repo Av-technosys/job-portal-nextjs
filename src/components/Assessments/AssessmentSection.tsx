@@ -94,7 +94,7 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
   }
 
 const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
-  enabled: Boolean(assessmentId),
+  enabled: assessmentType !== "paid" || Boolean(assessmentId),
   queryParams: { id: assessmentId },
   queryConfig: {
     staleTime: 0,

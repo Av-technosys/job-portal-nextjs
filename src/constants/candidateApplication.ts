@@ -66,9 +66,10 @@ export const CANDIDATE_APPLICATION_PAGE_CONFIG = {
       } as TypographyProps;
     },
     EXPERIENCE: (candidate: CommonObjectType) => {
+      const experience = Number(candidate?.experience || 0);
       return {
         typographyProps: {
-          children: candidate?.gender,
+          children: `${experience} Year${experience === 1 ? "" : "s"}`,
           variant: TypographyVariantEnum.H5,
         },
         fontSize: TypographyFontSize.small,
