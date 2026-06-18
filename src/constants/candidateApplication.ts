@@ -640,6 +640,59 @@ export const CANDIDATE_APPLICATION_MENU_ITEMS = [
   },
 ];
 
+export const CANDIDATE_APPLICATION_STATUS_LABELS =
+  CANDIDATE_APPLICATION_MENU_ITEMS.reduce<Record<number, string>>(
+    (acc, item) => {
+      acc[item.status] = item.label;
+      return acc;
+    },
+    {}
+  );
+
+export const getCandidateApplicationStatusValue = (status?: unknown) => {
+  const statusValue =
+    typeof status === "string" || typeof status === "number"
+      ? Number(status)
+      : null;
+
+  return typeof statusValue === "number" && Number.isFinite(statusValue)
+    ? statusValue
+    : null;
+};
+
+export const getCandidateApplicationStatusLabel = (
+  status?: unknown,
+  fallback = "Received"
+) => {
+  const statusValue = getCandidateApplicationStatusValue(status);
+
+  if (!statusValue) {
+    return fallback;
+  }
+
+  return CANDIDATE_APPLICATION_STATUS_LABELS[statusValue] || fallback;
+};
+
+export const getCandidateApplicationStatusMenuItems = (
+  currentStatus?: unknown
+) => {
+  const statusValue = getCandidateApplicationStatusValue(currentStatus);
+
+  if (!statusValue) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS;
+  }
+
+  const currentStatusIndex = CANDIDATE_APPLICATION_MENU_ITEMS.findIndex(
+    (item) => item.status === statusValue
+  );
+
+  if (currentStatusIndex === -1) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS;
+  }
+
+  return CANDIDATE_APPLICATION_MENU_ITEMS.slice(currentStatusIndex);
+};
+
 export const CANDIDATE_NOTIFICATION_CONFIG = {
   SUCCESS: {
     message: "Candidate Status update successfully",

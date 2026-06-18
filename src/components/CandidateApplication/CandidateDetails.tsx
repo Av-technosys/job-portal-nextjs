@@ -10,6 +10,8 @@ import {
   CANDIDATE_APPLICATION_PAGE_CONFIG,
   CANDIDATE_APPLICATION_MENU_ITEMS,
   CANDIDATE_NOTIFICATION_CONFIG,
+  getCandidateApplicationStatusValue,
+  getCandidateApplicationStatusMenuItems,
 } from "@/constants";
 import CandidateApplicationCard from "./CandidateCard";
 import { CommonObjectType, Job } from "@/types";
@@ -34,7 +36,9 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
   }
 
   function isMenuItemDisabled(key: string) {
-    const currentStatus = selectedCandidate.current?.application_status;
+    const currentStatus = getCandidateApplicationStatusValue(
+      selectedCandidate.current?.application_status
+    );
     const nextStatus = getStatusForMenuKey(key);
 
     return (
@@ -181,7 +185,9 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
           },
         }}
       >
-        {CANDIDATE_APPLICATION_MENU_ITEMS.map((item) => (
+        {getCandidateApplicationStatusMenuItems(
+          selectedCandidate.current?.application_status
+        ).map((item) => (
           <MenuItem
             key={`CandidateApplicationMenu-${item.key}`}
             disabled={isMenuItemDisabled(item.key)}

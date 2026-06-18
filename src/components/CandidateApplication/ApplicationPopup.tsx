@@ -1,8 +1,9 @@
 import {
   APPLICATION_MODAL,
-  CANDIDATE_APPLICATION_MENU_ITEMS,
   CANDIDATE_DETAILS_PAGE_CONFIG,
   CANDIDATE_NOTIFICATION_CONFIG,
+  getCandidateApplicationStatusValue,
+  getCandidateApplicationStatusMenuItems,
 } from "@/constants";
 import { Avatar, Button, IconButton, Modal, Stack, Typography } from "../common";
 import { CommonObjectType, Job } from "@/types";
@@ -70,9 +71,7 @@ ApplicationPopupProps) {
   const userId = getCandidateUserId(candidateDetails);
   const applicationId = getCandidateId(candidateDetails?.application_id);
   const [applicationStatus, setApplicationStatus] = useState<number | null>(
-    typeof candidateDetails?.application_status === "number"
-      ? candidateDetails.application_status
-      : null
+    getCandidateApplicationStatusValue(candidateDetails?.application_status)
   );
   const queryClient = useQueryClient();
 
@@ -89,9 +88,7 @@ ApplicationPopupProps) {
 
   useEffect(() => {
     setApplicationStatus(
-      typeof candidateDetails?.application_status === "number"
-        ? candidateDetails.application_status
-        : null
+      getCandidateApplicationStatusValue(candidateDetails?.application_status)
     );
   }, [candidateDetails?.application_status]);
 
@@ -197,7 +194,9 @@ ApplicationPopupProps) {
                     flexWrap: "wrap",
                   }}
                 >
-                  {CANDIDATE_APPLICATION_MENU_ITEMS.map((item) => (
+                  {getCandidateApplicationStatusMenuItems(
+                    applicationStatus
+                  ).map((item) => (
                     <Button
                       key={`ApplicationPopupStatus-${item.key}`}
                       onClick={() =>
