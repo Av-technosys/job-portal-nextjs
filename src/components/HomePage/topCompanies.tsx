@@ -131,7 +131,7 @@ function TopCompanies({
         }}
       >
         <Typography {...HEADER_TEXT()} />
-        <div className="w-full flex items-center justify-end pr-10 md:pr-0">
+        <div className="w-full flex items-center justify-end">
           <When condition={topCompanies.length > 3}>
             <Stack
               stackProps={{
@@ -181,8 +181,8 @@ function TopCompanies({
               {topCompanies.map((company: Company, index: number) => (
                 <div
                   key={index}
-                  className=" transition-transform duration-500"
-                  style={{ transform: `translateX(-${slideCount * 100}%)` }}
+                  className="transition-transform duration-500 flex-shrink-0"
+                  style={{ transform: `translateX(-${slideCount * 316}px)` }}
                 >
                   <HomePage
                     isAuthenticated={isAuthenticated}

@@ -200,8 +200,9 @@ const Footer: React.FC = () => {
         </Stack>
         <Stack
           stackProps={{
-            direction: "row",
+            direction: { xs: "column", sm: "row" },
             gap: 2,
+            alignItems: { xs: "flex-start", sm: "center" },
           }}
         >
           <Stack>

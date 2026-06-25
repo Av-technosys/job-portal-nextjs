@@ -56,17 +56,16 @@ function LatestJobOpenings() {
       <Stack
         stackProps={{
           width: "100%",
-          marginTop: "-40px",
+          marginTop: { xs: "-10px", md: "-40px" },
           className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto",
         }}
       >
         <Stack
           stackProps={{
-            marginLeft: 2,
+            px: 2,
             marginBottom: 2,
             direction: "row",
             justifyContent: "space-between",
-            className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl ",
           }}
         >
           <Stack

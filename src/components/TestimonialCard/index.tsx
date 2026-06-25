@@ -21,11 +21,14 @@ function TestimonialCard({ card }: TestimonialCardProps) {
       key={card.id}
       stackProps={{
         gap: 2,
-        className: "h-80 w-80 rounded-xl border-2",
+        className: "rounded-xl border-2",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
         sx: {
+          width: { xs: "100%", sm: 320 },
+          height: { xs: "auto", sm: 320 },
+          p: { xs: 3, sm: 0 },
           borderColor: colorStyles.borderGreyColor,
           transition: "border-color 0.4s ease-in-out",
           "&:hover": {

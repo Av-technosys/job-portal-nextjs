@@ -176,7 +176,7 @@ function JobOpportunity({
 
   return (
     <div className="w-full">
-      <div className="w-full flex min-h-12 justify-end pr-10 md:pr-0">
+      <div className="w-full flex min-h-12 justify-end">
         <When condition={showSlider}>
           <Stack stackProps={{ direction: "row", width: "10%" }}>
             <IconButton onClick={handleSliderPrevious}>

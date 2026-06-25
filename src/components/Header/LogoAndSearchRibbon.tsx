@@ -2,6 +2,7 @@ import {
   ContactPhoneOutlinedIcon,
   DeveloperBoardOutlinedIcon,
   HomeOutlinedIcon,
+  InfoOutlinedIcon,
   JA_LOGO,
   PersonSearchOutlinedIcon,
   SearchIcon,
@@ -9,6 +10,7 @@ import {
 import ActionNotification from "../ActionNotification";
 import { Button, NextImage, Stack, Tabs, Tooltip, When } from "../common";
 import AccountPopover from "./AccountPopover";
+import MobileDrawerMenu from "./MobileDrawerMenu";
 import {
   ABOUT_US_URL,
   CONTACT_US_URL,
@@ -43,33 +45,18 @@ function LogoAndSearchRibbon({
     [RECRUITER_URL]: <PersonSearchOutlinedIcon />,
     [DASHBOARD_URL]: <DeveloperBoardOutlinedIcon />,
     [CONTACT_US_URL]: <ContactPhoneOutlinedIcon />,
-    [ABOUT_US_URL]: <ContactPhoneOutlinedIcon />,
+    [ABOUT_US_URL]: <InfoOutlinedIcon />,
   };
+
   const userWiseTopRibbon = useMemo(() => {
     const ribbonDetails = getTopRibbonDetails({ userType });
-    if (isExtraSmallScreen) {
-      const ribbonDetailsForSmallScreens = ribbonDetails?.map((item) => {
-        return {
-          icon: (
-            <>
-              <Tooltip title={item.label}>
-                {TabIconConfig[item?.value] || <SearchIcon />}
-              </Tooltip>
-            </>
-          ),
-          ...item,
-          label: undefined,
-        };
-      });
-      return ribbonDetailsForSmallScreens;
-    }
     return ribbonDetails;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userType, isExtraSmallScreen]);
+  }, [userType]);
 
   const tabSelectedInRibbon = useMemo(() => {
     const tabSelected = userWiseTopRibbon?.find((tab) => {
-      // SHow Find Job selected when user is on job details page
+      // Show Find Job selected when user is on job details page
       if (tab.value === JOBS_URL && router?.pathname === JOB_DETAILS_URL) {
         return true;
       }
@@ -90,12 +77,15 @@ function LogoAndSearchRibbon({
         pathname: `${url}`,
       },
       url
-      // {
-      //   shallow: true,
-      // }
     );
   }
 
+  // ── Mobile: hamburger drawer ──────────────────────────────────────────────
+  if (isExtraSmallScreen) {
+    return <MobileDrawerMenu isAuthenticated={isAuthenticated} />;
+  }
+
+  // ── Desktop / tablet: existing tab ribbon ────────────────────────────────
   return (
     <>
       <Stack
@@ -121,13 +111,8 @@ function LogoAndSearchRibbon({
           <Tabs
             tabsProps={{
               defaultValue: tabSelectedInRibbon,
-              variant: isExtraSmallScreen ? "fullWidth" : "scrollable",
+              variant: "scrollable",
               visibleScrollbar: true,
-              sx: {
-                ".MuiButtonBase-root.MuiTab-root": {
-                  minWidth: isExtraSmallScreen ? "0px" : undefined,
-                },
-              },
             }}
             items={userWiseTopRibbon}
             handleTabChange={handleClick}
