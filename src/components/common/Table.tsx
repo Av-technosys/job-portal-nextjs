@@ -163,7 +163,9 @@ function Table({
       <Stack
         stackProps={{
           width: "100%",
-          overflowX: "auto",
+          sx: {
+            overflowX: "auto",
+          },
         }}
       >
         <AdminPannelSidebar
