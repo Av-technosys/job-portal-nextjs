@@ -18,11 +18,13 @@ import { CommonObjectType, Job } from "@/types";
 import ApplicationPopup from "./ApplicationPopup";
 import { MenuItem } from "@mui/material";
 import { getErrorMessageFromAPI } from "@/helper";
+import { useQueryClient } from "@tanstack/react-query";
 
 function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
   const { TITLE_COUNT, TITLE_HEADER } = CANDIDATE_APPLICATION_PAGE_CONFIG;
   const [anchorEl, setAnchorEl] = useState<null | Element>(null);
   const selectedCandidate = useRef({} as CommonObjectType);
+  const queryClient = useQueryClient();
 
   const [isApplicationPopupOpen, setApplicationPopupStatus] = useState(false);
   const updateCandidateStatusMutate = useUpdateCandidateStatus();
@@ -56,6 +58,9 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
       },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ["candidate_application", jobDetails?.job_id],
+          });
           showNotification(CANDIDATE_NOTIFICATION_CONFIG.SUCCESS);
           selectedCandidate.current = {
             ...selectedCandidate.current,

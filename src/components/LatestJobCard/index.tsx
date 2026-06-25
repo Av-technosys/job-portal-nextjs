@@ -17,6 +17,8 @@ interface LatestJobCardProps {
   index: number;
 }
 
+const LATEST_JOB_CARD_WIDTH = "300px";
+
 function LatestJobCard({ job, index }: LatestJobCardProps) {
   const router = useRouter();
   const {
@@ -45,9 +47,9 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
       key={index}
       stackProps={{
         direction: "column",
-        width: "300px",
+        width: LATEST_JOB_CARD_WIDTH,
         minHeight: "300px",
-        className: "group cursor-pointer rounded-lg p-5",
+        className: "group shrink-0 cursor-pointer rounded-lg p-5",
         onClick: handleJobDetailsClick,
         onKeyDown: (event) => {
           if (event.key === "Enter" || event.key === " ") {

@@ -82,8 +82,9 @@ function LatestJobOpenings() {
 
         <Stack
           stackProps={{
+            width: "100%",
             className:
-              "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto  p-2",
+              "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto p-2",
           }}
         >
           <Tabs
