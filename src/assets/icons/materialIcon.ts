@@ -77,3 +77,5 @@ export { default as EqualizerIcon } from "@mui/icons-material/Equalizer";
 export { default as EngineeringIcon } from "@mui/icons-material/Engineering";
 export { default as NotificationImportantIcon } from "@mui/icons-material/NotificationImportant";
 export { default as DateRangeIcon } from "@mui/icons-material/DateRange";
+export { default as InfoOutlinedIcon } from "@mui/icons-material/InfoOutlined";
+export { default as MenuIcon } from "@mui/icons-material/Menu";

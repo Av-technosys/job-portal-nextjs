@@ -38,8 +38,7 @@ function Testimonial() {
       <Stack
         stackProps={{
           gap: 4,
-          marginLeft: 2,
-          width: "90vw",
+          width: "100%",
           marginTop: 2,
           className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl !mx-auto",
         }}
