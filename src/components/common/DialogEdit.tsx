@@ -19,20 +19,19 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 import { STUDENT_PROFILE_ADDITIONAL_INFORMATION_CONFIG } from "@/constants";
 import { getErrorMessageFromAPI } from "@/helper";
-import { useCommonDetails, useNotification } from "@/services";
+import { useNotification } from "@/services";
 import { CommonObjectType, CreateOrUpdateSubjectInfoInput } from "@/types";
 import { useUpdateSubjectInfo } from "@/services/useUpdateSubject";
 import { assessmentEditSchema } from "@/validator/assessmentEdit";
 import { useCreateSubjectInfo } from "@/services/useCreateSubject";
 import { useGetSubjectList } from "@/services/useGetFindSubject";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
   const { NOTIFICATION_CONFIG, SAVE_BUTTON } =
     STUDENT_PROFILE_ADDITIONAL_INFORMATION_CONFIG;
-  const { refetchCommonDetails } = useCommonDetails();
   const { ASSESSEMENT_EDIT_FORM_CONFIG } = ASSESSEMENT_EDIT_CONFIG;
   const { showNotification } = useNotification();
+  const isCreateSubject = AssessmentValue?.mode === "create_subject";
 
   const { refetch } = useGetSubjectList();
 
@@ -69,7 +68,7 @@ export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
 
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
     if (Array.isArray(values.work_experiences)) {
-      if (AssessmentValue == "create_subject") {
+      if (isCreateSubject) {
         CreateSubjectInfoMutate.mutate({
           data: values?.work_experiences[0] as CreateOrUpdateSubjectInfoInput,
         });
@@ -95,7 +94,7 @@ export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
         maxWidth="xs"
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Edit Assessment
+          {isCreateSubject ? "Add Assessment" : "Edit Assessment"}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -112,7 +111,7 @@ export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
         <DialogContent dividers>
           <Formik
             initialValues={
-              AssessmentValue != "create_subject"
+              !isCreateSubject
                 ? {
                     work_experiences: [AssessmentValue],
                   }
@@ -121,7 +120,7 @@ export default function DialogEdit({ open, setopen, AssessmentValue }: any) {
                       {
                         exam_name: "",
                         section_name: "",
-                        is_paid: true,
+                        is_paid: AssessmentValue?.is_paid ?? true,
                         duration_minutes: "",
                         easy_question_count: "",
                         medium_question_count: "",

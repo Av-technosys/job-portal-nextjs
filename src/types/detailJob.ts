@@ -16,6 +16,15 @@ export type Job = {
   applicants_count?: number;
   education?: string;
   job_level?: string;
+  role?: string;
+  vacancies?: number;
+  city?: string;
+  state?: string;
+  country?: string;
+  salary?: string;
+  min_salary?: number;
+  max_salary?: number;
+  skills?: string[] | string;
   // existing job properties
   social_links?: {
     id: number;

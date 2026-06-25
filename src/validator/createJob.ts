@@ -22,7 +22,6 @@ export const jobDetailsValidationSchema = yup.object({
     min: 1,
     max: 500,
     fieldName: "Job Description",
-    required: false,
   }),
 
   skills: skillsValidationSchema(),

@@ -14,6 +14,7 @@ import {
 } from "@/types";
 import {
   CITY_OPTIONS,
+  CITY_OPTIONS_BY_STATE,
   COUNTRY_OPTIONS,
   GENDER_OPTIONS,
   NOTICE_PERIOD_OPTIONS,
@@ -28,6 +29,7 @@ import {
   MY_APPLIED_JOBS_URL,
   PROFILE_URL,
   SAVED_JOB_URL,
+  SCORE_URL,
 } from "./navigationUrl";
 import {
   getDefaultCertificationData,
@@ -237,6 +239,10 @@ export const STUDENT_PROFILE_PERSONAL_CONFIG = {
     CITY_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       options: CITY_OPTIONS,
+      dependentOptions: {
+        fieldName: "state",
+        optionsByValue: CITY_OPTIONS_BY_STATE,
+      },
       selectProps: {
         label: "City",
         name: "city",
@@ -880,6 +886,10 @@ export const STUDENT_PROFILE_SIDEBAR_CONFIG = [
     listValue: ASSESSMENT_URL,
   },
   {
+    text: "Score",
+    listValue: SCORE_URL,
+  },
+  {
     text: "Job Seeker’s Information",
     listValue: PROFILE_URL,
   },
@@ -964,12 +974,16 @@ export const JOB_SEEKER_UPLOAD_PROFILE_CONFIG = {
 
 export const QUESTION_UPLOAD_CONFIG = {
   fieldType: FormikFieldsEnum.UPLOAD_QUESTION_IMAGE,
+  inputProps: {
+    name: "question_image",
+  },
 };
 
 export const JOB_SEEKER_UPLOAD_DOCUMENT_CONFIG = {
   RESUME_FIELD: {
     fieldType: FormikFieldsEnum.UPLOAD_DOCUMENT,
-    lines: ["Resume"],
+    lines: ["Resume *"],
+    required: true,
     formControlProps: {
       sx: { width: "100%", flexBasis: "45%" },
     },
@@ -1004,6 +1018,11 @@ export const JOB_SEEKER_UPLOAD_DOCUMENT_CONFIG = {
     FILE_SIZE_ERROR: {
       message: "File size exceeds the 3 MB limit.",
     },
+  },
+  REQUIRED_NOTIFICATION_CONFIG: {
+    RESUME: {
+      message: "Resume is required.",
+    } as ShowNotificationProps,
   },
   UPDATE_NOTIFICATION_CONFIG: (documentKey: JobSeekerDocumentKeyEnum) => {
     return {

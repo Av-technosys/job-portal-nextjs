@@ -17,10 +17,10 @@ import {
   STATE_OPTIONS,
   COUNTRY_OPTIONS,
   CITY_OPTIONS,
+  CITY_OPTIONS_BY_STATE,
   VACANCY_OPTIONS,
   MAX_SALARY_RANGE_OPTIONS,
   MIN_SALARY_RANGE_OPTIONS,
-  SKILLS_OPTIONS,
 } from "./common";
 
 const FIELD_WIDTHS = {
@@ -232,15 +232,14 @@ export const JOB_DETAILS_CONFIG = {
       options: JOB_TYPE_OPTIONS,
     },
     SKILLS_FIELD: {
-      fieldType: FormikFieldsEnum.MULTI_SELECT_DROPDOWN,
-      multiSelectProps: {
+      fieldType: FormikFieldsEnum.SKILLS_INPUT,
+      inputProps: {
         name: "skills",
-        multiple: true,
+        placeholder: "Type a skill and press Enter",
       },
       formControlProps: {
         sx: FIELD_WIDTHS.EXTRA_LARGE,
       },
-      options: SKILLS_OPTIONS,
     },
 
     // Location Information
@@ -261,6 +260,7 @@ export const JOB_DETAILS_CONFIG = {
     STATE_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       selectProps: {
+        label: "State",
         name: "state",
       },
       inputLabelProps: {
@@ -287,17 +287,22 @@ export const JOB_DETAILS_CONFIG = {
     //   options: CITY_OPTIONS,
     // },
     CITY_FIELD: {
-      fieldType: FormikFieldsEnum.TEXT_FIELD,
-      inputProps: {
+      fieldType: FormikFieldsEnum.DROPDOWN,
+      options: CITY_OPTIONS,
+      dependentOptions: {
+        fieldName: "state",
+        optionsByValue: CITY_OPTIONS_BY_STATE,
+      },
+      selectProps: {
+        label: "City",
         name: "city",
-        placeholder: "Enter Your City",
       },
       inputLabelProps: {
         children: "City",
         shrink: true,
       },
       formControlProps: {
-        sx: FIELD_WIDTHS.LARGE,
+        sx: FIELD_WIDTHS.MEDIUM,
       },
     },
 

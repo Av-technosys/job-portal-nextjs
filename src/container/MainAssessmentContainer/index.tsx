@@ -38,13 +38,15 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const prevTypeRef = useRef<"blur" | "focus" | null>(null);
   const [timeForSubmit, setTimeForSubmit] = useState<number | null>(null);
-
   const router = useRouter();
   const { assesment_session_id, subject_id } = router.query;
+  const hasPaidAssessmentParams = Boolean(assesment_session_id && subject_id);
+  const hasFreeAssessmentParams = Boolean(subject_id);
   let StudentAssessmentQuestions;
 
   // if (testType == "paid") {
   const paidAssesmentData = useGetStudentAssessmentQuestions({
+    enabled: testType == "paid" && hasPaidAssessmentParams,
     queryParams: {
       assesment_session_id: assesment_session_id,
       subject_id: subject_id,
@@ -52,6 +54,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   });
   // } else {
   const freeAssesmentData = useGetFreeAssessmentQuestions({
+    enabled: testType !== "paid" && hasFreeAssessmentParams,
     queryParams: {
       subject_id: subject_id,
     },
@@ -69,7 +72,32 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   const AllStudentAssessmentQuestionsLength =
     getAllStudentAssessmentQuestions?.length;
 
+
+  const isQuestionsLoading = StudentAssessmentQuestions.isLoading;
+  const isQuestionsError = StudentAssessmentQuestions.isError;
+  const questionErrorMessage =
+    (StudentAssessmentQuestions.error as any)?.response?.data?.message ||
+    (StudentAssessmentQuestions.error as any)?.message ||
+    "Unable to load assessment questions.";
+
   const attempt_id = StudentAssessmentQuestions.data?.data?.attempt_id;
+  const maxTimeFromBackend = StudentAssessmentQuestions.data?.data?.duration_minutes;
+  const currentQuestion = getAllStudentAssessmentQuestions?.[currentQIndex - 1];
+
+  // Redirect if this attempt was already submitted (prevents returning via back)
+  useEffect(() => {
+    try {
+      if (attempt_id) {
+        const key = `assessment_submitted_${attempt_id}`;
+        const val = localStorage.getItem(key);
+        if (val === "1") {
+          router.replace(`/dashboard/assessment-summary/${attempt_id}`);
+        }
+      }
+    } catch (e) {
+      // ignore localStorage errors
+    }
+  }, [attempt_id]);
 
   useEffect(() => {
     const handleFocus = () => {
@@ -99,8 +127,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
   useEffect(() => {
     setCurrentSelectedOption(
       userAnsweredData?.[
-        `${
-          getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        `${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
         }_${currentQIndex}`
       ]?.answer || "0"
     );
@@ -116,12 +143,12 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
     }
   }
 
+
   function handleMarkForReviewAndNext(answeredValue: string) {
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${
-        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
-      }_${currentQIndex}`]: {
+      [`${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        }_${currentQIndex}`]: {
         answer: answeredValue,
         status: 1,
       },
@@ -133,9 +160,8 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
     setCurrentSelectedOption("0");
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${
-        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
-      }_${currentQIndex}`]: {
+      [`${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        }_${currentQIndex}`]: {
         answer: "0",
         status: 2,
       },
@@ -146,9 +172,8 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
     if (!answeredValue || answeredValue === "0") return;
     setUserAnsweredData({
       ...userAnsweredData,
-      [`${
-        getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
-      }_${currentQIndex}`]: {
+      [`${getAllStudentAssessmentQuestions?.[currentQIndex - 1]?.id
+        }_${currentQIndex}`]: {
         answer: answeredValue,
         status: 0,
       },
@@ -190,6 +215,34 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
     setTimeForSubmit(time);
   }
 
+  if (isQuestionsError) {
+    return (
+      <Stack
+        stackProps={{
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 2,
+          sx: { minHeight: "70vh", p: 3, textAlign: "center" },
+        }}
+      >
+        <Typography
+          typographyProps={{
+            children: questionErrorMessage,
+            variant: TypographyVariantEnum.H6,
+            color: "error",
+          }}
+        />
+        <Button
+          buttonProps={{
+            children: "Back to Assessments",
+            variant: ButtonVariantEnum.CONTAINED,
+          }}
+          onClick={() => router.replace("/dashboard/assessment")}
+        />
+      </Stack>
+    );
+  }
+
   return (
     <>
       <Grid
@@ -217,26 +270,48 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
             <Stack>
               <Stack>Question No. {currentQIndex}</Stack>
               <Stack>Total Tab switched {tabSwitchCount}</Stack>
-              <StopWatchHandler getStopWatchTime={getStopWatchTimeValue} />
-              {getAllStudentAssessmentQuestions?.[currentQIndex - 1]
-                ?.question_paragraph && (
-                <Typography
-                  typographyProps={{
-                    children:
-                      getAllStudentAssessmentQuestions?.[currentQIndex - 1]
-                        ?.question_paragraph,
-                    variant: TypographyVariantEnum.H6,
-                    color: "text.secondary",
-                    className: "text-start mt-4",
+              <StopWatchHandler
+                maxTime={maxTimeFromBackend}
+                getStopWatchTime={getStopWatchTimeValue}
+                isLoading={isQuestionsLoading}
+              />
+              {currentQuestion?.question_paragraph && (
+	                  <Typography
+	                    typographyProps={{
+	                      children: currentQuestion.question_paragraph,
+	                      variant: TypographyVariantEnum.H6,
+	                      color: "text.secondary",
+	                      className: "text-start mt-4",
+	                    }}
+	                  />
+	                )}
+
+              {currentQuestion?.question_image && (
+                <Stack
+                  stackProps={{
+                    className: "mt-4",
+                    sx: {
+                      width: "100%",
+                      maxWidth: 720,
+                    },
                   }}
-                />
+                >
+                  <img
+                    src={currentQuestion.question_image}
+                    alt={`Question ${currentQIndex}`}
+                    style={{
+                      width: "100%",
+                      maxHeight: 360,
+                      objectFit: "contain",
+                      borderRadius: 8,
+                    }}
+                  />
+                </Stack>
               )}
 
               <Typography
                 typographyProps={{
-                  children:
-                    getAllStudentAssessmentQuestions?.[currentQIndex - 1]
-                      ?.question_text,
+                  children: currentQuestion?.question_text,
                   variant: TypographyVariantEnum.H6,
                   color: "text.secondary",
                   className: "text-start mt-4",
@@ -299,6 +374,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
             tabSwitchCount={tabSwitchCount}
             attemptId={attempt_id}
             questionData={getAllStudentAssessmentQuestions}
+ 
           />
         </Grid>
       </Grid>

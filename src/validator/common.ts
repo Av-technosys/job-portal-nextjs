@@ -95,7 +95,10 @@ export const examTimeValidationSchema = yup
   .typeError("Exam Time must be a valid number");
 
 export const skillsValidationSchema = () =>
-  yup.array().required("Skills are required");
+  yup
+    .array()
+    .min(1, "At least one skill is required")
+    .required("Skills are required");
 
 export const onlyRequiredValidationSchema = ({
   fieldName,

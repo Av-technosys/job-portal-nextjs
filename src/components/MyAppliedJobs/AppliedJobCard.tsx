@@ -2,57 +2,89 @@ import { CommonObjectType } from "@/types";
 import {
   Avatar,
   Button,
+  Chip,
   Divider,
+  IconButton,
+  Modal,
   Stack,
-  TextWithIcon,
   Typography,
   When,
 } from "../common";
 import { APPLIED_JOB_PAGE_CONFIG } from "@/constants";
 import Messaging from "../Messaging";
 import { getInitials } from "@/helper";
-import { useMemo } from "react";
-import { CurrencyRupeeIcon, FmdGoodOutlinedIcon } from "@/assets";
 import { colorStyles } from "@/styles";
+import { useState } from "react";
+import { CancelOutlinedIcon } from "@/assets";
+import JobDetail from "../JobDetail";
+
+const APPLICATION_STATUS_COLORS: Record<
+  number,
+  "default" | "primary" | "secondary" | "success" | "warning" | "error" | "info"
+> = {
+  0: "default",
+  1: "info",
+  2: "warning",
+  3: "success",
+  4: "primary",
+  5: "error",
+  6: "secondary",
+  7: "success",
+  8: "success",
+};
 
 export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
+  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const { APPLIED_JOB_CARD } = APPLIED_JOB_PAGE_CONFIG;
   const {
     DESIGNATION,
     IMAGE,
-    LOCATION,
-    SALARY_RANGE,
     JOB_TYPE,
     TIME_STAMP,
     VIEW_DETAILS_BUTTON,
   } = APPLIED_JOB_CARD;
 
-  const appliedJobDetails = useMemo(() => {
-    return [
-      {
-        icon: (
-          <FmdGoodOutlinedIcon
-            sx={{
-              color: colorStyles.listTitleTextColor,
-              fontSize: "medium",
-            }}
-          />
-        ),
-        textProps: LOCATION(job),
-      },
-      {
-        icon: (
-          <CurrencyRupeeIcon
-            sx={{
-              color: colorStyles.listTitleTextColor,
-              fontSize: "medium",
-            }}
-          />
-        ),
-        textProps: SALARY_RANGE(job),
-      },
-    ];
-  }, [LOCATION, SALARY_RANGE, job]);
+  function getJobDetailsId() {
+    const nestedJob =
+      typeof job?.job === "object" && job.job !== null
+        ? (job.job as CommonObjectType)
+        : {};
+    const nestedJobDetails =
+      typeof job?.job_details === "object" && job.job_details !== null
+        ? (job.job_details as CommonObjectType)
+        : {};
+
+    return (
+      job?.job_id ||
+      nestedJob?.id ||
+      nestedJob?.job_id ||
+      nestedJobDetails?.id ||
+      nestedJobDetails?.job_id ||
+      job?.id
+    );
+  }
+
+  function handleViewDetailsClick() {
+    const jobDetailsId = getJobDetailsId();
+    const parsedJobDetailsId = Number(jobDetailsId);
+
+    if (!Number.isNaN(parsedJobDetailsId)) {
+      setSelectedJobId(parsedJobDetailsId);
+    }
+  }
+
+  function getApplicationStatusLabel() {
+    if (Number(job?.application_status ?? 0) === 0) {
+      return "Submitted";
+    }
+
+    return String(job?.application_status_label || "Received");
+  }
+
+  function getApplicationStatusColor() {
+    const status = Number(job?.application_status ?? 0);
+    return APPLICATION_STATUS_COLORS[status] || "default";
+  }
 
   return (
     <>
@@ -85,24 +117,18 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
             }}
           >
             <Typography {...DESIGNATION(job)} />
-            <Stack
-              stackProps={{
-                direction: "row",
-                gap: 1,
-              }}
-            >
-              {/* {appliedJobDetails.map((detail, index) => (
-                <TextWithIcon
-                  key={`appliedJobDetails-${index}`}
-                  icon={detail.icon}
-                  textProps={detail.textProps}
-                />
-              ))} */}
-            </Stack>
           </Stack>
         </Stack>
         <Stack>
           <Typography {...JOB_TYPE(job)} />
+        </Stack>
+        <Stack>
+          <Chip
+            label={getApplicationStatusLabel()}
+            color={getApplicationStatusColor()}
+            size="small"
+            sx={{ fontWeight: 600 }}
+          />
         </Stack>
         <Stack>
           <Typography {...TIME_STAMP(job)} />
@@ -112,7 +138,7 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
             marginRight: 10,
           }}
         >
-          <Button {...VIEW_DETAILS_BUTTON} />
+          <Button {...VIEW_DETAILS_BUTTON} onClick={handleViewDetailsClick} />
         </Stack>
         {/* Only show messaging when job is posted by logged in user 28 */}
         <When condition={job?.user === 28}>
@@ -120,6 +146,39 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
         </When>
       </Stack>
       <Divider />
+      <Modal open={selectedJobId !== null} onClose={() => setSelectedJobId(null)}>
+        <Stack
+          stackProps={{
+            sx: {
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: { xs: 2, md: 4 },
+              width: { xs: "92%", md: "80%" },
+              maxHeight: "85vh",
+              overflow: "auto",
+            },
+          }}
+        >
+          <Stack
+            stackProps={{
+              alignItems: "end",
+            }}
+          >
+            <IconButton onClick={() => setSelectedJobId(null)}>
+              <CancelOutlinedIcon
+                sx={{ color: colorStyles.filterTagsTextColor }}
+              />
+            </IconButton>
+          </Stack>
+          {selectedJobId !== null && (
+            <JobDetail jobId={selectedJobId} hideApplyButton />
+          )}
+        </Stack>
+      </Modal>
     </>
   );
 }

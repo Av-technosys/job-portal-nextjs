@@ -32,6 +32,7 @@ export * from "./Modal";
 export * from "./Drawer";
 export * from "./TextWithIcon";
 export * from "./MultiSelectDropdown";
+export * from "./SkillsInput";
 export * from "./TextAndSubtextWithIcon";
 export * from "./Grid";
 export * from "./Radio";

@@ -19,11 +19,17 @@ import {
   LOGIN_URL,
   TOP_RIBBON_AUTH_REDIRECT_CONFIG,
 } from "@/constants";
-import { useCommonDetails } from "@/services";
+import {
+  useCommonDetails,
+  useGetFindRecruiterList,
+  usePagination,
+} from "@/services";
 import React, { useMemo } from "react";
 
 import AdminTabs from "@/components/Admin";
 import { useGetAdminProfileMetaDataInfo } from "@/services/useGetAdminMetaData";
+import { useGetFindStudentList } from "@/services/useGetFindStudent";
+import { useGetSubjectList } from "@/services/useGetFindSubject";
 import { TypographyFontSize, TypographyFontWeight } from "@/types";
 import { AppBar } from "@mui/material";
 import { colorStyles, useThemeContext } from "@/styles";
@@ -36,6 +42,24 @@ function AdminContainer() {
   const { theme } = useThemeContext();
   const { LOGIN_BUTTON } = TOP_RIBBON_AUTH_REDIRECT_CONFIG;
   const router = useRouter();
+  const recruiterCountData = useGetFindRecruiterList({
+    queryFnParams: {
+      pageLimit: 1,
+    },
+  });
+  const jobSeekerCountData = useGetFindStudentList({
+    queryFnParams: {
+      pageLimit: 1,
+    },
+  });
+  const subjectListData = useGetSubjectList();
+
+  const { totalLength: recruiterListCount } = usePagination({
+    paginatedAPIData: recruiterCountData,
+  });
+  const { totalLength: jobSeekerListCount } = usePagination({
+    paginatedAPIData: jobSeekerCountData,
+  });
 
   function handleClick(url: string) {
     router.push(
@@ -50,33 +74,61 @@ function AdminContainer() {
     return adminMetaDetails?.data?.data;
   }, [adminMetaDetails]);
 
+  const getNumberValue = (value: unknown, fallback?: number) => {
+    if (value === undefined || value === null || value === "") {
+      return fallback ?? 0;
+    }
+
+    const numberValue = Number(value);
+    return Number.isFinite(numberValue) ? numberValue : fallback ?? 0;
+  };
+
+  const recruiterListTotal =
+    recruiterCountData?.data?.pages?.[0]?.data?.total_count;
+  const jobSeekerListTotal =
+    jobSeekerCountData?.data?.pages?.[0]?.data?.total_count;
+  const subjectListTotal = Array.isArray(subjectListData?.data?.data)
+    ? subjectListData.data.data.length
+    : undefined;
+
+  const recruiterCount = getNumberValue(
+    recruiterListTotal,
+    getNumberValue(adminMetaDetailsMemo?.recruiter_count, recruiterListCount)
+  );
+  const jobSeekerCount = getNumberValue(
+    jobSeekerListTotal,
+    getNumberValue(adminMetaDetailsMemo?.job_seeker_count, jobSeekerListCount)
+  );
+  const assessmentCount = getNumberValue(
+    subjectListTotal,
+    getNumberValue(adminMetaDetailsMemo?.assessment_count)
+  );
+
   const { WELCOME_MESSAGE, TAB_TITLE } = ADMIN_PAGE_BODY_CONFIG;
 
   const statsData = [
     {
       icon: <PeopleIcon fontSize="large" />,
-      count:
-        adminMetaDetailsMemo?.recruiter_count +
-        adminMetaDetailsMemo?.job_seeker_count,
+      count: recruiterCount + jobSeekerCount,
       label: "Total Users",
       bgColor: "#FFE2E5",
     },
     {
       icon: <BusinessIcon fontSize="large" />,
-      count: adminMetaDetailsMemo?.recruiter_count,
+      count: recruiterCount,
       label: "Recruiter Count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <PersonIcon fontSize="large" />,
-      count: adminMetaDetailsMemo?.job_seeker_count,
-      label: "Student Count",
+      count: jobSeekerCount,
+      label: "Job Seeker Count",
       bgColor: "#DCFCE7",
     },
     {
       icon: <SchoolIcon fontSize="large" />,
-      count: adminMetaDetailsMemo?.assessment_count,
-      label: "Total Assessment Taken",
+      count: assessmentCount,
+      label: "Total Assessment",
       bgColor: "#FFC1B2",
     },
   ];

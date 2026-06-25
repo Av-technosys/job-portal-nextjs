@@ -10,6 +10,7 @@ import {
   FormikInputProps,
   FormikMultiSelectDropdownProps,
   FormikProps,
+  FormikSkillsInputProps,
   FormikSocialLinkInputProps,
   FormikTypographyProps,
   InputProps,
@@ -29,6 +30,7 @@ export function FormikForm({
   fieldDetailsArray,
   errors,
   setFieldValue,
+  values,
   parentFieldName,
 }: FormikFormProps) {
   function getFieldName(
@@ -37,6 +39,7 @@ export function FormikForm({
       | FormikDatePickerProps
       | FormikDropdownProps
       | FormikMultiSelectDropdownProps
+      | FormikSkillsInputProps
       | FormikArrayFieldProps
       | FormikSocialLinkInputProps
       | FormikCheckboxProps
@@ -66,6 +69,11 @@ export function FormikForm({
           fieldDetail as MultiSelectDropdownProps;
         fieldName = multiSelectProps?.name || "multiSelectDropdownFieldName";
         break;
+      case FormikFieldsEnum.SKILLS_INPUT:
+        const { inputProps: skillsInputProps } =
+          fieldDetail as FormikSkillsInputProps;
+        fieldName = skillsInputProps?.name || "skillsInputFieldName";
+        break;
       case FormikFieldsEnum.SOCIAL_URL_INPUT:
         const { socialUrlFieldName } =
           fieldDetail as FormikSocialLinkInputProps;
@@ -86,23 +94,61 @@ export function FormikForm({
     return fieldName;
   }
 
+  function getFieldDetailWithDependentOptions(
+    fieldDetail:
+      | FormikInputProps
+      | FormikDatePickerProps
+      | FormikDropdownProps
+      | FormikMultiSelectDropdownProps
+      | FormikSkillsInputProps
+      | FormikArrayFieldProps
+      | FormikSocialLinkInputProps
+      | FormikCheckboxProps
+      | FormikUploadDocumentProps
+  ) {
+    if (fieldDetail.fieldType !== FormikFieldsEnum.DROPDOWN) {
+      return fieldDetail;
+    }
+
+    const dropdownFieldDetail = fieldDetail as DropdownProps;
+    const dependentOptions = dropdownFieldDetail.dependentOptions;
+
+    if (!dependentOptions) return fieldDetail;
+
+    const dependentFieldValue = values?.[dependentOptions.fieldName] as string;
+    const selectProps = (dropdownFieldDetail.selectProps || {}) as Record<string, unknown>;
+
+    return {
+      ...fieldDetail,
+      options: dependentOptions.optionsByValue[dependentFieldValue] || [],
+      selectProps: {
+        ...selectProps,
+        disabled: Boolean((selectProps as any).disabled) || !Boolean(dependentFieldValue),
+      },
+    } as typeof fieldDetail;
+  }
+
   return (
     <>
       {fieldDetailsArray?.map((fieldDetail, idx) => {
+        const resolvedFieldDetail =
+          getFieldDetailWithDependentOptions(fieldDetail);
+
         // Normal Fields
         if (
           [
             FormikFieldsEnum.TYPOGRAPHY,
             FormikFieldsEnum.UPLOAD_DOCUMENT,
             FormikFieldsEnum.UPLOAD_PROFILE_IMAGE,
+            FormikFieldsEnum.UPLOAD_QUESTION_IMAGE,
           ].includes(fieldDetail?.fieldType as FormikFieldsEnum)
         ) {
           return (
-            <Field key={`ja-form-${fieldDetail?.fieldType}_${idx}`}>
+            <Field key={`ja-form-${fieldDetail?.fieldType}_${idx}`} name={getFieldName(resolvedFieldDetail)}>
               {({ field }: { field: CommonObjectType }) => {
                 return (
                   <FormikFields
-                    {...fieldDetail}
+                    {...resolvedFieldDetail}
                     setFieldValue={setFieldValue}
                     field={field}
                     errors={errors}
@@ -113,22 +159,27 @@ export function FormikForm({
           );
         }
 
-        const fieldName = getFieldName(fieldDetail);
-        return (
-          <FastField key={`${fieldName}_${idx}`} name={fieldName}>
-            {({ field }: { field: CommonObjectType }) => {
-              return (
-                <FormikFields
-                  {...fieldDetail}
-                  {...getErrorConfig(errors, fieldName)}
-                  setFieldValue={setFieldValue}
-                  field={field}
-                  errors={errors}
-                />
-              );
-            }}
-          </FastField>
-        );
+        const fieldName = getFieldName(resolvedFieldDetail);
+      const isDependentDropdown =
+        fieldDetail.fieldType === FormikFieldsEnum.DROPDOWN &&
+        (fieldDetail as DropdownProps).dependentOptions;
+
+      const FieldComponent = isDependentDropdown ? Field : FastField;
+      return (
+        <FieldComponent key={`${fieldName}_${idx}`} name={fieldName}>
+          {({ field }: { field: CommonObjectType }) => {
+            return (
+              <FormikFields
+                {...resolvedFieldDetail}
+                {...getErrorConfig(errors, fieldName)}
+                setFieldValue={setFieldValue}
+                field={field}
+                errors={errors}
+              />
+            );
+          }}
+        </FieldComponent>
+      );
       })}
     </>
   );
@@ -164,7 +215,7 @@ function Formik({
       validateOnBlur={isFormSubmittedOnce}
       validateOnChange={isFormSubmittedOnce}
     >
-      {({ setFieldValue, errors, handleSubmit }) => {
+      {({ setFieldValue, errors, handleSubmit, values }) => {
         return (
           <Form
             onSubmit={(values) => {
@@ -183,6 +234,7 @@ function Formik({
               <FormikForm
                 errors={errors as CommonObjectType}
                 setFieldValue={setFieldValue}
+                values={values}
                 fieldDetailsArray={fieldDetailsArray}
               />
             </Stack>

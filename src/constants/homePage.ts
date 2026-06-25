@@ -435,12 +435,15 @@ export const JOB_OPPPORTUNITY_PAGE_CONFIG = {
   DESIGNATION: (job: CommonObjectType) => {
     return {
       typographyProps: {
-        children: job?.designation,
+        children: job?.designation || job?.title,
         variant: TypographyVariantEnum.BODY2,
         sx: {
           overflow: "hidden",
           textOverflow: "ellipsis",
-          whiteSpace: "wrap",
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          lineHeight: 1.35,
         },
       },
       fontSize: TypographyFontSize.large,
@@ -450,41 +453,53 @@ export const JOB_OPPPORTUNITY_PAGE_CONFIG = {
   JOB_TYPE: (job: CommonObjectType) => {
     return {
       typographyProps: {
-        children: job?.jobType,
+        children: job?.jobType || job?.job_type,
         variant: TypographyVariantEnum.BODY2,
+        className: "whitespace-nowrap",
+        sx: {
+          lineHeight: 1.25,
+        },
       },
       fontSize: TypographyFontSize.small,
+      fontWeight: TypographyFontWeight.semibold,
+      fontColor: TypographyFontColor.blue1,
     } as TypographyProps;
   },
   SALARY_RANGE: (job: CommonObjectType) => {
     return {
       typographyProps: {
-        children: job?.salaryRange,
+        children: job?.salaryRange || job?.salary,
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.large,
+      fontWeight: TypographyFontWeight.semibold,
+      fontColor: TypographyFontColor.black16,
     } as TypographyProps;
   },
   POSTED_DATE: (job: CommonObjectType) => {
     return {
       typographyProps: {
-        children: formatTimeUserCentric(job?.postedDate?.toString()),
+        children: formatTimeUserCentric(
+          (job?.postedDate || job?.created_date)?.toString()
+        ),
         variant: TypographyVariantEnum.BODY2,
       },
       fontSize: TypographyFontSize.small,
-      fontColor: TypographyFontColor.grey,
+      fontColor: TypographyFontColor.black5,
     } as TypographyProps;
   },
   IMAGE: (job: CommonObjectType) => {
     return {
       avatarProps: {
         variant: AvatarVariantEnum.CIRCULAR,
-        src: job?.companyProfileImage, // Default image if none is provided
-        alt: job?.company_name || "Company logo",
-        children: job?.company_profile_image,
+        src: job?.companyProfileImage || job?.company_profile_image,
+        alt: job?.companyName || job?.company_name || "Company logo",
+        children: job?.companyProfileImage || job?.company_profile_image,
         sx: {
           width: 40,
           height: 40,
+          border: "1px solid #E6EAF2",
+          backgroundColor: "#F8FAFC",
         },
       },
     };
@@ -492,11 +507,19 @@ export const JOB_OPPPORTUNITY_PAGE_CONFIG = {
   COMPANY_NAME: (job: CommonObjectType) => {
     return {
       typographyProps: {
-        children: job?.companyName,
+        children: job?.companyName || job?.company_name,
         variant: TypographyVariantEnum.BODY2,
+        sx: {
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          maxWidth: 150,
+          lineHeight: 1.35,
+        },
       },
       fontSize: TypographyFontSize.small,
-      fontColor: TypographyFontColor.grey,
+      fontWeight: TypographyFontWeight.semibold,
+      fontColor: TypographyFontColor.black16,
     } as TypographyProps;
   },
   EMPLOYEE_COUNT: (job: CommonObjectType) => {
@@ -512,11 +535,19 @@ export const JOB_OPPPORTUNITY_PAGE_CONFIG = {
   JOB_COUNT: (job: CommonObjectType) => {
     return {
       typographyProps: {
-        children: `${job?.jobsAvailableInCompany} Jobs`,
+        children: `${job?.jobsAvailableInCompany || job?.vacancies || 1} ${
+          Number(job?.jobsAvailableInCompany || job?.vacancies || 1) === 1
+            ? "opening"
+            : "openings"
+        }`,
         variant: TypographyVariantEnum.BODY2,
         className: "job-count",
+        sx: {
+          lineHeight: 1.3,
+        },
       },
-      fontSize: TypographyFontSize.small,
+      fontSize: TypographyFontSize.extraSmall,
+      fontColor: TypographyFontColor.black5,
     } as TypographyProps;
   },
 };

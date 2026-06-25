@@ -91,8 +91,8 @@ function RecruiterCompanyProfile() {
         EMPTY_FIELD_FOR_ABOUT,
         ADDRESS_LINE_1_FIELD,
         ADDRESS_LINE_2_FIELD,
-        CITY_FIELD,
         STATE_FIELD,
+        CITY_FIELD,
         POSTAL_CODE_FIELD,
         COUNTRY_FIELD,
       ]}

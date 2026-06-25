@@ -12,6 +12,7 @@ import {
   TypographyVariantEnum,
 } from "@/types";
 import {
+  CITY_OPTIONS_BY_STATE,
   CITY_OPTIONS,
   COMPANY_SIZE_OPTIONS,
   COUNTRY_OPTIONS,
@@ -65,10 +66,10 @@ export const RECRUITER_PROFILE_SIDEBAR_CONFIG = [
     text: "Posted Jobs",
     listValue: MY_POSTED_JOBS_URL,
   },
-  {
-    text: "Subscription",
-    listValue: SUBSCRIPTION_URL,
-  },
+  // {
+  //   text: "Subscription",
+  //   listValue: SUBSCRIPTION_URL,
+  // },
   {
     text: "Recruiter's Profile",
     listValue: PROFILE_URL,
@@ -159,6 +160,10 @@ export const RECRUITER_COMPANY_PROFILE_CONFIG = {
     CITY_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       options: CITY_OPTIONS,
+      dependentOptions: {
+        fieldName: "state",
+        optionsByValue: CITY_OPTIONS_BY_STATE,
+      },
       selectProps: {
         label: "City",
         name: "city",
@@ -173,6 +178,7 @@ export const RECRUITER_COMPANY_PROFILE_CONFIG = {
     STATE_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       selectProps: {
+        label: "State",
         name: "state",
       },
       inputLabelProps: {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   // ASSESSMENT_URL,
   CANDIATE_APPLICATIONS_PARTIAL_URL,
+  ADMIN_URL,
   DASHBOARD_URL,
   JOB_DETAILS_PARTIAL_URL,
   JOBS_URL,
@@ -11,6 +12,7 @@ import {
   NO_PERMISSION_URL,
   // SUBSCRIPTION_URL,
 } from "./constants";
+import { UserType } from "./types";
 import {
   checkIfRouteAllowedForCurrentUserType,
   // isLoggedInUserJobSeeker,
@@ -50,6 +52,8 @@ export function middleware(request: NextRequest) {
   } else if (
     accessToken &&
     currentUserAccessType === "null" &&
+    request.nextUrl.pathname !== ADMIN_URL &&
+    !request.nextUrl.pathname.startsWith(`${ADMIN_URL}/`) &&
     (isPrivateRoute(request.nextUrl.pathname) ||
       isNonPrivateRoute(request.nextUrl.pathname))
   ) {
@@ -70,7 +74,17 @@ export function middleware(request: NextRequest) {
     // Redirect it to the dashboard overview
     routeObj = {
       isRedirect: true,
-      redirectUrl: DASHBOARD_URL,
+      redirectUrl:
+        currentUserType === UserType.ADMIN_TYPE ? ADMIN_URL : DASHBOARD_URL,
+    };
+  } else if (
+    accessToken &&
+    currentUserType === UserType.ADMIN_TYPE &&
+    request.nextUrl.pathname === DASHBOARD_URL
+  ) {
+    routeObj = {
+      isRedirect: true,
+      redirectUrl: ADMIN_URL,
     };
   } else if (
     accessToken &&

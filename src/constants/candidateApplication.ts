@@ -66,9 +66,10 @@ export const CANDIDATE_APPLICATION_PAGE_CONFIG = {
       } as TypographyProps;
     },
     EXPERIENCE: (candidate: CommonObjectType) => {
+      const experience = Number(candidate?.experience || 0);
       return {
         typographyProps: {
-          children: candidate?.gender,
+          children: `${experience} Year${experience === 1 ? "" : "s"}`,
           variant: TypographyVariantEnum.H5,
         },
         fontSize: TypographyFontSize.small,
@@ -547,7 +548,7 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
   },
   NOT_SHORTLISTED_BUTTON: {
     buttonProps: {
-      children: "Not Shortlisted ",
+      children: "Mark In Review",
       variant: ButtonVariantEnum.OUTLINED,
       size: ButtonSizeEnum.LARGE,
     },
@@ -562,7 +563,7 @@ export const CANDIDATE_DETAILS_PAGE_CONFIG = {
   },
   SCEHDULE_INTERVIEW_BUTTON: {
     buttonProps: {
-      children: "Scehdule Interview ",
+      children: "Put On Hold",
       variant: ButtonVariantEnum.CONTAINED,
       color: ButtonColorEnum.PRIMARY,
       size: ButtonSizeEnum.LARGE,
@@ -577,11 +578,14 @@ export const APPLICATION_MODAL = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-    maxHeight: "80vh",
+    border: "none",
+    borderRadius: "8px",
+    boxShadow: "0 24px 72px rgba(24, 25, 28, 0.18)",
+    p: { xs: 2, md: 3 },
+    maxHeight: "88vh",
     overflow: "auto",
+    width: { xs: "94vw", md: "86vw", lg: "78vw" },
+    maxWidth: 1180,
   },
 };
 
@@ -598,36 +602,103 @@ export const CANDIDATE_APPLICATION_MENU_ITEMS = [
   {
     label: "In Review",
     key: IN_REVIEW,
+    status: 1,
   },
   {
     label: "On Hold",
     key: ON_HOLD,
+    status: 2,
   },
   {
     label: "Shortlisted",
     key: SHORTLIST,
+    status: 3,
   },
   {
     label: "Interviewing",
     key: INTERVIEWING,
+    status: 4,
   },
   {
     label: "Rejected",
     key: REJECTED,
+    status: 5,
   },
   {
     label: "Salary Negotiation",
     key: SALARY_NEGOTIATION,
+    status: 6,
   },
   {
     label: "Offered",
     key: OFFERED,
+    status: 7,
   },
   {
     label: "Joined",
     key: JOINED,
+    status: 8,
   },
 ];
+
+export const CANDIDATE_APPLICATION_STATUS_LABELS =
+  CANDIDATE_APPLICATION_MENU_ITEMS.reduce<Record<number, string>>(
+    (acc, item) => {
+      acc[item.status] = item.label;
+      return acc;
+    },
+    {}
+  );
+
+export const getCandidateApplicationStatusValue = (status?: unknown) => {
+  const statusValue =
+    typeof status === "string" || typeof status === "number"
+      ? Number(status)
+      : null;
+
+  return typeof statusValue === "number" && Number.isFinite(statusValue)
+    ? statusValue
+    : null;
+};
+
+export const getCandidateApplicationStatusLabel = (
+  status?: unknown,
+  fallback = "Received"
+) => {
+  const statusValue = getCandidateApplicationStatusValue(status);
+
+  if (!statusValue) {
+    return fallback;
+  }
+
+  return CANDIDATE_APPLICATION_STATUS_LABELS[statusValue] || fallback;
+};
+
+export const getCandidateApplicationStatusMenuItems = (
+  currentStatus?: unknown
+) => {
+  const statusValue = getCandidateApplicationStatusValue(currentStatus);
+
+  if (!statusValue) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS;
+  }
+
+  if (statusValue === 5) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS.filter(
+      (item) => item.key === REJECTED
+    );
+  }
+
+  const currentStatusIndex = CANDIDATE_APPLICATION_MENU_ITEMS.findIndex(
+    (item) => item.status === statusValue
+  );
+
+  if (currentStatusIndex === -1) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS;
+  }
+
+  return CANDIDATE_APPLICATION_MENU_ITEMS.slice(currentStatusIndex);
+};
 
 export const CANDIDATE_NOTIFICATION_CONFIG = {
   SUCCESS: {

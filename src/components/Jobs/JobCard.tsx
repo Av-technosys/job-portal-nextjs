@@ -86,7 +86,7 @@ export default function JobCard({
     <Stack
       stackProps={{
         className:
-          " my-2 py-11 px-10 shadow-lg p-4 rounded-lg border hover:border capitalize",
+          "my-2 py-5 px-6 shadow-lg rounded-lg border hover:border capitalize",
         direction: "column",
         justifyContent: "space-between",
         alignItems: "center",
@@ -104,6 +104,7 @@ export default function JobCard({
           justifyContent: "center",
         }}
       >
+        {/* Card Header */}
         <Stack
           stackProps={{
             direction: "row",
@@ -124,7 +125,7 @@ export default function JobCard({
 
           {/* Save or Unsave Job */}
           <When condition={job?.id !== undefined && showSaveUnSaveButton}>
-            <When condition={!job?.is_saved as boolean}>
+            <When condition={!(job?.is_saved as boolean)}>
               <BookmarkBorderIcon
                 onClick={() => {
                   handleSaveUnSave(job);
@@ -134,6 +135,7 @@ export default function JobCard({
                 }}
               />
             </When>
+
             <When condition={job?.is_saved as boolean}>
               <TurnedInIcon
                 onClick={() => {
@@ -147,9 +149,10 @@ export default function JobCard({
           </When>
         </Stack>
 
+        {/* Company & Job Info */}
         <Stack
           stackProps={{
-            className: "mt-6 ",
+            className: "mt-3",
             direction: "row",
             gap: 1,
             alignItems: "center",
@@ -165,6 +168,7 @@ export default function JobCard({
               {getInitials({ name: String(job?.company_name || "") })}
             </Avatar>
           </Stack>
+
           <Stack
             stackProps={{
               width: "100%",
@@ -176,11 +180,12 @@ export default function JobCard({
           </Stack>
         </Stack>
 
+        {/* Footer Actions */}
         <Stack
           stackProps={{
-            className: "mt-6",
+            className: "mt-3",
             direction: "row",
-            gap: 3,
+            gap: 2,
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
@@ -190,7 +195,7 @@ export default function JobCard({
           <Stack
             stackProps={{
               direction: "row",
-              gap: 3,
+              gap: 2,
               flexWrap: "wrap",
             }}
           >

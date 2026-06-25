@@ -550,6 +550,11 @@ export const JOB_ROLE_OPTIONS = [
     value: "marketing-manager",
     label: "Marketing Manager",
   },
+  {
+    key: "customer-service",
+    value: "customer-service",
+    label: "Customer Service",
+  },
 ];
 
 export const MIN_SALARY_RANGE_OPTIONS = [
@@ -599,13 +604,198 @@ export const JOB_LEVEL_OPTIONS = [
 
 export const COUNTRY_OPTIONS = [{ label: "India", value: "India" }];
 
-export const CITY_OPTIONS = [
-  { label: "Mumbai", value: "mumbai" },
-  { label: "Delhi", value: "delhi" },
-  { label: "Bangalore", value: "bangalore" },
-  { label: "Pune", value: "pune" },
-  // Add more cities as needed
-];
+const createCityOptions = (stateKey: string, cityNames: string[]): Option[] =>
+  [...cityNames]
+    .sort((firstCity, secondCity) => firstCity.localeCompare(secondCity))
+    .map((cityName) => ({
+      label: cityName,
+      value: cityName,
+      key: `${stateKey}-${cityName}`,
+    }));
+
+const CITY_NAMES_BY_STATE: Record<string, string[]> = {
+  andhra_pradesh: [
+    "Amaravati", "Anantapur", "Chittoor", "Eluru", "Guntur", "Kadapa",
+    "Kakinada", "Kurnool", "Machilipatnam", "Nandyal", "Narasaraopet",
+    "Nellore", "Ongole", "Proddatur", "Rajahmundry", "Srikakulam",
+    "Tadepalligudem", "Tenali", "Tirupati", "Vijayawada", "Visakhapatnam",
+    "Vizianagaram",
+  ],
+  arunachal_pradesh: [
+    "Aalo", "Bomdila", "Changlang", "Itanagar", "Khonsa", "Naharlagun",
+    "Namsai", "Pasighat", "Roing", "Seppa", "Tawang", "Tezu", "Yingkiong",
+    "Ziro",
+  ],
+  assam: [
+    "Barpeta", "Bongaigaon", "Dibrugarh", "Dhubri", "Diphu", "Dispur",
+    "Goalpara", "Golaghat", "Guwahati", "Haflong", "Jorhat", "Karimganj",
+    "Kokrajhar", "Lakhimpur", "Nagaon", "Sibsagar", "Silchar", "Tezpur",
+    "Tinsukia",
+  ],
+  bihar: [
+    "Arrah", "Begusarai", "Bettiah", "Bhagalpur", "Bihar Sharif", "Buxar",
+    "Chhapra", "Darbhanga", "Gaya", "Hajipur", "Katihar", "Kishanganj",
+    "Madhubani", "Motihari", "Munger", "Muzaffarpur", "Patna", "Purnia",
+    "Saharsa", "Samastipur", "Sasaram", "Sitamarhi", "Siwan",
+  ],
+  chhattisgarh: [
+    "Ambikapur", "Bhilai", "Bilaspur", "Chirmiri", "Dhamtari", "Durg",
+    "Jagdalpur", "Korba", "Mahasamund", "Raigarh", "Raipur", "Rajnandgaon",
+  ],
+  goa: [
+    "Bicholim", "Canacona", "Curchorem", "Mapusa", "Margao", "Mormugao",
+    "Panaji", "Ponda", "Quepem", "Sanguem", "Vasco da Gama",
+  ],
+  gujarat: [
+    "Ahmedabad", "Amreli", "Anand", "Bharuch", "Bhavnagar", "Bhuj",
+    "Dahod", "Gandhidham", "Gandhinagar", "Godhra", "Jamnagar",
+    "Junagadh", "Mehsana", "Morbi", "Nadiad", "Navsari", "Palanpur",
+    "Porbandar", "Rajkot", "Surat", "Surendranagar", "Vadodara", "Valsad",
+    "Vapi", "Veraval",
+  ],
+  haryana: [
+    "Ambala", "Bahadurgarh", "Bhiwani", "Faridabad", "Fatehabad",
+    "Gurugram", "Hisar", "Jhajjar", "Jind", "Kaithal", "Karnal",
+    "Kurukshetra", "Narnaul", "Palwal", "Panchkula", "Panipat", "Rewari",
+    "Rohtak", "Sirsa", "Sonipat", "Yamunanagar",
+  ],
+  himachal_pradesh: [
+    "Bilaspur", "Chamba", "Dharamshala", "Hamirpur", "Kangra", "Kullu",
+    "Mandi", "Nahan", "Palampur", "Shimla", "Solan", "Una",
+  ],
+  jharkhand: [
+    "Bokaro", "Chaibasa", "Deoghar", "Dhanbad", "Dumka", "Giridih",
+    "Hazaribagh", "Jamshedpur", "Jhumri Telaiya", "Medininagar", "Phusro",
+    "Ramgarh", "Ranchi",
+  ],
+  karnataka: [
+    "Bagalkot", "Ballari", "Belagavi", "Bengaluru", "Bangalore", "Bidar",
+    "Chikkamagaluru", "Chitradurga", "Davangere", "Gadag", "Hassan",
+    "Hubballi", "Kalaburagi", "Karwar", "Kolar", "Mandya", "Mangaluru",
+    "Mysuru", "Raichur", "Shivamogga", "Tumakuru", "Udupi", "Vijayapura",
+  ],
+  kerala: [
+    "Alappuzha", "Kannur", "Kasaragod", "Kochi", "Kollam", "Kottayam",
+    "Kozhikode", "Malappuram", "Palakkad", "Pathanamthitta", "Thalassery",
+    "Thiruvananthapuram", "Thrissur",
+  ],
+  madhya_pradesh: [
+    "Betul", "Bhind", "Bhopal", "Burhanpur", "Chhindwara", "Damoh",
+    "Dewas", "Guna", "Gwalior", "Hoshangabad", "Indore", "Itarsi",
+    "Jabalpur", "Khandwa", "Mandsaur", "Morena", "Ratlam", "Rewa",
+    "Sagar", "Satna", "Sehore", "Shivpuri", "Ujjain", "Vidisha",
+  ],
+  maharashtra: [
+    "Ahmednagar", "Akola", "Amravati", "Aurangabad", "Beed", "Bhiwandi",
+    "Chandrapur", "Dhule", "Jalgaon", "Kolhapur", "Latur", "Malegaon",
+    "Mumbai", "Nagpur", "Nanded", "Nashik", "Navi Mumbai", "Panvel",
+    "Parbhani", "Pimpri-Chinchwad", "Pune", "Sangli", "Satara", "Solapur",
+    "Thane", "Ulhasnagar", "Vasai-Virar", "Wardha",
+  ],
+  manipur: [
+    "Bishnupur", "Churachandpur", "Imphal", "Kakching", "Kangpokpi",
+    "Moreh", "Senapati", "Tamenglong", "Thoubal", "Ukhrul",
+  ],
+  meghalaya: [
+    "Baghmara", "Jowai", "Nongpoh", "Nongstoin", "Shillong", "Tura",
+    "Williamnagar",
+  ],
+  mizoram: [
+    "Aizawl", "Champhai", "Kolasib", "Lawngtlai", "Lunglei", "Mamit",
+    "Saiha", "Serchhip",
+  ],
+  nagaland: [
+    "Dimapur", "Kiphire", "Kohima", "Longleng", "Mokokchung", "Mon",
+    "Peren", "Phek", "Tuensang", "Wokha", "Zunheboto",
+  ],
+  odisha: [
+    "Balangir", "Balasore", "Baripada", "Berhampur", "Bhadrak",
+    "Bhubaneswar", "Cuttack", "Dhenkanal", "Jeypore", "Jharsuguda",
+    "Kendrapara", "Keonjhar", "Koraput", "Puri", "Rourkela", "Sambalpur",
+  ],
+  punjab: [
+    "Abohar", "Amritsar", "Barnala", "Bathinda", "Faridkot",
+    "Fatehgarh Sahib", "Fazilka", "Firozpur", "Gurdaspur", "Hoshiarpur",
+    "Jalandhar", "Kapurthala", "Khanna", "Ludhiana", "Malerkotla", "Mansa",
+    "Moga", "Mohali", "Pathankot", "Patiala", "Rupnagar", "Sangrur",
+  ],
+  rajasthan: [
+    "Ajmer", "Alwar", "Banswara", "Baran", "Barmer", "Bharatpur",
+    "Bhilwara", "Bikaner", "Bundi", "Chittorgarh", "Churu", "Dausa",
+    "Dholpur", "Hanumangarh", "Jaipur", "Jaisalmer", "Jalore", "Jhalawar",
+    "Jhunjhunu", "Jodhpur", "Kota", "Nagaur", "Pali", "Sikar", "Tonk",
+    "Udaipur",
+  ],
+  sikkim: [
+    "Gangtok", "Gyalshing", "Mangan", "Namchi", "Pakyong", "Rangpo",
+    "Singtam",
+  ],
+  tamil_nadu: [
+    "Ambur", "Chennai", "Coimbatore", "Cuddalore", "Dindigul", "Erode",
+    "Hosur", "Kanchipuram", "Karur", "Kumbakonam", "Madurai", "Nagercoil",
+    "Ooty", "Pollachi", "Salem", "Sivakasi", "Thanjavur", "Thoothukudi",
+    "Tiruchirappalli", "Tirunelveli", "Tiruppur", "Vellore",
+  ],
+  telangana: [
+    "Adilabad", "Hyderabad", "Jagtial", "Karimnagar", "Khammam",
+    "Mahbubnagar", "Mancherial", "Medak", "Nalgonda", "Nizamabad",
+    "Ramagundam", "Sangareddy", "Siddipet", "Suryapet", "Warangal",
+  ],
+  tripura: [
+    "Agartala", "Ambassa", "Belonia", "Dharmanagar", "Kailashahar",
+    "Khowai", "Udaipur",
+  ],
+  uttar_pradesh: [
+    "Agra", "Aligarh", "Ayodhya", "Azamgarh", "Bareilly", "Basti",
+    "Bulandshahr", "Etawah", "Firozabad", "Ghaziabad", "Gorakhpur",
+    "Greater Noida", "Jhansi", "Kanpur", "Lucknow", "Mathura", "Meerut",
+    "Moradabad", "Muzaffarnagar", "Noida", "Prayagraj", "Saharanpur",
+    "Shahjahanpur", "Varanasi",
+  ],
+  uttarakhand: [
+    "Almora", "Dehradun", "Haldwani", "Haridwar", "Kashipur", "Kotdwar",
+    "Mussoorie", "Nainital", "Pithoragarh", "Rishikesh", "Roorkee",
+    "Rudrapur",
+  ],
+  west_bengal: [
+    "Alipurduar", "Asansol", "Baharampur", "Balurghat", "Bankura",
+    "Bardhaman", "Barrackpore", "Darjeeling", "Durgapur", "Haldia",
+    "Howrah", "Jalpaiguri", "Kharagpur", "Kolkata", "Krishnanagar",
+    "Malda", "Purulia", "Raiganj", "Siliguri",
+  ],
+  andaman_and_nicobar_islands: [
+    "Bamboo Flat", "Car Nicobar", "Diglipur", "Mayabunder", "Port Blair",
+    "Rangat",
+  ],
+  chandigarh: ["Chandigarh"],
+  dadra_and_nagar_haveli_and_daman_and_diu: [
+    "Daman", "Diu", "Silvassa",
+  ],
+  delhi: [
+    "Central Delhi", "Delhi", "Dwarka", "East Delhi", "New Delhi",
+    "North Delhi", "Rohini", "South Delhi", "West Delhi",
+  ],
+  jammu_and_kashmir: [
+    "Anantnag", "Baramulla", "Budgam", "Doda", "Jammu", "Kathua", "Kulgam",
+    "Kupwara", "Poonch", "Rajouri", "Samba", "Sopore", "Srinagar",
+    "Udhampur",
+  ],
+  ladakh: ["Kargil", "Leh"],
+  lakshadweep: ["Agatti", "Amini", "Andrott", "Kavaratti", "Minicoy"],
+  puducherry: ["Karaikal", "Mahe", "Puducherry", "Yanam"],
+};
+
+export const CITY_OPTIONS_BY_STATE: Record<string, Option[]> = Object.entries(
+  CITY_NAMES_BY_STATE
+).reduce(
+  (acc, [stateKey, cityNames]) => ({
+    ...acc,
+    [stateKey]: createCityOptions(stateKey, cityNames),
+  }),
+  {} as Record<string, Option[]>
+);
+
+export const CITY_OPTIONS = Object.values(CITY_OPTIONS_BY_STATE).flat();
 export const QUESTION_OPTIONS = [
   { label: "Option 1", value: "option_1" },
   { label: "Option 2", value: "option_2" },

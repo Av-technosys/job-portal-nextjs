@@ -3,7 +3,7 @@ import { BreadCrumb, Stack, Typography, When } from "../common";
 import { colorStyles, dimensionStyle } from "@/styles";
 import {
   BREADCRUMB_LINK_TITLE_CONFIG,
-  HEADER_SEARCH_SECTION_CONFIG,
+  JOBS_URL,
   LANDING_URL,
   NAVIGATION_PATH_MAPPING_CONFIG,
 } from "@/constants";
@@ -32,11 +32,13 @@ function BreadcrumbLink({ pathname }: { pathname: string }) {
 function BreadcumbRibbon({
   isFilterOpen,
   pathname,
+  onSearchChange,
   showSearchedData,
 }: {
   isFilterOpen?: boolean;
   pathname: string;
-  showSearchedData: any;
+  onSearchChange?: (searchValue: string) => void;
+  showSearchedData?: any;
 }) {
   const { userType } = useCommonDetails();
 
@@ -50,21 +52,23 @@ function BreadcumbRibbon({
   // Debounce effect
   useEffect(() => {
     const handler = setTimeout(() => {
-      setSearchString(searchValue);
+      const nextSearchString = searchValue.trim();
+      if (showSearchedData) setSearchString(nextSearchString);
+      onSearchChange?.(nextSearchString);
     }, 1000);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [searchValue]);
+  }, [onSearchChange, searchValue, showSearchedData]);
 
-  const SearchData = useGetSearchDetailsAsPerURLOrUserType({
-    searchString,
-  });
+  // const SearchData = useGetSearchDetailsAsPerURLOrUserType({
+  //   searchString,
+  // });
 
-  useEffect(() => {
-    showSearchedData(SearchData);
-  }, [SearchData]);
+  // useEffect(() => {
+  //   showSearchedData?.(SearchData);
+  // }, [SearchData, showSearchedData]);
 
   const searchProps = {
     input: {
@@ -91,7 +95,7 @@ function BreadcumbRibbon({
           <BreadcrumbLink pathname={pathname} />
         </div>
         <div className="w-full md:w-2/4 flex justify-center items-center">
-          <When condition={userType !== -1}>
+          <When condition={userType !== -1 || pathname === JOBS_URL}>
             <FormControl
               sx={{
                 width: "30ch",

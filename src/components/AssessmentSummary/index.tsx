@@ -29,20 +29,6 @@ function AssessmentSummary({ attemptId }: paramAttemptId) {
   return (
     <>
       <Stack>
-        <Stack
-          stackProps={{
-            className: "mb-4",
-            direction: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <NextImage
-            props={{
-              alt: "ja_logo",
-              src: JA_LOGO,
-            }}
-          />
-        </Stack>
         <Divider />
         <Stack
           stackProps={{

@@ -105,8 +105,8 @@ function Personal() {
           CORRESPONDENCE_ADDRESS_HEADING,
           ADDRESS_LINE_1_FIELD,
           ADDRESS_LINE_2_FIELD,
-          CITY_FIELD,
           STATE_FIELD,
+          CITY_FIELD,
           COUNTRY_FIELD,
           POSTAL_CODE_FIELD,
         ]}

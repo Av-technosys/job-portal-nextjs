@@ -9,18 +9,12 @@ import { InfinitePagination, Stack, Typography, When, Menu } from "../common";
 import {
   CANDIDATE_APPLICATION_PAGE_CONFIG,
   CANDIDATE_APPLICATION_MENU_ITEMS,
-  IN_REVIEW,
-  ON_HOLD,
-  SHORTLIST,
-  INTERVIEWING,
-  REJECTED,
-  SALARY_NEGOTIATION,
-  OFFERED,
-  JOINED,
   CANDIDATE_NOTIFICATION_CONFIG,
+  getCandidateApplicationStatusValue,
+  getCandidateApplicationStatusMenuItems,
 } from "@/constants";
 import CandidateApplicationCard from "./CandidateCard";
-import { CommonAllDataType, CommonObjectType, Job } from "@/types";
+import { CommonObjectType, Job } from "@/types";
 import ApplicationPopup from "./ApplicationPopup";
 import { MenuItem } from "@mui/material";
 import { getErrorMessageFromAPI } from "@/helper";
@@ -34,6 +28,25 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
   const updateCandidateStatusMutate = useUpdateCandidateStatus();
   const { showNotification } = useNotification();
 
+  function getStatusForMenuKey(key: string) {
+    return (
+      CANDIDATE_APPLICATION_MENU_ITEMS.find((item) => item.key === key)
+        ?.status || null
+    );
+  }
+
+  function isMenuItemDisabled(key: string) {
+    const currentStatus = getCandidateApplicationStatusValue(
+      selectedCandidate.current?.application_status
+    );
+    const nextStatus = getStatusForMenuKey(key);
+
+    return (
+      updateCandidateStatusMutate.isPending ||
+      currentStatus === nextStatus
+    );
+  }
+
   function updateCandidateStatus(candidateId: number, status: number) {
     updateCandidateStatusMutate.mutate(
       {
@@ -44,6 +57,11 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
       {
         onSuccess: () => {
           showNotification(CANDIDATE_NOTIFICATION_CONFIG.SUCCESS);
+          selectedCandidate.current = {
+            ...selectedCandidate.current,
+            application_status: status,
+          };
+          candidateApplicationAPIData.refetch();
         },
         onError: (error) => {
           showNotification({
@@ -82,31 +100,10 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
   }
 
   const handleMenuItemClick = (key: string, candidateId: number) => {
-    switch (key) {
-      case IN_REVIEW:
-        updateCandidateStatus(candidateId, 1);
-        break;
-      case ON_HOLD:
-        updateCandidateStatus(candidateId, 2);
-        break;
-      case SHORTLIST:
-        updateCandidateStatus(candidateId, 3);
-        break;
-      case INTERVIEWING:
-        updateCandidateStatus(candidateId, 4);
-        break;
-      case REJECTED:
-        updateCandidateStatus(candidateId, 5);
-        break;
-      case SALARY_NEGOTIATION:
-        updateCandidateStatus(candidateId, 6);
-        break;
-      case OFFERED:
-        updateCandidateStatus(candidateId, 7);
-        break;
-      case JOINED:
-        updateCandidateStatus(candidateId, 8);
-        break;
+    const nextStatus = getStatusForMenuKey(key);
+
+    if (nextStatus) {
+      updateCandidateStatus(candidateId, nextStatus);
     }
     handleClose();
   };
@@ -132,27 +129,53 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
           handleClose={() => setApplicationPopupStatus(false)}
           jobDetails={jobDetails}
           candidateDetails={selectedCandidate.current}
+          onStatusUpdated={(status) => {
+            selectedCandidate.current = {
+              ...selectedCandidate.current,
+              application_status: status,
+            };
+          }}
         />
       </When>
-      <InfinitePagination
-        dataLength={paginatedInfoData?.length}
-        next={candidateApplicationAPIData?.fetchNextPage}
-        hasMore={hasMore}
-        isFetchingMore={candidateApplicationAPIData?.isFetchingNextPage}
+      <When
+        condition={candidateApplicationAPIData?.isFetched && totalLength === 0}
       >
-        <Stack>
-          {paginatedInfoData?.map((candidate) => (
-            <CandidateApplicationCard
-              candidate={candidate}
-              key={`candidateApplication-${candidate?.id}`}
-              openApplicationPopup={() => openApplicationPopup(candidate)}
-              handleIconButtonClick={(event) =>
-                handleIconButtonClick(event, candidate)
-              }
-            />
-          ))}
+        <Stack
+          stackProps={{
+            alignItems: "center",
+            justifyContent: "center",
+            py: 6,
+          }}
+        >
+          <Typography
+            typographyProps={{
+              children: "No candidates to show yet.",
+              variant: "h6",
+            }}
+          />
         </Stack>
-      </InfinitePagination>
+      </When>
+      <When condition={totalLength > 0}>
+        <InfinitePagination
+          dataLength={paginatedInfoData?.length}
+          next={candidateApplicationAPIData?.fetchNextPage}
+          hasMore={hasMore}
+          isFetchingMore={candidateApplicationAPIData?.isFetchingNextPage}
+        >
+          <Stack>
+            {paginatedInfoData?.map((candidate) => (
+              <CandidateApplicationCard
+                candidate={candidate}
+                key={`candidateApplication-${candidate?.id}`}
+                openApplicationPopup={() => openApplicationPopup(candidate)}
+                handleIconButtonClick={(event) =>
+                  handleIconButtonClick(event, candidate)
+                }
+              />
+            ))}
+          </Stack>
+        </InfinitePagination>
+      </When>
       <Menu
         handleClose={handleClose}
         anchorEl={anchorEl}
@@ -162,9 +185,12 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
           },
         }}
       >
-        {CANDIDATE_APPLICATION_MENU_ITEMS.map((item) => (
+        {getCandidateApplicationStatusMenuItems(
+          selectedCandidate.current?.application_status
+        ).map((item) => (
           <MenuItem
             key={`CandidateApplicationMenu-${item.key}`}
+            disabled={isMenuItemDisabled(item.key)}
             onClick={() =>
               handleMenuItemClick(
                 item.key,

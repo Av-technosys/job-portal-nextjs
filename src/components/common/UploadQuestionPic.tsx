@@ -1,31 +1,17 @@
-import {
-  useCommonDetails,
-  useCreateOrUpdateProfilePicture,
-  useDeleteProfilePicture,
-  useNotification,
-} from "@/services";
+import { useCommonDetails } from "@/services";
 import { ChangeEvent, useMemo, useState } from "react";
 import {
   ButtonColorEnum,
   ButtonSizeEnum,
   ButtonVariantEnum,
-  CreateOrUpdateProfilePicInput,
-  CreateOrUpdateQuestionPicInput,
-  ProfileImageEnum,
-  QuestionImageEnum,
+  CommonObjectType,
 } from "@/types";
 import {
   IMAGE,
-  PROFILE_PICTURE_UPLOAD_CONFIG,
-  QUESTION_PICTURE_UPLOAD_CONFIG,
   TYPO_DRAG_DROP_UPLOAD_CONFIG,
   TYPO_SIZE_UPLOAD_CONFIG,
 } from "@/constants";
-import {
-  getErrorMessageFromAPI,
-  getInitials,
-  isLoggedInUserRecruiter,
-} from "@/helper";
+import { getInitials } from "@/helper";
 import When from "./When";
 import Stack from "./Stack";
 import Typography from "./Typography";
@@ -35,63 +21,40 @@ import Avatar from "./Avatar";
 import { FormControl, InputLabel } from "@mui/material";
 import IconButton from "./IconButton";
 import { colorStyles } from "@/styles";
-import {
-  useCreateOrUpdateQuestionPicture,
-  useDeleteQuestionPicture,
-} from "@/services/useUploadQuestionPic";
 
-function UploadQuestionPic() {
-  const { showNotification } = useNotification();
-  const { NOTIFICATION_CONFIG } = QUESTION_PICTURE_UPLOAD_CONFIG;
+function UploadQuestionPic({
+  field,
+  setFieldValue,
+}: {
+  field?: CommonObjectType;
+  setFieldValue?: (fieldName: string, value: unknown) => void;
+}) {
   const [isDragOver, setIsDragOver] = useState(false);
-  //   COMMON INTERFACE FOR QUESTION BANA HUA HAI USME OUR SHI SE DEKHO OUR QUESTION DATA LENA HAI SERVER SE...
-  const { name, profileImage, userType, refetchCommonDetails } =
-    useCommonDetails();
+  const { name } = useCommonDetails();
+  const questionImageValue = field?.value as File | string | null | undefined;
+  const questionImageUrl = useMemo(() => {
+    if (questionImageValue instanceof File) {
+      return URL.createObjectURL(questionImageValue);
+    }
 
-  const createOrUpdateQuestionPicture = useCreateOrUpdateQuestionPicture({
-    mutationConfig: {
-      onSuccess: () => {
-        refetchCommonDetails();
-        showNotification(NOTIFICATION_CONFIG.SUCCESS);
-      },
-      onError: (error) => {
-        showNotification({
-          ...getErrorMessageFromAPI(error),
-        });
-        console.error(error, "error");
-      },
-    },
-  });
-
-  const deleteQuestionPicture = useDeleteQuestionPicture({
-    mutationConfig: {
-      onSuccess: () => {
-        refetchCommonDetails();
-        showNotification(NOTIFICATION_CONFIG.DELETE_SUCCESS);
-      },
-      onError: (error) => {
-        showNotification({
-          ...getErrorMessageFromAPI(error),
-        });
-        console.error(error, "error");
-      },
-    },
-  });
+    return questionImageValue || null;
+  }, [questionImageValue]);
 
   function handleQuestionPictureChange(file: File) {
     if (file) {
-      createOrUpdateQuestionPicture.mutate({
-        data: {
-          file_type: QuestionImageEnum.QUESTION_IMAGE,
-          file,
-        } as CreateOrUpdateQuestionPicInput,
-      });
+      try {
+        if (typeof field?.name === "string" && setFieldValue) {
+          setFieldValue(field.name, file);
+        }
+      } catch (e) {
+        // ignore preview creation errors
+      }
     }
   }
 
   function handleDeleteClick() {
-    if (profileImage) {
-      deleteQuestionPicture.mutate({});
+    if (typeof field?.name === "string" && setFieldValue) {
+      setFieldValue(field.name, null);
     }
   }
 
@@ -125,31 +88,25 @@ function UploadQuestionPic() {
   }
 
   const isProfileImageAvailable = useMemo(() => {
-    return profileImage !== undefined && profileImage !== null;
-  }, [profileImage]);
-
-  const isRecruiter = useMemo(() => {
-    return userType !== -1 ? isLoggedInUserRecruiter({ userType }) : false;
-  }, [userType]);
+    return Boolean(questionImageUrl);
+  }, [questionImageUrl]);
 
   return (
     <>
       <FormControl
         sx={{
           width: "100%",
-          flexBasis: isRecruiter ? "100%" : "100%",
-          height: "50px",
-          marginBottom: "180px",
+          flexBasis: "100%",
+          minHeight: "280px",
+          marginBottom: "24px",
         }}
       >
         <InputLabel shrink className={"mb-4 label-shrink"}>
-          {isRecruiter
-            ? "Logo"
-            : "Question Picture (Avoid using Casual Pictures)"}
+          Question Image
         </InputLabel>
         <Stack
           stackProps={{
-            className: "md:absolute relative",
+            className: "absolute",
             sx: {
               height: 250,
               border: isProfileImageAvailable
@@ -203,7 +160,7 @@ function UploadQuestionPic() {
                 },
               }}
             >
-              <Avatar {...IMAGE((profileImage || "") as string).avatarProps}>
+              <Avatar {...IMAGE((questionImageUrl || "") as string).avatarProps}>
                 {getInitials({
                   name: name || "",
                 })}

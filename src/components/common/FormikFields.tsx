@@ -13,6 +13,7 @@ import DatePicker from "./DatePicker";
 import Input from "./Input";
 import When from "./When";
 import { FieldArray } from "formik";
+import { useEffect } from "react";
 import Dropdown from "./Dropdown";
 import Typography from "./Typography";
 import UploadProfilePic from "./UploadProfilePic";
@@ -25,6 +26,7 @@ import { FormControl, FormHelperText } from "@mui/material";
 import SocialLinksInput from "./SocialLinksInput";
 import CheckBox from "./Checkbox";
 import UploadQuestionPic from "./UploadQuestionPic";
+import SkillsInput from "./SkillsInput";
 
 function FormikFields({
   fieldType = FormikFieldsEnum.TEXT_FIELD,
@@ -38,6 +40,42 @@ function FormikFields({
   field: CommonObjectType;
   errors?: CommonObjectType;
 }) {
+  const restOptions = (rest as CommonObjectType)?.options as
+    | { value: string | number; label?: string | number }[]
+    | undefined;
+  const normalizeOptionValue = (optionValue: string | number) =>
+    `${optionValue}`.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  useEffect(() => {
+    const matchingOption = restOptions?.find(
+      (option) =>
+        option.value === field.value ||
+        normalizeOptionValue(option.value) ===
+          normalizeOptionValue(field.value as string) ||
+        normalizeOptionValue(option.label || option.value) ===
+          normalizeOptionValue(field.value as string)
+    );
+
+    if (
+      fieldType === FormikFieldsEnum.DROPDOWN &&
+      Array.isArray(restOptions) &&
+      field?.value &&
+      matchingOption?.value &&
+      matchingOption.value !== field.value
+    ) {
+      setFieldValue(field?.name as string, matchingOption.value);
+    }
+
+    if (
+      fieldType === FormikFieldsEnum.DROPDOWN &&
+      Array.isArray(restOptions) &&
+      field?.value &&
+      !matchingOption
+    ) {
+      setFieldValue(field?.name as string, "");
+    }
+  }, [field?.name, field?.value, fieldType, restOptions, setFieldValue]);
+
   return (
     <>
       <When condition={fieldType === FormikFieldsEnum.DATE_PICKER}>
@@ -77,7 +115,7 @@ function FormikFields({
         <UploadProfilePic />
       </When>
       <When condition={fieldType === FormikFieldsEnum.UPLOAD_QUESTION_IMAGE}>
-        <UploadQuestionPic />
+        <UploadQuestionPic field={field} setFieldValue={setFieldValue} />
       </When>
       <When condition={fieldType === FormikFieldsEnum.MULTI_SELECT_DROPDOWN}>
         <MultiSelectDropdown
@@ -87,6 +125,15 @@ function FormikFields({
               field?.name as string,
               (event?.target?.value || []) as string[]
             );
+          }}
+          value={field.value as string[]}
+        />
+      </When>
+      <When condition={fieldType === FormikFieldsEnum.SKILLS_INPUT}>
+        <SkillsInput
+          {...rest}
+          onChange={(value) => {
+            setFieldValue(field?.name as string, value);
           }}
           value={field.value as string[]}
         />

@@ -4,7 +4,7 @@ import {
   useQueryClient,
   useMutation,
 } from "@tanstack/react-query";
-import { apiConstantsURL } from "@/constants";
+import { apiConstantsURL, LOCAL_STORAGE_KEY } from "@/constants";
 import {
   CommonAllDataType,
   MutationConfig,
@@ -12,7 +12,7 @@ import {
   SuccessResponseType,
   CreateOrUpdateProfilePicInput,
 } from "@/types";
-import { api } from "@/helper";
+import { api, getItem } from "@/helper";
 
 // GET Hook
 export const getProfilePicture = (): Promise<{
@@ -23,7 +23,7 @@ export const getProfilePicture = (): Promise<{
 
 export const getProfilePictureQueryOptions = () => {
   return queryOptions({
-    queryKey: ["user_documents"],
+    queryKey: ["user_profile_picture", getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)],
     queryFn: () => getProfilePicture(),
   });
 };

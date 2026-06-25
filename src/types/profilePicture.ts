@@ -13,8 +13,8 @@ export enum QuestionImageEnum {
   QUESTION_IMAGE = "question_image",
 }
 export type CreateOrUpdateQuestionPicInput = {
-  file_type: QuestionImageEnum.QUESTION_IMAGE;
-  file: File;
+  question_id: number | string;
+  question_image: File;
 };
 
 export type CreateOrUpdateDocumentInput = {
@@ -47,6 +47,7 @@ export interface UploadDocumentProps {
   dragText?: string;
   fileInfo?: string;
   accept?: DocumentTypeEnum;
+  required?: boolean;
   onUpload?: (file: File | null) => void;
   onDelete?: () => void;
   formControlProps?: FormControlProps;
