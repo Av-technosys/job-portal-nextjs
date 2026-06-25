@@ -8,6 +8,8 @@ import {
   LOGIN_URL,
 } from "@/constants";
 import { getItem, isUserAuthenticated } from "@/helper";
+import { useNotification } from "@/services";
+import { UserType } from "@/types";
 
 const assessmentFeatures = [
   {
@@ -26,9 +28,19 @@ const assessmentFeatures = [
 
 function AssessmentHighlight() {
   const router = useRouter();
+  const { showNotification } = useNotification();
 
   const handleAssessmentClick = () => {
     if (isUserAuthenticated() || getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)) {
+      const currentUserType = getItem(LOCAL_STORAGE_KEY.CURRENT_USER_TYPE);
+
+      if (currentUserType === UserType.RECUITER_TYPE) {
+        showNotification({
+          message: "Assessments are only available for job seekers.",
+        });
+        return;
+      }
+
       router.push(ASSESSMENT_URL);
       return;
     }

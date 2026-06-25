@@ -20,6 +20,7 @@ export enum ButtonVariantEnum {
 
 export enum ButtonColorEnum {
   PRIMARY = "primary",
+  SECONDARY = "secondary",
   ERROR = "error",
   SUCCESS = "success",
 }

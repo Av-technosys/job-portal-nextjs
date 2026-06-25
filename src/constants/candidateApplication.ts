@@ -66,9 +66,10 @@ export const CANDIDATE_APPLICATION_PAGE_CONFIG = {
       } as TypographyProps;
     },
     EXPERIENCE: (candidate: CommonObjectType) => {
+      const experience = Number(candidate?.experience || 0);
       return {
         typographyProps: {
-          children: candidate?.gender,
+          children: `${experience} Year${experience === 1 ? "" : "s"}`,
           variant: TypographyVariantEnum.H5,
         },
         fontSize: TypographyFontSize.small,
@@ -601,36 +602,103 @@ export const CANDIDATE_APPLICATION_MENU_ITEMS = [
   {
     label: "In Review",
     key: IN_REVIEW,
+    status: 1,
   },
   {
     label: "On Hold",
     key: ON_HOLD,
+    status: 2,
   },
   {
     label: "Shortlisted",
     key: SHORTLIST,
+    status: 3,
   },
   {
     label: "Interviewing",
     key: INTERVIEWING,
+    status: 4,
   },
   {
     label: "Rejected",
     key: REJECTED,
+    status: 5,
   },
   {
     label: "Salary Negotiation",
     key: SALARY_NEGOTIATION,
+    status: 6,
   },
   {
     label: "Offered",
     key: OFFERED,
+    status: 7,
   },
   {
     label: "Joined",
     key: JOINED,
+    status: 8,
   },
 ];
+
+export const CANDIDATE_APPLICATION_STATUS_LABELS =
+  CANDIDATE_APPLICATION_MENU_ITEMS.reduce<Record<number, string>>(
+    (acc, item) => {
+      acc[item.status] = item.label;
+      return acc;
+    },
+    {}
+  );
+
+export const getCandidateApplicationStatusValue = (status?: unknown) => {
+  const statusValue =
+    typeof status === "string" || typeof status === "number"
+      ? Number(status)
+      : null;
+
+  return typeof statusValue === "number" && Number.isFinite(statusValue)
+    ? statusValue
+    : null;
+};
+
+export const getCandidateApplicationStatusLabel = (
+  status?: unknown,
+  fallback = "Received"
+) => {
+  const statusValue = getCandidateApplicationStatusValue(status);
+
+  if (!statusValue) {
+    return fallback;
+  }
+
+  return CANDIDATE_APPLICATION_STATUS_LABELS[statusValue] || fallback;
+};
+
+export const getCandidateApplicationStatusMenuItems = (
+  currentStatus?: unknown
+) => {
+  const statusValue = getCandidateApplicationStatusValue(currentStatus);
+
+  if (!statusValue) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS;
+  }
+
+  if (statusValue === 5) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS.filter(
+      (item) => item.key === REJECTED
+    );
+  }
+
+  const currentStatusIndex = CANDIDATE_APPLICATION_MENU_ITEMS.findIndex(
+    (item) => item.status === statusValue
+  );
+
+  if (currentStatusIndex === -1) {
+    return CANDIDATE_APPLICATION_MENU_ITEMS;
+  }
+
+  return CANDIDATE_APPLICATION_MENU_ITEMS.slice(currentStatusIndex);
+};
 
 export const CANDIDATE_NOTIFICATION_CONFIG = {
   SUCCESS: {

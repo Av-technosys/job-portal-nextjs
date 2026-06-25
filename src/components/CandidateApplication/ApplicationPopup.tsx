@@ -2,6 +2,8 @@ import {
   APPLICATION_MODAL,
   CANDIDATE_DETAILS_PAGE_CONFIG,
   CANDIDATE_NOTIFICATION_CONFIG,
+  getCandidateApplicationStatusValue,
+  getCandidateApplicationStatusMenuItems,
 } from "@/constants";
 import { Avatar, Button, IconButton, Modal, Stack, Typography } from "../common";
 import { CommonObjectType, Job } from "@/types";
@@ -19,12 +21,15 @@ import CandidateProfessionalCard from "./CandidateProfessionalInfo";
 import { useNotification, useUpdateCandidateStatus } from "@/services";
 import { useRouter } from "next/router";
 import CandidateAssessmentScores from "./CandidateAssessmentScores";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ApplicationPopupProps {
   open: boolean;
   handleClose: VoidFunction;
   jobDetails: Job;
   candidateDetails: CommonObjectType;
+  onStatusUpdated?: (status: number) => void;
 }
 
 function getCandidateId(value: unknown) {
@@ -53,18 +58,22 @@ export default function ApplicationPopup({
   open,
   handleClose,
   candidateDetails,
+  onStatusUpdated,
 }: // jobDetails,
 // candidateDetails,
 ApplicationPopupProps) {
   const { MODAL_STYLES } = APPLICATION_MODAL;
-  const { IMAGE, NAME, NOT_SHORTLISTED_BUTTON, SCEHDULE_INTERVIEW_BUTTON } =
-    CANDIDATE_DETAILS_PAGE_CONFIG;
+  const { IMAGE, NAME } = CANDIDATE_DETAILS_PAGE_CONFIG;
 
   const router = useRouter();
   const { id } = router.query;
 
   const userId = getCandidateUserId(candidateDetails);
   const applicationId = getCandidateId(candidateDetails?.application_id);
+  const [applicationStatus, setApplicationStatus] = useState<number | null>(
+    getCandidateApplicationStatusValue(candidateDetails?.application_status)
+  );
+  const queryClient = useQueryClient();
 
   const ApplicantFullData = useGetApplicantPersonalDetails({
     queryParams: {
@@ -77,7 +86,17 @@ ApplicationPopupProps) {
   const updateCandidateStatusMutate = useUpdateCandidateStatus();
   const { showNotification } = useNotification();
 
+  useEffect(() => {
+    setApplicationStatus(
+      getCandidateApplicationStatusValue(candidateDetails?.application_status)
+    );
+  }, [candidateDetails?.application_status]);
+
   function updateCandidateStatus(candidateId: number, status: number) {
+    if (updateCandidateStatusMutate.isPending || applicationStatus === status) {
+      return;
+    }
+
     updateCandidateStatusMutate.mutate(
       {
         student_id: candidateId,
@@ -87,6 +106,11 @@ ApplicationPopupProps) {
       {
         onSuccess: () => {
           showNotification(CANDIDATE_NOTIFICATION_CONFIG.SUCCESS);
+          setApplicationStatus(status);
+          onStatusUpdated?.(status);
+          queryClient.invalidateQueries({
+            queryKey: ["candidate_application", Number(id)],
+          });
         },
         onError: (error) => {
           showNotification({
@@ -153,22 +177,50 @@ ApplicationPopupProps) {
               <Stack
                 stackProps={{
                   className: "mt-2",
-                  gap: 2,
-                  direction: { xs: "column", md: "row" },
+                  gap: 1,
+                  maxWidth: { xs: "100%", md: 560 },
                 }}
               >
-                <Button
-                  onClick={() =>
-                    updateCandidateStatus(Number(userId), 1)
-                  }
-                  {...NOT_SHORTLISTED_BUTTON}
+                <Typography
+                  typographyProps={{
+                    children: "Application Status",
+                    variant: "body2",
+                  }}
                 />
-                <Button
-                  onClick={() =>
-                    updateCandidateStatus(Number(userId), 2)
-                  }
-                  {...SCEHDULE_INTERVIEW_BUTTON}
-                />
+                <Stack
+                  stackProps={{
+                    direction: "row",
+                    gap: 1,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {getCandidateApplicationStatusMenuItems(
+                    applicationStatus
+                  ).map((item) => (
+                    <Button
+                      key={`ApplicationPopupStatus-${item.key}`}
+                      onClick={() =>
+                        updateCandidateStatus(Number(userId), item.status)
+                      }
+                      buttonProps={{
+                        children: item.label,
+                        variant:
+                          applicationStatus === item.status
+                            ? "contained"
+                            : "outlined",
+                        color: "primary",
+                        size: "small",
+                        disabled:
+                          updateCandidateStatusMutate.isPending ||
+                          applicationStatus === item.status,
+                        sx: {
+                          textTransform: "none",
+                          minWidth: 0,
+                        },
+                      }}
+                    />
+                  ))}
+                </Stack>
               </Stack>
             </Stack>
             {/* main Stack */}

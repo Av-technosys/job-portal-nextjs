@@ -9,15 +9,9 @@ import { InfinitePagination, Stack, Typography, When, Menu } from "../common";
 import {
   CANDIDATE_APPLICATION_PAGE_CONFIG,
   CANDIDATE_APPLICATION_MENU_ITEMS,
-  IN_REVIEW,
-  ON_HOLD,
-  SHORTLIST,
-  INTERVIEWING,
-  REJECTED,
-  SALARY_NEGOTIATION,
-  OFFERED,
-  JOINED,
   CANDIDATE_NOTIFICATION_CONFIG,
+  getCandidateApplicationStatusValue,
+  getCandidateApplicationStatusMenuItems,
 } from "@/constants";
 import CandidateApplicationCard from "./CandidateCard";
 import { CommonObjectType, Job } from "@/types";
@@ -36,6 +30,25 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
   const updateCandidateStatusMutate = useUpdateCandidateStatus();
   const { showNotification } = useNotification();
 
+  function getStatusForMenuKey(key: string) {
+    return (
+      CANDIDATE_APPLICATION_MENU_ITEMS.find((item) => item.key === key)
+        ?.status || null
+    );
+  }
+
+  function isMenuItemDisabled(key: string) {
+    const currentStatus = getCandidateApplicationStatusValue(
+      selectedCandidate.current?.application_status
+    );
+    const nextStatus = getStatusForMenuKey(key);
+
+    return (
+      updateCandidateStatusMutate.isPending ||
+      currentStatus === nextStatus
+    );
+  }
+
   function updateCandidateStatus(candidateId: number, status: number) {
     updateCandidateStatusMutate.mutate(
       {
@@ -49,6 +62,11 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
             queryKey: ["candidate_application", jobDetails?.job_id],
           });
           showNotification(CANDIDATE_NOTIFICATION_CONFIG.SUCCESS);
+          selectedCandidate.current = {
+            ...selectedCandidate.current,
+            application_status: status,
+          };
+          candidateApplicationAPIData.refetch();
         },
         onError: (error) => {
           showNotification({
@@ -87,31 +105,10 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
   }
 
   const handleMenuItemClick = (key: string, candidateId: number) => {
-    switch (key) {
-      case IN_REVIEW:
-        updateCandidateStatus(candidateId, 1);
-        break;
-      case ON_HOLD:
-        updateCandidateStatus(candidateId, 2);
-        break;
-      case SHORTLIST:
-        updateCandidateStatus(candidateId, 3);
-        break;
-      case INTERVIEWING:
-        updateCandidateStatus(candidateId, 4);
-        break;
-      case REJECTED:
-        updateCandidateStatus(candidateId, 5);
-        break;
-      case SALARY_NEGOTIATION:
-        updateCandidateStatus(candidateId, 6);
-        break;
-      case OFFERED:
-        updateCandidateStatus(candidateId, 7);
-        break;
-      case JOINED:
-        updateCandidateStatus(candidateId, 8);
-        break;
+    const nextStatus = getStatusForMenuKey(key);
+
+    if (nextStatus) {
+      updateCandidateStatus(candidateId, nextStatus);
     }
     handleClose();
   };
@@ -137,6 +134,12 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
           handleClose={() => setApplicationPopupStatus(false)}
           jobDetails={jobDetails}
           candidateDetails={selectedCandidate.current}
+          onStatusUpdated={(status) => {
+            selectedCandidate.current = {
+              ...selectedCandidate.current,
+              application_status: status,
+            };
+          }}
         />
       </When>
       <When
@@ -187,9 +190,12 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
           },
         }}
       >
-        {CANDIDATE_APPLICATION_MENU_ITEMS.map((item) => (
+        {getCandidateApplicationStatusMenuItems(
+          selectedCandidate.current?.application_status
+        ).map((item) => (
           <MenuItem
             key={`CandidateApplicationMenu-${item.key}`}
+            disabled={isMenuItemDisabled(item.key)}
             onClick={() =>
               handleMenuItemClick(
                 item.key,

@@ -8,7 +8,10 @@ import {
   Typography,
   IconButton,
 } from "../common";
-import { CANDIDATE_APPLICATION_PAGE_CONFIG } from "@/constants";
+import {
+  CANDIDATE_APPLICATION_PAGE_CONFIG,
+  getCandidateApplicationStatusLabel,
+} from "@/constants";
 import { getInitials } from "@/helper";
 
 import {
@@ -19,18 +22,6 @@ import {
 } from "@/assets";
 import { useMemo } from "react";
 import { colorStyles } from "@/styles";
-
-const APPLICATION_STATUS_LABELS: Record<number, string> = {
-  0: "Received",
-  1: "In Review",
-  2: "On Hold",
-  3: "Shortlisted",
-  4: "Interviewing",
-  5: "Rejected",
-  6: "Salary Negotiation",
-  7: "Offered",
-  8: "Joined",
-};
 
 const APPLICATION_STATUS_STYLES: Record<
   number,
@@ -60,8 +51,10 @@ export default function CandidateApplicationCard({
   const { IMAGE, NAME, JOB_TYPE, LOCATION, EXPERIENCE, BUTTON } =
     CANDIDATE_CARD;
   const applicationStatus = Number(candidate?.application_status ?? 0);
-  const applicationStatusLabel =
-    APPLICATION_STATUS_LABELS[applicationStatus] || "Received";
+  const applicationStatusLabel = getCandidateApplicationStatusLabel(
+    applicationStatus,
+    String(candidate?.application_status_label || "Received")
+  );
   const applicationStatusStyle =
     APPLICATION_STATUS_STYLES[applicationStatus] ||
     APPLICATION_STATUS_STYLES[0];

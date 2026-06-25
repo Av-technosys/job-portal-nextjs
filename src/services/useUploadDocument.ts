@@ -4,7 +4,7 @@ import {
   useQueryClient,
   useMutation,
 } from "@tanstack/react-query";
-import { apiConstantsURL } from "@/constants";
+import { apiConstantsURL, LOCAL_STORAGE_KEY } from "@/constants";
 import {
   CommonAllDataType,
   MutationConfig,
@@ -14,7 +14,7 @@ import {
   JobSeekerDocumentKeyEnum,
   RecruiterDocumentKeyEnum,
 } from "@/types";
-import { api } from "@/helper";
+import { api, getItem } from "@/helper";
 
 // GET Hook
 export const getUserDocuments = (): Promise<{
@@ -25,7 +25,7 @@ export const getUserDocuments = (): Promise<{
 
 export const getUserDocumentsQueryOptions = () => {
   return queryOptions({
-    queryKey: ["user_documents"],
+    queryKey: ["user_documents", getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)],
     queryFn: () => getUserDocuments(),
   });
 };

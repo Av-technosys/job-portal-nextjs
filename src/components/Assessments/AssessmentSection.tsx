@@ -1,5 +1,5 @@
 import { ASSESSMENT_SECTION_PAGE_CONFIG } from "@/constants/assessmentSection";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Loader, Paper, Stack, Typography, Modal, LoadingButton } from "../common";
 import { StopWatchIcon, TotalQuestionsIcon } from "@/assets";
 import { useGetAssessmentAttemptsInfo } from "@/services/useGetAssessmentAttempts";
@@ -72,12 +72,15 @@ const TOTAL_AMOUNT_LABEL = (amount: number | string) => ({ typographyProps: { va
 const AssessmentSection = ({ id, assessmentType }: testProps) => {
   const router = useRouter();
   const { showNotification } = useNotification();
+  const assessmentId = Array.isArray(id) ? id[0] : id;
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [selectedRetakeData, setSelectedRetakeData] = useState<RetakeData | null>(null);
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState<any>(null);
   const [isLoadingRetake, setIsLoadingRetake] = useState(false);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const isRazorpayReady =
+    razorpayLoaded || (typeof window !== "undefined" && Boolean(window.Razorpay));
 
   const queryClient = useQueryClient();
   const allSubjectList = useGetSubjectList();
@@ -91,14 +94,22 @@ const AssessmentSection = ({ id, assessmentType }: testProps) => {
   }
 
 const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
-  enabled: Boolean(id),
-  queryParams: { id },
+  enabled: assessmentType !== "paid" || Boolean(assessmentId),
+  queryParams: { id: assessmentId },
   queryConfig: {
     staleTime: 0,
     refetchOnMount: true, 
     refetchOnWindowFocus: true,
   },
 });
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Razorpay) {
+      setRazorpayLoaded(true);
+    }
+  }, [openPaymentModal]);
+
+
   // ✅ Capture payment mutation
   const captureTransaction = useCaptureTransaction({
     mutationConfig: {
@@ -140,6 +151,7 @@ const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
         });
 
         setAmount(amount);
+        setOpenPaymentModal(true);
         setIsLoadingRetake(false);
       },
       onError: (error) => {
@@ -178,21 +190,30 @@ const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
           razorpay_signature: response.razorpay_signature,
         },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             // ✅ Force refresh the attempts API with proper invalidation
-            queryClient.invalidateQueries({ 
-              queryKey: ["assessmentAttempts", id] 
+            await queryClient.invalidateQueries({
+              queryKey: ["assessment_attempts_full_details", assessmentId],
             });
-            queryClient.refetchQueries({ 
-              queryKey: ["assessmentAttempts", id] 
+            await queryClient.refetchQueries({ 
+              queryKey: ["assessment_attempts_full_details", assessmentId],
+              type: "active",
             });
             
+            setOpenPaymentModal(false);
+            setSelectedRetakeData(null);
+            setOrderData(null);
+            setAmount(null);
             setIsLoadingRetake(false);
             showNotification({ message: "Payment successful! Redirecting..." });
             
             // Small delay to ensure data is refreshed before redirect
             setTimeout(() => {
-              router.push(`/dashboard/assessment`);
+              router.push(
+                assessmentId
+                  ? `/dashboard/assessment/${assessmentId}`
+                  : `/dashboard/assessment`
+              );
             }, 1000);
           },
         }
@@ -220,7 +241,6 @@ const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
   const handleRetakeTest = async (assesment_session_id: string, subject_id: string) => {
     setIsLoadingRetake(true);
     setSelectedRetakeData({ assesment_session_id, subject_id });
-    setOpenPaymentModal(true);
     setAmount(null); // Reset amount to show loading state
     setOrderData(null); // Reset previous order data
 
@@ -241,7 +261,7 @@ const assessmentAttemptsDetails = useGetAssessmentAttemptsInfo({
   };
 
   const handleProceedToPayment = () => {
-    if (!orderData || !razorpayLoaded) {
+    if (!orderData || !isRazorpayReady) {
       showNotification({ message: "Payment details not ready. Please try again." });
       return;
     }
@@ -257,9 +277,13 @@ if (assessmentAttemptsDetails.isLoading || allSubjectList.isLoading || assessmen
     <>
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         onLoad={() => setRazorpayLoaded(true)}
-        onError={() => setRazorpayLoaded(false)}
+        onReady={() => setRazorpayLoaded(true)}
+        onError={() => {
+          setRazorpayLoaded(false);
+          setIsLoadingRetake(false);
+        }}
       />
 
       {/* Payment Modal */}
@@ -290,69 +314,38 @@ if (assessmentAttemptsDetails.isLoading || allSubjectList.isLoading || assessmen
                 gap: 2,
               }}
             >
-              {amount === null ? (
-                // 👉 Show loading when amount is being fetched
-                <div style={{ textAlign: "center", padding: "20px" }}>
-                  <Loader loaderProps={{ open: true }} />
-                  <Typography
-                    typographyProps={{
-                      variant: "body2",
-                      children: "Loading price details..."
-                    }}
-                  />
-                </div>
-              ) : (
-                <>
-                  <Stack
-                    stackProps={{ direction: "row", justifyContent: "space-between" }}
-                  >
-                    <Typography {...PRICING_LABEL('Retake Test')} />
-                    <Typography {...AMOUNT_LABEL(amount)} />
-                  </Stack>
+              <Stack
+                stackProps={{ direction: "row", justifyContent: "space-between" }}
+              >
+                <Typography {...PRICING_LABEL('Retake Test')} />
+                <Typography {...AMOUNT_LABEL(amount ?? 0)} />
+              </Stack>
 
-                  <Stack
-                    stackProps={{ direction: "row", justifyContent: "space-between" }}
-                  >
-                    <Typography {...TOTAL_LABEL} />
-                    <Typography {...TOTAL_AMOUNT_LABEL(amount)} />
-                  </Stack>
+              <Stack
+                stackProps={{ direction: "row", justifyContent: "space-between" }}
+              >
+                <Typography {...TOTAL_LABEL} />
+                <Typography {...TOTAL_AMOUNT_LABEL(amount ?? 0)} />
+              </Stack>
 
-                  <button
-                    style={{
-                      width: "100%",
-                      padding: "12px",
-                      borderRadius: "8px",
-                      border: "none",
-                      backgroundColor: createOrderId?.isPending
-                        ? "#90caf9"
-                        : "#1976d2",
-                      color: "white",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                      cursor:
-                        amount === null ||
-                          !razorpayLoaded ||
-                          createOrderId?.isPending
-                          ? "not-allowed"
-                          : "pointer",
-                      opacity:
-                        amount === null ||
-                          !razorpayLoaded ||
-                          createOrderId?.isPending
-                          ? 0.6
-                          : 1,
-                    }}
-                    disabled={
-                      !razorpayLoaded ||
-                      createOrderId?.isPending
-                    }
-                    onClick={handleProceedToPayment}
-                  >
-                    {createOrderId?.isPending ? "Processing..." : "Pay Now"}
-                  </button>
-
-                </>
-              )}
+              <button
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  border: "none",
+                  backgroundColor: "#1976d2",
+                  color: "white",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  cursor: !isRazorpayReady ? "not-allowed" : "pointer",
+                  opacity: !isRazorpayReady ? 0.6 : 1,
+                }}
+                disabled={!isRazorpayReady}
+                onClick={handleProceedToPayment}
+              >
+                {isRazorpayReady ? "Pay Now" : "Loading payment gateway..."}
+              </button>
 
     
             </Stack>

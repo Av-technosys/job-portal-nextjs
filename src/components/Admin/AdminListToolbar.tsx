@@ -4,8 +4,8 @@ import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
 import { ReactNode } from "react";
 
 type AdminListToolbarProps = {
-  countContent: ReactNode;
-  titleContent: ReactNode;
+  countContent?: ReactNode;
+  titleContent?: ReactNode;
   searchValue: string;
   searchPlaceholder: string;
   onSearchChange: (value: string) => void;
@@ -31,17 +31,19 @@ function AdminListToolbar({
         sx: { mb: 2 },
       }}
     >
-      <Stack
-        stackProps={{
-          direction: "row",
-          gap: 1,
-          alignItems: "center",
-          sx: { minWidth: { md: 220 } },
-        }}
-      >
-        {countContent}
-        {titleContent}
-      </Stack>
+      {(countContent || titleContent) && (
+        <Stack
+          stackProps={{
+            direction: "row",
+            gap: 1,
+            alignItems: "center",
+            sx: { minWidth: { md: 220 } },
+          }}
+        >
+          {countContent}
+          {titleContent}
+        </Stack>
+      )}
 
       <Stack
         stackProps={{

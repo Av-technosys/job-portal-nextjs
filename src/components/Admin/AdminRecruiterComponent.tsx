@@ -133,6 +133,14 @@ const AdminRecruiterComponent = () => {
               headerName: "Name",
             },
             {
+              field: "email",
+              headerName: "Email",
+            },
+            {
+              field: "status",
+              headerName: "Status",
+            },
+            {
               field: "industry_type",
               headerName: "Industry Type",
             },

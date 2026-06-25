@@ -982,7 +982,8 @@ export const QUESTION_UPLOAD_CONFIG = {
 export const JOB_SEEKER_UPLOAD_DOCUMENT_CONFIG = {
   RESUME_FIELD: {
     fieldType: FormikFieldsEnum.UPLOAD_DOCUMENT,
-    lines: ["Resume"],
+    lines: ["Resume *"],
+    required: true,
     formControlProps: {
       sx: { width: "100%", flexBasis: "45%" },
     },
@@ -1017,6 +1018,11 @@ export const JOB_SEEKER_UPLOAD_DOCUMENT_CONFIG = {
     FILE_SIZE_ERROR: {
       message: "File size exceeds the 3 MB limit.",
     },
+  },
+  REQUIRED_NOTIFICATION_CONFIG: {
+    RESUME: {
+      message: "Resume is required.",
+    } as ShowNotificationProps,
   },
   UPDATE_NOTIFICATION_CONFIG: (documentKey: JobSeekerDocumentKeyEnum) => {
     return {

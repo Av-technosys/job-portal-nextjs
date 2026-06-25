@@ -142,6 +142,14 @@ function Table({
     setOpen(false);
   };
 
+  const getCellValue = (row: Record<string, any>, field: string) => {
+    if (field === "status") {
+      return row.status || (row.is_active ? "Active" : "Inactive");
+    }
+
+    return row[field];
+  };
+
   return (
     <>
       {(ActivateUserMutate.isPending || DeactivateUserMutate.isPending) && (
@@ -155,7 +163,7 @@ function Table({
       <Stack
         stackProps={{
           width: "100%",
-          overflow: { xs: "scrollX", md: "hidden" },
+          overflowX: "auto",
         }}
       >
         <AdminPannelSidebar
@@ -165,7 +173,7 @@ function Table({
           UserType={tableType}
         />
         <TableContainer sx={{ width: "100%" }} component={Paper}>
-          <MUITable>
+          <MUITable sx={{ minWidth: 900 }}>
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
@@ -188,46 +196,51 @@ function Table({
 
               {data?.map((row, index) => (
                 <TableRow key={`ja_TableRow${index}`}>
-                  {columns.map((column) => (
-                    <TableCell key={`ja-TabelCellFeild${column.field}`}>
-                      {row[column.field] &&
-                      tableType != "Contact-details" &&
-                      column.field == "first_name" ? (
-                        <Stack
-                          stackProps={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          {row[column.field]}
-                          <IconButton
-                            onClick={(event) =>
-                              handleIconButtonClick(event, row.id, row.user)
-                            }
+                  {columns.map((column) => {
+                    const cellValue = getCellValue(row, column.field);
+
+                    return (
+                      <TableCell
+                        key={`ja-TabelCellFeild${column.field}`}
+                        sx={{ whiteSpace: "nowrap" }}
+                      >
+                        {cellValue &&
+                        tableType != "Contact-details" &&
+                        column.field == "first_name" ? (
+                          <Stack
+                            stackProps={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            <MoreVertIcon />
-                          </IconButton>
-                        </Stack>
-                      ) : column.field == "gender" ? (
-                        <Stack
-                          stackProps={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <When condition={row[column.field] === 0}>Male</When>
-                          <When condition={row[column.field] === 1}>
-                            Female
-                          </When>
-                          <When condition={row[column.field] === 2}>Other</When>
-                        </Stack>
-                      ) : (
-                        row[column.field]
-                      )}
-                    </TableCell>
-                  ))}
+                            {cellValue}
+                            <IconButton
+                              onClick={(event) =>
+                                handleIconButtonClick(event, row.id, row.user)
+                              }
+                            >
+                              <MoreVertIcon />
+                            </IconButton>
+                          </Stack>
+                        ) : column.field == "gender" ? (
+                          <Stack
+                            stackProps={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <When condition={cellValue === 0}>Male</When>
+                            <When condition={cellValue === 1}>Female</When>
+                            <When condition={cellValue === 2}>Other</When>
+                          </Stack>
+                        ) : (
+                          cellValue
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))}
             </TableBody>

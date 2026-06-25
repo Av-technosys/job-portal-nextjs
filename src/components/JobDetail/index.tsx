@@ -1,6 +1,8 @@
 import {
   JOB_DETAIL_PAGE_CONFIG,
   JOBS_URL,
+  LOCAL_STORAGE_KEY,
+  LOGIN_URL,
   PAGIANTION_LIMIT,
   PROFILE_URL,
 } from "@/constants";
@@ -15,6 +17,7 @@ import {
 import {
   getErrorMessageFromAPI,
   getInitials,
+  getItem,
   mutateJobListQueryDataForAppliedJobs,
 } from "@/helper";
 import { colorStyles } from "@/styles";
@@ -25,7 +28,12 @@ import {
   useJobApply,
   useNotification,
 } from "@/services";
-import { Job, TypographyFontColor, TypographyFontWeight } from "@/types";
+import {
+  Job,
+  TypographyFontColor,
+  TypographyFontWeight,
+  UserType,
+} from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import SalaryLocationCard from "../SalaryLocationCard";
@@ -33,6 +41,8 @@ import JobOverviewCard from "../JobOverviewCard";
 
 const PROFILE_REQUIRED_MESSAGE =
   "Complete your profile before applying for jobs.";
+const RECRUITER_APPLY_RESTRICTED_MESSAGE =
+  "Recruiters can't apply for jobs. Please use a job seeker account.";
 
 function getDisplayValue(value: unknown) {
   if (Array.isArray(value)) return value.filter(Boolean).join(", ");
@@ -41,7 +51,8 @@ function getDisplayValue(value: unknown) {
     : "N/A";
 }
 
-function getSalaryText(job: Job) {
+function getSalaryText(job?: Job) {
+  if (!job) return "N/A";
   if (job.salary_range) return job.salary_range;
   if ((job as Record<string, unknown>).salary) {
     return String((job as Record<string, unknown>).salary);
@@ -52,20 +63,28 @@ function getSalaryText(job: Job) {
   return "N/A";
 }
 
-function getLocationText(job: Job) {
+function getLocationText(job?: Job) {
+  if (!job) return "N/A";
   if (job.location) return job.location;
   return (
     [job.city, job.state, job.country].filter(Boolean).join(", ") || "N/A"
   );
 }
 
-function getSkills(job: Job) {
+function getSkills(job?: Job) {
+  if (!job) return [];
   const skills = (job as Record<string, unknown>).skills;
   if (Array.isArray(skills)) return skills.filter(Boolean).map(String);
   if (typeof skills === "string" && skills.trim()) {
     return skills.split(",").map((skill) => skill.trim()).filter(Boolean);
   }
   return [];
+}
+
+function isUnauthorizedError(error: unknown) {
+  return (
+    (error as { response?: { status?: number } })?.response?.status === 401
+  );
 }
 
 function JobDetail({
@@ -122,6 +141,23 @@ function JobDetail({
   }
 
   function onApplyClick() {
+    if (!job?.job_id) return;
+
+    if (!getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)) {
+      router.push({
+        pathname: LOGIN_URL,
+        query: { redirectTo: router.asPath },
+      });
+      return;
+    }
+
+    if (getItem(LOCAL_STORAGE_KEY.CURRENT_USER_TYPE) === UserType.RECUITER_TYPE) {
+      showNotification({
+        message: RECRUITER_APPLY_RESTRICTED_MESSAGE,
+      });
+      return;
+    }
+
     jobApplyMutate.mutate(
       {
         data: {
@@ -135,6 +171,14 @@ function JobDetail({
           router.push(JOBS_URL);
         },
         onError: (error) => {
+          if (isUnauthorizedError(error)) {
+            router.push({
+              pathname: LOGIN_URL,
+              query: { redirectTo: router.asPath },
+            });
+            return;
+          }
+
           const errorMessage = getErrorMessageFromAPI(error);
           showNotification({
             ...errorMessage,
@@ -155,6 +199,27 @@ function JobDetail({
           open: true,
         }}
       />
+    );
+  }
+
+  if (jobDetailsAPIData?.isError || !job) {
+    return (
+      <Stack stackProps={{ gap: 1 }}>
+        <Typography
+          typographyProps={{
+            children: "Unable to load job details.",
+            variant: "h6",
+          }}
+          fontWeight={TypographyFontWeight.bold}
+        />
+        <Typography
+          typographyProps={{
+            children: "Please try again later.",
+            variant: "body2",
+          }}
+          fontColor={TypographyFontColor.grey}
+        />
+      </Stack>
     );
   }
 
