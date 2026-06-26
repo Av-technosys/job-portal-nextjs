@@ -22,6 +22,7 @@ function Sidebar() {
       <Drawer
         variant={"permanent"}
         sx={{
+          display: { xs: "none", md: "block" },
           width:
             dimensionStyle[
               isExpanded ? "sidebarExpandedWidth" : "sidebarWidth"
@@ -51,6 +52,7 @@ function Sidebar() {
       </Drawer>
       <Box
         sx={{
+          display: { xs: "none", md: "block" },
           position: "fixed",
           top: "85%",
           left: `calc(${

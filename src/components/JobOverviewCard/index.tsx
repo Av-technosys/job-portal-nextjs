@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Box } from "@mui/material";
 import { Stack, Typography, TextWithIcon } from "../common";
 import { colorStyles } from "@/styles";
 import { JOB_DETAIL_PAGE_CONFIG } from "@/constants";
@@ -87,7 +88,7 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
   return (
     <Stack
       stackProps={{
-        className: "border-2 rounded-lg p-4",
+        className: "border rounded-xl p-4 sm:p-5",
         borderColor: colorStyles.filterTagsBackgroundColor,
         gap: 3,
       }}
@@ -95,18 +96,21 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
       <Typography {...JOB_OVERVIEW_TEXT()} />
       <Stack
         stackProps={{
-          className: "grid grid-cols-1 sm:grid-cols-2",
-          gap: 2,
-          alignItems: "center",
+          className: "grid grid-cols-1 gap-y-4 gap-x-2",
         }}
       >
         {jobOverview.map((detail, index) => (
-          <TextWithIcon
-            key={index}
-            icon={detail.icon}
-            subTextProps={detail.subTextProps}
-            textProps={detail.textProps}
-          />
+          <Stack key={index} stackProps={{ direction: "row", gap: 2, alignItems: "flex-start" }}>
+            <Stack stackProps={{ mt: 0.5 }}>
+              {detail.icon}
+            </Stack>
+            <Stack stackProps={{ gap: 0.5 }}>
+              <Typography {...detail.subTextProps} />
+              <Box sx={{ fontWeight: "500", color: "#172033", "& .MuiTypography-root": { color: "inherit", fontWeight: "inherit" } }}>
+                <Typography {...detail.textProps} />
+              </Box>
+            </Stack>
+          </Stack>
         ))}
       </Stack>
     </Stack>

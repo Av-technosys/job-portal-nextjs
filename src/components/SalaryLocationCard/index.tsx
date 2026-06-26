@@ -13,31 +13,31 @@ function SalaryLocationCard({ job }: SalaryLocationCardProps) {
     <Stack
       stackProps={{
         direction: "row",
-        className: "border-2 rounded-lg p-4",
+        className: "border rounded-xl p-4 sm:p-5",
         borderColor: colorStyles.filterTagsBackgroundColor,
-        justifyContent: "space-between",
-        alignItems: "center",
+        gap: 3,
       }}
     >
       <Stack
         stackProps={{
-          gap: 1,
-          width: "fullwidth",
-          alignItems: "center",
+          gap: 0.5,
+          flex: 1,
+          alignItems: "flex-start",
         }}
       >
         <Typography {...SALARY_TEXT()} />
-        <Stack>
-          <Typography {...SALARY(job)} />
-        </Stack>
+        <Typography {...SALARY(job)} typographyProps={{ ...SALARY(job).typographyProps, sx: { color: colorStyles.green, fontWeight: "600", mt: 1 } }} />
         <Typography {...SALARY_YEAR_TEXT()} />
       </Stack>
-      <Stack stackProps={{ gap: 1, alignItems: "center" }}>
+      
+      <Stack stackProps={{ width: "1px", bgcolor: colorStyles.filterTagsBackgroundColor, my: 1 }} />
+
+      <Stack stackProps={{ gap: 0.5, flex: 1, alignItems: "flex-start" }}>
         <MapOutlinedIcon
-          sx={{ fontSize: 38, color: colorStyles.filterTagsTextColor }}
+          sx={{ fontSize: 24, color: colorStyles.filterTagsTextColor, mb: 0.5 }}
         />
         <Typography {...LOCATION_TEXT()} />
-        <Typography {...LOCATION(job)} />
+        <Typography {...LOCATION(job)} typographyProps={{ ...LOCATION(job).typographyProps, sx: { fontWeight: "500" } }} />
       </Stack>
     </Stack>
   );

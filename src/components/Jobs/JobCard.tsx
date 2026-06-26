@@ -86,14 +86,16 @@ export default function JobCard({
     <Stack
       stackProps={{
         className:
-          "my-2 py-5 px-6 shadow-lg rounded-lg border hover:border capitalize",
+          "my-3 p-5 sm:p-6 shadow-sm rounded-2xl border bg-white capitalize transition-all duration-300",
         direction: "column",
         justifyContent: "space-between",
         alignItems: "center",
         sx: {
           borderColor: colorStyles.cardBorderColor,
           "&:hover": {
-            borderColor: colorStyles.cardHoverBorderColor,
+            borderColor: "transparent",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
+            transform: "translateY(-3px)",
           },
         },
       }}
@@ -115,12 +117,12 @@ export default function JobCard({
         >
           <Stack
             stackProps={{
-              className: "rounded-lg p-1",
-              bgcolor: colorStyles.filterTagsBackgroundColor,
-              color: colorStyles.filterTagsTextColor,
+              className: "rounded-full px-3 py-1 text-sm font-medium",
+              bgcolor: "#E7F0FF",
+              color: "#0B63CE",
             }}
           >
-            <Typography {...TIME_STAMP(job)} />
+            <Typography {...TIME_STAMP(job)} typographyProps={{ ...TIME_STAMP(job).typographyProps, sx: { fontSize: 13, fontWeight: 600 } }} />
           </Stack>
 
           {/* Save or Unsave Job */}
@@ -132,6 +134,8 @@ export default function JobCard({
                 }}
                 sx={{
                   cursor: "pointer",
+                  color: "#687589",
+                  "&:hover": { color: "#172033" }
                 }}
               />
             </When>
@@ -143,6 +147,7 @@ export default function JobCard({
                 }}
                 sx={{
                   cursor: "pointer",
+                  color: "#0B63CE"
                 }}
               />
             </When>
@@ -152,16 +157,16 @@ export default function JobCard({
         {/* Company & Job Info */}
         <Stack
           stackProps={{
-            className: "mt-3",
+            className: "mt-5",
             direction: "row",
-            gap: 1,
+            gap: 2.5,
             alignItems: "center",
             width: "100%",
           }}
         >
           <Stack
             stackProps={{
-              className: "border rounded-full",
+              className: "border rounded-full shadow-sm p-0.5 bg-white",
             }}
           >
             <Avatar {...IMAGE(job).avatarProps}>
@@ -169,27 +174,22 @@ export default function JobCard({
             </Avatar>
           </Stack>
 
-          <Stack
-            stackProps={{
-              width: "100%",
-            }}
-          >
-            <Typography {...DESIGNATION(job)} />
-            <Typography {...COMPANY_NAME(job)} />
-            <Typography {...EXPERIENCE_TIME(job)} />
+          <Stack stackProps={{ width: "100%", gap: 0.5 }}>
+            <Typography {...DESIGNATION(job)} typographyProps={{ ...DESIGNATION(job).typographyProps, sx: { fontWeight: 700, fontSize: 18, color: "#172033" } }} />
+            <Typography {...COMPANY_NAME(job)} typographyProps={{ ...COMPANY_NAME(job).typographyProps, sx: { color: "#566276", fontWeight: 500 } }} />
+            <Typography {...EXPERIENCE_TIME(job)} typographyProps={{ ...EXPERIENCE_TIME(job).typographyProps, sx: { color: "#687589", fontSize: 14 } }} />
           </Stack>
         </Stack>
 
         {/* Footer Actions */}
         <Stack
           stackProps={{
-            className: "mt-3",
-            direction: "row",
-            gap: 2,
-            alignItems: "center",
+            className: "mt-6",
+            direction: { xs: "column", sm: "row" },
+            gap: { xs: 3, sm: 2 },
+            alignItems: { xs: "flex-start", sm: "flex-end" },
             justifyContent: "space-between",
             width: "100%",
-            flexWrap: "wrap",
           }}
         >
           <Stack
@@ -197,25 +197,27 @@ export default function JobCard({
               direction: "row",
               gap: 2,
               flexWrap: "wrap",
+              width: { xs: "100%", sm: "auto" }
             }}
           >
-            {/* {jobDetails.map((detail, index) => (
-              <TextWithIcon
-                key={`jobDetails-${index}`}
-                icon={detail.icon}
-                textProps={detail.textProps}
-              />
-            ))} */}
+            {jobDetails.map((detail, index) => (
+              <Stack key={`jobDetails-${index}`} stackProps={{ direction: "row", gap: 1, alignItems: "center" }}>
+                <Stack stackProps={{ sx: { "& svg": { fontSize: 20 } } }}>
+                  {detail.icon}
+                </Stack>
+                <Typography {...detail.textProps} typographyProps={{ ...detail.textProps?.typographyProps, sx: { color: "#566276", fontSize: 14, fontWeight: 500 } }} />
+              </Stack>
+            ))}
           </Stack>
 
           {/* Apply Button */}
-          <Stack
-            stackProps={{
-              marginTop: -1,
-            }}
-          >
+          <Stack stackProps={{ width: { xs: "100%", sm: "auto" } }}>
             <Button
               {...APPLY_BUTTON}
+              buttonProps={{
+                ...APPLY_BUTTON.buttonProps,
+                sx: { width: { xs: "100%", sm: "auto" }, minWidth: 120 }
+              }}
               onClick={() => handleJobDetailsClick(job)}
             />
           </Stack>

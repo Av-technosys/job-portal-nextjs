@@ -65,109 +65,120 @@ function AssessmentHighlight() {
         my: { xs: 4, md: 6 },
       }}
     >
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        spacing={{ xs: 4, md: 6 }}
-        alignItems="center"
-        justifyContent="space-between"
-        className="max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto"
+      {/* Centred wrapper — plain div so margin:auto works correctly */}
+      <div
+        style={{
+          maxWidth: "1152px",
+          margin: "0 auto",
+          padding: "0 16px",
+          width: "100%",
+          minWidth: 0,
+        }}
       >
-        <Stack spacing={2.5} sx={{ maxWidth: 620 }}>
-          <Chip
-            icon={<Assessment />}
-            label="Assessments"
-            sx={{
-              width: "fit-content",
-              backgroundColor: "#E7F0FF",
-              color: "#0B63CE",
-              fontWeight: 700,
-            }}
-          />
-          <Stack spacing={1.2}>
-            <Typography
-              variant="h3"
-              sx={{
-                fontSize: { xs: 30, md: 42 },
-                fontWeight: 800,
-                color: "#172033",
-                lineHeight: 1.12,
-              }}
-            >
-              Prove your readiness before applying
-            </Typography>
-            <Typography
-              sx={{
-                color: "#566276",
-                fontSize: { xs: 15, md: 17 },
-                lineHeight: 1.7,
-              }}
-            >
-              Job Assured provides assessments that help job seekers understand
-              their strengths, practice role-based questions, and build a
-              stronger profile for recruiters.
-            </Typography>
-          </Stack>
-
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5}>
-            {assessmentFeatures.map((feature) => (
-              <Chip
-                key={feature.label}
-                icon={feature.icon}
-                label={feature.label}
-                sx={{
-                  justifyContent: "flex-start",
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #DCE6F1",
-                  color: "#273449",
-                  fontWeight: 600,
-                  height: 38,
-                }}
-              />
-            ))}
-          </Stack>
-        </Stack>
-
         <Stack
-          spacing={2}
-          sx={{
-            width: { xs: "100%", md: 360 },
-            p: { xs: 2.5, md: 3 },
-            border: "1px solid #D9E5EF",
-            backgroundColor: "#FFFFFF",
-            borderRadius: 2,
-            boxShadow: "0 12px 28px rgba(30, 54, 83, 0.08)",
-          }}
+          direction={{ xs: "column", md: "row" }}
+          spacing={{ xs: 4, md: 6 }}
+          alignItems={{ xs: "flex-start", md: "center" }}
+          justifyContent="space-between"
         >
-          <Typography sx={{ color: "#687589", fontSize: 14, fontWeight: 700 }}>
-            Available inside your dashboard
-          </Typography>
-          <Typography sx={{ color: "#172033", fontSize: 22, fontWeight: 800 }}>
-            Start with assessment tests
-          </Typography>
-          <Typography sx={{ color: "#566276", fontSize: 14, lineHeight: 1.7 }}>
-            Open the assessment tab, choose a test, submit answers, and review
-            your score summary.
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={handleAssessmentClick}
-            startIcon={<Assessment />}
+          <Stack spacing={2.5} sx={{ maxWidth: 620, width: "100%" }}>
+            <Chip
+              icon={<Assessment />}
+              label="Assessments"
+              sx={{
+                width: "fit-content",
+                backgroundColor: "#E7F0FF",
+                color: "#0B63CE",
+                fontWeight: 700,
+              }}
+            />
+            <Stack spacing={1.2}>
+              <Typography
+                variant="h3"
+                sx={{
+                  fontSize: { xs: 26, md: 42 },
+                  fontWeight: 800,
+                  color: "#172033",
+                  lineHeight: 1.12,
+                }}
+              >
+                Prove your readiness before applying
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#566276",
+                  fontSize: { xs: 15, md: 17 },
+                  lineHeight: 1.7,
+                }}
+              >
+                Job Assured provides assessments that help job seekers understand
+                their strengths, practice role-based questions, and build a
+                stronger profile for recruiters.
+              </Typography>
+            </Stack>
+
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} flexWrap="wrap">
+              {assessmentFeatures.map((feature) => (
+                <Chip
+                  key={feature.label}
+                  icon={feature.icon}
+                  label={feature.label}
+                  sx={{
+                    justifyContent: "flex-start",
+                    backgroundColor: "#FFFFFF",
+                    border: "1px solid #DCE6F1",
+                    color: "#273449",
+                    fontWeight: 600,
+                    height: 38,
+                  }}
+                />
+              ))}
+            </Stack>
+          </Stack>
+
+          <Stack
+            spacing={2}
             sx={{
-              mt: 1,
-              height: 48,
-              textTransform: "none",
-              fontWeight: 700,
-              backgroundColor: "#0B63CE",
-              "&:hover": {
-                backgroundColor: "#084C9E",
-              },
+              width: { xs: "100%", md: 360 },
+              flexShrink: 0,
+              p: { xs: 2.5, md: 3 },
+              border: "1px solid #D9E5EF",
+              backgroundColor: "#FFFFFF",
+              borderRadius: 2,
+              boxShadow: "0 12px 28px rgba(30, 54, 83, 0.08)",
             }}
           >
-            Go to Assessments
-          </Button>
+            <Typography sx={{ color: "#687589", fontSize: 14, fontWeight: 700 }}>
+              Available inside your dashboard
+            </Typography>
+            <Typography sx={{ color: "#172033", fontSize: 22, fontWeight: 800 }}>
+              Start with assessment tests
+            </Typography>
+            <Typography sx={{ color: "#566276", fontSize: 14, lineHeight: 1.7 }}>
+              Open the assessment tab, choose a test, submit answers, and review
+              your score summary.
+            </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleAssessmentClick}
+              startIcon={<Assessment />}
+              sx={{
+                mt: 1,
+                height: 48,
+                textTransform: "none",
+                fontWeight: 700,
+                backgroundColor: "#0B63CE",
+                "&:hover": {
+                  backgroundColor: "#084C9E",
+                },
+              }}
+            >
+              Go to Assessments
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
+      </div>
     </Box>
   );
 }

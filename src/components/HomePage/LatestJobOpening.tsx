@@ -53,16 +53,20 @@ function LatestJobOpenings() {
 
   return (
     <>
-      <Stack
-        stackProps={{
+      {/* Plain div wrapper so mx-auto centering works correctly */}
+      <div
+        style={{
+          maxWidth: "1152px",
+          margin: "0 auto",
           width: "100%",
-          marginTop: { xs: "-10px", md: "-40px" },
-          className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto",
+          minWidth: 0,
+          marginTop: "-10px",
+          padding: "0 12px",
         }}
       >
         <Stack
           stackProps={{
-            px: 2,
+            px: 0,
             marginBottom: 2,
             direction: "row",
             justifyContent: "space-between",
@@ -82,8 +86,6 @@ function LatestJobOpenings() {
         <Stack
           stackProps={{
             width: "100%",
-            className:
-              "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto p-2",
           }}
         >
           <Tabs
@@ -97,7 +99,7 @@ function LatestJobOpenings() {
             }}
           />
         </Stack>
-      </Stack>
+      </div>
     </>
   );
 }

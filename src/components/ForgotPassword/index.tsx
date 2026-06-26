@@ -91,7 +91,8 @@ function ForgotPassword() {
         >
           <Stack
             stackProps={{
-              width: "90vw",
+              flexGrow: 1,
+              minWidth: 0,
             }}
           >
             <Stack
@@ -153,12 +154,7 @@ function ForgotPassword() {
               </Paper>
             </Container>
           </Stack>
-          <div
-            style={{
-              width: isExtraSmallScreen ? "10vw" : "inherit",
-            }}
-            className={"auth-right-panel"}
-          />
+          <div className={"auth-right-panel"} />
         </Stack>
       </div>
     </>

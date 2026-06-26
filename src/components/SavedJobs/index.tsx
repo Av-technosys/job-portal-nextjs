@@ -136,26 +136,16 @@ function SavedJobs() {
         stackProps={{
           direction: "row",
           gap: 1,
-          alignItems: "center",
-          justifyContent: "space-between", // Ensures space between text and dropdown
-          width: "100%", // Ensures the stack spans the full width
-          paddingBottom: 5,
+          alignItems: "baseline",
+          mb: 1,
         }}
       >
-        <Stack
-          stackProps={{
-            direction: "row",
-            gap: 1,
-            alignItems: "baseline",
-          }}
-        >
-          <When condition={totalLength !== 0}>
-            <>
-              <Typography {...TITLE_COUNT(totalLength)} />
-              <Typography {...TITLE_HEADER(totalLength)} />
-            </>
-          </When>
-        </Stack>
+        <When condition={totalLength !== 0}>
+          <>
+            <Typography {...TITLE_COUNT(totalLength)} />
+            <Typography {...TITLE_HEADER(totalLength)} />
+          </>
+        </When>
       </Stack>
       <When condition={totalLength > 0}>
         <InfinitePagination
@@ -164,7 +154,16 @@ function SavedJobs() {
           hasMore={hasMore}
           isFetchingMore={jobSaveAPIData?.isFetchingNextPage}
         >
-          <Stack>
+          <Stack
+            stackProps={{
+              sx: {
+                width: "100%",
+                maxWidth: "100%",
+                overflowX: "hidden",
+                boxSizing: "border-box",
+              },
+            }}
+          >
             {paginatedInfoData?.map((job) => (
               <SavedJobCard
                 job={job}

@@ -186,11 +186,11 @@ function Jobs() {
       />
       <Stack
         stackProps={{
-          direction: "row",
-          gap: 1,
-          alignItems: "center",
-          justifyContent: "space-between", // Ensures space between text and dropdown
-          width: "100%", // Ensures the stack spans the full width
+          direction: { xs: "column", md: "row" },
+          gap: { xs: 2, md: 1 },
+          alignItems: { xs: "flex-start", md: "center" },
+          justifyContent: "space-between",
+          width: "100%",
         }}
       >
         <Stack
@@ -198,19 +198,32 @@ function Jobs() {
             direction: "row",
             gap: 1,
             alignItems: totalLength === 0 ? "center" : "baseline",
-            visibility: { xs: "hidden", md: "visible" },
+            flexWrap: "wrap",
           }}
         >
           <When condition={totalLength !== 0}>
-            <Typography {...TITLE_COUNT(totalLength)} />
+            <Typography 
+              {...TITLE_COUNT(totalLength)} 
+              typographyProps={{ ...TITLE_COUNT(totalLength).typographyProps, sx: { fontSize: { xs: 24, md: 28 }, fontWeight: 700 } }} 
+            />
           </When>
           <When condition={totalLength === 0}>
             <Skeleton variant={SkeletonVariantEnum.TEXT} />
           </When>
-          <Typography {...TITLE_HEADER(totalLength)} />
+          <Typography 
+            {...TITLE_HEADER(totalLength)} 
+            typographyProps={{ ...TITLE_HEADER(totalLength).typographyProps, sx: { fontSize: { xs: 18, md: 22 }, color: "#566276" } }} 
+          />
         </Stack>
+        
         <Stack
-          stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}
+          stackProps={{ 
+            direction: "row", 
+            gap: 1.5, 
+            alignItems: "center",
+            width: { xs: "100%", md: "auto" },
+            justifyContent: { xs: "space-between", md: "flex-end" }
+          }}
         >
           <FilterButton
             isFilterOpen={isFilterOpen}
@@ -221,28 +234,14 @@ function Jobs() {
             {...JOB_LISTING_SORT_DROPDOWN}
             onChange={handleSortChange}
             value={selectedSort?.[0]}
+            selectProps={{
+              ...JOB_LISTING_SORT_DROPDOWN.selectProps,
+              sx: { height: "40px", borderRadius: 2, ...(JOB_LISTING_SORT_DROPDOWN.selectProps as any)?.sx }
+            }}
           />
         </Stack>
       </Stack>
-      <Stack
-        stackProps={{
-          direction: "row",
-          gap: 1,
-          alignItems: totalLength === 0 ? "center" : "baseline",
-          visibility: { xs: "visible", md: "hidden" },
-          justifyItems: "flex-end",
-          mt: "10px",
-          className: "w-full",
-        }}
-      >
-        <When condition={totalLength !== 0}>
-          <Typography {...TITLE_COUNT(totalLength)} />
-        </When>
-        <When condition={totalLength === 0}>
-          <Skeleton variant={SkeletonVariantEnum.TEXT} />
-        </When>
-        <Typography {...TITLE_HEADER(totalLength)} />
-      </Stack>
+
       {paginatedInfoData[0] != undefined ? (
         <InfinitePagination
           dataLength={paginatedInfoData?.length}

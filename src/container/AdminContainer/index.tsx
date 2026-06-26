@@ -192,50 +192,74 @@ function AdminContainer() {
         <Typography {...WELCOME_MESSAGE("Admin")} />
 
         {/* Stats section */}
-        <Grid
-          gridProps={{
-            container: true,
-            spacing: 3,
+        <Stack
+          stackProps={{
+            sx: {
+              display: "grid",
+              gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
+              gap: { xs: 1.5, md: 3 },
+            },
           }}
         >
           {statsData.map((item, index) => (
-            <Grid
+            <Paper
               key={index}
-              gridProps={{
-                size: { xs: 12, sm: 6, md: 3 },
+              paperProps={{
+                sx: {
+                  p: { xs: 2, md: 3 },
+                  background: item.bgColor,
+                  borderRadius: "16px",
+                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: { xs: 1.5, md: 2 },
+                },
               }}
             >
-              <Paper
-                paperProps={{
-                  sx: {
-                    padding: 4,
-                    background: item.bgColor,
-                    borderRadius: "12px",
-                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.15)",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                  },
+              <Stack
+                stackProps={{
+                  direction: "row",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  width: "100%",
                 }}
               >
                 <Typography
                   typographyProps={{
                     children: item.count,
+                    sx: { lineHeight: 1 },
                   }}
                   fontSize={TypographyFontSize.largeTitle}
                 />
-                <Typography
-                  typographyProps={{
-                    children: item.label,
+                <Stack
+                  stackProps={{
+                    sx: {
+                      width: { xs: 40, md: 48 },
+                      height: { xs: 40, md: 48 },
+                      bgcolor: "rgba(255, 255, 255, 0.5)",
+                      borderRadius: "12px",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    },
                   }}
-                  fontWeight={TypographyFontWeight.bold}
-                  fontSize={TypographyFontSize.normal}
-                />
-              </Paper>
-            </Grid>
+                >
+                  {item.icon}
+                </Stack>
+              </Stack>
+              <Typography
+                typographyProps={{
+                  children: item.label,
+                  sx: {
+                    color: "text.secondary",
+                    fontSize: { xs: "0.8rem", md: "0.875rem" },
+                    lineHeight: 1.2,
+                  },
+                }}
+                fontWeight={TypographyFontWeight.semibold}
+              />
+            </Paper>
           ))}
-        </Grid>
+        </Stack>
       </Stack>
       <Stack stackProps={{ width: "100%", className: "p-3" }}>
         <Typography {...TAB_TITLE} />

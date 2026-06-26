@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Stack, IconButton, Typography, Skeleton, When } from "../common";
 import { TOP_COMPANY_CARD_CONFIG } from "@/constants";
 import HomePage from "./homePageCard";
@@ -23,6 +23,8 @@ type Company = {
 
 const MAX_TOP_COMPANIES = 6;
 const COMPANY_CARD_SKELETONS = Array.from({ length: 3 });
+const CARD_WIDTH = 300;
+const CARD_GAP = 8;
 
 function TopCompanyCardSkeleton() {
   return (
@@ -79,7 +81,7 @@ function TopCompanies({
   openForceLoginPopup: VoidFunction;
 }) {
   const { HEADER_TEXT } = TOP_COMPANY_CARD_CONFIG;
-  const [slideCount, setSlideCount] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const topCompaniesAPIData = useGetTopCompanies({
     queryFnParams: {
       pageLimit: 100,
@@ -114,31 +116,36 @@ function TopCompanies({
       .slice(0, MAX_TOP_COMPANIES);
   }, [topCompaniesAPIData.data]);
 
+  const cardStep = CARD_WIDTH + CARD_GAP * 4; // approx 316
+
   const handleSliderNext = () => {
-    setSlideCount((prev) => (prev < topCompanies.length - 3 ? prev + 1 : prev));
+    scrollRef.current?.scrollBy({ left: cardStep, behavior: "smooth" });
   };
 
   const handleSliderPrevious = () => {
-    setSlideCount((prev) => prev > 0 && prev - 1);
+    scrollRef.current?.scrollBy({ left: -cardStep, behavior: "smooth" });
   };
+
+  const showNavButtons = topCompanies.length > 1;
 
   return (
     <>
+      {/* Centred wrapper using plain div so mx-auto works */}
       <div
-        className="p-3 max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto"
         style={{
+          maxWidth: "1152px",
+          margin: "0 auto",
+          padding: "0 16px",
           width: "100%",
+          minWidth: 0,
         }}
       >
         <Typography {...HEADER_TEXT()} />
-        <div className="w-full flex items-center justify-end">
-          <When condition={topCompanies.length > 3}>
-            <Stack
-              stackProps={{
-                width: "10%",
-                direction: "row",
-              }}
-            >
+
+        {/* Nav buttons — only on desktop when >3 cards */}
+        <div className="hidden md:flex w-full items-center justify-end">
+          <When condition={showNavButtons && topCompanies.length > 3}>
+            <Stack stackProps={{ direction: "row" }}>
               <IconButton onClick={() => handleSliderPrevious()}>
                 <ChevronLeftIcon />
               </IconButton>
@@ -148,52 +155,56 @@ function TopCompanies({
             </Stack>
           </When>
         </div>
-        <Stack
-          stackProps={{
-            className: "mb-10",
-            direction: "row",
-            gap: 1,
+
+        {/* Scrollable row — native scroll on mobile */}
+        <div
+          ref={scrollRef}
+          className="mb-10 py-2"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: CARD_GAP * 4,
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+            scrollSnapType: "x mandatory",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            paddingBottom: 8,
           }}
         >
-          <Stack
-            stackProps={{
-              direction: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              gap: 1,
-              className: "w-full overflow-hidden py-2",
-            }}
-          >
-            <When condition={topCompaniesAPIData.isLoading}>
-              {COMPANY_CARD_SKELETONS.map((_, index) => (
-                <TopCompanyCardSkeleton key={`top-company-skeleton-${index}`} />
-              ))}
-            </When>
-            <When condition={!topCompaniesAPIData.isLoading && topCompanies.length === 0}>
-              <Typography
-                typographyProps={{
-                  children: "No companies found",
-                  variant: TypographyVariantEnum.BODY2,
-                }}
-              />
-            </When>
-            <When condition={!topCompaniesAPIData.isLoading && topCompanies.length > 0}>
-              {topCompanies.map((company: Company, index: number) => (
-                <div
-                  key={index}
-                  className="transition-transform duration-500 flex-shrink-0"
-                  style={{ transform: `translateX(-${slideCount * 316}px)` }}
-                >
-                  <HomePage
-                    isAuthenticated={isAuthenticated}
-                    openForceLoginPopup={openForceLoginPopup}
-                    company={company}
-                  />
-                </div>
-              ))}
-            </When>
-          </Stack>
-        </Stack>
+          <When condition={topCompaniesAPIData.isLoading}>
+            {COMPANY_CARD_SKELETONS.map((_, index) => (
+              <div
+                key={`top-company-skeleton-${index}`}
+                style={{ scrollSnapAlign: "start", flexShrink: 0 }}
+              >
+                <TopCompanyCardSkeleton />
+              </div>
+            ))}
+          </When>
+          <When condition={!topCompaniesAPIData.isLoading && topCompanies.length === 0}>
+            <Typography
+              typographyProps={{
+                children: "No companies found",
+                variant: TypographyVariantEnum.BODY2,
+              }}
+            />
+          </When>
+          <When condition={!topCompaniesAPIData.isLoading && topCompanies.length > 0}>
+            {topCompanies.map((company: Company, index: number) => (
+              <div
+                key={index}
+                style={{ scrollSnapAlign: "start", flexShrink: 0 }}
+              >
+                <HomePage
+                  isAuthenticated={isAuthenticated}
+                  openForceLoginPopup={openForceLoginPopup}
+                  company={company}
+                />
+              </div>
+            ))}
+          </When>
+        </div>
       </div>
     </>
   );

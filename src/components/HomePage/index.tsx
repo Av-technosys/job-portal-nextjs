@@ -11,7 +11,7 @@ function HomePage() {
   const isAuthenticated = isUserAuthenticated();
 
   return (
-    <>
+    <div style={{ width: "100%", overflowX: "hidden" }}>
       <ForceUserLoginPopup
         open={loginPopup}
         handleClose={() => setLoginPopup(false)}
@@ -24,7 +24,7 @@ function HomePage() {
         openForceLoginPopup={() => setLoginPopup(true)}
       />
       <Testimonial />
-    </>
+    </div>
   );
 }
 

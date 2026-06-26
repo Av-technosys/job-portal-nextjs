@@ -8,6 +8,13 @@ import {
   PersonSearchOutlinedIcon,
   SearchIcon,
   MenuIcon,
+  MyJobsIcon,
+  OverviewIcon,
+  ProfileIcon,
+  UploadFileIcon,
+  SaveAltIcon,
+  CardMembershipIcon,
+  AssessmentIcon,
 } from "@/assets";
 import {
   ABOUT_US_URL,
@@ -20,8 +27,16 @@ import {
   RECRUITER_URL,
   REGISTER_URL,
   TOP_RIBBON_AUTH_REDIRECT_CONFIG,
+  MY_APPLIED_JOBS_URL,
+  PROFILE_URL,
+  CREATE_JOB_URL,
+  MY_POSTED_JOBS_URL,
+  SAVED_JOB_URL,
+  SUBSCRIPTION_URL,
+  ASSESSMENT_URL,
+  SCORE_URL,
 } from "@/constants";
-import { getTopRibbonDetails } from "@/helper";
+import { getTopRibbonDetails, getSidebarDetails } from "@/helper";
 import { useCommonDetails } from "@/services";
 import {
   Box,
@@ -34,7 +49,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, NextImage, Stack, When } from "../common";
 import AccountPopover from "./AccountPopover";
@@ -66,7 +81,28 @@ function MobileDrawerMenu({ isAuthenticated }: MobileDrawerMenuProps) {
     [userType]
   );
 
+  const dashboardItems = useMemo(() => {
+    if (!isAuthenticated || userType === -1) return [];
+    return getSidebarDetails({ userType });
+  }, [userType, isAuthenticated]);
+
+  const dashboardIconConfig: Record<string, React.ReactElement> = {
+    [DASHBOARD_URL]: <OverviewIcon />,
+    [MY_APPLIED_JOBS_URL]: <MyJobsIcon />,
+    [PROFILE_URL]: <ProfileIcon />,
+    [CREATE_JOB_URL]: <UploadFileIcon />,
+    [MY_POSTED_JOBS_URL]: <MyJobsIcon />,
+    [SAVED_JOB_URL]: <SaveAltIcon />,
+    [SUBSCRIPTION_URL]: <CardMembershipIcon />,
+    [ASSESSMENT_URL]: <AssessmentIcon />,
+    [SCORE_URL]: <AssessmentIcon />,
+  };
+
   const activeValue = useMemo(() => {
+    // If we are currently in any dashboard route, force the active top-level item to be DASHBOARD_URL
+    if (router.pathname.startsWith(DASHBOARD_URL)) {
+      return DASHBOARD_URL;
+    }
     const matched = navItems?.find((tab) => {
       if (tab.value === JOBS_URL && router.pathname === JOB_DETAILS_URL)
         return true;
@@ -100,20 +136,10 @@ function MobileDrawerMenu({ isAuthenticated }: MobileDrawerMenuProps) {
           }}
         />
 
-        <Stack stackProps={{ direction: "row", alignItems: "center", gap: 0.5 }}>
+        <Stack stackProps={{ direction: "row", alignItems: "center", gap: 2 }}>
           <When condition={isAuthenticated}>
             <ActionNotification />
             <AccountPopover />
-          </When>
-          <When condition={!isAuthenticated}>
-            <Button
-              {...LOGIN_BUTTON}
-              onClick={() => handleNavigate(LOGIN_URL)}
-            />
-            <Button
-              {...REGISTER_BUTTON}
-              onClick={() => handleNavigate(REGISTER_URL)}
-            />
           </When>
 
           {/* Hamburger button */}
@@ -134,6 +160,7 @@ function MobileDrawerMenu({ isAuthenticated }: MobileDrawerMenuProps) {
         anchor="right"
         open={open}
         onClose={() => setOpen(false)}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}
         PaperProps={{
           sx: {
             width: DRAWER_WIDTH,
@@ -161,55 +188,110 @@ function MobileDrawerMenu({ isAuthenticated }: MobileDrawerMenuProps) {
               style: { cursor: "pointer" },
             }}
           />
-          <IconButton onClick={() => setOpen(false)} aria-label="Close menu">
+          <IconButton
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+            sx={{
+              bgcolor: "grey.100",
+              "&:hover": { bgcolor: "grey.200" },
+              color: "text.primary",
+              p: 1,
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </Box>
 
-        <Divider />
+        <Divider sx={{ mb: 1 }} />
 
         {/* Nav links */}
         <List sx={{ flexGrow: 1, py: 1 }}>
           {navItems?.map((item) => {
             const isActive = item.value === activeValue;
             return (
-              <ListItem key={item.key} disablePadding>
-                <ListItemButton
-                  selected={isActive}
-                  onClick={() => handleNavigate(item.value)}
-                  sx={{
-                    borderRadius: 2,
-                    mx: 1,
-                    my: 0.25,
-                    "&.Mui-selected": {
-                      backgroundColor: "primary.main",
-                      color: "primary.contrastText",
-                      "& .MuiListItemIcon-root": {
-                        color: "primary.contrastText",
-                      },
-                      "&:hover": {
-                        backgroundColor: "primary.dark",
-                      },
-                    },
-                  }}
-                >
-                  <ListItemIcon
+              <React.Fragment key={item.key}>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    selected={isActive}
+                    onClick={() => handleNavigate(item.value)}
                     sx={{
-                      minWidth: 36,
-                      color: isActive ? "inherit" : "text.secondary",
+                      borderRadius: 2,
+                      mx: 1,
+                      my: 0.25,
+                      "&.Mui-selected": {
+                        backgroundColor: "primary.main",
+                        color: "primary.contrastText",
+                        "& .MuiListItemIcon-root": {
+                          color: "primary.contrastText",
+                        },
+                        "&:hover": {
+                          backgroundColor: "primary.dark",
+                        },
+                      },
                     }}
                   >
-                    {TAB_ICON_MAP[item.value] ?? <SearchIcon />}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.label}
-                    primaryTypographyProps={{
-                      fontSize: 15,
-                      fontWeight: isActive ? 700 : 500,
-                    }}
-                  />
-                </ListItemButton>
-              </ListItem>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 36,
+                        color: isActive ? "inherit" : "text.secondary",
+                      }}
+                    >
+                      {TAB_ICON_MAP[item.value] ?? <SearchIcon />}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.label}
+                      primaryTypographyProps={{
+                        fontSize: 15,
+                        fontWeight: isActive ? 700 : 500,
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                
+                {/* ── Dashboard Sub-links ── */}
+                <When condition={item.value === DASHBOARD_URL && isAuthenticated && dashboardItems.length > 0 && activeValue === DASHBOARD_URL}>
+                  <List component="div" disablePadding>
+                    {dashboardItems.map((dashItem) => {
+                      const isDashActive = router.pathname === dashItem.listValue;
+                      // Don't duplicate the overview link if it's identical
+                      if (dashItem.listValue === DASHBOARD_URL) return null;
+                      
+                      return (
+                        <ListItem key={dashItem.key} disablePadding>
+                          <ListItemButton
+                            selected={isDashActive}
+                            onClick={() => handleNavigate(dashItem.listValue)}
+                            sx={{
+                              borderRadius: 2,
+                              mx: 1,
+                              my: 0.25,
+                              pl: 4, // Indentation for sub-items
+                              "&.Mui-selected": {
+                                backgroundColor: "primary.50",
+                                color: "primary.main",
+                                "& .MuiListItemIcon-root": {
+                                  color: "primary.main",
+                                },
+                              },
+                            }}
+                          >
+                            <ListItemIcon sx={{ minWidth: 36, color: isDashActive ? "primary.main" : "text.secondary", "& svg": { fontSize: 20 } }}>
+                              {dashboardIconConfig[dashItem.listValue]}
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={dashItem.text}
+                              primaryTypographyProps={{
+                                fontSize: 14,
+                                fontWeight: isDashActive ? 600 : 500,
+                              }}
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </When>
+              </React.Fragment>
             );
           })}
         </List>

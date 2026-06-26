@@ -163,11 +163,12 @@ function Login() {
             width: "100%",
           }}
         >
-          <Stack
-            stackProps={{
-              width: "90vw",
-            }}
-          >
+        <Stack
+          stackProps={{
+            flexGrow: 1,
+            minWidth: 0,
+          }}
+        >
             <Stack
               stackProps={{
                 alignItems: "center",
@@ -278,13 +279,8 @@ function Login() {
                 <SocialLogin callbackUrl={`${SSO_REDIRECT_URL}`} />
               </Paper>
             </Container>
-          </Stack>
-          <div
-            style={{
-              width: isExtraSmallScreen ? "10vw" : "inherit",
-            }}
-            className={"auth-right-panel"}
-          />
+        </Stack>
+          <div className={"auth-right-panel"} />
         </Stack>
       </div>
     </>

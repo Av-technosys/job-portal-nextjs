@@ -6,7 +6,9 @@ export enum AvatarVariantEnum {
   SQUARE = "square",
 }
 
-export interface AvatarProps {
+export interface AvatarProps extends Omit<MUIAvatarProps, "variant" | "children" | "alt" | "src"> {
   variant: AvatarVariantEnum;
-  children: MUIAvatarProps["children"];
+  children?: MUIAvatarProps["children"];
+  alt?: any;
+  src?: any;
 }
