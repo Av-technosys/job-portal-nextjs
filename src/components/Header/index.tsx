@@ -13,7 +13,6 @@ function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
         style={{
           backgroundColor: theme.palette.background.paper,
           zIndex: theme.zIndex.drawer + 1,
-          borderBottom: `1px solid ${colorStyles.topRibbonColor}`,
         }}
         elevation={0}
       >
