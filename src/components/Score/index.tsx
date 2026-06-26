@@ -3,7 +3,7 @@ import { getApplicantAssessmentAttempts } from "@/services/useGetApplicantAssess
 import { getAssessmentScoreInfo } from "@/services/useGetAssessmentScoreDetails";
 import { useCommonDetails, useGetStudentProfilePersonalInfo } from "@/services";
 import { colorStyles } from "@/styles";
-import { CommonObjectType, TypographyFontWeight } from "@/types";
+import { CommonObjectType, TypographyFontWeight, TypographyFontSize } from "@/types";
 import {
   AssessmentOutlined,
   EmojiEventsOutlined,
@@ -594,8 +594,17 @@ function Score() {
           <Typography
             typographyProps={{
               children: "Subject Scores",
-              variant: "h5",
+              variant: "h6",
+              sx: {
+                letterSpacing: "-0.02em",
+                color: "#1e293b",
+                borderLeft: "4px solid",
+                borderColor: "primary.main",
+                pl: 1.5,
+                lineHeight: 1.2,
+              },
             }}
+            fontSize={TypographyFontSize.extralarge}
             fontWeight={TypographyFontWeight.bold}
           />
           <Typography

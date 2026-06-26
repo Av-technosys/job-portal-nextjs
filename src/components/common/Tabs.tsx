@@ -53,10 +53,11 @@ function Tabs({ items = [], tabsProps, handleTabChange }: TabsProps) {
             value={item.value}
             icon={item?.icon}
             onClick={item.onClick}
+            sx={{ letterSpacing: "-0.02em" }}
           />
         ))}
       </MUITabs>
-      <div className="w-full" style={{ width: "100%", marginLeft: 0 }}>
+      <div className="w-full" style={{ width: "100%", marginLeft: 0, marginTop: "24px" }}>
         {items.map((item) => (
           <CustomTabPanel
             key={`ja-CustomTabPanel-${item.key}`}

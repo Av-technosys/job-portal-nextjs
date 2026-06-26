@@ -17,22 +17,31 @@ export const APPLIED_JOB_PAGE_CONFIG = {
     return {
       typographyProps: {
         children: totalLength,
-        variant: TypographyVariantEnum.H5,
+        variant: TypographyVariantEnum.H6,
+        sx: {
+          letterSpacing: "-0.02em",
+          mr: 0.75,
+          color: "primary.main",
+          display: "inline-block",
+        },
       },
-      fontWeight: TypographyFontWeight.semibold,
-      fontSize: TypographyFontSize.subtitle,
-      fontColor: TypographyFontColor.black,
+      fontWeight: TypographyFontWeight.bold,
+      fontSize: TypographyFontSize.extralarge,
     } as TypographyProps;
   },
   TITLE_HEADER: (totalLength: number) => {
     return {
       typographyProps: {
         children: `Job${getPluralForm({ totalLength })} applied`,
-        variant: TypographyVariantEnum.BODY2,
+        variant: TypographyVariantEnum.H6,
+        sx: {
+          letterSpacing: "-0.02em",
+          color: "#1e293b",
+          display: "inline-block",
+        },
       },
       fontWeight: TypographyFontWeight.bold,
       fontSize: TypographyFontSize.extralarge,
-      fontColor: TypographyFontColor.black,
     } as TypographyProps;
   },
   TITLE_BAR_CONFIG: {

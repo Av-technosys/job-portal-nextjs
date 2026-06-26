@@ -413,6 +413,7 @@ export const LATEST_JOB_OPENINGS_CONFIG = {
       typographyProps: {
         children: "Latest",
         variant: TypographyVariantEnum.H6,
+        sx: { letterSpacing: "-0.02em" },
       },
       fontWeight: TypographyFontWeight.semibold,
       fontSize: TypographyFontSize.subtitle,
@@ -424,8 +425,8 @@ export const LATEST_JOB_OPENINGS_CONFIG = {
       typographyProps: {
         children: "Job Opportunities",
         variant: TypographyVariantEnum.H6,
+        sx: { letterSpacing: "-0.02em" },
       },
-
       fontSize: TypographyFontSize.subtitle,
     };
   },
