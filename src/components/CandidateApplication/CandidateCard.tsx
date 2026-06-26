@@ -93,11 +93,11 @@ export default function CandidateApplicationCard({
       <Stack
         stackProps={{
           className:
-            " my-2  shadow-md p-4 rounded-xl border-2 hover:border-2 capitalize",
-          direction: "row",
+            " my-2 shadow-md p-4 rounded-xl border-2 hover:border-2 capitalize",
+          direction: { xs: "column", md: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
-          gap: 3,
+          alignItems: { xs: "flex-start", md: "center" },
+          gap: { xs: 2, md: 3 },
           sx: {
             borderColor: colorStyles.grey,
             "&:hover": {
@@ -154,12 +154,11 @@ export default function CandidateApplicationCard({
           </Stack>
           <Stack
             stackProps={{
-              direction: "row",
-              gap: 5,
+              direction: { xs: "column", sm: "row" },
+              gap: { xs: 1.5, sm: 5 },
               justifyContent: "space-between",
               width: "100%",
-              alignContent: "center",
-              alignItems: "center",
+              alignItems: { xs: "flex-start", sm: "center" },
               flexWrap: "wrap",
             }}
           >
@@ -167,8 +166,8 @@ export default function CandidateApplicationCard({
               stackProps={{
                 direction: "row",
                 alignItems: "center",
-
-                gap: 3,
+                flexWrap: "wrap",
+                gap: { xs: 1.5, md: 3 },
               }}
             >
               {candidateDetails.map((detail, index) => (
@@ -181,12 +180,12 @@ export default function CandidateApplicationCard({
             </Stack>
             <Stack
               stackProps={{
-                className: "-mt-14 md:-mt-7 ",
                 justifyContent: "center",
-                alignItems: "center",
+                alignItems: { xs: "flex-start", sm: "center" },
+                width: { xs: "100%", sm: "auto" },
               }}
             >
-              <Button {...BUTTON} onClick={openApplicationPopup} />
+              <Button {...BUTTON} buttonProps={{ ...BUTTON.buttonProps, fullWidth: true, sx: { height: 40 } }} onClick={openApplicationPopup} />
             </Stack>
           </Stack>
         </Stack>

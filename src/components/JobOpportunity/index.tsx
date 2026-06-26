@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useRef, useMemo, useState } from "react";
 import { IconButton, Skeleton, Stack, Typography, When } from "../common";
 import LatestJobCard from "../LatestJobCard";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/assets";
@@ -134,6 +134,7 @@ function JobOpportunity({
   jobRoleFilters = EMPTY_JOB_ROLE_FILTERS,
 }: JobOpportunityProps) {
   const [slideCount, setSlideCount] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const hasCategoryFilter = jobRoleFilters.length > 0;
 
   const jobInfoAPIData = useGetJobList({
@@ -162,23 +163,38 @@ function JobOpportunity({
   }, [jobs, hasCategoryFilter, jobRoleFilters]);
 
   const isLoading = jobInfoAPIData.isLoading;
-  const showSlider = latestJobs.length > 3;
+  const cardStep = parseInt(LATEST_JOB_CARD_WIDTH, 10) + LATEST_JOB_CARD_GAP;
 
+  // Desktop button navigation — scrolls the ref container
   const handleSliderNext = () => {
-    setSlideCount((prev) => (prev < latestJobs.length - 3 ? prev + 1 : prev));
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: cardStep, behavior: "smooth" });
+    }
+    setSlideCount((prev) => prev + 1);
   };
 
   const handleSliderPrevious = () => {
-    setSlideCount((prev) => (prev > 0 ? prev - 1 : prev));
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -cardStep, behavior: "smooth" });
+    }
+    setSlideCount((prev) => (prev > 0 ? prev - 1 : 0));
   };
 
-  const cardStep = parseInt(LATEST_JOB_CARD_WIDTH, 10) + LATEST_JOB_CARD_GAP;
+  const showNavButtons = latestJobs.length > 3;
+
+  const cardGridStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "row",
+    gap: LATEST_JOB_CARD_GAP,
+    paddingBottom: 8,
+  };
 
   return (
     <div className="w-full">
-      <div className="w-full flex min-h-12 justify-end">
-        <When condition={showSlider}>
-          <Stack stackProps={{ direction: "row", width: "10%" }}>
+      {/* Navigation buttons — visible only on md+ */}
+      <div className="hidden md:flex w-full min-h-12 justify-end">
+        <When condition={showNavButtons}>
+          <Stack stackProps={{ direction: "row" }}>
             <IconButton onClick={handleSliderPrevious}>
               <ChevronLeftIcon />
             </IconButton>
@@ -189,20 +205,27 @@ function JobOpportunity({
         </When>
       </div>
 
-      <div className="w-full mb-8 overflow-hidden py-2">
+      {/* Scrollable card strip — native overflow scroll on mobile, hidden scrollbar */}
+      <div
+        ref={scrollRef}
+        className="w-full mb-8 py-2 card-scroll-container"
+        style={{
+          overflowX: "auto",
+          WebkitOverflowScrolling: "touch",
+          scrollSnapType: "x mandatory",
+          scrollbarWidth: "none",       // Firefox
+          msOverflowStyle: "none",      // IE
+        }}
+      >
         <When condition={isLoading}>
-          <div
-            style={{
-              display: "grid",
-              gridAutoFlow: "column",
-              gridAutoColumns: LATEST_JOB_CARD_WIDTH,
-              justifyContent: "start",
-              columnGap: LATEST_JOB_CARD_GAP,
-              width: "100%",
-            }}
-          >
+          <div style={cardGridStyle}>
             {LATEST_JOB_CARD_SKELETONS.map((_, index) => (
-              <LatestJobCardSkeleton key={`latest-job-skeleton-${index}`} />
+              <div
+                key={`latest-job-skeleton-${index}`}
+                style={{ scrollSnapAlign: "start", flexShrink: 0 }}
+              >
+                <LatestJobCardSkeleton />
+              </div>
             ))}
           </div>
         </When>
@@ -222,22 +245,12 @@ function JobOpportunity({
         </When>
 
         <When condition={!isLoading && latestJobs.length > 0}>
-          <div
-            className="transition-transform duration-500"
-            style={{
-              display: "grid",
-              gridAutoFlow: "column",
-              gridAutoColumns: LATEST_JOB_CARD_WIDTH,
-              justifyContent: "start",
-              columnGap: LATEST_JOB_CARD_GAP,
-              width: "100%",
-              transform: showSlider
-                ? `translateX(-${slideCount * cardStep}px)`
-                : "translateX(0)",
-            }}
-          >
+          <div style={cardGridStyle}>
             {latestJobs.map((job, index) => (
-              <div key={String(job?.id || index)} className="shrink-0">
+              <div
+                key={String(job?.id || index)}
+                style={{ scrollSnapAlign: "start", flexShrink: 0 }}
+              >
                 <LatestJobCard job={job} index={index} />
               </div>
             ))}

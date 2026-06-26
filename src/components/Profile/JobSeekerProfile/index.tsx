@@ -41,11 +41,20 @@ function JobSeekerProfile() {
         items={tabItems}
         tabsProps={{
           defaultValue: tabItems?.[0].key,
+          variant: "scrollable",
+          scrollButtons: "auto",
+          allowScrollButtonsMobile: true,
           sx: {
             borderBottom: 1,
             borderColor: "divider",
-            marginLeft: "25%",
             marginBottom: 2,
+            "& .MuiTab-root": {
+              fontSize: { xs: 13, md: 14 },
+              fontWeight: 600,
+              minWidth: { xs: 80, md: 120 },
+              px: { xs: 1.5, md: 2 },
+              textTransform: "capitalize",
+            },
           },
         }}
       />

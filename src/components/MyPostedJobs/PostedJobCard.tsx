@@ -187,11 +187,12 @@ export default function PostedJobCard({
     <>
       <Stack
         stackProps={{
-          className: "my-2 mb-2 p-1 border hover:border capitalize",
-          direction: "row",
+          className: "my-2 mb-2 p-3 border hover:border capitalize bg-white transition-all",
+          direction: { xs: "column", md: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 2,
+          alignItems: { xs: "flex-start", md: "center" },
+          gap: { xs: 2, md: 1 },
+          borderRadius: 3,
           sx: {
             borderColor: colorStyles.cardBorderColor,
             "&:hover": {
@@ -204,7 +205,7 @@ export default function PostedJobCard({
           stackProps={{
             direction: "row",
             gap: 2,
-            width: "45%",
+            width: { xs: "100%", md: "45%" },
           }}
         >
           <Stack
@@ -240,8 +241,16 @@ export default function PostedJobCard({
           </Stack>
         </Stack>
 
-        <Stack stackProps={{ direction: "row", gap: 10, alignItems: "center" }}>
-          <Typography {...JOB_TYPE(job)} />
+        <Stack
+          stackProps={{
+            direction: { xs: "column", sm: "row" },
+            gap: { xs: 1.5, md: 10 },
+            alignItems: { xs: "flex-start", sm: "center" },
+            width: { xs: "100%", md: "auto" },
+            flexWrap: "wrap",
+          }}
+        >
+          <Typography {...JOB_TYPE(job)} typographyProps={{ ...JOB_TYPE(job).typographyProps, sx: { fontSize: 13, color: "text.secondary" } }} />
           <TextWithIcon
             icon={
               <PeopleIcon
@@ -253,7 +262,7 @@ export default function PostedJobCard({
             }
             textProps={APPLICANTS(job)}
           />
-          <IconButton onClick={handleIconButtonClick}>
+          <IconButton onClick={handleIconButtonClick} sx={{ p: 0.5 }}>
             {JOB_STATUS_ICONS?.[job?.job_status as JobStatusEnum] || null}
             <Typography {...STATUS(color, label)} />
           </IconButton>
@@ -283,6 +292,7 @@ export default function PostedJobCard({
           </Menu>
           <IconButton
             onClick={() => handleViewApplicationClick(job as CommonObjectType)}
+            sx={{ p: 0.5 }}
           >
             <VisibilityOutlinedIcon
               sx={{

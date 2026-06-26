@@ -20,8 +20,8 @@ function OverallCard({
     <Stack
       stackProps={{
         className: "my-2 rounded-lg px-5 py-6 shadow-md",
-        height: "100px",
-        width: "280px",
+        minHeight: "100px",
+        width: { xs: "100%", md: "280px" },
         justifyContent: "space-between",
         bgcolor: bgColor,
         direction: "row",

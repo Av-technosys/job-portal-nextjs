@@ -26,7 +26,7 @@ function JobSeekerDashboard() {
         stackProps={{
           gap: 4,
           className: "my-8",
-          direction: { base: "column", md: "row" },
+          direction: { xs: "column", md: "row" },
         }}
       >
         <OverallCard

@@ -135,12 +135,10 @@ const Footer: React.FC = () => {
               }}
             >
               <Typography {...QUICK_LINKS_TEXT} />
-              <button onClick={() => router.push("/")}>
-                {" "}
+              <button className="footer-link" onClick={() => router.push("/")}>
                 <Typography {...HOME_TEXT} />
               </button>
-              <button onClick={() => router.push("about-us")}>
-                {" "}
+              <button className="footer-link" onClick={() => router.push("/about-us")}>
                 <Typography {...ABOUT_US_TEXT} />
               </button>
             </Stack>
@@ -152,10 +150,10 @@ const Footer: React.FC = () => {
               }}
             >
               <Typography {...JOB_SEEKER_TEXT} />
-              <button onClick={() => router.push("/dashboard")}>
+              <button className="footer-link" onClick={() => router.push("/dashboard")}>
                 <Typography {...JOBSEERKER_DASHBOARD_TEXT} />
               </button>
-              <button onClick={() => router.push("/dashboard/saved-job")}>
+              <button className="footer-link" onClick={() => router.push("/dashboard/saved-job")}>
                 <Typography {...SAVED_JOBS_TEXT} />
               </button>
             </Stack>
@@ -167,14 +165,13 @@ const Footer: React.FC = () => {
               }}
             >
               <Typography {...RECRUITER_TEXT} />
-              <button onClick={() => router.push("/dashboard/create-job")}>
+              <button className="footer-link" onClick={() => router.push("/dashboard/create-job")}>
                 <Typography {...POST_JOB_TEXT} />
               </button>
-              <button onClick={() => router.push("/dashboard")}>
+              <button className="footer-link" onClick={() => router.push("/dashboard")}>
                 <Typography {...RECUITER_DASHBOARD_TEXT} />
               </button>
-              <button onClick={() => router.push("/dashboard/my-posted-jobs")}>
-                {" "}
+              <button className="footer-link" onClick={() => router.push("/dashboard/my-posted-jobs")}>
                 <Typography {...APPLICATION_TEXT} />
               </button>
             </Stack>
@@ -186,13 +183,13 @@ const Footer: React.FC = () => {
               }}
             >
               <Typography {...SUPPORT_TEXT} />
-              <button onClick={() => router.push("/contact-us")}>
+              <button className="footer-link" onClick={() => router.push("/contact-us")}>
                 <Typography {...CONTACT_US_TEXT} />
               </button>
-              <button onClick={() => router.push("/privacy-policy")}>
+              <button className="footer-link" onClick={() => router.push("/privacy-policy")}>
                 <Typography {...PRIVACY_POLICY_TEXT} />
               </button>
-              <button onClick={() => router.push("/terms-and-conditions")}>
+              <button className="footer-link" onClick={() => router.push("/terms-and-conditions")}>
                 <Typography {...TERMS_CONDITION_TEXT} />
               </button>
             </Stack>

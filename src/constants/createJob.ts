@@ -25,9 +25,9 @@ import {
 
 const FIELD_WIDTHS = {
   EXTRA_LARGE: { width: "100%", flexBasis: "100%" },
-  SMALL: { width: "100%", flexBasis: "10%" },
-  LARGE: { width: "100%", flexBasis: "45%" },
-  MEDIUM: { width: "100%", flexBasis: "30%" },
+  SMALL: { width: "100%", flexBasis: { xs: "100%", md: "10%" } },
+  LARGE: { width: "100%", flexBasis: { xs: "100%", md: "45%" } },
+  MEDIUM: { width: "100%", flexBasis: { xs: "100%", sm: "45%", md: "30%" } },
   CUSTOM_HEADING: { width: 1 },
 };
 

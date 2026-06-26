@@ -20,19 +20,22 @@ function TestimonialCard({ card }: TestimonialCardProps) {
     <Stack
       key={card.id}
       stackProps={{
-        gap: 2,
-        className: "rounded-xl border-2",
+        gap: 3,
+        className: "rounded-2xl border bg-white",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
         sx: {
-          width: { xs: "100%", sm: 320 },
-          height: { xs: "auto", sm: 320 },
-          p: { xs: 3, sm: 0 },
+          width: { xs: "100%", md: 340 },
+          height: { xs: "auto", md: 320 },
+          p: 4,
           borderColor: colorStyles.borderGreyColor,
-          transition: "border-color 0.4s ease-in-out",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+          transition: "all 0.3s ease",
           "&:hover": {
-            borderColor: colorStyles.cardHoverBorderColor,
+            transform: "translateY(-4px)",
+            boxShadow: "0 12px 24px rgba(0,0,0,0.08)",
+            borderColor: "transparent",
           },
         },
       }}

@@ -68,8 +68,9 @@ function AssessmentSubmission() {
         <Stack
           stackProps={{
             className: "mb-4",
-            direction: "row",
+            direction: { xs: "column", sm: "row" },
             justifyContent: "space-between",
+            gap: 2,
           }}
         >
           <NextImage
@@ -79,7 +80,7 @@ function AssessmentSubmission() {
             }}
           />
           <Stack
-            stackProps={{ direction: "row", gap: 7, alignItems: "center" }}
+            stackProps={{ direction: "row", gap: { xs: 2, sm: 7 }, alignItems: "center", flexWrap: "wrap" }}
           >
             <Stack>
               <Typography {...WELCOME_TEXT()} />
@@ -89,7 +90,7 @@ function AssessmentSubmission() {
           </Stack>
         </Stack>
         <Divider />
-        <Stack stackProps={{ className: "p-4" }}>
+        <Stack stackProps={{ className: "p-3 md:p-4" }}>
           <Typography {...SUMMERY()} />
         </Stack>
         <Stack stackProps={{ className: "border p-4", gap: 2 }}>

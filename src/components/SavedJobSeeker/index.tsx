@@ -68,7 +68,16 @@ function SavedJobSeeker() {
         hasMore={hasMore}
         isFetchingMore={savedJobSeekerAPIData?.isFetchingNextPage}
       >
-        <Stack>
+        <Stack
+          stackProps={{
+            sx: {
+              width: "100%",
+              maxWidth: "100%",
+              overflowX: "hidden",
+              boxSizing: "border-box",
+            },
+          }}
+        >
           {paginatedInfoData?.map((job) => (
             <SavedJobSeekerCard
               job={job}

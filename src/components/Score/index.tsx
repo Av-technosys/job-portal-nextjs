@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { Chip, Grid, Loader, Paper, Stack, Typography } from "@/components/common";
+import { Chip, Loader, Paper, Stack, Typography } from "@/components/common";
 
 type AttemptScore = {
   attempt: CommonObjectType;
@@ -325,67 +325,93 @@ function ScoreMetric({
   value,
   caption,
   backgroundColor,
+  percentage,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
   caption: string;
   backgroundColor: string;
+  percentage: number;
 }) {
+  const pct = Math.max(0, Math.min(percentage, 100));
+  const isGood = pct >= 70;
+  const isMid = pct >= 40 && pct < 70;
+  const barColor = isGood ? "#22c55e" : isMid ? "#f59e0b" : "#ef4444";
+
   return (
     <Stack
       stackProps={{
-        direction: "row",
         gap: 1.5,
-        alignItems: "center",
         sx: {
           bgcolor: backgroundColor,
-          borderRadius: "8px",
-          p: 2,
-          minHeight: 96,
+          borderRadius: "16px",
+          p: { xs: 2, md: 2.5 },
+          border: `1px solid ${barColor}22`,
+          position: "relative",
+          overflow: "hidden",
         },
       }}
     >
-      <Stack
-        stackProps={{
-          alignItems: "center",
-          justifyContent: "center",
-          sx: {
-            bgcolor: colorStyles.white,
-            borderRadius: "8px",
-            color: colorStyles.blue,
-            height: 40,
-            width: 40,
-            flex: "0 0 40px",
-          },
+      <Stack stackProps={{ direction: "row", alignItems: "center", gap: 1.5 }}>
+        <Stack
+          stackProps={{
+            alignItems: "center",
+            justifyContent: "center",
+            sx: {
+              bgcolor: colorStyles.white,
+              borderRadius: "12px",
+              color: colorStyles.blue,
+              height: 40,
+              width: 40,
+              flex: "0 0 40px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+            },
+          }}
+        >
+          {icon}
+        </Stack>
+        <Stack stackProps={{ gap: 0.25 }}>
+          <Typography
+            typographyProps={{
+              children: label,
+              variant: "caption",
+              sx: { color: colorStyles.listTitleTextColor, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px" },
+            }}
+          />
+          <Typography
+            typographyProps={{
+              children: value,
+              variant: "h6",
+              sx: { fontWeight: 800, lineHeight: 1 },
+            }}
+          />
+        </Stack>
+        <Stack
+          stackProps={{
+            sx: {
+              bgcolor: barColor,
+              color: "white",
+              borderRadius: 99,
+              px: 1.5,
+              py: 0.5,
+              fontSize: 12,
+              fontWeight: 800,
+              ml: "auto",
+            },
+          }}
+        >
+          {`${pct.toFixed(0)}%`}
+        </Stack>
+      </Stack>
+
+      <Typography
+        typographyProps={{
+          children: caption,
+          variant: "caption",
+          sx: { color: colorStyles.listTitleTextColor, fontSize: 12, mt: 0.5 },
         }}
-      >
-        {icon}
-      </Stack>
-      <Stack stackProps={{ gap: 0.25, minWidth: 0 }}>
-        <Typography
-          typographyProps={{
-            children: label,
-            variant: "caption",
-            sx: { color: colorStyles.listTitleTextColor },
-          }}
-        />
-        <Typography
-          typographyProps={{
-            children: value,
-            variant: "h6",
-            sx: { lineHeight: 1.25 },
-          }}
-          fontWeight={TypographyFontWeight.bold}
-        />
-        <Typography
-          typographyProps={{
-            children: caption,
-            variant: "caption",
-            sx: { color: colorStyles.listTitleTextColor },
-          }}
-        />
-      </Stack>
+      />
     </Stack>
   );
 }
@@ -396,18 +422,23 @@ function ScoreCard({ group }: { group: ScoreGroup }) {
   const sectionName =
     group.sectionName === FALLBACK_TEXT ? "Assessment subject" : group.sectionName;
 
+  const bestPct = bestPercentage;
+  const accentColor = bestPct >= 70 ? "#22c55e" : bestPct >= 40 ? "#f59e0b" : "#ef4444";
+
   return (
     <Paper
       paperProps={{
         sx: {
           border: `1px solid ${colorStyles.borderGreyColor}`,
-          borderRadius: "8px",
-          boxShadow: "0 8px 24px rgba(24, 25, 28, 0.06)",
+          borderRadius: "12px",
+          boxShadow: "0 4px 16px rgba(24, 25, 28, 0.06)",
           overflow: "hidden",
+          borderTop: `3px solid ${accentColor}`,
         },
       }}
     >
-      <Stack stackProps={{ gap: 2, sx: { p: { xs: 2, md: 3 } } }}>
+      <Stack stackProps={{ gap: 2.5, sx: { p: { xs: 2, md: 3 } } }}>
+        {/* Header */}
         <Stack
           stackProps={{
             direction: { xs: "column", sm: "row" },
@@ -416,12 +447,12 @@ function ScoreCard({ group }: { group: ScoreGroup }) {
             gap: 1.5,
           }}
         >
-          <Stack stackProps={{ gap: 0.5, minWidth: 0 }}>
+          <Stack stackProps={{ gap: 0.25, minWidth: 0 }}>
             <Typography
               typographyProps={{
                 children: group.subjectName,
                 variant: "h6",
-                sx: { lineHeight: 1.3 },
+                sx: { lineHeight: 1.3, fontSize: { xs: 16, md: 18 } },
               }}
               fontWeight={TypographyFontWeight.bold}
             />
@@ -429,12 +460,12 @@ function ScoreCard({ group }: { group: ScoreGroup }) {
               typographyProps={{
                 children: sectionName,
                 variant: "body2",
-                sx: { color: colorStyles.listTitleTextColor },
+                sx: { color: colorStyles.listTitleTextColor, fontSize: 13 },
               }}
             />
           </Stack>
           <Chip
-            label={`${group.assessmentType} | ${group.attemptsCount} attempt${
+            label={`${group.assessmentType} · ${group.attemptsCount} attempt${
               group.attemptsCount === 1 ? "" : "s"
             }`}
             size="small"
@@ -442,36 +473,42 @@ function ScoreCard({ group }: { group: ScoreGroup }) {
               bgcolor: colorStyles.filterTagsBackgroundColor,
               color: colorStyles.filterTagsTextColor,
               borderRadius: "8px",
-              fontWeight: 600,
+              fontWeight: 700,
+              fontSize: 12,
+              flexShrink: 0,
             }}
           />
         </Stack>
 
-        <Grid gridProps={{ container: true, spacing: 2 }}>
-          <Grid gridProps={{ size: { xs: 12, md: 6 } }}>
+        {/* Score metrics */}
+        <Stack
+          stackProps={{
+            direction: { xs: "column", sm: "row" },
+            gap: 1.5,
+            sx: { width: "100%", minWidth: 0 },
+          }}
+        >
+          <Stack stackProps={{ sx: { flex: 1, minWidth: 0 } }}>
             <ScoreMetric
               icon={<HistoryOutlined fontSize="small" />}
               label="Latest Score"
               value={getScoreText(group.latest)}
-              caption={`${latestPercentage.toFixed(2)}% | ${getFormattedDate(
-                group.latest
-              )}`}
+              caption={getFormattedDate(group.latest)}
               backgroundColor={colorStyles.appliedJobsBackgroundColor}
+              percentage={latestPercentage}
             />
-          </Grid>
-          <Grid gridProps={{ size: { xs: 12, md: 6 } }}>
+          </Stack>
+          <Stack stackProps={{ sx: { flex: 1, minWidth: 0 } }}>
             <ScoreMetric
               icon={<EmojiEventsOutlined fontSize="small" />}
               label="Best Score"
               value={getScoreText(group.best)}
-              caption={`${bestPercentage.toFixed(2)}% | ${getFormattedDate(
-                group.best
-              )}`}
+              caption={getFormattedDate(group.best)}
               backgroundColor={colorStyles.savedJobsBackgroundColor}
+              percentage={bestPercentage}
             />
-          </Grid>
-        </Grid>
-
+          </Stack>
+        </Stack>
       </Stack>
     </Paper>
   );
@@ -621,18 +658,20 @@ function Score() {
           </Stack>
         </Paper>
       ) : (
-        <Grid gridProps={{ container: true, spacing: 2.5 }}>
+        <Stack
+          stackProps={{
+            gap: 2,
+            sx: {
+              width: "100%",
+              maxWidth: "100%",
+              overflowX: "hidden",
+            },
+          }}
+        >
           {scoreGroups.map((group) => (
-            <Grid
-              key={group.key}
-              gridProps={{
-                size: { xs: 12 },
-              }}
-            >
-              <ScoreCard group={group} />
-            </Grid>
+            <ScoreCard key={group.key} group={group} />
           ))}
-        </Grid>
+        </Stack>
       )}
     </Stack>
   );

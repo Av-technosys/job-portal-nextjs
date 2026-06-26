@@ -22,10 +22,19 @@ const FilterButton = ({
       <Button
         onClick={handleOpenFilter}
         buttonProps={{
-          variant: ButtonVariantEnum.CONTAINED,
-          color: colorStyles.listTitleBackgroundColor,
-          size: ButtonSizeEnum.LARGE,
-          sx: { px: "24px", py: "14px" },
+          variant: ButtonVariantEnum.OUTLINED,
+          size: ButtonSizeEnum.SMALL,
+          sx: { 
+            px: { xs: 2, md: 3 }, 
+            height: "40px",
+            borderColor: colorStyles.filterTagsBackgroundColor,
+            color: "text.primary",
+            borderRadius: 2,
+            "&:hover": {
+              borderColor: "primary.main",
+              bgcolor: "transparent"
+            }
+          },
           children: "Filters",
         }}
       />

@@ -75,6 +75,8 @@ export const useFirebaseNotification = () => {
                   fcm_token: token,
                 },
               });
+            }).catch((err) => {
+              console.warn("Failed to get Firebase token:", err);
             });
             registration.update();
           })

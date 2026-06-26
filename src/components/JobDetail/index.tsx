@@ -236,35 +236,34 @@ function JobDetail({
   const skills = getSkills(job);
 
   return (
-    <Stack stackProps={{ gap: 4, className: "capitalize" }}>
+    <Stack stackProps={{ gap: { xs: 4, md: 5 }, className: "capitalize" }}>
+      {/* Top Header Section */}
       <Stack
         stackProps={{
           direction: { xs: "column", md: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", md: "center" },
+          gap: { xs: 3, md: 0 },
         }}
       >
-        <Stack stackProps={{ direction: "row", gap: 2, alignItems: "center" }}>
+        <Stack stackProps={{ direction: "row", gap: { xs: 2, md: 3 }, alignItems: "center" }}>
           <Avatar {...IMAGE(job).avatarProps}>
             {getInitials({ name: String(job?.company_name || "") })}
           </Avatar>
-          <Stack
-            stackProps={{
-              className: "-mt-4 md:-mt-0",
-            }}
-          >
+          <Stack stackProps={{ gap: 0.5 }}>
             <Typography {...DESIGNATION(job)} />
             <Stack
               stackProps={{
-                className: "pt-2 md:pt-0",
                 direction: "row",
-                gap: 1,
+                gap: 1.5,
+                alignItems: "center",
+                flexWrap: "wrap",
               }}
             >
               <Typography {...COMPANY_NAME(job)} />
               <Stack
                 stackProps={{
-                  className: "rounded-sm px-2",
+                  className: "rounded px-2 py-0.5",
                   bgcolor: colorStyles.green,
                 }}
               >
@@ -273,30 +272,37 @@ function JobDetail({
             </Stack>
           </Stack>
         </Stack>
+        
         {!hideApplyButton && (
-          <LoadingButton
-            {...APPLY_BUTTON}
-            onClick={onApplyClick}
-            loading={jobApplyMutate.isPending}
-          />
+          <Stack stackProps={{ width: { xs: "100%", md: "auto" } }}>
+            <LoadingButton
+              {...APPLY_BUTTON}
+              onClick={onApplyClick}
+              loading={jobApplyMutate.isPending}
+              buttonProps={{
+                ...APPLY_BUTTON.buttonProps,
+                sx: { width: { xs: "100%", md: "auto" }, py: { xs: 1.5, md: 1 } },
+              }}
+            />
+          </Stack>
         )}
       </Stack>
 
-      {/* full Stack */}
+      {/* Main Content Area */}
       <Stack
         stackProps={{
           direction: { xs: "column", md: "row" },
-          gap: 2,
+          gap: { xs: 4, md: 3 },
           justifyContent: "space-between",
         }}
       >
         {/*Left Side Description Stack */}
-        <Stack stackProps={{ width: { xs: "100%", md: "60%" }, gap: 3 }}>
-          <Stack stackProps={{ gap: 1 }}>
+        <Stack stackProps={{ width: { xs: "100%", md: "60%" }, flex: { md: 1 }, gap: { xs: 4, md: 3 } }}>
+          <Stack stackProps={{ gap: 1.5 }}>
             <Typography {...DESCRIPTION_TEXT()} />
             <Typography {...JOB_DESCRIPTION(job)} />
           </Stack>
-          <Stack stackProps={{ gap: 2 }}>
+          <Stack stackProps={{ gap: 2.5 }}>
             <Typography
               typographyProps={{
                 children: "Job Details",
@@ -306,7 +312,7 @@ function JobDetail({
             />
             <Stack
               stackProps={{
-                className: "grid grid-cols-1 sm:grid-cols-2",
+                className: "grid grid-cols-2 sm:grid-cols-2",
                 gap: 2,
               }}
             >
@@ -314,7 +320,7 @@ function JobDetail({
                 <Stack
                   key={fact.label}
                   stackProps={{
-                    className: "border rounded-lg p-3",
+                    className: "border rounded-xl p-3 sm:p-4",
                     borderColor: colorStyles.filterTagsBackgroundColor,
                     gap: 0.5,
                   }}
@@ -336,7 +342,7 @@ function JobDetail({
               ))}
             </Stack>
           </Stack>
-          <Stack stackProps={{ gap: 1 }}>
+          <Stack stackProps={{ gap: 2 }}>
             <Typography
               typographyProps={{
                 children: "Skills Required",
@@ -347,7 +353,7 @@ function JobDetail({
             <Stack
               stackProps={{
                 direction: "row",
-                gap: 1,
+                gap: 1.5,
                 flexWrap: "wrap",
               }}
             >
@@ -358,6 +364,7 @@ function JobDetail({
                     label={skill}
                     color="primary"
                     variant="outlined"
+                    sx={{ borderRadius: "8px" }}
                   />
                 ))
               ) : (
@@ -375,8 +382,9 @@ function JobDetail({
         <Stack
           stackProps={{
             direction: "column",
-            gap: 2,
-            width: { xs: "100%", md: "40%" },
+            gap: 3,
+            width: { xs: "100%", md: "320px", lg: "360px" },
+            flexShrink: 0,
           }}
         >
           <SalaryLocationCard job={job} />
