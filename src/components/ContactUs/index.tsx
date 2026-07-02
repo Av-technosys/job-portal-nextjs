@@ -86,11 +86,7 @@ function ContactUs() {
 
   return (
     <div
-      className="min-h-screen py-16 px-4"
-      style={{
-        background:
-          "radial-gradient(circle at 50% 0%, rgba(99,102,241,0.08) 0%, rgba(255,255,255,0) 60%), linear-gradient(180deg, rgba(238,242,255,0.6) 0%, #f8fafc 100%)",
-      }}
+      className="min-h-screen py-16 px-4 bg-white"
     >
       <div className="max-w-[22rem] md:max-w-[45rem] lg:max-w-5xl mx-auto">
 

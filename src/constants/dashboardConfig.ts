@@ -25,11 +25,13 @@ export const DASHBOARD_PAGE_CONFIG = {
   TITLE_HEADER: (name: string) => {
     return {
       typographyProps: {
-        children: `Hello, ${name}`,
-        variant: TypographyVariantEnum.H5,
+        children: `Hello, ${name} 👋`,
+        variant: TypographyVariantEnum.H4,
+        className: "capitalize tracking-tight",
       },
-      fontWeight: TypographyFontWeight.semibold,
-      fontSize: TypographyFontSize.subtitle,
+      fontWeight: TypographyFontWeight.extrabold,
+      fontSize: TypographyFontSize.largeTitle,
+      fontColor: TypographyFontColor.black2,
     };
   },
   TITLE_CAPTION: () => {

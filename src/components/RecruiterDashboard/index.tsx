@@ -5,6 +5,7 @@ import { OverallCard } from "@/components";
 import { WorkIcon, SaveAltIcon } from "@/assets";
 import { useGetOverAllJobSeekerRecruiterDetails } from "@/services";
 import { colorStyles } from "@/styles";
+import PaymentHistory from "../JobSeekerDashboard/PaymentHistory";
 
 function RecruiterDashboard() {
   const { name, userType } = useCommonDetails();
@@ -43,6 +44,7 @@ function RecruiterDashboard() {
           isLoading={isLoading || isRefetching}
         />
       </Stack>
+      <PaymentHistory />
     </>
   );
 }

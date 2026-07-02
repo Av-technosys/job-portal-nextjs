@@ -222,6 +222,7 @@ function Formik({
               setIsFormSubmittedOnce(true);
               handleSubmit(values);
             }}
+            className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/60 shadow-sm"
           >
             <Stack
               stackProps={{
