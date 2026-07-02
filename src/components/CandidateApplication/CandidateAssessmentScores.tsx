@@ -491,7 +491,7 @@ function CandidateAssessmentScores({
           <Typography
             typographyProps={{
               children: "Subject Scores",
-              variant: "h6",
+              variant: "h3",
             }}
             fontWeight={TypographyFontWeight.bold}
           />

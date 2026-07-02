@@ -26,7 +26,7 @@ import {
 import { studentProfileGeneralInformationValidationSchema } from "@/validator";
 import { useMemo } from "react";
 
-function StudentProfile() {
+function StudentProfile({ onNextTab }: { onNextTab?: () => void }) {
   const {
     FORM_CONFIG,
     ACADEMIC_QUALIFICATION_FORM_CONFIG,
@@ -62,6 +62,7 @@ function StudentProfile() {
       mutationConfig: {
         onSuccess: () => {
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
+          onNextTab?.();
         },
         onError: (error) => {
           showNotification({

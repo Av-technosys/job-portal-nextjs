@@ -185,13 +185,17 @@ function Jobs() {
       <JobSearchBar onSearch={(searchObj) => {
         handleSearchChange(searchObj.skills.trim());
         
-        let newFilter = filterSearch;
+        let newFilter = filterSearch || "";
+        newFilter = newFilter.replace(/&experience=[^&]*/g, '');
+        newFilter = newFilter.replace(/&location=[^&]*/g, '');
+        
         if (searchObj.experience) {
-           newFilter = newFilter.replace(/&experience=[^&]*/g, '') + `&experience=${searchObj.experience}`;
+           newFilter += `&experience=${searchObj.experience}`;
         }
         if (searchObj.location) {
-           newFilter = newFilter.replace(/&location=[^&]*/g, '') + `&location=${searchObj.location}`;
+           newFilter += `&location=${searchObj.location}`;
         }
+        
         if (newFilter !== filterSearch) {
           handleFilterChange(newFilter);
         }

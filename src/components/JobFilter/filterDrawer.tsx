@@ -202,7 +202,7 @@ const FilterDrawer = ({
                     name="salary"
                     value={selectedDropdown}
                     onChange={onFilterChange}
-                    options={MIN_SALARY_RANGE_OPTIONS.map((item) => ({
+                    options={SALARY_SELECT_CONFIG.menuItems.map((item) => ({
                       ...item,
                       key: item.value,
                     }))}

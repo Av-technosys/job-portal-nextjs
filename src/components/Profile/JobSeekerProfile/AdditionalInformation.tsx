@@ -19,7 +19,7 @@ import {
 import { studentProfileAdditionalInfoValidationSchema } from "@/validator";
 import { useMemo } from "react";
 
-function AdditionalInformation() {
+function AdditionalInformation({ onNextTab }: { onNextTab?: () => void }) {
   const { WORK_EXPERIENCE_HEADING, CERTIFICATION_HEADING, PROJECTS_HEADING } =
     STUDENT_PROFILE_HEADING_DETAILS_CONFIG;
   const {
@@ -36,6 +36,7 @@ function AdditionalInformation() {
       mutationConfig: {
         onSuccess: () => {
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
+          onNextTab?.();
         },
         onError: (error) => {
           showNotification({

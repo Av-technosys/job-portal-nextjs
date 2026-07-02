@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Stack, Typography } from "@/components/common";
 import { SearchIcon } from "@/assets/icons";
 import { EXPERIENCE_OPTIONS } from "@/constants";
+import { Select, MenuItem } from "@mui/material";
 
 const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
   const [skills, setSkills] = useState("");
@@ -54,25 +55,44 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
           <div className="hidden md:block w-[1px] h-8 bg-slate-200/80 mx-1"></div>
 
           <div className="flex flex-1 items-center px-4 py-2 w-full md:w-auto border-t md:border-t-0 border-slate-200/80 group rounded-2xl md:rounded-full transition-all duration-200">
-            <select
-              className={`w-full bg-transparent outline-none text-base cursor-pointer appearance-none font-medium ${experience ? 'text-slate-800' : 'text-slate-400'}`}
+            <Select
               value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              onKeyDown={handleKeyDown}
+              onChange={(e) => setExperience(e.target.value as string)}
+              displayEmpty
+              variant="standard"
+              disableUnderline
+              IconComponent={() => (
+                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-2 pointer-events-none">
+                  <path d="M1 1.5L6 6.5L11 1.5" stroke="#848A9C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+              sx={{
+                width: '100%',
+                color: experience ? '#1B1F2E' : '#848A9C',
+                fontSize: '1rem',
+                '.MuiSelect-select': {
+                  padding: 0,
+                  backgroundColor: 'transparent',
+                }
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    borderRadius: '12px',
+                    boxShadow: '0px 8px 24px rgba(0,0,0,0.08)',
+                    mt: 1,
+                  }
+                }
+              }}
             >
-              <option value="" disabled className="hidden">Select experience</option>
-              <option value="" className="text-slate-800">Any</option>
+              <MenuItem value="" disabled sx={{ display: 'none' }}>Select experience</MenuItem>
+              <MenuItem value="">Any</MenuItem>
               {EXPERIENCE_OPTIONS.map((opt) => (
-                <option key={opt.key} value={opt.value} className="text-slate-800">
+                <MenuItem key={opt.key} value={opt.value}>
                   {opt.label}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-            <div className="pointer-events-none ml-2">
-              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 1.5L6 6.5L11 1.5" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
+            </Select>
           </div>
 
           <div className="hidden md:block w-[1px] h-8 bg-slate-200/80 mx-1"></div>
@@ -101,4 +121,3 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
 };
 
 export default JobSearchBar;
-

@@ -1048,7 +1048,7 @@ export const JOB_SEEKER_SOCIAL_LINKS_CONFIG = {
     },
     SAVE_BUTTON: {
       buttonProps: {
-        children: "Finish Editing",
+        children: "Save",
         variant: ButtonVariantEnum.CONTAINED,
         color: ButtonColorEnum.PRIMARY,
         size: ButtonSizeEnum.LARGE,

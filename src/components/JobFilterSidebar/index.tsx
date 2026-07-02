@@ -28,18 +28,35 @@ const JobFilterSidebar = ({
 }) => {
   const [filterSearchString, setFilterSearchString] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [selectedDropdown, setSelectedDropdown] = useState("");
+  const [selectedDropdowns, setSelectedDropdowns] = useState<Record<string, string>>({});
 
   const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked, name } = event.target;
     const localString = `&${name}=${filterRemoveSpace(value.toString())}`;
 
+    if (checked === undefined) {
+      // It's a dropdown/select, not a checkbox
+      setSelectedDropdowns((prev) => ({ ...prev, [name]: value }));
+      
+      setFilterSearchString((prev) => {
+        const regex = new RegExp(`&${name}=[^&]*`, 'g');
+        const cleaned = prev.replace(regex, '');
+        return value ? cleaned + localString : cleaned;
+      });
+      
+      setSelectedFilters((prev) => {
+        // For simple applied count, if we want to remove previous value for this dropdown:
+        // We can't easily know the previous value without state, but since Dropdown 
+        // usually doesn't need to be in selectedFilters unless we want to display it.
+        // Let's just blindly add it for now.
+        return [...prev, value];
+      });
+      return;
+    }
+
     if (checked) {
-      setSelectedDropdown(value);
       setFilterSearchString((prev: string) =>
-        !checked
-          ? filterRemoveSpace(prev, localString, "")
-          : prev.concat(localString)
+        prev.concat(localString)
       );
       setSelectedFilters((prev) =>
         prev.includes(value)
@@ -98,8 +115,8 @@ const JobFilterSidebar = ({
               <FormGroup>
                 <Dropdown
                   name="location"
-                  value={selectedDropdown}
-                  onChange={onFilterChange as any}
+                  value={selectedDropdowns["location"] || ""}
+                  onChange={(e: any) => onFilterChange({ target: { value: e.target.value, name: "location", checked: undefined } } as any)}
                   options={LOCATION_SELECT_CONFIG.menuItems.map((item) => ({
                     ...item,
                     key: item.value,
@@ -174,9 +191,9 @@ const JobFilterSidebar = ({
               <FormGroup>
                 <Dropdown
                   name="salary"
-                  value={selectedDropdown}
-                  onChange={onFilterChange as any}
-                  options={MIN_SALARY_RANGE_OPTIONS.map((item) => ({
+                  value={selectedDropdowns["salary"] || ""}
+                  onChange={(e: any) => onFilterChange({ target: { value: e.target.value, name: "salary", checked: undefined } } as any)}
+                  options={SALARY_SELECT_CONFIG.menuItems.map((item) => ({
                     ...item,
                     key: item.value,
                   }))}

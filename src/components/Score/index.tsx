@@ -1,4 +1,5 @@
 import { formatDate } from "@/helper";
+import { CircularProgress } from "@mui/material";
 import { getApplicantAssessmentAttempts } from "@/services/useGetApplicantAssessmentAttempts";
 import { getAssessmentScoreInfo } from "@/services/useGetAssessmentScoreDetails";
 import { useCommonDetails, useGetStudentProfilePersonalInfo } from "@/services";
@@ -10,7 +11,7 @@ import {
   HistoryOutlined,
 } from "@mui/icons-material";
 import { useQueries } from "@tanstack/react-query";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Chip, Grid, Loader, Paper, Stack, Typography } from "@/components/common";
 
 type AttemptScore = {
@@ -319,76 +320,11 @@ function getScoreGroups(attempts: CommonObjectType[], scores: CommonObjectType[]
   });
 }
 
-function ScoreMetric({
-  icon,
-  label,
-  value,
-  caption,
-  backgroundColor,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  caption: string;
-  backgroundColor: string;
-}) {
-  return (
-    <Stack
-      stackProps={{
-        direction: "row",
-        gap: 1.5,
-        alignItems: "center",
-        sx: {
-          bgcolor: backgroundColor,
-          borderRadius: "8px",
-          p: 2,
-          minHeight: 96,
-        },
-      }}
-    >
-      <Stack
-        stackProps={{
-          alignItems: "center",
-          justifyContent: "center",
-          sx: {
-            bgcolor: colorStyles.white,
-            borderRadius: "8px",
-            color: colorStyles.blue,
-            height: 40,
-            width: 40,
-            flex: "0 0 40px",
-          },
-        }}
-      >
-        {icon}
-      </Stack>
-      <Stack stackProps={{ gap: 0.25, minWidth: 0 }}>
-        <Typography
-          typographyProps={{
-            children: label,
-            variant: "caption",
-            sx: { color: colorStyles.listTitleTextColor },
-          }}
-        />
-        <Typography
-          typographyProps={{
-            children: value,
-            variant: "h6",
-            sx: { lineHeight: 1.25 },
-          }}
-          fontWeight={TypographyFontWeight.bold}
-        />
-        <Typography
-          typographyProps={{
-            children: caption,
-            variant: "caption",
-            sx: { color: colorStyles.listTitleTextColor },
-          }}
-        />
-      </Stack>
-    </Stack>
-  );
-}
+
+
+
+
+
 
 function ScoreCard({ group }: { group: ScoreGroup }) {
   const latestPercentage = Math.max(0, Math.min(getPercentage(group.latest), 100));
@@ -401,81 +337,161 @@ function ScoreCard({ group }: { group: ScoreGroup }) {
       paperProps={{
         sx: {
           border: `1px solid ${colorStyles.borderGreyColor}`,
-          borderRadius: "8px",
-          boxShadow: "0 8px 24px rgba(24, 25, 28, 0.06)",
+          borderRadius: "16px",
+          boxShadow: "0 4px 16px rgba(0, 0, 0, 0.04)",
           overflow: "hidden",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          height: "100%",
+          position: "relative",
+          bgcolor: colorStyles.white,
+          "&:hover": {
+            transform: "translateY(-6px)",
+            boxShadow: `0 16px 32px rgba(29, 78, 216, 0.1)`,
+            borderColor: colorStyles.blue,
+            "& .best-ring": {
+              filter: "drop-shadow(0 0 8px rgba(29, 78, 216, 0.6))"
+            }
+          }
         },
       }}
     >
-      <Stack stackProps={{ gap: 2, sx: { p: { xs: 2, md: 3 } } }}>
-        <Stack
-          stackProps={{
-            direction: { xs: "column", sm: "row" },
-            justifyContent: "space-between",
-            alignItems: { xs: "flex-start", sm: "center" },
-            gap: 1.5,
-          }}
-        >
-          <Stack stackProps={{ gap: 0.5, minWidth: 0 }}>
+      <Stack stackProps={{ direction: "row", height: "100%" }}>
+        {/* Left Side: Details & Latest Score */}
+        <Stack stackProps={{ p: 2, flex: 1, gap: 1.5, justifyContent: "space-between" }}>
+          
+          <Stack stackProps={{ gap: 0.5 }}>
+            <Chip
+              label={`${group.attemptsCount} attempt${group.attemptsCount === 1 ? "" : "s"}`}
+              size="small"
+              sx={{
+                bgcolor: colorStyles.lightBlue,
+                color: colorStyles.blue,
+                borderRadius: "6px",
+                fontWeight: 800,
+                fontSize: "0.6rem",
+                height: 20,
+                alignSelf: "flex-start",
+                mb: 0.5,
+              }}
+            />
             <Typography
               typographyProps={{
                 children: group.subjectName,
-                variant: "h6",
-                sx: { lineHeight: 1.3 },
+                variant: "subtitle1",
+                sx: { lineHeight: 1.2 },
               }}
               fontWeight={TypographyFontWeight.bold}
             />
             <Typography
               typographyProps={{
                 children: sectionName,
-                variant: "body2",
-                sx: { color: colorStyles.listTitleTextColor },
+                variant: "caption",
+                sx: { color: colorStyles.listTitleTextColor, fontSize: "0.65rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" },
               }}
             />
           </Stack>
-          <Chip
-            label={`${group.assessmentType} | ${group.attemptsCount} attempt${
-              group.attemptsCount === 1 ? "" : "s"
-            }`}
-            size="small"
-            sx={{
-              bgcolor: colorStyles.filterTagsBackgroundColor,
-              color: colorStyles.filterTagsTextColor,
-              borderRadius: "8px",
-              fontWeight: 600,
+
+          <Stack stackProps={{ gap: 0.25, mt: 1 }}>
+            <Stack stackProps={{ direction: "row", gap: 0.5, alignItems: "center" }}>
+              <HistoryOutlined sx={{ fontSize: 12, color: colorStyles.listTitleTextColor }} />
+              <Typography
+                typographyProps={{
+                  children: "LATEST",
+                  variant: "caption",
+                  sx: { color: colorStyles.listTitleTextColor, fontWeight: 700, fontSize: "0.55rem", letterSpacing: "0.5px" },
+                }}
+              />
+            </Stack>
+            <Typography
+              typographyProps={{
+                children: getScoreText(group.latest),
+                variant: "body2",
+                sx: { lineHeight: 1 },
+              }}
+              fontWeight={TypographyFontWeight.bold}
+            />
+            <Typography
+              typographyProps={{
+                children: getFormattedDate(group.latest),
+                variant: "caption",
+                sx: { color: colorStyles.listTitleTextColor, fontSize: "0.55rem" },
+              }}
+            />
+          </Stack>
+        </Stack>
+
+        {/* Right Side: Best Score Ring */}
+        <Stack 
+          stackProps={{ 
+            p: 2, 
+            bgcolor: colorStyles.lightBlue, 
+            borderLeft: `1px dashed ${colorStyles.borderGreyColor}`,
+            alignItems: "center",
+            justifyContent: "center",
+            minWidth: 100,
+            position: "relative"
+          }}
+        >
+          <div style={{ position: "absolute", top: 10, right: 10, opacity: 0.05, transform: "scale(2)", pointerEvents: "none" }}>
+            <EmojiEventsOutlined />
+          </div>
+          <Typography
+            typographyProps={{
+              children: "BEST",
+              variant: "caption",
+              sx: { color: colorStyles.blue, fontWeight: 800, fontSize: "0.6rem", letterSpacing: "1px", mb: 1 },
+            }}
+          />
+          <Stack stackProps={{ position: "relative", display: "inline-flex" }}>
+            <CircularProgress
+              variant="determinate"
+              value={100}
+              size={56}
+              thickness={4.5}
+              sx={{ color: 'rgba(29, 78, 216, 0.1)', position: "absolute" }}
+            />
+            <CircularProgress
+              className="best-ring"
+              variant="determinate"
+              value={bestPercentage}
+              size={56}
+              thickness={4.5}
+              sx={{ color: colorStyles.blue, transition: "filter 0.3s ease" }}
+            />
+            <Stack
+              stackProps={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                typographyProps={{
+                  children: `${Math.round(bestPercentage)}%`,
+                  variant: "caption",
+                  sx: { fontWeight: 900, color: colorStyles.blue, fontSize: '0.75rem' },
+                }}
+              />
+            </Stack>
+          </Stack>
+          <Typography
+            typographyProps={{
+              children: getScoreText(group.best),
+              variant: "caption",
+              sx: { color: colorStyles.blue, fontWeight: 700, mt: 1, fontSize: "0.7rem" },
             }}
           />
         </Stack>
-
-        <Grid gridProps={{ container: true, spacing: 2 }}>
-          <Grid gridProps={{ size: { xs: 12, md: 6 } }}>
-            <ScoreMetric
-              icon={<HistoryOutlined fontSize="small" />}
-              label="Latest Score"
-              value={getScoreText(group.latest)}
-              caption={`${latestPercentage.toFixed(2)}% | ${getFormattedDate(
-                group.latest
-              )}`}
-              backgroundColor={colorStyles.appliedJobsBackgroundColor}
-            />
-          </Grid>
-          <Grid gridProps={{ size: { xs: 12, md: 6 } }}>
-            <ScoreMetric
-              icon={<EmojiEventsOutlined fontSize="small" />}
-              label="Best Score"
-              value={getScoreText(group.best)}
-              caption={`${bestPercentage.toFixed(2)}% | ${getFormattedDate(
-                group.best
-              )}`}
-              backgroundColor={colorStyles.savedJobsBackgroundColor}
-            />
-          </Grid>
-        </Grid>
-
       </Stack>
     </Paper>
   );
 }
+
+
 
 function Score() {
   const { userId } = useCommonDetails();
@@ -544,27 +560,34 @@ function Score() {
   }
 
   return (
-    <Stack stackProps={{ gap: 3 }}>
+    <Stack stackProps={{ gap: 4 }}>
       <Stack
         stackProps={{
           direction: { xs: "column", md: "row" },
           justifyContent: "space-between",
           alignItems: { xs: "flex-start", md: "center" },
           gap: 1.5,
+          sx: {
+            bgcolor: colorStyles.lightBlue,
+            p: { xs: 3, md: 4 },
+            borderRadius: "16px",
+            border: `1px solid ${colorStyles.borderGreyColor}`,
+          }
         }}
       >
         <Stack stackProps={{ gap: 0.5 }}>
           <Typography
             typographyProps={{
               children: "Subject Scores",
-              variant: "h5",
+              variant: "h3",
+              sx: { color: colorStyles.black }
             }}
             fontWeight={TypographyFontWeight.bold}
           />
           <Typography
             typographyProps={{
               children: "Latest and best assessment scores grouped by subject",
-              variant: "body2",
+              variant: "body1",
               sx: { color: colorStyles.listTitleTextColor },
             }}
           />
@@ -588,45 +611,46 @@ function Score() {
         <Paper
           paperProps={{
             sx: {
-              border: `1px solid ${colorStyles.borderGreyColor}`,
-              borderRadius: "8px",
+              border: `2px dashed ${colorStyles.borderGreyColor}`,
+              borderRadius: "16px",
               boxShadow: "none",
-              p: { xs: 3, md: 4 },
+              p: { xs: 4, md: 8 },
+              bgcolor: colorStyles.lightBlue,
             },
           }}
         >
           <Stack
             stackProps={{
               alignItems: "center",
-              gap: 1,
+              gap: 2,
               textAlign: "center",
             }}
           >
-            <AssessmentOutlined sx={{ color: colorStyles.blue, fontSize: 36 }} />
+            <AssessmentOutlined sx={{ color: colorStyles.blue, fontSize: 64, opacity: 0.5 }} />
             <Typography
               typographyProps={{
-                children: "No subject scores found",
-                variant: "h6",
+                children: "No assessments completed yet",
+                variant: "h5",
               }}
               fontWeight={TypographyFontWeight.bold}
             />
             <Typography
               typographyProps={{
                 children:
-                  "Completed assessments will appear here with subject-wise score details.",
-                variant: "body2",
-                sx: { color: colorStyles.listTitleTextColor },
+                  "Once you complete an assessment, your beautifully detailed subject-wise scores will appear right here.",
+                variant: "body1",
+                sx: { color: colorStyles.listTitleTextColor, maxWidth: 400 },
               }}
             />
           </Stack>
         </Paper>
       ) : (
-        <Grid gridProps={{ container: true, spacing: 2.5 }}>
+        <Grid gridProps={{ container: true, spacing: 3 }}>
           {scoreGroups.map((group) => (
             <Grid
               key={group.key}
               gridProps={{
-                size: { xs: 12 },
+                size: { xs: 12, sm: 6, md: 4, lg: 3 },
               }}
             >
               <ScoreCard group={group} />
@@ -639,3 +663,5 @@ function Score() {
 }
 
 export default Score;
+
+

@@ -1,30 +1,32 @@
 import { Tabs } from "@/components/common";
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import StudentProfile from "./StudentProfile";
 import AdditonalInformation from "./AdditionalInformation";
 import Personal from "./Personal";
 import SocialLinks from "./SocialLinks";
 
 function JobSeekerProfile() {
+  const [currentTab, setCurrentTab] = useState("generalInformation");
+
   const tabItems = useMemo(() => {
     return [
       {
         label: "Personal",
         value: "generalInformation",
         key: "generalInformation",
-        children: <Personal />,
+        children: <Personal onNextTab={() => setCurrentTab("profile")} />,
       },
       {
         label: "Profile",
         value: "profile",
         key: "job-seeker-profile",
-        children: <StudentProfile />,
+        children: <StudentProfile onNextTab={() => setCurrentTab("additionalInformation")} />,
       },
       {
         label: "Additional Information",
         value: "additionalInformation",
         key: "additionalInformation",
-        children: <AdditonalInformation />,
+        children: <AdditonalInformation onNextTab={() => setCurrentTab("socialLinks")} />,
       },
       {
         label: "Social Links",
@@ -39,8 +41,9 @@ function JobSeekerProfile() {
     <>
       <Tabs
         items={tabItems}
+        handleTabChange={setCurrentTab}
         tabsProps={{
-          defaultValue: tabItems?.[0].key,
+          defaultValue: currentTab,
           sx: {
             borderBottom: 1,
             borderColor: "divider",
