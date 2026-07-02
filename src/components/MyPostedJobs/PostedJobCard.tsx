@@ -187,15 +187,19 @@ export default function PostedJobCard({
     <>
       <Stack
         stackProps={{
-          className: "my-2 mb-2 p-1 border hover:border capitalize",
-          direction: "row",
+          className: "group my-3 p-5 transition-all duration-300 hover:-translate-y-0.5",
+          direction: { xs: "column", md: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 2,
+          alignItems: { xs: "flex-start", md: "center" },
+          gap: { xs: 4, md: 0 },
           sx: {
-            borderColor: colorStyles.cardBorderColor,
+            backgroundColor: "#ffffff",
+            borderRadius: "16px",
+            border: "1px solid #f1f5f9",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.02)",
             "&:hover": {
-              borderColor: colorStyles.filterTagsTextColor,
+              boxShadow: "0 8px 24px rgba(37,99,235,0.06)",
+              borderColor: "#dbeafe",
             },
           },
         }}
@@ -203,13 +207,13 @@ export default function PostedJobCard({
         <Stack
           stackProps={{
             direction: "row",
-            gap: 2,
-            width: "45%",
+            gap: 3,
+            width: { xs: "100%", md: "50%" },
           }}
         >
           <Stack
             stackProps={{
-              className: "border rounded-lg",
+              className: "border border-slate-100 rounded-xl overflow-hidden shadow-sm h-fit",
             }}
           >
             <Avatar {...IMAGE(job).avatarProps}>
@@ -219,41 +223,44 @@ export default function PostedJobCard({
           <Stack
             stackProps={{
               direction: "column",
-              gap: 1,
-              justifyContent: "flex-end",
+              gap: 1.5,
+              justifyContent: "center",
             }}
           >
             <Typography {...DESIGNATION(job)} />
             <Stack
               stackProps={{
                 direction: "row",
+                gap: 3,
+                flexWrap: "wrap"
               }}
             >
-              {/* {postedJobDetails.map((detail, index) => (
+              {postedJobDetails.map((detail, index) => (
                 <TextWithIcon
                   key={`postedJobDetails-${index}`}
                   icon={detail.icon}
                   textProps={detail.textProps}
                 />
-              ))} */}
+              ))}
             </Stack>
           </Stack>
         </Stack>
 
-        <Stack stackProps={{ direction: "row", gap: 10, alignItems: "center" }}>
+        <Stack stackProps={{ direction: "row", gap: { xs: 2, md: 4 }, alignItems: "center", flexWrap: "wrap", width: { xs: "100%", md: "auto" }, justifyContent: { xs: "space-between", md: "flex-end" } }}>
           <Typography {...JOB_TYPE(job)} />
           <TextWithIcon
             icon={
               <PeopleIcon
                 sx={{
-                  color: colorStyles.listTitleTextColor,
-                  fontSize: "medium",
+                  color: "#2563eb",
+                  fontSize: "small",
+                  mr: 0.5
                 }}
               />
             }
             textProps={APPLICANTS(job)}
           />
-          <IconButton onClick={handleIconButtonClick}>
+          <IconButton onClick={handleIconButtonClick} sx={{ padding: '4px 8px', borderRadius: '8px', backgroundColor: '#f8fafc', '&:hover': { backgroundColor: '#f1f5f9' } }}>
             {JOB_STATUS_ICONS?.[job?.job_status as JobStatusEnum] || null}
             <Typography {...STATUS(color, label)} />
           </IconButton>
@@ -263,6 +270,8 @@ export default function PostedJobCard({
             styles={{
               paperStyles: {
                 width: "250px",
+                borderRadius: "12px",
+                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
               },
             }}
           >
@@ -275,27 +284,28 @@ export default function PostedJobCard({
                 onClick={() =>
                   handleMenuItemClick(item.key, Number(job.job_id))
                 }
+                sx={{ padding: '12px 16px', '&:hover': { backgroundColor: '#f8fafc' } }}
               >
                 {item.icon}
-                {item.label}
+                <span className="font-medium text-sm text-slate-700">{item.label}</span>
               </MenuItem>
             ))}
           </Menu>
           <IconButton
             onClick={() => handleViewApplicationClick(job as CommonObjectType)}
+            sx={{
+              backgroundColor: '#eff6ff',
+              color: '#2563eb',
+              '&:hover': {
+                backgroundColor: '#dbeafe',
+                color: '#1d4ed8'
+              }
+            }}
           >
-            <VisibilityOutlinedIcon
-              sx={{
-                color: colorStyles.listTitleTextColor,
-                "&:hover": {
-                  color: colorStyles.filterTagsTextColor,
-                },
-              }}
-            />
+            <VisibilityOutlinedIcon />
           </IconButton>
         </Stack>
       </Stack>
-      <Divider />
     </>
   );
 }

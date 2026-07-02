@@ -6,7 +6,10 @@ export enum AvatarVariantEnum {
   SQUARE = "square",
 }
 
-export interface AvatarProps {
-  variant: AvatarVariantEnum;
-  children: MUIAvatarProps["children"];
+export interface AvatarProps extends Omit<MUIAvatarProps, "variant" | "alt" | "src"> {
+  variant?: AvatarVariantEnum;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  alt?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  src?: any;
 }

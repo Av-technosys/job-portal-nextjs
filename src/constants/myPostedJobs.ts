@@ -17,15 +17,17 @@ export const POSTED_JOB_PAGE_CONFIG = {
     return {
       typographyProps: {
         children: totalLength,
-        variant: TypographyVariantEnum.H5,
+        variant: TypographyVariantEnum.H4,
+        className: "font-extrabold text-blue-700 mr-2",
       },
     };
   },
   TITLE_HEADER: (totalLength: number) => {
     return {
       typographyProps: {
-        children: `Job${getPluralForm({ totalLength })} posted`,
-        variant: TypographyVariantEnum.BODY2,
+        children: `Job${getPluralForm({ totalLength })} Posted`,
+        variant: TypographyVariantEnum.H4,
+        className: "font-extrabold text-slate-800 tracking-tight",
       },
     };
   },
@@ -71,9 +73,9 @@ export const POSTED_JOB_PAGE_CONFIG = {
           src: job?.company_profile_image, // Default image if none is provided
           alt: job?.company_name || "Company logo",
           sx: {
-            width: 54,
-            height: 54,
-            borderRadius: 1,
+            width: 56,
+            height: 56,
+            borderRadius: '12px',
           },
         },
       };
@@ -82,7 +84,8 @@ export const POSTED_JOB_PAGE_CONFIG = {
       return {
         typographyProps: {
           children: job?.role,
-          variant: TypographyVariantEnum.BODY2,
+          variant: TypographyVariantEnum.H6,
+          className: "font-bold text-slate-800",
         },
       } as TypographyProps;
     },
@@ -98,7 +101,8 @@ export const POSTED_JOB_PAGE_CONFIG = {
       return {
         typographyProps: {
           children: job?.location,
-          variant: TypographyVariantEnum.CAPTION,
+          variant: TypographyVariantEnum.BODY2,
+          className: "text-slate-500 font-medium",
         },
       } as TypographyProps;
     },
@@ -106,7 +110,8 @@ export const POSTED_JOB_PAGE_CONFIG = {
       return {
         typographyProps: {
           children: job?.salary,
-          variant: TypographyVariantEnum.CAPTION,
+          variant: TypographyVariantEnum.BODY2,
+          className: "text-slate-500 font-medium",
         },
       } as TypographyProps;
     },
@@ -115,6 +120,7 @@ export const POSTED_JOB_PAGE_CONFIG = {
         typographyProps: {
           children: job?.job_type,
           variant: TypographyVariantEnum.BODY2,
+          className: "bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium text-xs",
         },
       } as TypographyProps;
     },
@@ -125,6 +131,7 @@ export const POSTED_JOB_PAGE_CONFIG = {
             totalLength: Number(job?.application_count),
           })}`,
           variant: TypographyVariantEnum.BODY2,
+          className: "text-blue-600 font-semibold",
         },
       } as TypographyProps;
     },
@@ -133,9 +140,9 @@ export const POSTED_JOB_PAGE_CONFIG = {
         typographyProps: {
           children: label,
           variant: TypographyVariantEnum.BODY2,
+          className: "font-bold tracking-wide uppercase text-xs ml-2",
           sx: {
             color,
-            m: 1,
           },
         },
       } as TypographyProps;
