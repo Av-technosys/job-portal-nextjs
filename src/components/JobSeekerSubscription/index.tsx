@@ -15,13 +15,12 @@ import { useGetSubjectList } from "@/services/useGetFindSubject";
 import { useGetResumeTestDataInfo } from "@/services/useGetResumeTestDetails";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Loader } from "../common";
 import { CommonObjectType } from "@/types";
+import { CircularProgress } from "@mui/material";
 
 export default function Subscription() {
   const [open, setOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
-  const [isTestEnd, setIsTestEnd] = useState<null | boolean>(null);
   const [testId, setTestId] = useState<null | number | string>(null);
 
   const router = useRouter();
@@ -39,12 +38,30 @@ export default function Subscription() {
   const hasPaidAssessments = liveSubjects?.some(
     (subject) => subject?.is_paid === true
   );
+  const hasPurchasedAssessment = Boolean(testId);
 
   // ⭐ IMPORTANT: This function MUST be above loading return
-  function handlePaymentComplete() {
+  async function handlePaymentComplete(paymentData?: CommonObjectType) {
     setOpen(false);
     setPaymentModalOpen(false);
-    router.push(DASHBOARD_URL);
+
+    const assessmentSessionId =
+      paymentData?.assessment_session_id || paymentData?.assesment_session_id;
+
+    if (assessmentSessionId) {
+      router.push(`/dashboard/assessment/${assessmentSessionId}`);
+      return;
+    }
+
+    const refreshedSession = await resumeTestDetails.refetch();
+    const resumeSessionId =
+      refreshedSession.data?.data?.[0]?.id ||
+      refreshedSession.data?.data?.[0]?.assessment_session_id ||
+      refreshedSession.data?.data?.[0]?.assesment_session_id;
+
+    router.push(
+      resumeSessionId ? `/dashboard/assessment/${resumeSessionId}` : DASHBOARD_URL
+    );
   }
 
   // Set values only after data is fully loaded
@@ -52,29 +69,27 @@ export default function Subscription() {
     const resumeSession = resumeTestDetails.data?.data?.[0];
 
     if (resumeSession) {
-      setIsTestEnd(resumeSession.is_test_end);
       setTestId(resumeSession.id);
       return;
     }
 
     if (resumeTestDetails.isSuccess) {
-      setIsTestEnd(true);
       setTestId(null);
     }
   }, [resumeTestDetails.data, resumeTestDetails.isSuccess]);
 
   // ⭐ Loading UI to prevent jumping between 2 → 3 cards
-  if (
-    resumeTestDetails.isLoading ||
-    subjectList.isLoading ||
-    isTestEnd === null
-  ) {
+  if (resumeTestDetails.isLoading || subjectList.isLoading) {
     return (
-      <Loader
-        loaderProps={{
-          open: true,
+      <Stack
+        stackProps={{
+          alignItems: "center",
+          justifyContent: "center",
+          sx: { minHeight: "55vh" },
         }}
-      />
+      >
+        <CircularProgress />
+      </Stack>
     );
   }
 
@@ -92,7 +107,7 @@ export default function Subscription() {
         <Stack
           stackProps={{
             direction: "column",
-            width: "50%",
+            width: "100%",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -104,8 +119,11 @@ export default function Subscription() {
             stackProps={{
               direction: { xs: "column", md: "row" },
               alignItems: "center",
+              justifyContent: "center",
+              flexWrap: "wrap",
               gap: 5,
               marginTop: "50px",
+              width: "100%",
             }}
           >
             {/* FREE TEST CARD */}
@@ -120,7 +138,7 @@ export default function Subscription() {
             )}
 
             {/* CONDITIONAL RESUME TEST CARD */}
-            {isTestEnd === false && (
+            {hasPurchasedAssessment && (
               <SubscriptionCard
                 avatarUrl={resume_assessment?.src}
                 onButtonClick={() =>
@@ -135,8 +153,8 @@ export default function Subscription() {
               <SubscriptionCard
                 avatarUrl={paid_assessment?.src}
                 onButtonClick={() => {
-                  if (isTestEnd === false) {
-                    setOpen(true);
+                  if (testId) {
+                    router.push(`/dashboard/assessment/${testId}`);
                     return;
                   }
 

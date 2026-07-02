@@ -30,6 +30,7 @@ export * from "./useGetPostedJobList";
 export * from "./useCreateOrUpdateJobPost";
 export * from "./useGetCandidateApplication";
 export * from "./useGetFindRecruiter";
+export * from "./useGetTopCompanies";
 export * from "./useDebounce";
 export * from "./useGetSearchDetailsAsPerURLOrUserType";
 export * from "./useScreen";

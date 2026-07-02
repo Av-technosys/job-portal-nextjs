@@ -133,6 +133,10 @@ function AdminJobseekerComponent() {
               headerName: "Email",
             },
             {
+              field: "status",
+              headerName: "Status",
+            },
+            {
               field: "date_of_birth",
               headerName: "DOB",
             },
@@ -143,6 +147,14 @@ function AdminJobseekerComponent() {
             {
               field: "experience",
               headerName: "Experience",
+            },
+            {
+              field: "city",
+              headerName: "City",
+            },
+            {
+              field: "state",
+              headerName: "State",
             },
           ]}
           deleteHandler={jobSeekerDeleteHandler}

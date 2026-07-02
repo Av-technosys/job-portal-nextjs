@@ -28,12 +28,25 @@ import { useRouter } from "next/router";
 const App = ({ Component, pageProps }: AppProps) => {
   const [isDark, toggleIsDark] = useState(false);
   const [forceLogoutMessage, setForceLogoutMessage] = useState("");
+  const [accessTokenFromCookie, setAccessTokenFromCookie] = useState("");
   const getLayout = Component?.getLayout ?? ((page) => page);
-  const accessTokenFromLocalStorage = getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
   const router = useRouter();
   const currentTheme = useMemo(() => {
     return isDark ? darkTheme : lightTheme;
   }, [isDark]);
+
+  const syncAccessTokenFromCookie = useCallback(() => {
+    setAccessTokenFromCookie(getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN));
+  }, []);
+
+  useEffect(() => {
+    syncAccessTokenFromCookie();
+    router.events.on("routeChangeComplete", syncAccessTokenFromCookie);
+
+    return () => {
+      router.events.off("routeChangeComplete", syncAccessTokenFromCookie);
+    };
+  }, [router.events, syncAccessTokenFromCookie]);
 
   useEffect(() => {
     const handleForceLogout = (event: Event) => {
@@ -66,7 +79,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             <HydrationBoundary state={pageProps?.dehydratedState}>
               <CommonDetailsProvider
                 pageProps={pageProps}
-                accessTokenFromLocalStorage={accessTokenFromLocalStorage}
+                accessTokenFromLocalStorage={accessTokenFromCookie}
               >
                 <NotificationProvider>
                   <GlobalTheme

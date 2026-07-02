@@ -2,34 +2,30 @@ import { Button, Grid, Loader, Stack, Typography } from "../common";
 import { ASSESSMENT_SCORE_PAGE_CONFIG } from "@/constants";
 import { useGetAssessmentScoreInfo } from "@/services/useGetAssessmentScoreDetails";
 import { colorStyles } from "@/styles";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useMemo } from "react";
 
 type paramID = {
   id: string | number | string[];
 };
 
 function AssessmentScore({ id }: paramID) {
-  const router = useRouter();
-  const [scoreDetails, setScoreDetails] = useState(null);
   const assessmentScoreDetails = useGetAssessmentScoreInfo({
     queryParams: { id },
   });
 
-  // useEffect(() => {
-  //   setScoreDetails(assessmentScoreDetails?.data?.data);
-  // }, [assessmentScoreDetails]);
-  useEffect(() => {
-    if (assessmentScoreDetails?.data?.data) {
-      const fixedData = {
-        ...assessmentScoreDetails.data.data,
-        assesment_total:
-          assessmentScoreDetails.data.data["assesment_total "] ||
-          assessmentScoreDetails.data.data.assesment_total,
-      };
-      setScoreDetails(fixedData);
+  const scoreDetails = useMemo(() => {
+    const data = assessmentScoreDetails?.data?.data;
+
+    if (!data) {
+      return null;
     }
-  }, [assessmentScoreDetails]);
+
+    return {
+      ...data,
+      assesment_total: data["assesment_total "] || data.assesment_total,
+    };
+  }, [assessmentScoreDetails?.data?.data]);
 
   const { SCORE_VALUE_1, SCORE_VALUE_2, CONGRATS_TEXT, CONTINUE_BUTTON } =
     ASSESSMENT_SCORE_PAGE_CONFIG;
@@ -119,12 +115,14 @@ function AssessmentScore({ id }: paramID) {
                   }}
                 >
                   <Button
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/assessment/${scoreDetails?.assesment_session_id}`
-                      )
-                    }
-                    {...CONTINUE_BUTTON}
+                    {...{
+                      ...CONTINUE_BUTTON,
+                      buttonProps: {
+                        ...CONTINUE_BUTTON.buttonProps,
+                        component: Link,
+                        href: "/dashboard",
+                      },
+                    }}
                   />
                 </Stack>
               </Stack>

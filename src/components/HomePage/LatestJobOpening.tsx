@@ -1,45 +1,54 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 import { Stack, Tabs, Typography } from "../common";
 import { LATEST_JOB_OPENINGS_CONFIG } from "@/constants";
 import JobOpportunity from "../JobOpportunity";
-import { SwiperClass } from "swiper/react";
+
+const LATEST_JOB_CATEGORIES = [
+  {
+    label: "All",
+    value: "all",
+    key: "all",
+  },
+  {
+    label: "Product Management",
+    value: "productmanagement",
+    key: "productmanagement",
+    roles: ["product-manager"],
+  },
+  {
+    label: "Design",
+    value: "design",
+    key: "design",
+    roles: ["ux-designer"],
+  },
+  {
+    label: "Development",
+    value: "development",
+    key: "development",
+    roles: ["software-engineer", "data-scientist"],
+  },
+  {
+    label: "Marketing",
+    value: "marketing",
+    key: "marketing",
+    roles: ["marketing-manager"],
+  },
+  {
+    label: "Customer Service",
+    value: "customerservice",
+    key: "customerservice",
+    roles: ["customer-service"],
+  },
+];
 
 function LatestJobOpenings() {
   const { HEADER_TEXT_1, HEADER_TEXT_2 } = LATEST_JOB_OPENINGS_CONFIG;
 
   const tabItems = useMemo(() => {
-    return [
-      {
-        label: "Product Management",
-        value: "productmanagement",
-        key: "productmanagement",
-        children: <JobOpportunity jobFilterKey={"Product Management"} />,
-      },
-      {
-        label: "Design",
-        value: "design",
-        key: "design",
-        children: <JobOpportunity jobFilterKey={"Design"} />,
-      },
-      {
-        label: "Development",
-        value: "development",
-        key: "development",
-        children: <JobOpportunity jobFilterKey={"Development"} />,
-      },
-      {
-        label: "Marketing",
-        value: "marketing",
-        key: "marketing",
-        children: <JobOpportunity jobFilterKey={"Marketing"} />,
-      },
-      {
-        label: "Customer Service",
-        value: "customerservice",
-        key: "customerservice",
-        children: <JobOpportunity jobFilterKey={"Customer Service"} />,
-      },
-    ];
+    return LATEST_JOB_CATEGORIES.map((category) => ({
+      ...category,
+      children: <JobOpportunity jobRoleFilters={category.roles} />,
+    }));
   }, []);
 
   return (

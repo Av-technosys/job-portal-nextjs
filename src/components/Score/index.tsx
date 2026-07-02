@@ -1,7 +1,7 @@
 import { formatDate } from "@/helper";
-import { getAssessmentAttemptsInfo } from "@/services/useGetAssessmentAttempts";
+import { getApplicantAssessmentAttempts } from "@/services/useGetApplicantAssessmentAttempts";
 import { getAssessmentScoreInfo } from "@/services/useGetAssessmentScoreDetails";
-import { useGetResumeTestDataInfo } from "@/services/useGetResumeTestDetails";
+import { useCommonDetails, useGetStudentProfilePersonalInfo } from "@/services";
 import { colorStyles } from "@/styles";
 import { CommonObjectType, TypographyFontWeight } from "@/types";
 import {
@@ -22,6 +22,7 @@ type ScoreGroup = {
   key: string;
   subjectName: string;
   sectionName: string;
+  assessmentType: string;
   latest: AttemptScore;
   best: AttemptScore;
   attemptsCount: number;
@@ -30,11 +31,35 @@ type ScoreGroup = {
 const FALLBACK_TEXT = "N/A";
 
 function getArrayData(value: unknown): CommonObjectType[] {
-  const data = (value as { data?: unknown })?.data;
+  const data = (value as { data?: unknown })?.data ?? value;
 
   if (Array.isArray(data)) return data as CommonObjectType[];
   if (Array.isArray((data as { data?: unknown })?.data)) {
     return (data as { data: CommonObjectType[] }).data;
+  }
+
+  if (data && typeof data === "object") {
+    const objectData = data as Record<string, unknown>;
+    const arrayKeys = [
+      "results",
+      "attempts",
+      "assessment_attempts",
+      "assesment_attempts",
+      "subject_attempts",
+      "free_attempts",
+      "paid_attempts",
+      "free_assessment",
+      "paid_assessment",
+    ];
+
+    for (const key of arrayKeys) {
+      if (Array.isArray(objectData[key])) return objectData[key] as CommonObjectType[];
+    }
+
+    const nestedItems = Object.values(objectData).flatMap((item) =>
+      Array.isArray(item) ? (item as CommonObjectType[]) : []
+    );
+    if (nestedItems.length > 0) return nestedItems;
   }
 
   return [];
@@ -77,35 +102,46 @@ function getAttemptId(attempt: CommonObjectType) {
   );
 }
 
-function getSessionId(session: CommonObjectType) {
-  const sessionId = getDisplayText(
-    session.id,
-    session.assesment_session_id,
-    session.assessment_session_id,
-    session.assessment_session
-  );
+function getCandidateId(value: unknown) {
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
 
-  return sessionId === FALLBACK_TEXT ? null : sessionId;
+  return null;
 }
 
-function getSessionAttempts(sessions: CommonObjectType[]) {
-  return sessions.flatMap((session) => {
-    const possibleAttempts = [
-      session.attempts,
-      session.assessment_attempts,
-      session.assesment_attempts,
-      session.subject_attempts,
-    ];
+function getPossibleApplicantIds(
+  userId: number,
+  profileData: CommonObjectType
+) {
+  const nestedUserId =
+    typeof profileData?.user === "object"
+      ? getCandidateId((profileData.user as CommonObjectType)?.id)
+      : getCandidateId(profileData?.user);
 
-    return possibleAttempts.reduce<CommonObjectType[]>((items, value) => {
-      return Array.isArray(value)
-        ? [...items, ...(value as CommonObjectType[])]
-        : items;
-    }, []);
-  }) as CommonObjectType[];
+  return Array.from(
+    new Set(
+      [
+        nestedUserId,
+        getCandidateId(profileData?.user_id),
+        getCandidateId(profileData?.student_id),
+        getCandidateId(profileData?.student_profile_id),
+        getCandidateId(profileData?.id),
+        userId && userId !== -1 ? String(userId) : null,
+      ].filter((id): id is string => Boolean(id))
+    )
+  );
 }
 
 function getAssessmentKey(item: AttemptScore) {
+  const subjectKey = getSubjectIdentity(item);
+
+  if (subjectKey === FALLBACK_TEXT) return FALLBACK_TEXT;
+
+  return `${getAssessmentType(item)}-${subjectKey}`;
+}
+
+function getSubjectIdentity(item: AttemptScore) {
   return getDisplayText(
     item.score.subject_id,
     item.attempt.subject_id,
@@ -126,7 +162,7 @@ function getSubjectName(item: AttemptScore) {
     item.attempt.exam_name,
     (item.score.subject as CommonObjectType)?.exam_name,
     (item.attempt.subject as CommonObjectType)?.exam_name,
-    `Subject ${getAssessmentKey(item)}`
+    `Subject ${getSubjectIdentity(item)}`
   );
 }
 
@@ -136,6 +172,28 @@ function getSectionName(item: AttemptScore) {
     item.attempt.section_name,
     (item.score.subject as CommonObjectType)?.section_name,
     (item.attempt.subject as CommonObjectType)?.section_name
+  );
+}
+
+function getAssessmentType(item: AttemptScore) {
+  const isPaid = [
+    item.score.is_paid,
+    item.attempt.is_paid,
+    (item.score.subject as CommonObjectType)?.is_paid,
+    (item.attempt.subject as CommonObjectType)?.is_paid,
+  ].find((value) => typeof value === "boolean");
+
+  if (isPaid === true) return "Paid";
+  if (isPaid === false) return "Free";
+
+  return getDisplayText(
+    item.score.assessment_type,
+    item.attempt.assessment_type,
+    item.score.test_type,
+    item.attempt.test_type,
+    item.score.plan_type,
+    item.attempt.plan_type,
+    "Assessment"
   );
 }
 
@@ -168,7 +226,8 @@ function getPercentage(item: AttemptScore) {
   const explicitPercentage = getNumber(
     item.score.percentage,
     item.score.score_percentage,
-    item.attempt.percentage
+    item.attempt.percentage,
+    item.attempt.score_percentage
   );
   if (explicitPercentage !== null) return explicitPercentage;
 
@@ -252,6 +311,7 @@ function getScoreGroups(attempts: CommonObjectType[], scores: CommonObjectType[]
       key,
       subjectName: getSubjectName(sortedByLatest[0]),
       sectionName: getSectionName(sortedByLatest[0]),
+      assessmentType: getAssessmentType(sortedByLatest[0]),
       latest: sortedByLatest[0],
       best: sortedByBest[0],
       attemptsCount: items.length,
@@ -374,7 +434,7 @@ function ScoreCard({ group }: { group: ScoreGroup }) {
             />
           </Stack>
           <Chip
-            label={`${group.attemptsCount} attempt${
+            label={`${group.assessmentType} | ${group.attemptsCount} attempt${
               group.attemptsCount === 1 ? "" : "s"
             }`}
             size="small"
@@ -418,39 +478,36 @@ function ScoreCard({ group }: { group: ScoreGroup }) {
 }
 
 function Score() {
-  const resumeTestDetails = useGetResumeTestDataInfo();
-  const sessions = useMemo(() => {
-    return getArrayData(resumeTestDetails.data);
-  }, [resumeTestDetails.data]);
+  const { userId } = useCommonDetails();
+  const profileQuery = useGetStudentProfilePersonalInfo();
+  const profileData = useMemo(() => {
+    return (profileQuery.data?.data || {}) as CommonObjectType;
+  }, [profileQuery.data]);
 
-  const sessionIds = useMemo(() => {
-    return sessions
-      .map(getSessionId)
-      .filter((sessionId): sessionId is string => Boolean(sessionId));
-  }, [sessions]);
+  const applicantIds = useMemo(() => {
+    return getPossibleApplicantIds(userId, profileData);
+  }, [profileData, userId]);
 
-  const attemptQueries = useQueries({
-    queries: sessionIds.map((sessionId) => ({
-      queryKey: ["assessment_attempts_full_details", sessionId],
-      queryFn: () => getAssessmentAttemptsInfo({ id: sessionId }),
-      enabled: Boolean(sessionId),
+  const applicantAttemptQueries = useQueries({
+    queries: applicantIds.map((applicantId) => ({
+      queryKey: ["applicant_assessment_attempts", applicantId],
+      queryFn: () => getApplicantAssessmentAttempts({ applicantId }),
+      enabled: Boolean(applicantId),
     })),
   });
 
   const attempts = useMemo(() => {
-    const directAttempts = getSessionAttempts(sessions);
-    const sessionAttempts = attemptQueries.flatMap((query) =>
-      getArrayData(query.data)
-    );
     const attemptsById = new Map<string, CommonObjectType>();
 
-    [...directAttempts, ...sessionAttempts].forEach((attempt) => {
-      const attemptId = getAttemptId(attempt);
-      if (attemptId !== FALLBACK_TEXT) attemptsById.set(attemptId, attempt);
+    applicantAttemptQueries.forEach((query) => {
+      getArrayData(query.data).forEach((attempt) => {
+        const attemptId = getAttemptId(attempt);
+        if (attemptId !== FALLBACK_TEXT) attemptsById.set(attemptId, attempt);
+      });
     });
 
     return Array.from(attemptsById.values());
-  }, [attemptQueries, sessions]);
+  }, [applicantAttemptQueries]);
 
   const scoreQueries = useQueries({
     queries: attempts.map((attempt) => {
@@ -472,8 +529,8 @@ function Score() {
   }, [attempts, scoreQueries]);
 
   const isLoading =
-    resumeTestDetails.isLoading ||
-    attemptQueries.some((query) => query.isLoading) ||
+    profileQuery.isLoading ||
+    applicantAttemptQueries.some((query) => query.isLoading) ||
     scoreQueries.some((query) => query.isLoading);
 
   if (isLoading) {

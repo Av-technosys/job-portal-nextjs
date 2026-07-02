@@ -39,8 +39,11 @@ export const getInfiniteSavedJobSeekerQueryOptions = (
         search,
       });
     },
-    getNextPageParam: (lastPage, pages, lastPageParam) => {
-      return lastPageParam + 1;
+    getNextPageParam: (lastPage, _pages, lastPageParam) => {
+      const totalPages = lastPage?.data?.total_pages || 0;
+      const currentPage = lastPage?.data?.current_page || lastPageParam;
+
+      return currentPage < totalPages ? currentPage + 1 : undefined;
     },
     enabled,
     initialPageParam: 1,
@@ -55,6 +58,7 @@ type UseGetSavedJobSeeker = {
 export const useGetSavedJobSeeker = (queryConfig?: UseGetSavedJobSeeker) => {
   return useInfiniteQuery({
     ...getInfiniteSavedJobSeekerQueryOptions(queryConfig?.queryFnParams || {}),
+    placeholderData: (previousData) => previousData,
     ...queryConfig?.queryConfig,
   });
 };

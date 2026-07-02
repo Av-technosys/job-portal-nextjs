@@ -2,6 +2,7 @@ import { CommonObjectType } from "@/types";
 import {
   Avatar,
   Button,
+  Chip,
   Divider,
   IconButton,
   Modal,
@@ -16,6 +17,21 @@ import { colorStyles } from "@/styles";
 import { useState } from "react";
 import { CancelOutlinedIcon } from "@/assets";
 import JobDetail from "../JobDetail";
+
+const APPLICATION_STATUS_COLORS: Record<
+  number,
+  "default" | "primary" | "secondary" | "success" | "warning" | "error" | "info"
+> = {
+  0: "default",
+  1: "info",
+  2: "warning",
+  3: "success",
+  4: "primary",
+  5: "error",
+  6: "secondary",
+  7: "success",
+  8: "success",
+};
 
 export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
@@ -57,6 +73,19 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
     }
   }
 
+  function getApplicationStatusLabel() {
+    if (Number(job?.application_status ?? 0) === 0) {
+      return "Submitted";
+    }
+
+    return String(job?.application_status_label || "Received");
+  }
+
+  function getApplicationStatusColor() {
+    const status = Number(job?.application_status ?? 0);
+    return APPLICATION_STATUS_COLORS[status] || "default";
+  }
+
   return (
     <>
       <Stack
@@ -92,6 +121,14 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
         </Stack>
         <Stack>
           <Typography {...JOB_TYPE(job)} />
+        </Stack>
+        <Stack>
+          <Chip
+            label={getApplicationStatusLabel()}
+            color={getApplicationStatusColor()}
+            size="small"
+            sx={{ fontWeight: 600 }}
+          />
         </Stack>
         <Stack>
           <Typography {...TIME_STAMP(job)} />

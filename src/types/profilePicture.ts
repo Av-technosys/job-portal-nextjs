@@ -47,6 +47,7 @@ export interface UploadDocumentProps {
   dragText?: string;
   fileInfo?: string;
   accept?: DocumentTypeEnum;
+  required?: boolean;
   onUpload?: (file: File | null) => void;
   onDelete?: () => void;
   formControlProps?: FormControlProps;

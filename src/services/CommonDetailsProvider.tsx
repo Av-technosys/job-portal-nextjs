@@ -17,7 +17,7 @@ import { GetServerSidePropsContext } from "next";
 import { AppProps } from "next/app";
 import { createContext, useEffect, useMemo } from "react";
 import { useSSOSession } from "./useSSOSession";
-import { poppinsFont } from "@/styles/fonts";
+import { futuraPtFont } from "@/styles/fonts";
 import { NAVIGATION_PATH_MAPPING_CONFIG } from "@/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -133,7 +133,7 @@ const CommonDetailsProvider = ({
       <Head>
         <title>{NAVIGATION_PATH_MAPPING_CONFIG?.[pathname]?.title}</title>
       </Head>
-      <div className={constructClassName([poppinsFont.className])}>
+      <div className={constructClassName([futuraPtFont.className])}>
         {children}
       </div>
     </CommonDetailsContext.Provider>

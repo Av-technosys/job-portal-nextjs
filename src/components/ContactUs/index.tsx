@@ -14,7 +14,7 @@ import {
   Typography,
 } from "../common";
 import { colorStyles } from "@/styles";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { EmailIcon, LocationOnIcon, PhoneIcon } from "@/assets";
 import { SSO_REDIRECT_URL } from "@/constants";
 import { contactUsFormSchema } from "@/validator/contactUs";
@@ -35,6 +35,7 @@ function ContactUs() {
   const { TITLE_TEXT, SUB_TITLE_TEXT, NOTIFICATION_CONFIG } =
     CONTACT_FORM_CONFIG;
   const { showNotification } = useNotification();
+  const [formKey, setFormKey] = useState(0);
 
   const {
     FIRST_NAME_FIELD,
@@ -70,6 +71,7 @@ function ContactUs() {
     mutationConfig: {
       onSuccess: () => {
         showNotification(NOTIFICATION_CONFIG.SUCCESS);
+        setFormKey((currentKey) => currentKey + 1);
       },
       onError: (error) => {
         showNotification({
@@ -165,6 +167,7 @@ function ContactUs() {
               }}
             >
               <Formik
+                key={formKey}
                 initialValues={{
                   first_name: "",
                   last_name: "",

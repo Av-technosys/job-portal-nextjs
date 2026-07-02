@@ -9,7 +9,9 @@ export type getAssessmentAttemptsInfoQueryParams = {
 export const getAssessmentAttemptsInfo = ({
   id,
 }: getAssessmentAttemptsInfoQueryParams) => {
-  return api.get(`${apiConstantsURL.assessment.getAssessmentAttempts}${id}`);
+  return api.get(
+    `${apiConstantsURL.assessment.getAssessmentAttempts}${id ?? ""}`
+  );
 };
 
 export const getAssessmentAttemptsInfoQueryOptions = (
@@ -18,7 +20,7 @@ export const getAssessmentAttemptsInfoQueryOptions = (
   const { id } = queryParams;
 
   return queryOptions({
-    queryKey: ["assessment_attempts_full_details", id],
+    queryKey: ["assessment_attempts_full_details", id ?? "all"],
     queryFn: () => getAssessmentAttemptsInfo({ id }),
   });
 };
@@ -36,7 +38,8 @@ export const useGetAssessmentAttemptsInfo = ({
 }: useGetAssessmentAttemptsInfoQueryOptions) => {
   return useQuery({
     ...getAssessmentAttemptsInfoQueryOptions(queryParams),
-    enabled: enabled ?? Boolean(queryParams.id),
+    enabled:
+      enabled ?? (queryParams.id === undefined || Boolean(queryParams.id)),
     ...queryConfig,
   });
 };

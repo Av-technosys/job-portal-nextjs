@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiConstantsURL } from "@/constants";
-import { api } from "@/helper";
+import { apiConstantsURL, LOCAL_STORAGE_KEY } from "@/constants";
+import { api, getItem } from "@/helper";
 import {
   CommonAllDataType,
   CreateOrUpdateStudentProfileSocialLinksInput,
@@ -27,7 +27,7 @@ export const getSocialLinksJobSeeker = (): Promise<{
 // Query Options
 export const getSocialLinksJobSeekerQueryOptions = () => {
   return {
-    queryKey: ["social_links_jobseeker"],
+    queryKey: ["social_links_jobseeker", getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)],
     queryFn: () => getSocialLinksJobSeeker(),
   };
 };

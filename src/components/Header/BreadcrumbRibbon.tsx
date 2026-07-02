@@ -95,7 +95,7 @@ function BreadcumbRibbon({
           <BreadcrumbLink pathname={pathname} />
         </div>
         <div className="w-full md:w-2/4 flex justify-center items-center">
-          <When condition={userType !== -1 || pathname === JOBS_URL}>
+          <When condition={userType !== -1 && pathname !== JOBS_URL}>
             <FormControl
               sx={{
                 width: "30ch",

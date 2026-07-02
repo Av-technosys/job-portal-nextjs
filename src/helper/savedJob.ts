@@ -14,6 +14,10 @@ export function mutateSavedJobListQueryDataForSavedJobs({
   oldData?: any;
   job: CommonObjectType;
 }) {
+  if (!oldData?.pages) {
+    return oldData;
+  }
+
   const updatedPages = oldData?.pages?.map(
     (page: { data: PaginationSuccessResponseType }) => {
       if (page.data.current_page === (job?.pageIndex as number)) {
@@ -43,6 +47,10 @@ export function mutateJobListQueryDataForAppliedJobs({
   oldData?: any;
   job: CommonObjectType;
 }) {
+  if (!oldData?.pages) {
+    return oldData;
+  }
+
   const updatedPages = oldData?.pages?.map(
     (page: { data: PaginationSuccessResponseType }) => {
       if (page.data.current_page === (job?.pageIndex as number)) {

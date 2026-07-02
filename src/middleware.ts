@@ -79,6 +79,15 @@ export function middleware(request: NextRequest) {
     };
   } else if (
     accessToken &&
+    currentUserType === UserType.ADMIN_TYPE &&
+    request.nextUrl.pathname === DASHBOARD_URL
+  ) {
+    routeObj = {
+      isRedirect: true,
+      redirectUrl: ADMIN_URL,
+    };
+  } else if (
+    accessToken &&
     currentUserType &&
     isPrivateRoute(request.nextUrl.pathname)
   ) {

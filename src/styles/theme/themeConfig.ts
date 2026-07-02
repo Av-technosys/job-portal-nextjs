@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-import { poppinsFont } from "../fonts";
+import { futuraPtFont } from "../fonts";
 
 export const darkTheme = createTheme({
   components: {
@@ -29,7 +29,7 @@ export const darkTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: poppinsFont.style.fontFamily,
+    fontFamily: futuraPtFont.style.fontFamily,
   },
 });
 
@@ -67,6 +67,6 @@ export const lightTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: poppinsFont.style.fontFamily,
+    fontFamily: futuraPtFont.style.fontFamily,
   },
 });

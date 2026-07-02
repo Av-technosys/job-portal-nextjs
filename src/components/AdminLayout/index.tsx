@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppProps } from "next/app";
 import { ElementRenderType, SSOSessionProps } from "@/types";
 import { Box } from "@mui/material";
@@ -19,18 +19,26 @@ function AdminLayout({
 }) {
   //   const router = useRouter();
   const { ssoData } = useSSOSession();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const isAuthenticated = useMemo(() => {
     if (pageProps?.accessToken !== undefined) {
-      return isUserAuthenticatedWithServer(pageProps.accessToken);
+      return pageProps.accessToken !== "";
     } else if ((ssoData as SSOSessionProps)?.accessToken) {
       // TOken from SSO Login
       return isUserAuthenticatedWithServer(
         (ssoData as SSOSessionProps)?.accessToken
       );
-    } else {
+    } else if (isMounted) {
       return isUserAuthenticated();
+    } else {
+      return false;
     }
-  }, [pageProps?.accessToken, ssoData]);
+  }, [isMounted, pageProps?.accessToken, ssoData]);
 
   return (
     <>
