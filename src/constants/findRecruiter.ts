@@ -41,8 +41,8 @@ export const FIND_RECRUITER_PAGE_CONFIG = {
       },
     },
     inputLabelProps: {
-      children: "Sort By ",
-      shrink: true,
+      children: "",
+      shrink: false,
     },
     options: RECRUITER_LISTING_DROPDOWN_SORT_OPTIONS,
   },
@@ -56,9 +56,9 @@ export const FIND_RECRUITER_PAGE_CONFIG = {
           alt: recruiter?.industry_type || "Company logo",
           children: recruiter?.profile_image,
           sx: {
-            width: 130,
-            height: 130,
-            borderRadius: 1,
+            width: 64,
+            height: 64,
+            borderRadius: 3,
           },
         },
       };

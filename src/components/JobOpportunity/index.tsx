@@ -239,17 +239,23 @@ function JobOpportunity({
   return (
     <>
       <When condition={latestJobs.length > 3}>
-        <div className="w-full flex items-center justify-end pr-10 md:pr-0">
+        <div className="w-full flex items-center justify-end pr-10 md:pr-0 mb-4">
           <Stack
             stackProps={{
-              width: "10%",
               direction: "row",
+              gap: 1.5,
             }}
           >
-            <IconButton onClick={() => handleSliderPrevious()}>
+            <IconButton
+              onClick={() => handleSliderPrevious()}
+              className="bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border border-slate-200 rounded-full shadow-md hover:shadow-lg hover:scale-110 active:scale-95 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+            >
               <ChevronLeftIcon />
             </IconButton>
-            <IconButton onClick={() => handleSliderNext()}>
+            <IconButton
+              onClick={() => handleSliderNext()}
+              className="bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border border-slate-200 rounded-full shadow-md hover:shadow-lg hover:scale-110 active:scale-95 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+            >
               <ChevronRightIcon />
             </IconButton>
           </Stack>
@@ -261,7 +267,7 @@ function JobOpportunity({
           alignItems: "center",
           justifyContent: "flex-start",
           gap: 1,
-          className: "w-full max-w-6xl mb-8 overflow-hidden py-2",
+          className: "w-full max-w-6xl mb-8 overflow-hidden py-8 -my-8",
         }}
       >
         <When condition={isLoading}>

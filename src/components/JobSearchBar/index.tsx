@@ -22,27 +22,28 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
     <Stack
       stackProps={{
         alignItems: "center",
-        className: "w-full py-16 bg-[#F8F9FB] relative overflow-hidden",
+        className: "py-24 md:py-28 bg-gradient-to-b from-slate-50 via-slate-50/60 to-white relative overflow-hidden",
+        sx: {
+          width: "calc(100% + 64px)",
+          mx: "-32px",
+          mt: { xs: "-54px", md: "-64px" },
+        },
       }}
     >
-      {/* Background radial effects */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[900px] h-[300px] bg-white rounded-[50%] blur-3xl opacity-60 pointer-events-none"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[150px] bg-white rounded-[50%] blur-2xl opacity-80 pointer-events-none"></div>
-
       <div className="relative z-10 flex flex-col items-center w-full px-4">
-        <h1 className="text-[#1B1F2E] font-extrabold mb-3 text-4xl md:text-5xl text-center">
+        <h1 className="font-extrabold mb-4 pb-3 pt-1 overflow-visible text-4xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-indigo-900 to-blue-700 tracking-tight leading-[1.25]">
           Find your dream job now
         </h1>
-        <p className="text-[#4A4E5A] mb-10 text-lg md:text-xl text-center">
-          5 lakh+ jobs for you to explore
+        <p className="text-slate-600 mb-12 text-lg md:text-xl text-center font-medium max-w-2xl">
+          Explore top-tier opportunities tailored to your skills, experience, and career aspirations.
         </p>
 
-        <div className="flex flex-col md:flex-row items-center bg-white rounded-3xl md:rounded-full p-2 md:p-3 w-full max-w-5xl shadow-[0px_8px_24px_rgba(0,0,0,0.04)]">
-          <div className="flex flex-1 items-center px-4 py-2 w-full md:w-auto">
-            <SearchIcon className="text-[#848A9C] mr-3" />
+        <div className="flex flex-col md:flex-row items-center bg-white/90 backdrop-blur-md rounded-3xl md:rounded-full p-2 md:p-3 w-full max-w-5xl border border-slate-200/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.14)] transition-all duration-300">
+          <div className="flex flex-1 items-center px-4 py-2 w-full md:w-auto group rounded-2xl md:rounded-full transition-all duration-200">
+            <SearchIcon className="text-indigo-500 mr-3 transition-colors group-focus-within:text-indigo-600" />
             <input
               type="text"
-              className="w-full bg-transparent outline-none text-[#1B1F2E] placeholder-[#848A9C] text-base"
+              className="w-full bg-transparent outline-none text-slate-800 placeholder-slate-400 text-base font-medium"
               placeholder="Enter skills / designations / companies"
               value={skills}
               onChange={(e) => setSkills(e.target.value)}
@@ -50,36 +51,36 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
             />
           </div>
 
-          <div className="hidden md:block w-[1px] h-8 bg-[#E5E7EB] mx-1"></div>
+          <div className="hidden md:block w-[1px] h-8 bg-slate-200/80 mx-1"></div>
 
-          <div className="flex flex-1 items-center px-4 py-2 w-full md:w-auto border-t md:border-t-0 border-[#E5E7EB]">
+          <div className="flex flex-1 items-center px-4 py-2 w-full md:w-auto border-t md:border-t-0 border-slate-200/80 group rounded-2xl md:rounded-full transition-all duration-200">
             <select
-              className={`w-full bg-transparent outline-none text-base cursor-pointer appearance-none ${experience ? 'text-[#1B1F2E]' : 'text-[#848A9C]'}`}
+              className={`w-full bg-transparent outline-none text-base cursor-pointer appearance-none font-medium ${experience ? 'text-slate-800' : 'text-slate-400'}`}
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
               onKeyDown={handleKeyDown}
             >
               <option value="" disabled className="hidden">Select experience</option>
-              <option value="" className="text-[#1B1F2E]">Any</option>
+              <option value="" className="text-slate-800">Any</option>
               {EXPERIENCE_OPTIONS.map((opt) => (
-                <option key={opt.key} value={opt.value} className="text-[#1B1F2E]">
+                <option key={opt.key} value={opt.value} className="text-slate-800">
                   {opt.label}
                 </option>
               ))}
             </select>
             <div className="pointer-events-none ml-2">
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 1.5L6 6.5L11 1.5" stroke="#848A9C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M1 1.5L6 6.5L11 1.5" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
           </div>
 
-          <div className="hidden md:block w-[1px] h-8 bg-[#E5E7EB] mx-1"></div>
+          <div className="hidden md:block w-[1px] h-8 bg-slate-200/80 mx-1"></div>
 
-          <div className="flex flex-1 items-center px-4 py-2 w-full md:w-auto border-t md:border-t-0 border-[#E5E7EB]">
+          <div className="flex flex-1 items-center px-4 py-2 w-full md:w-auto border-t md:border-t-0 border-slate-200/80 group rounded-2xl md:rounded-full transition-all duration-200">
             <input
               type="text"
-              className="w-full bg-transparent outline-none text-[#1B1F2E] placeholder-[#848A9C] text-base"
+              className="w-full bg-transparent outline-none text-slate-800 placeholder-slate-400 text-base font-medium"
               placeholder="Enter location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -88,7 +89,7 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
           </div>
 
           <button
-            className="bg-[#2D5BFF] hover:bg-blue-700 text-white font-medium rounded-full px-10 py-3.5 w-full md:w-auto transition-colors ml-0 md:ml-2 mt-4 md:mt-0 text-base"
+            className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold rounded-full px-10 py-3.5 w-full md:w-auto shadow-lg shadow-blue-500/25 hover:shadow-indigo-500/35 active:scale-[0.98] transition-all duration-200 ml-0 md:ml-2 mt-4 md:mt-0 text-base"
             onClick={handleSearch}
           >
             Search

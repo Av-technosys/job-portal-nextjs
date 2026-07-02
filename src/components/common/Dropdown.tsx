@@ -55,6 +55,7 @@ function Dropdown({
       />
       <Select
         {...selectProps}
+        label={inputLabelProps?.children || ""}
         onChange={onChange}
         onBlur={onBlur}
         name={selectName}

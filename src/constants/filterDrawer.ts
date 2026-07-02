@@ -55,6 +55,7 @@ export const LOCATION_SELECT_CONFIG = {
   },
   inputLabelProps: {
     children: "Choose city",
+    sx: { bgcolor: "white", px: 0.5 },
   },
   menuItems: [
     { value: "Banglore", label: "Banglore" },
@@ -74,6 +75,7 @@ export const SALARY_SELECT_CONFIG = {
   },
   inputLabelProps: {
     children: "Choose range",
+    sx: { bgcolor: "white", px: 0.5 },
   },
   menuItems: [
     { value: "0-25000", label: "0-25000" },

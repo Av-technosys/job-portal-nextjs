@@ -13,8 +13,7 @@ import RecruiterCard from "./RecruiterCard";
 import RecruiterApplicationPopup from "./RecruiterApplicationPopup";
 import { CommonObjectType, RecruiterListSortEnum } from "@/types";
 import { SelectChangeEvent } from "@mui/material";
-import { useRouter } from "next/router";
-import BreadcrumbRibbon from "../Header/BreadcrumbRibbon";
+import RecruiterSearchBar from "../RecruiterSearchBar";
 // import RecruiterApplicationPopup from "./RecruiterApplicationPopup";
 
 function FindRecruiter() {
@@ -22,7 +21,6 @@ function FindRecruiter() {
     FIND_RECRUITER_PAGE_CONFIG;
   const [isRecruiterPopupOpen, setRecruiterPopupStatus] = useState(false);
   const selectedRecruiter = useRef({} as CommonObjectType);
-  const { pathname } = useRouter();
   const [selectedSort, setSelectedSort] = useState<RecruiterListSortEnum[]>([
     RecruiterListSortEnum.CREATED_DATE_ASC,
   ]);
@@ -64,71 +62,69 @@ function FindRecruiter() {
 
   return (
     <>
-      <BreadcrumbRibbon
-        showSearchedData={showSearchedData}
-        pathname={pathname}
-      />
-      <When condition={totalLength !== 0}>
-        <Stack
-          stackProps={{
-            direction: "row",
-            gap: 1,
-            alignItems: "baseline",
-            justifyContent: "space-between", // Ensures space between text and dropdown
-            width: "100%",
-          }}
-        >
-          <Stack
-            stackProps={{
-              direction: "row",
-              gap: 1,
-              alignItems: "baseline",
-            }}
+      <RecruiterSearchBar />
+      <div className="max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto w-full px-2 sm:px-4 mt-8 mb-12">
+        <When condition={totalLength !== 0}>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 w-full">
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2.5">
+                <span className="w-3 h-3 rounded-full bg-indigo-600 shrink-0"></span>
+                <div className="flex items-baseline gap-1.5 font-bold text-slate-900 text-xl">
+                  <Typography {...TITLE_COUNT(totalLength)} />
+                  <Typography {...TITLE_HEADER(totalLength)} />
+                </div>
+              </div>
+              <p className="text-sm font-medium text-slate-600 pl-5.5">
+                Connect with <span className="text-indigo-600 font-semibold">verified recruiters</span> and explore new career opportunities.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 self-start sm:self-center">
+              <span className="text-xs font-medium text-slate-500 shrink-0 self-center">
+                Sort by:
+              </span>
+              <Dropdown
+                {...RECRUITER_LISTING_SORT_DROPDOWN}
+                onChange={handleSortChange}
+                value={selectedSort?.[0]}
+              />
+            </div>
+          </div>
+        </When>
+
+        {paginatedInfoData?.length > 0 ? (
+          <InfinitePagination
+            dataLength={paginatedInfoData?.length}
+            next={findRecruiterAPIData?.fetchNextPage}
+            hasMore={hasMore}
+            isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
           >
-            <Typography {...TITLE_COUNT(totalLength)} />
-            <Typography {...TITLE_HEADER(totalLength)} />
-          </Stack>
-
-          <Dropdown
-            {...RECRUITER_LISTING_SORT_DROPDOWN}
-            onChange={handleSortChange}
-            value={selectedSort?.[0]}
-          />
-        </Stack>
-      </When>
-
-      {paginatedInfoData?.length > 0 ? (
-        <InfinitePagination
-          dataLength={paginatedInfoData?.length}
-          next={findRecruiterAPIData?.fetchNextPage}
-          hasMore={hasMore}
-          isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
-        >
-          <Stack>
-            {Array.isArray(searchedData) && searchedData.length > 0
-              ? searchedData?.map((recruiter) => (
-                  <RecruiterCard
-                    recruiter={recruiter}
-                    key={`recruiters-${recruiter?.id}`}
-                    openRecruiterApplicationPopup={() =>
-                      openRecruiterPopup(recruiter)
-                    }
-                  />
-                ))
-              : paginatedInfoData?.map((recruiter) => (
-                  <RecruiterCard
-                    recruiter={recruiter}
-                    key={`recruiters-${recruiter?.id}`}
-                    openRecruiterApplicationPopup={() =>
-                      openRecruiterPopup(recruiter)
-                    }
-                  />
-                ))}
-          </Stack>
-        </InfinitePagination>
-      ) : (
-        <div className="text-xl font-bold">No Recruiter Found</div>
-      )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-4 w-full">
+              {Array.isArray(searchedData) && searchedData.length > 0
+                ? searchedData?.map((recruiter) => (
+                    <RecruiterCard
+                      recruiter={recruiter}
+                      key={`recruiters-${recruiter?.id}`}
+                      openRecruiterApplicationPopup={() =>
+                        openRecruiterPopup(recruiter)
+                      }
+                    />
+                  ))
+                : paginatedInfoData?.map((recruiter) => (
+                    <RecruiterCard
+                      recruiter={recruiter}
+                      key={`recruiters-${recruiter?.id}`}
+                      openRecruiterApplicationPopup={() =>
+                        openRecruiterPopup(recruiter)
+                      }
+                    />
+                  ))}
+            </div>
+          </InfinitePagination>
+        ) : (
+          <div className="text-xl font-bold py-10">No Recruiter Found</div>
+        )}
+      </div>
       <RecruiterApplicationPopup
         open={isRecruiterPopupOpen}
         handleClose={() => setRecruiterPopupStatus(false)}

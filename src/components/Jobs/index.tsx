@@ -197,7 +197,7 @@ function Jobs() {
         }
       }} />
 
-      <div className="flex flex-col md:flex-row gap-6 mt-8 w-full px-2 md:px-20">
+      <div className="max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto flex flex-col md:flex-row gap-6 mt-8 mb-12 w-full px-2 sm:px-4">
         <div className="hidden md:block w-full md:w-1/4">
           <JobFilterSidebar handleFilterChange={handleFilterChange} />
         </div>
@@ -228,7 +228,7 @@ function Jobs() {
               <Typography {...TITLE_HEADER(totalLength)} />
             </Stack>
             <Stack
-              stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}
+              stackProps={{ direction: "row", gap: 1, alignItems: "center" }}
             >
               <div className="block md:hidden">
                 <FilterButton
@@ -237,6 +237,9 @@ function Jobs() {
                   handleFilterChange={handleFilterChange}
                 />
               </div>
+              <span className="text-xs font-medium text-slate-500 shrink-0 self-center">
+                Sort by:
+              </span>
               <Dropdown
                 {...JOB_LISTING_SORT_DROPDOWN}
                 onChange={handleSortChange}

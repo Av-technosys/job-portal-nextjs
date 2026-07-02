@@ -360,21 +360,23 @@ export const TESTIMONIAL_PAGE_CONFIG = {
   HEADER_TEXT: () => {
     return {
       typographyProps: {
-        children: "Testimonial",
-        variant: TypographyVariantEnum.H6,
+        children: "Testimonials",
+        variant: TypographyVariantEnum.H4,
       },
-      fontWeight: TypographyFontWeight.semibold,
-      fontSize: TypographyFontSize.subtitle,
+      fontWeight: TypographyFontWeight.bold,
+      fontSize: TypographyFontSize.largeTitle,
+      fontColor: TypographyFontColor.black4,
     };
   },
   TESTIMONIAL_DESC_TEXT: () => {
     return {
       typographyProps: {
         children:
-          "explore what our satisfied clients and customers have to say about their experiences. Their words inspire us to keep delivering excellence every day",
-        variant: TypographyVariantEnum.H6,
+          "Explore what our satisfied clients and candidates have to say about their experiences. Their success stories inspire us to keep delivering excellence every day.",
+        variant: TypographyVariantEnum.BODY1,
+        className: "text-slate-600 max-w-2xl font-medium mt-1",
       },
-      fontSize: TypographyFontSize.small,
+      fontSize: TypographyFontSize.medium,
     };
   },
   CONTENT: (card: CommonObjectType) => {
@@ -412,10 +414,10 @@ export const LATEST_JOB_OPENINGS_CONFIG = {
     return {
       typographyProps: {
         children: "Latest",
-        variant: TypographyVariantEnum.H6,
+        variant: TypographyVariantEnum.H4,
       },
-      fontWeight: TypographyFontWeight.semibold,
-      fontSize: TypographyFontSize.subtitle,
+      fontWeight: TypographyFontWeight.bold,
+      fontSize: TypographyFontSize.largeTitle,
       fontColor: TypographyFontColor.primary,
     };
   },
@@ -423,10 +425,11 @@ export const LATEST_JOB_OPENINGS_CONFIG = {
     return {
       typographyProps: {
         children: "Job Opportunities",
-        variant: TypographyVariantEnum.H6,
+        variant: TypographyVariantEnum.H4,
       },
-
-      fontSize: TypographyFontSize.subtitle,
+      fontWeight: TypographyFontWeight.bold,
+      fontSize: TypographyFontSize.largeTitle,
+      fontColor: TypographyFontColor.black4,
     };
   },
 };

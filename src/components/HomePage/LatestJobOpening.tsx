@@ -56,23 +56,24 @@ function LatestJobOpenings() {
       <Stack
         stackProps={{
           width: "100%",
-          marginTop: "-40px",
-          className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto",
+          marginTop: "-30px",
+          className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto relative z-20",
         }}
       >
         <Stack
           stackProps={{
             marginLeft: 2,
-            marginBottom: 2,
+            marginBottom: 3,
             direction: "row",
             justifyContent: "space-between",
-            className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl ",
+            className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl",
           }}
         >
           <Stack
             stackProps={{
               direction: { xs: "column", md: "row" },
-              gap: { xs: 0, md: 1 },
+              gap: { xs: 0.5, md: 1.5 },
+              alignItems: { xs: "flex-start", md: "baseline" },
             }}
           >
             <Typography {...HEADER_TEXT_1()} />
@@ -83,7 +84,7 @@ function LatestJobOpenings() {
         <Stack
           stackProps={{
             className:
-              "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto  p-2",
+              "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto p-2",
           }}
         >
           <Tabs
@@ -93,6 +94,34 @@ function LatestJobOpenings() {
               orientation: "horizontal",
               sx: {
                 width: "100%",
+                "& .MuiTabs-flexContainer": {
+                  gap: "10px",
+                  flexWrap: "wrap",
+                },
+                "& .MuiTab-root": {
+                  borderRadius: "999px",
+                  padding: "8px 20px",
+                  minHeight: "40px",
+                  fontWeight: 600,
+                  color: "#64748B",
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #E2E8F0",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    backgroundColor: "#EEF2FF",
+                    borderColor: "#C7D2FE",
+                    color: "#4F46E5",
+                  },
+                  "&.Mui-selected": {
+                    color: "#FFFFFF",
+                    backgroundColor: "#4F46E5",
+                    borderColor: "#4F46E5",
+                    boxShadow: "0 4px 12px rgba(79, 70, 229, 0.25)",
+                  },
+                },
+                "& .MuiTabs-indicator": {
+                  display: "none",
+                },
               },
             }}
           />

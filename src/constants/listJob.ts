@@ -54,8 +54,8 @@ export const LIST_JOB_PAGE_CONFIG = {
       },
     },
     inputLabelProps: {
-      children: "Sort By ",
-      shrink: true,
+      children: "",
+      shrink: false,
     },
     options: JOB_LISTING_DROPDOWN_SORT_OPTIONS,
   },

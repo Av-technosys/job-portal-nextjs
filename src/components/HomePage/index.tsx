@@ -5,6 +5,7 @@ import { isUserAuthenticated } from "@/helper";
 import TopCompanies from "./topCompanies";
 import Testimonial from "./testimonial";
 import AssessmentHighlight from "./AssessmentHighlight";
+import { HeroLanding } from "@/components";
 
 function HomePage() {
   const [loginPopup, setLoginPopup] = useState(false);
@@ -16,6 +17,7 @@ function HomePage() {
         open={loginPopup}
         handleClose={() => setLoginPopup(false)}
       />
+      <HeroLanding />
       <LatestJobOpenings />
       <AssessmentHighlight />
 

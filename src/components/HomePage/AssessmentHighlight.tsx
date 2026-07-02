@@ -57,12 +57,15 @@ function AssessmentHighlight() {
     <Box
       component="section"
       sx={{
-        width: "100%",
-        backgroundColor: "#F5F9FC",
-        borderTop: "1px solid #E4ECF3",
-        borderBottom: "1px solid #E4ECF3",
-        py: { xs: 5, md: 7 },
-        my: { xs: 4, md: 6 },
+        width: "calc(100% + 64px)",
+        mx: "-32px",
+        background: "linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #0F172A 100%)",
+        borderTop: "1px solid #1E293B",
+        borderBottom: "1px solid #1E293B",
+        py: { xs: 6, md: 8 },
+        my: { xs: 6, md: 8 },
+        position: "relative",
+        overflow: "visible",
       }}
     >
       <Stack
@@ -78,8 +81,9 @@ function AssessmentHighlight() {
             label="Assessments"
             sx={{
               width: "fit-content",
-              backgroundColor: "#E7F0FF",
-              color: "#0B63CE",
+              backgroundColor: "rgba(99, 102, 241, 0.15)",
+              color: "#818CF8",
+              border: "1px solid rgba(129, 140, 248, 0.3)",
               fontWeight: 700,
             }}
           />
@@ -89,7 +93,7 @@ function AssessmentHighlight() {
               sx={{
                 fontSize: { xs: 30, md: 42 },
                 fontWeight: 800,
-                color: "#172033",
+                color: "#FFFFFF",
                 lineHeight: 1.12,
               }}
             >
@@ -97,7 +101,7 @@ function AssessmentHighlight() {
             </Typography>
             <Typography
               sx={{
-                color: "#566276",
+                color: "#94A3B8",
                 fontSize: { xs: 15, md: 17 },
                 lineHeight: 1.7,
               }}
@@ -116,11 +120,15 @@ function AssessmentHighlight() {
                 label={feature.label}
                 sx={{
                   justifyContent: "flex-start",
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #DCE6F1",
-                  color: "#273449",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  color: "#E2E8F0",
                   fontWeight: 600,
                   height: 38,
+                  "& .MuiChip-icon": {
+                    color: "#38BDF8",
+                  },
                 }}
               />
             ))}
@@ -131,20 +139,21 @@ function AssessmentHighlight() {
           spacing={2}
           sx={{
             width: { xs: "100%", md: 360 },
-            p: { xs: 2.5, md: 3 },
-            border: "1px solid #D9E5EF",
-            backgroundColor: "#FFFFFF",
-            borderRadius: 2,
-            boxShadow: "0 12px 28px rgba(30, 54, 83, 0.08)",
+            p: { xs: 3, md: 3.5 },
+            border: "1px solid rgba(255, 255, 255, 0.15)",
+            background: "rgba(255, 255, 255, 0.95)",
+            backdropFilter: "blur(12px)",
+            borderRadius: 3,
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)",
           }}
         >
-          <Typography sx={{ color: "#687589", fontSize: 14, fontWeight: 700 }}>
+          <Typography sx={{ color: "#4F46E5", fontSize: 14, fontWeight: 700 }}>
             Available inside your dashboard
           </Typography>
-          <Typography sx={{ color: "#172033", fontSize: 22, fontWeight: 800 }}>
+          <Typography sx={{ color: "#0F172A", fontSize: 22, fontWeight: 800 }}>
             Start with assessment tests
           </Typography>
-          <Typography sx={{ color: "#566276", fontSize: 14, lineHeight: 1.7 }}>
+          <Typography sx={{ color: "#475569", fontSize: 14, lineHeight: 1.7 }}>
             Open the assessment tab, choose a test, submit answers, and review
             your score summary.
           </Typography>
@@ -154,13 +163,18 @@ function AssessmentHighlight() {
             onClick={handleAssessmentClick}
             startIcon={<Assessment />}
             sx={{
-              mt: 1,
-              height: 48,
+              mt: 1.5,
+              height: 50,
               textTransform: "none",
               fontWeight: 700,
-              backgroundColor: "#0B63CE",
+              borderRadius: 2,
+              background: "linear-gradient(135deg, #2563EB 0%, #4F46E5 100%)",
+              boxShadow: "0 10px 15px -3px rgba(79, 70, 229, 0.3)",
+              transition: "all 0.2s ease",
               "&:hover": {
-                backgroundColor: "#084C9E",
+                background: "linear-gradient(135deg, #1D4ED8 0%, #4338CA 100%)",
+                boxShadow: "0 10px 20px -3px rgba(79, 70, 229, 0.4)",
+                transform: "translateY(-1px)",
               },
             }}
           >
