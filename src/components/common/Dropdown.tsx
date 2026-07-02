@@ -61,7 +61,6 @@ function Dropdown({
         name={selectName}
         value={selectedValue}
         error={error}
-        label={inputLabelProps?.children}
         renderValue={(valueToBeRendered) => {
           const selectedOption = getSelectedOptionObject(
             valueToBeRendered as string

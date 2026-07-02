@@ -100,8 +100,9 @@ function LogoAndSearchRibbon({
     <>
       <Stack
         stackProps={{
-          className: "items-center w-full justify-between px-2 ",
+          className: "items-center w-full justify-between",
           direction: "row",
+          sx: { px: { xs: 2, md: 4 }, height: 64 },
         }}
       >
         <NextImage
@@ -124,8 +125,30 @@ function LogoAndSearchRibbon({
               variant: isExtraSmallScreen ? "fullWidth" : "scrollable",
               visibleScrollbar: true,
               sx: {
-                ".MuiButtonBase-root.MuiTab-root": {
+                minHeight: 64,
+                "& .MuiTabs-indicator": {
+                  height: "3px",
+                  background: "linear-gradient(90deg, #6366f1, #3b82f6)",
+                  borderRadius: "3px 3px 0 0",
+                },
+                "& .MuiButtonBase-root.MuiTab-root": {
                   minWidth: isExtraSmallScreen ? "0px" : undefined,
+                  minHeight: 64,
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  color: "#64748b",
+                  textTransform: "none",
+                  letterSpacing: "0.01em",
+                  px: 2,
+                  "&:hover": {
+                    color: "#6366f1",
+                    backgroundColor: "rgba(99,102,241,0.04)",
+                    borderRadius: "6px",
+                  },
+                  "&.Mui-selected": {
+                    color: "#4f46e5",
+                    fontWeight: 600,
+                  },
                 },
               },
             }}
@@ -136,6 +159,7 @@ function LogoAndSearchRibbon({
         <Stack
           stackProps={{
             direction: "row",
+            gap: 1,
           }}
         >
           <When condition={isAuthenticated}>
@@ -147,7 +171,7 @@ function LogoAndSearchRibbon({
               stackProps={{
                 flexDirection: "row",
                 alignItems: "center",
-                gap: { xs: 0, md: 3 },
+                gap: { xs: 0, md: 2 },
               }}
             >
               <Button
