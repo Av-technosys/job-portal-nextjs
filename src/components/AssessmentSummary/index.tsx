@@ -57,7 +57,7 @@ function AssessmentSummary({ attemptId }: paramAttemptId) {
           {/* Details */}
           <div className="w-full md:w-1/2 flex flex-col">
             <h2 className="text-2xl font-bold text-slate-800 mb-3">
-              What's Next?
+              What&apos;s Next?
             </h2>
             <p className="text-slate-500 leading-relaxed mb-6">
               You have completed the assessment. Click the button below to view your detailed performance report, score, and analytics.
@@ -65,7 +65,7 @@ function AssessmentSummary({ attemptId }: paramAttemptId) {
 
             <div className="bg-blue-50/50 rounded-2xl p-5 border border-blue-100 mb-8">
               <p className="text-slate-600 font-medium text-sm">
-                We'd love to hear about your experience! If you faced any issues or have suggestions, please let us know.
+                We&apos;d love to hear about your experience! If you faced any issues or have suggestions, please let us know.
               </p>
             </div>
 
