@@ -20,27 +20,28 @@ function TestimonialCard({ card }: TestimonialCardProps) {
     <Stack
       key={card.id}
       stackProps={{
-        gap: 2,
-        className: "h-80 w-80 rounded-xl border-2",
+        gap: 3,
+        className: "h-80 w-80 rounded-2xl p-6 bg-white shadow-md hover:shadow-2xl transition-all duration-300 border border-slate-200/70 group cursor-pointer",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
         sx: {
-          borderColor: colorStyles.borderGreyColor,
-          transition: "border-color 0.4s ease-in-out",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           "&:hover": {
-            borderColor: colorStyles.cardHoverBorderColor,
+            transform: "translateY(-6px)",
+            borderColor: "#818CF8",
+            boxShadow: "0 20px 25px -5px rgba(79, 70, 229, 0.1), 0 10px 10px -5px rgba(79, 70, 229, 0.04)",
           },
         },
       }}
     >
-      <Stack stackProps={{ className: "relative" }}>
+      <Stack stackProps={{ className: "relative p-1 rounded-full ring-4 ring-indigo-50 group-hover:ring-indigo-100 transition-all duration-300" }}>
         <Stack
           stackProps={{
             className:
-              "h-5 w-5 rounded-full border absolute right-1 bottom-1 z-10",
+              "h-6 w-6 rounded-full border-2 absolute right-0 bottom-0 z-10 flex items-center justify-center shadow-sm",
             sx: {
-              backgroundColor: colorStyles.green,
+              backgroundColor: "#10B981",
               borderColor: colorStyles.white,
             },
           }}
@@ -63,9 +64,10 @@ function TestimonialCard({ card }: TestimonialCardProps) {
       >
         <Stack
           stackProps={{
-            className: "h-2 w-2 border rounded-full",
+            className: "h-2 w-2 rounded-full",
             sx: {
-              backgroundColor: colorStyles.green,
+              backgroundColor: "#10B981",
+              boxShadow: "0 0 8px rgba(16, 185, 129, 0.6)",
             },
           }}
         />

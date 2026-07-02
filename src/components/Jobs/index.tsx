@@ -39,6 +39,7 @@ import {
   mutateJobListQueryDataForSavedJobs,
 } from "@/helper";
 import { useRouter } from "next/router";
+import { JobSearchBar, JobFilterSidebar } from "@/components";
 function Jobs() {
   const {
     TITLE_COUNT,
@@ -74,6 +75,8 @@ function Jobs() {
     const jobListingQueryKey = getInfiniteJobListQueryOptions({
       pageLimit: PAGIANTION_LIMIT,
       sort: selectedSort,
+      search: searchString,
+      filterSearch,
     }).queryKey;
     // Update the cache to reflect the changes on UI
     queryClient.setQueryData(jobListingQueryKey, (oldData) =>
@@ -146,9 +149,11 @@ function Jobs() {
     const newSort = event.target.value;
     setSelectedSort([newSort] as JobListSortEnum[]);
   };
-  const handleFilterChange = (filterChange: string | null) => {
-    setFilterSearch(filterChange);
-  };
+  
+  const handleFilterChange = useCallback((filterChange: string | null) => {
+    setFilterSearch(filterChange || "");
+  }, []);
+  
   const jobInfoAPIData = useGetJobList({
     queryFnParams: {
       pageLimit: PAGIANTION_LIMIT,
@@ -162,104 +167,133 @@ function Jobs() {
     paginatedAPIData: jobInfoAPIData,
   });
 
-  if (paginatedInfoData[0] == undefined) {
-    return (
-      <Loader
-        loaderProps={{
-          open: true,
-        }}
-      />
-    );
-  }
+  if (
+  jobInfoAPIData.isLoading &&
+  paginatedInfoData.length === 0
+) {
+  return (
+    <Loader
+      loaderProps={{
+        open: true,
+      }}
+    />
+  );
+}
 
   return (
     <>
-      <BreadcrumbRibbon
-        isFilterOpen={isFilterOpen}
-        onSearchChange={handleSearchChange}
-        pathname={pathname}
-      />
-      <Stack
-        stackProps={{
-          direction: "row",
-          gap: 1,
-          alignItems: "center",
-          justifyContent: "space-between", // Ensures space between text and dropdown
-          width: "100%", // Ensures the stack spans the full width
-        }}
-      >
-        <Stack
-          stackProps={{
-            direction: "row",
-            gap: 1,
-            alignItems: totalLength === 0 ? "center" : "baseline",
-            visibility: { xs: "hidden", md: "visible" },
-          }}
-        >
-          <When condition={totalLength !== 0}>
-            <Typography {...TITLE_COUNT(totalLength)} />
-          </When>
-          <When condition={totalLength === 0}>
-            <Skeleton variant={SkeletonVariantEnum.TEXT} />
-          </When>
-          <Typography {...TITLE_HEADER(totalLength)} />
-        </Stack>
-        <Stack
-          stackProps={{ direction: "row", gap: 1, alignItems: "baseline" }}
-        >
-          <FilterButton
-            isFilterOpen={isFilterOpen}
-            setIsFilterOpen={setIsFilterOpen}
-            handleFilterChange={handleFilterChange}
-          />
-          <Dropdown
-            {...JOB_LISTING_SORT_DROPDOWN}
-            onChange={handleSortChange}
-            value={selectedSort?.[0]}
-          />
-        </Stack>
-      </Stack>
-      <Stack
-        stackProps={{
-          direction: "row",
-          gap: 1,
-          alignItems: totalLength === 0 ? "center" : "baseline",
-          visibility: { xs: "visible", md: "hidden" },
-          justifyItems: "flex-end",
-          mt: "10px",
-          className: "w-full",
-        }}
-      >
-        <When condition={totalLength !== 0}>
-          <Typography {...TITLE_COUNT(totalLength)} />
-        </When>
-        <When condition={totalLength === 0}>
-          <Skeleton variant={SkeletonVariantEnum.TEXT} />
-        </When>
-        <Typography {...TITLE_HEADER(totalLength)} />
-      </Stack>
-      {paginatedInfoData[0] != undefined ? (
-        <InfinitePagination
-          dataLength={paginatedInfoData?.length}
-          next={jobInfoAPIData?.fetchNextPage}
-          hasMore={hasMore}
-          isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
-        >
-          <Stack>
-            {paginatedInfoData?.map((job) => (
-              <JobCard
-                job={job}
-                key={`jobs-${job?.id}-${job?.is_saved}`}
-                handleSaveUnSave={handleSaveUnSave}
-                showSaveUnSaveButton={showSaveUnSaveButton}
-                handleJobDetailsClick={handleJobDetailsClick}
+      <JobSearchBar onSearch={(searchObj) => {
+        handleSearchChange(searchObj.skills.trim());
+        
+        let newFilter = filterSearch || "";
+        newFilter = newFilter.replace(/&experience=[^&]*/g, '');
+        newFilter = newFilter.replace(/&location=[^&]*/g, '');
+        
+        if (searchObj.experience) {
+           newFilter += `&experience=${searchObj.experience}`;
+        }
+        if (searchObj.location) {
+           newFilter += `&location=${searchObj.location}`;
+        }
+        
+        if (newFilter !== filterSearch) {
+          handleFilterChange(newFilter);
+        }
+      }} />
+
+      <div className="max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto flex flex-col md:flex-row gap-6 mt-8 mb-12 w-full px-2 sm:px-4">
+        <div className="hidden md:block w-full md:w-1/4">
+          <JobFilterSidebar handleFilterChange={handleFilterChange} />
+        </div>
+        <div className="w-full md:w-3/4 flex flex-col gap-4">
+          <Stack
+            stackProps={{
+              direction: "row",
+              gap: 1,
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Stack
+              stackProps={{
+                direction: "row",
+                gap: 1,
+                alignItems: totalLength === 0 ? "center" : "baseline",
+                visibility: { xs: "hidden", md: "visible" },
+              }}
+            >
+              <When condition={totalLength !== 0}>
+                <Typography {...TITLE_COUNT(totalLength)} />
+              </When>
+              <When condition={totalLength === 0}>
+                <Skeleton variant={SkeletonVariantEnum.TEXT} />
+              </When>
+              <Typography {...TITLE_HEADER(totalLength)} />
+            </Stack>
+            <Stack
+              stackProps={{ direction: "row", gap: 1, alignItems: "center" }}
+            >
+              <div className="block md:hidden">
+                <FilterButton
+                  isFilterOpen={isFilterOpen}
+                  setIsFilterOpen={setIsFilterOpen}
+                  handleFilterChange={handleFilterChange}
+                />
+              </div>
+              <span className="text-xs font-medium text-slate-500 shrink-0 self-center">
+                Sort by:
+              </span>
+              <Dropdown
+                {...JOB_LISTING_SORT_DROPDOWN}
+                onChange={handleSortChange}
+                value={selectedSort?.[0]}
               />
-            ))}
+            </Stack>
           </Stack>
-        </InfinitePagination>
-      ) : (
-        <div className="text-xl font-bold">No Job Found</div>
-      )}
+          <Stack
+            stackProps={{
+              direction: "row",
+              gap: 1,
+              alignItems: totalLength === 0 ? "center" : "baseline",
+              visibility: { xs: "visible", md: "hidden" },
+              justifyItems: "flex-end",
+              mt: "10px",
+              className: "w-full",
+            }}
+          >
+            <When condition={totalLength !== 0}>
+              <Typography {...TITLE_COUNT(totalLength)} />
+            </When>
+            <When condition={totalLength === 0}>
+              <Skeleton variant={SkeletonVariantEnum.TEXT} />
+            </When>
+            <Typography {...TITLE_HEADER(totalLength)} />
+          </Stack>
+          {paginatedInfoData[0] != undefined ? (
+            <InfinitePagination
+              dataLength={paginatedInfoData?.length}
+              next={jobInfoAPIData?.fetchNextPage}
+              hasMore={hasMore}
+              isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
+            >
+              <Stack>
+                {paginatedInfoData?.map((job) => (
+                  <JobCard
+                    job={job}
+                    key={`jobs-${job?.id}-${job?.is_saved}`}
+                    handleSaveUnSave={handleSaveUnSave}
+                    showSaveUnSaveButton={showSaveUnSaveButton}
+                    handleJobDetailsClick={handleJobDetailsClick}
+                  />
+                ))}
+              </Stack>
+            </InfinitePagination>
+          ) : (
+            <div className="text-xl font-bold">No Job Found</div>
+          )}
+        </div>
+      </div>
     </>
   );
 }

@@ -86,14 +86,14 @@ export default function JobCard({
     <Stack
       stackProps={{
         className:
-          " my-2 py-11 px-10 shadow-lg p-4 rounded-lg border hover:border capitalize",
+          "my-3 py-6 px-6 shadow-md rounded-2xl border bg-white capitalize transition-all duration-300 group hover:shadow-2xl hover:-translate-y-1.5",
         direction: "column",
         justifyContent: "space-between",
         alignItems: "center",
         sx: {
-          borderColor: colorStyles.cardBorderColor,
+          borderColor: "#E2E8F0",
           "&:hover": {
-            borderColor: colorStyles.cardHoverBorderColor,
+            borderColor: "#818CF8",
           },
         },
       }}
@@ -104,6 +104,7 @@ export default function JobCard({
           justifyContent: "center",
         }}
       >
+        {/* Card Header */}
         <Stack
           stackProps={{
             direction: "row",
@@ -124,7 +125,7 @@ export default function JobCard({
 
           {/* Save or Unsave Job */}
           <When condition={job?.id !== undefined && showSaveUnSaveButton}>
-            <When condition={!job?.is_saved as boolean}>
+            <When condition={!(job?.is_saved as boolean)}>
               <BookmarkBorderIcon
                 onClick={() => {
                   handleSaveUnSave(job);
@@ -134,6 +135,7 @@ export default function JobCard({
                 }}
               />
             </When>
+
             <When condition={job?.is_saved as boolean}>
               <TurnedInIcon
                 onClick={() => {
@@ -147,9 +149,10 @@ export default function JobCard({
           </When>
         </Stack>
 
+        {/* Company & Job Info */}
         <Stack
           stackProps={{
-            className: "mt-6 ",
+            className: "mt-3",
             direction: "row",
             gap: 1,
             alignItems: "center",
@@ -165,6 +168,7 @@ export default function JobCard({
               {getInitials({ name: String(job?.company_name || "") })}
             </Avatar>
           </Stack>
+
           <Stack
             stackProps={{
               width: "100%",
@@ -176,11 +180,12 @@ export default function JobCard({
           </Stack>
         </Stack>
 
+        {/* Footer Actions */}
         <Stack
           stackProps={{
-            className: "mt-6",
+            className: "mt-3",
             direction: "row",
-            gap: 3,
+            gap: 2,
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
@@ -190,17 +195,21 @@ export default function JobCard({
           <Stack
             stackProps={{
               direction: "row",
-              gap: 3,
+              gap: 2,
               flexWrap: "wrap",
             }}
           >
-            {/* {jobDetails.map((detail, index) => (
-              <TextWithIcon
+            {jobDetails.map((detail, index) => (
+              <div
                 key={`jobDetails-${index}`}
-                icon={detail.icon}
-                textProps={detail.textProps}
-              />
-            ))} */}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200/80 text-slate-700 font-medium text-xs shadow-2xs group-hover:bg-indigo-50/50 group-hover:border-indigo-200/60 transition-colors"
+              >
+                <TextWithIcon
+                  icon={detail.icon}
+                  textProps={detail.textProps}
+                />
+              </div>
+            ))}
           </Stack>
 
           {/* Apply Button */}

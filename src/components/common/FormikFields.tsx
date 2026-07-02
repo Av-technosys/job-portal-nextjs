@@ -115,7 +115,7 @@ function FormikFields({
         <UploadProfilePic />
       </When>
       <When condition={fieldType === FormikFieldsEnum.UPLOAD_QUESTION_IMAGE}>
-        <UploadQuestionPic />
+        <UploadQuestionPic field={field} setFieldValue={setFieldValue} />
       </When>
       <When condition={fieldType === FormikFieldsEnum.MULTI_SELECT_DROPDOWN}>
         <MultiSelectDropdown

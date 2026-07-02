@@ -8,15 +8,15 @@ import Footer from "@/components/HomePage/footer";
 
 function Page() {
   return (
-    <>
-      <div>
+    <div className="max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto w-full px-4 sm:px-6 my-12 text-slate-700 leading-relaxed">
+      <h1 className="text-3xl font-bold mb-6 text-slate-900">Privacy Policy</h1>
+      <div className="mb-4">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet impedit
         natus aut! Temporibus neque laboriosam perferendis incidunt, esse
         provident dolor earum corrupti placeat dicta iusto. Vero ab dolor at
         ipsa.
       </div>
-      <div>Privacy Policy</div>
-    </>
+    </div>
   );
 }
 

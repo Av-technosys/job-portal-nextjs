@@ -12,6 +12,7 @@ import {
   SAVED_JOB_URL,
   SUBSCRIPTION_URL,
   ASSESSMENT_URL,
+  SCORE_URL,
 } from "@/constants";
 import {
   MyJobsIcon,
@@ -37,6 +38,7 @@ function UserWiseSidebar({ isExpanded }: { isExpanded: boolean }) {
       [SAVED_JOB_URL]: <SaveAltIcon />,
       [SUBSCRIPTION_URL]: <CardMembershipIcon />,
       [ASSESSMENT_URL]: <AssessmentIcon />,
+      [SCORE_URL]: <AssessmentIcon />,
     };
   }, []);
 

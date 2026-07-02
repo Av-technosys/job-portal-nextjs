@@ -2,12 +2,16 @@ import { CommonObjectType } from "@/types";
 import {
   Avatar,
   Button,
+  Chip,
   Stack,
   TextWithIcon,
   Typography,
   IconButton,
 } from "../common";
-import { CANDIDATE_APPLICATION_PAGE_CONFIG } from "@/constants";
+import {
+  CANDIDATE_APPLICATION_PAGE_CONFIG,
+  getCandidateApplicationStatusLabel,
+} from "@/constants";
 import { getInitials } from "@/helper";
 
 import {
@@ -18,6 +22,30 @@ import {
 } from "@/assets";
 import { useMemo } from "react";
 import { colorStyles } from "@/styles";
+
+function getStatusColor(status: number) {
+  if (status === 5) {
+    return "error";
+  }
+
+  if (status >= 7) {
+    return "success";
+  }
+
+  if (status >= 4) {
+    return "info";
+  }
+
+  if (status === 3) {
+    return "primary";
+  }
+
+  if (status === 2) {
+    return "warning";
+  }
+
+  return "default";
+}
 
 export default function CandidateApplicationCard({
   candidate,
@@ -31,6 +59,11 @@ export default function CandidateApplicationCard({
   const { CANDIDATE_CARD } = CANDIDATE_APPLICATION_PAGE_CONFIG;
   const { IMAGE, NAME, JOB_TYPE, LOCATION, EXPERIENCE, BUTTON } =
     CANDIDATE_CARD;
+  const applicationStatus = Number(candidate?.application_status || 0);
+  const applicationStatusLabel = getCandidateApplicationStatusLabel(
+    applicationStatus,
+    String(candidate?.application_status_label || "Received")
+  );
 
   const candidateDetails = useMemo(() => {
     return [
@@ -99,7 +132,23 @@ export default function CandidateApplicationCard({
               width: "100%",
             }}
           >
-            <Typography {...NAME(candidate.user as CommonObjectType)} />
+            <Stack
+              stackProps={{
+                direction: "row",
+                alignItems: "center",
+                gap: 1,
+                flexWrap: "wrap",
+              }}
+            >
+              <Typography {...NAME(candidate.user as CommonObjectType)} />
+              <Chip
+                label={applicationStatusLabel}
+                color={getStatusColor(applicationStatus)}
+                size="small"
+                variant="outlined"
+                sx={{ textTransform: "none" }}
+              />
+            </Stack>
             <IconButton onClick={handleIconButtonClick}>
               <MoreVertIcon />
             </IconButton>

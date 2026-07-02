@@ -95,20 +95,19 @@ function JobOverviewCard({ job }: JobOverviewCardProps) {
       <Typography {...JOB_OVERVIEW_TEXT()} />
       <Stack
         stackProps={{
-          className: "grid grid-cols-3",
+          className: "grid grid-cols-1 sm:grid-cols-2",
           gap: 2,
           alignItems: "center",
-          direction: "column",
         }}
       >
-        {/* {jobOverview.map((detail, index) => (
+        {jobOverview.map((detail, index) => (
           <TextWithIcon
             key={index}
             icon={detail.icon}
             subTextProps={detail.subTextProps}
             textProps={detail.textProps}
           />
-        ))} */}
+        ))}
       </Stack>
     </Stack>
   );

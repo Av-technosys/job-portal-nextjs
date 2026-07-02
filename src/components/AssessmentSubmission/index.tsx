@@ -59,7 +59,7 @@ function AssessmentSubmission() {
     router.push("/assessment");
   }
   function handleSubmitClick() {
-    router.push("/assessment-summary");
+    router.replace("/assessment-summary");
   }
 
   return (

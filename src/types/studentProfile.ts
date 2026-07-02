@@ -68,6 +68,8 @@ export type CreateOrUpdateSubjectInfoInput = {
   marks_incorrect: string;
   marks_unattempted: string;
   duration_minutes: number;
+  is_paid?: boolean;
+  is_live?: boolean;
 };
 
 export type CreateOrUpdateQuestionInfoInput = {

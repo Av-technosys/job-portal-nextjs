@@ -1,17 +1,22 @@
 import { TypographyProps as MUITypographyProps } from "@mui/material";
 
 export interface TypographyProps {
-  typographyProps: MUITypographyProps;
+  typographyProps: any;
   fontSize?: TypographyFontSize;
   fontWeight?: TypographyFontWeight;
   fontColor?: TypographyFontColor;
 }
 
 export enum TypographyVariantEnum {
-  H6 = "h6",
+  H1 = "h1",
+  H2 = "h2",
+  H3 = "h3",
+  H4 = "h4",
   H5 = "h5",
-  CAPTION = "caption",
+  H6 = "h6",
+  BODY1 = "body1",
   BODY2 = "body2",
+  CAPTION = "caption",
 }
 
 export enum TypographyFontWeight {
@@ -32,6 +37,7 @@ export enum TypographyFontSize {
   subtitle = "24px",
   extralarge = "20px",
   large = "18px",
+  medium = "17px",
   normal = "16px",
   small = "14px",
   extraSmall = "12px",

@@ -35,6 +35,7 @@ export const apiConstantsURL = {
     storeFCMToken: `user_profiles/store_fcm_token/`,
     candidateSearch: `user_profiles/filter_job_seeker`,
     findRecruiter: `user_profiles/list_all_recruiter/`,
+    topCompanies: `user_profiles/list_recruiters/`,
     findStudent: `user_profiles/list_all_job_seeker/`,
     deleteJobSeeker: `user_profiles/remove_job_seeker/`,
     deleteRecruiter: `user_profiles/remove_recruiter/`,
@@ -49,7 +50,7 @@ export const apiConstantsURL = {
     socialUrlsRecruiterById: `user_profiles/social_urls_recruiter/`,
     socialUrlsJobSeeker: `user_profiles/social_urls_job_seeker/`,
     profileImage: `user_profiles/upload_profile_image/`,
-    questionImage: `user_profiles/upload_question_image/`,
+    questionImage: `assessment/upload_question_image/`,
     updateCandidateStatus: `jobs/application_status/`,
   },
   jobs: {
@@ -58,6 +59,7 @@ export const apiConstantsURL = {
     applyJob: `jobs/apply_job/`,
     submittedJobs: `jobs/list_submitted_jobs/`,
     candidateApplication: `jobs/submitted_jobs_application/`,
+    applicationAssessmentScores: `jobs/application_assessment_scores/`,
     myPostedJobs: `jobs/my_posted_jobs/`,
     saveJobs: `jobs/save_job/`,
     overallJobSeekerRecruiterData: `jobs/summary/`,
@@ -71,9 +73,12 @@ export const apiConstantsURL = {
     jobDetailsById: `jobs/`,
   },
   payment: {
+    plans: `payment/plans/`,
     orderId: `payment/create_order/`,
     transactionId: `payment/create_transaction/`,
     captureTransaction: `payment/capture_transaction/`,
+    paymentDetails: `payment/payment_details/`,   // <-- ADD THIS
+
   },
   assessment: {
     getAllSubjects: `assessment/list_all_subjects/`,
@@ -93,6 +98,7 @@ export const apiConstantsURL = {
     getQuestionById: `assessment/get_question_by_id/`,
     getResumeTestDetails: `assessment/get_user_assesment_session/`,
     getAssessmentAttempts: `assessment/get_all_assesment_attempts/`,
+    getApplicantAssessmentAttempts: `assessment/get_applicant_assesment_attempts/`,
     getAssessmentResult: `assessment/get_results/`,
   },
 };

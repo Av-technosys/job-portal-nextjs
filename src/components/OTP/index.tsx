@@ -44,8 +44,16 @@ function OTP({ email }: OTPProps) {
           showNotification(
             NOTIFICATION_CONFIG.SUCCESS as ShowNotificationProps
           );
-          setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, res?.data?.token as string);
+          setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, res.data.token as string);
           router.push(PROFILE_URL);
+          return;
+        }
+
+        if (res?.data?.message) {
+          showNotification({
+            message: res.data.message as string,
+          });
+          router.push("/login");
         }
       },
       onError: (error) => {

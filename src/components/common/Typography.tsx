@@ -7,7 +7,7 @@ import {
 import { Typography as MUITypography } from "@mui/material";
 
 function Typography({
-  typographyProps,
+  typographyProps = {},
   fontSize = TypographyFontSize.normal,
   fontWeight = TypographyFontWeight.normal,
   fontColor = TypographyFontColor.black,

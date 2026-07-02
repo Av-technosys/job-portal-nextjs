@@ -31,7 +31,7 @@ export const useGetSearchDetailsAsPerURLOrUserType = ({
   } = useMemo(() => {
     return {
       isJobSearchEnabled:
-        pathname === JOBS_URL ||
+        pathname !== JOBS_URL &&
         (userType === -1 ? false : isLoggedInUserJobSeeker({ userType })),
       isRecruiterSearchEnabled: pathname === RECRUITER_URL,
       isCandidateSearchEnabled:

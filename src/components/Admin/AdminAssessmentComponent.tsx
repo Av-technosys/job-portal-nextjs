@@ -38,7 +38,7 @@ function AdminAssessmentComponent() {
           />
         </>
       ) : (
-        <Stack>Loading...</Stack>
+        null
       )}
     </>
   );

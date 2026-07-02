@@ -1,7 +1,7 @@
 import { useQuery, queryOptions } from "@tanstack/react-query";
-import { apiConstantsURL } from "@/constants";
+import { apiConstantsURL, LOCAL_STORAGE_KEY } from "@/constants";
 import { QueryConfig, SuccessResponseType } from "@/types";
-import { api } from "@/helper";
+import { api, getItem } from "@/helper";
 
 export const getStudentProfileAdditionalInfo = (): Promise<{
   data: SuccessResponseType;
@@ -11,7 +11,10 @@ export const getStudentProfileAdditionalInfo = (): Promise<{
 
 export const getStudentProfileAdditionalInfoQueryOptions = () => {
   return queryOptions({
-    queryKey: ["user_student_additional_info_details"],
+    queryKey: [
+      "user_student_additional_info_details",
+      getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+    ],
     queryFn: () => getStudentProfileAdditionalInfo(),
   });
 };

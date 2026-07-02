@@ -26,7 +26,7 @@ import {
 import { studentProfileGeneralInformationValidationSchema } from "@/validator";
 import { useMemo } from "react";
 
-function StudentProfile() {
+function StudentProfile({ onNextTab }: { onNextTab?: () => void }) {
   const {
     FORM_CONFIG,
     ACADEMIC_QUALIFICATION_FORM_CONFIG,
@@ -43,6 +43,7 @@ function StudentProfile() {
     ERROR_NOTIFICATION_CONFIG,
     UPDATE_NOTIFICATION_CONFIG,
     DELETE_NOTIFICATION_CONFIG,
+    REQUIRED_NOTIFICATION_CONFIG,
   } = JOB_SEEKER_UPLOAD_DOCUMENT_CONFIG;
   const {
     CURRENT_SALARY_FIELD,
@@ -61,6 +62,7 @@ function StudentProfile() {
       mutationConfig: {
         onSuccess: () => {
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
+          onNextTab?.();
         },
         onError: (error) => {
           showNotification({
@@ -128,7 +130,16 @@ function StudentProfile() {
     });
   }, [jobSeekerGeneralInfo]);
 
+  const hasResume = Boolean(
+    jobSeekerDocumentInfo?.[JobSeekerDocumentKeyEnum.RESUME]
+  );
+
   function handleFormSuccess({ values }: { values: CommonObjectType }) {
+    if (!hasResume) {
+      showNotification(REQUIRED_NOTIFICATION_CONFIG.RESUME);
+      return;
+    }
+
     jobSeekerGeneralInfoMutate.mutate({
       data: createDataForStudentProfileGeneralDetails({
         valueObj: values,
@@ -169,6 +180,11 @@ function StudentProfile() {
   }
 
   function onDeleteDocument(documentDetails: CommonObjectType) {
+    if (documentDetails?.file_type === JobSeekerDocumentKeyEnum.RESUME) {
+      showNotification(REQUIRED_NOTIFICATION_CONFIG.RESUME);
+      return;
+    }
+
     if (documentDetails?.id) {
       deleteUserDocument.mutate({
         id: documentDetails?.id as string,
@@ -208,7 +224,7 @@ function StudentProfile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jobSeekerDocumentInfo]);
 
-  if (jobSeekerGeneralInfoAPIData?.isLoading)
+  if (jobSeekerGeneralInfoAPIData?.isLoading || documentsInfoAPIData?.isLoading)
     return (
       <Loader
         loaderProps={{

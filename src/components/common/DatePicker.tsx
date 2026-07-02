@@ -1,6 +1,5 @@
-import { constructClassName, DATE_FORMAT } from "@/helper";
+import { DATE_FORMAT } from "@/helper";
 import { DatePickerProps } from "@/types";
-import { FormControl, InputLabel } from "@mui/material";
 import { DatePicker as ADatePicker } from "@mui/x-date-pickers";
 
 function DatePicker({
@@ -12,30 +11,27 @@ function DatePicker({
   formControlProps,
   inputLabelProps,
 }: DatePickerProps) {
+  const labelText = inputLabelProps?.children as string | undefined;
+
   return (
-    <>
-      <FormControl {...formControlProps} error={error}>
-        <InputLabel
-          {...inputLabelProps}
-          className={constructClassName([
-            inputLabelProps?.className as string,
-            inputLabelProps?.shrink ? "label-shrink" : "",
-          ])}
-        />
-        <ADatePicker
-          {...dateProps}
-          format={DATE_FORMAT}
-          onChange={onChange}
-          slotProps={{
-            textField: {
-              error,
-              helperText,
-              value,
-            },
-          }}
-        />
-      </FormControl>
-    </>
+    <ADatePicker
+      {...dateProps}
+      format={DATE_FORMAT}
+      onChange={onChange}
+      label={labelText}
+      value={value}
+      sx={formControlProps?.sx}
+      slotProps={{
+        textField: {
+          error,
+          helperText,
+          InputLabelProps: {
+            shrink: inputLabelProps?.shrink,
+          },
+          fullWidth: true,
+        },
+      }}
+    />
   );
 }
 

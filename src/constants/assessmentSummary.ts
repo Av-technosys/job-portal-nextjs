@@ -116,15 +116,15 @@ export const ASSESSMENT_SUMMARY_PAGE_CONFIG = {
   GIVE_FEEDBACK: {
     buttonProps: {
       children: "Give Feedback",
-      variant: ButtonVariantEnum.CONTAINED,
-      color: ButtonColorEnum.PRIMARY,
+      variant: ButtonVariantEnum.OUTLINED,
+      color: ButtonColorEnum.SECONDARY,
       size: ButtonSizeEnum.SMALL,
     },
   },
   SHOW_SCORE: {
     buttonProps: {
       children: "Show Score",
-      variant: ButtonVariantEnum.OUTLINED,
+      variant: ButtonVariantEnum.CONTAINED,
       color: ButtonColorEnum.PRIMARY,
       size: ButtonSizeEnum.SMALL,
     },

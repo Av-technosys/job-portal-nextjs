@@ -3,8 +3,9 @@ import { useMemo } from "react";
 import AdminRecruiterComponent from "./AdminRecruiterComponent";
 import AdminJobseekerComponent from "./AdminJobseekerComponent";
 import AdminAssessmentComponent from "./AdminAssessmentComponent";
-import { useRouter } from "next/router";
 import AdminContactDetailsComponent from "./AdminContactDetailsComponent";
+import AdminPaymentDetailsComponent from "./AdminPaymentDetailsComponent";
+import { useRouter } from "next/router";
 
 function AdminTabs() {
   const router = useRouter();
@@ -49,8 +50,20 @@ function AdminTabs() {
           router.push("/admin?tab=contact-details");
         },
       },
+
+      // ⭐ NEW TAB ADDED HERE
+      {
+        label: "Payments",
+        value: "payments",
+        key: "payments",
+        children: <AdminPaymentDetailsComponent />,
+        onClick: () => {
+          router.push("/admin?tab=payments");
+        },
+      },
     ];
   }, []);
+
   return (
     <>
       <Tabs
@@ -67,4 +80,5 @@ function AdminTabs() {
     </>
   );
 }
+
 export default AdminTabs;

@@ -1,4 +1,5 @@
 import {
+  ADMIN_URL,
   FORGOT_PASSWORD,
   LANDING_URL,
   LOCAL_STORAGE_KEY,
@@ -25,6 +26,7 @@ import { useRouter } from "next/router";
 import { loginValidationSchema } from "@/validator";
 import {
   useForm,
+  getUserDetails,
   useNotification,
   useScreen,
   useValidateUser,
@@ -35,7 +37,7 @@ import {
   getErrorMessageFromAPI,
   setItem,
 } from "@/helper";
-import { CommonObjectType } from "@/types";
+import { CommonObjectType, UserType } from "@/types";
 import { JA_LOGO } from "@/assets";
 
 function Login() {
@@ -54,17 +56,72 @@ function Login() {
   const router = useRouter();
   const { showNotification } = useNotification();
   const { isExtraSmallScreen } = useScreen();
+  const redirectTo =
+    typeof router.query.redirectTo === "string" &&
+    router.query.redirectTo.startsWith("/")
+      ? router.query.redirectTo
+      : "";
+
+  const showAdminVerificationNotification = () => {
+    showNotification(NOTIFICATION_CONFIG.ADMIN_VERIFICATION_REQUIRED);
+  };
+
+  const isAdminVerificationError = (error: unknown) => {
+    const errorMessage = getErrorMessageFromAPI(error)?.message?.toLowerCase();
+    return (
+      errorMessage?.includes("active") ||
+      errorMessage?.includes("activate") ||
+      errorMessage?.includes("verified") ||
+      errorMessage?.includes("verification") ||
+      errorMessage?.includes("admin")
+    );
+  };
 
   const validateUser = useValidateUser({
     mutationConfig: {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         if (res?.data?.token) {
+          const accessToken = res?.data?.token as string;
+          setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken);
+
+          const userDetails = await getUserDetails(accessToken, false);
+          const isRecruiterNotActivated =
+            userDetails?.data?.user_type?.toString() ===
+              UserType.RECUITER_TYPE && userDetails?.data?.is_active === false;
+
+          if (isRecruiterNotActivated) {
+            clearAllCookie();
+            showAdminVerificationNotification();
+            return;
+          }
+
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
-          setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, res?.data?.token as string);
-          router.push(PROFILE_URL);
+          setItem(
+            LOCAL_STORAGE_KEY.CURRENT_USER_TYPE,
+            userDetails?.data?.user_type as string
+          );
+          setItem(
+            LOCAL_STORAGE_KEY.CURRENT_ACCESS_TYPE,
+            userDetails?.data?.access_type as string
+          );
+
+          const userType = userDetails?.data?.user_type?.toString();
+          const redirectUrl =
+            userType === UserType.ADMIN_TYPE
+              ? ADMIN_URL
+              : userType === UserType.JOB_SEEKER_TYPE && redirectTo
+              ? redirectTo
+              : PROFILE_URL;
+
+          router.push(redirectUrl);
         }
       },
       onError: (error) => {
+        if (isAdminVerificationError(error)) {
+          showAdminVerificationNotification();
+          return;
+        }
+
         showNotification({
           ...getErrorMessageFromAPI(error),
         });

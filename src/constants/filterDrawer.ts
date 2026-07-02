@@ -55,11 +55,29 @@ export const LOCATION_SELECT_CONFIG = {
   },
   inputLabelProps: {
     children: "Choose city",
+    sx: { bgcolor: "white", px: 0.5 },
   },
   menuItems: [
-    { value: "Banglore", label: "Banglore" },
-    { value: "Mumbai", label: "Mumbai" },
+    { value: "Ahmedabad", label: "Ahmedabad" },
+    { value: "Bangalore", label: "Bangalore" },
+    { value: "Bhopal", label: "Bhopal" },
+    { value: "Chandigarh", label: "Chandigarh" },
+    { value: "Chennai", label: "Chennai" },
+    { value: "Coimbatore", label: "Coimbatore" },
     { value: "Delhi", label: "Delhi" },
+    { value: "Gurgaon", label: "Gurgaon" },
+    { value: "Guwahati", label: "Guwahati" },
+    { value: "Hyderabad", label: "Hyderabad" },
+    { value: "Indore", label: "Indore" },
+    { value: "Jaipur", label: "Jaipur" },
+    { value: "Kochi", label: "Kochi" },
+    { value: "Kolkata", label: "Kolkata" },
+    { value: "Lucknow", label: "Lucknow" },
+    { value: "Mumbai", label: "Mumbai" },
+    { value: "Nagpur", label: "Nagpur" },
+    { value: "Noida", label: "Noida" },
+    { value: "Pune", label: "Pune" },
+    { value: "Surat", label: "Surat" },
   ],
 };
 
@@ -74,6 +92,7 @@ export const SALARY_SELECT_CONFIG = {
   },
   inputLabelProps: {
     children: "Choose range",
+    sx: { bgcolor: "white", px: 0.5 },
   },
   menuItems: [
     { value: "0-25000", label: "0-25000" },

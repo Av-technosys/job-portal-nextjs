@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import When from "./When";
 import { DropdownProps } from "@/types";
-import { constructClassName } from "@/helper";
 
 function Dropdown({
   options = [],
@@ -42,19 +41,22 @@ function Dropdown({
     const optionMatched = getSelectedOptionObject((value as string) || "");
     return optionMatched?.value || "";
   }, [getSelectedOptionObject, value]);
+
   const selectName = selectProps?.name || name;
+  const labelText = inputLabelProps?.children || selectProps?.label || "";
+  const labelId = `dropdown-label-${selectName}`;
 
   return (
     <FormControl {...formControlProps} error={error}>
-      <InputLabel
-        {...inputLabelProps}
-        className={constructClassName([
-          inputLabelProps?.className as string,
-          inputLabelProps?.shrink ? "label-shrink" : "",
-        ])}
-      />
+      <InputLabel id={labelId} shrink={inputLabelProps?.shrink}>
+        {labelText}
+      </InputLabel>
       <Select
         {...selectProps}
+        labelId={labelId}
+        label={labelText}
+        // @ts-expect-error MUI Select passes this down to OutlinedInput but doesn't type it
+        notched={inputLabelProps?.shrink ? true : undefined}
         onChange={onChange}
         onBlur={onBlur}
         name={selectName}

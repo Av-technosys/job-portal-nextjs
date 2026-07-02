@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppProps } from "next/app";
 import { ElementRenderType, SSOSessionProps } from "@/types";
 import Header from "../Header";
@@ -22,18 +22,26 @@ function DashboardLayout({
 }) {
   const router = useRouter();
   const { ssoData } = useSSOSession();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const isAuthenticated = useMemo(() => {
     if (pageProps?.accessToken !== undefined) {
-      return isUserAuthenticatedWithServer(pageProps.accessToken);
+      return pageProps.accessToken !== "";
     } else if ((ssoData as SSOSessionProps)?.accessToken) {
       // TOken from SSO Login
       return isUserAuthenticatedWithServer(
         (ssoData as SSOSessionProps)?.accessToken
       );
-    } else {
+    } else if (isMounted) {
       return isUserAuthenticated();
+    } else {
+      return false;
     }
-  }, [pageProps?.accessToken, ssoData]);
+  }, [isMounted, pageProps?.accessToken, ssoData]);
 
   const isSidebar = useMemo(() => {
     return isSidebarVisible(router.pathname, isAuthenticated);
@@ -46,10 +54,10 @@ function DashboardLayout({
         <When condition={isSidebar}>
           <Sidebar />
         </When>
-        <Box component="main" sx={{ flexGrow: 1, p: 4 }}>
+        <Box component="main" sx={{ flexGrow: 1, px: 4, pb: 4, pt: 4 }}>
           <Toolbar
             sx={{
-              minHeight: `${dimensionStyle.headerHeight} !important`,
+              minHeight: "64px !important",
             }}
           />
           {children}

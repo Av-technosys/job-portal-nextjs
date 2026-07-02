@@ -123,9 +123,9 @@ export function FormikForm({
       options: dependentOptions.optionsByValue[dependentFieldValue] || [],
       selectProps: {
         ...selectProps,
-        disabled: selectProps.disabled || !Boolean(dependentFieldValue),
+        disabled: Boolean((selectProps as any).disabled) || !Boolean(dependentFieldValue),
       },
-    };
+    } as typeof fieldDetail;
   }
 
   return (
@@ -140,10 +140,11 @@ export function FormikForm({
             FormikFieldsEnum.TYPOGRAPHY,
             FormikFieldsEnum.UPLOAD_DOCUMENT,
             FormikFieldsEnum.UPLOAD_PROFILE_IMAGE,
+            FormikFieldsEnum.UPLOAD_QUESTION_IMAGE,
           ].includes(fieldDetail?.fieldType as FormikFieldsEnum)
         ) {
           return (
-            <Field key={`ja-form-${fieldDetail?.fieldType}_${idx}`}>
+            <Field key={`ja-form-${fieldDetail?.fieldType}_${idx}`} name={getFieldName(resolvedFieldDetail)}>
               {({ field }: { field: CommonObjectType }) => {
                 return (
                   <FormikFields
@@ -221,6 +222,7 @@ function Formik({
               setIsFormSubmittedOnce(true);
               handleSubmit(values);
             }}
+            className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/60 shadow-sm"
           >
             <Stack
               stackProps={{

@@ -9,7 +9,7 @@ export function usePagination({
   const { paginatedInfoData, hasMore, totalLength } = useMemo(() => {
     const initialPagiantionInfoData = {
       paginatedInfoData: [] as CommonObjectType[],
-      hasMore: true,
+      hasMore: false,
       totalLength: 0,
       // message: "No Job Found",
     };
@@ -24,7 +24,7 @@ export function usePagination({
           };
         })
       ) as CommonObjectType[],
-      hasMore: pageArr?.[0]?.data?.total_pages !== pageArr?.length,
+      hasMore: (pageArr?.[0]?.data?.total_pages || 0) > pageArr?.length,
       totalLength: pageArr?.[0]?.data?.total_count,
     };
   }, [paginatedAPIData]);

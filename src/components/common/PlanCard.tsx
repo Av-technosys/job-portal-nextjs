@@ -15,13 +15,13 @@ function PlanCard({
 }: {
   title: string;
   subTitle: string;
-  price: number;
+  price: number | string;
   features: string[];
   handlePaymentComplete: VoidFunction;
   planConfig: {
-    amount: number;
+    amount?: number;
     planType: string;
-    planId: string;
+    planId?: string;
   };
 }) {
   const { TITLE, SUB_TITLE, PRICE, MONTH, FEATURES, BUTTON } = PLAN_CARD_TEXT;
@@ -78,16 +78,28 @@ function PlanCard({
               <Typography key={feature} {...FEATURES(feature)} />
             </Stack>
           ))}
-          <Button {...BUTTON} onClick={() => setOpen(true)} />
-          <PaymentModal
-            open={open}
-            {...planConfig}
-            handleClose={() => setOpen(false)}
-            handlePaymentComplete={() => {
-              setOpen(false);
-              handlePaymentComplete();
+          <Button
+            {...{
+              ...BUTTON,
+              buttonProps: {
+                ...BUTTON.buttonProps,
+                disabled: !planConfig.planId,
+              },
             }}
+            onClick={() => setOpen(true)}
           />
+          {planConfig.planId && (
+            <PaymentModal
+              open={open}
+              planId={planConfig.planId}
+              planType={planConfig.planType}
+              handleClose={() => setOpen(false)}
+              handlePaymentComplete={() => {
+                setOpen(false);
+                handlePaymentComplete();
+              }}
+            />
+          )}
         </Stack>
       </Stack>
     </>

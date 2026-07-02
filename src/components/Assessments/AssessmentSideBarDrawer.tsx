@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AssessmentNavigation from "./Navigation";
 import { useRouter } from "next/router";
 import { useNotification } from "@/services";
@@ -7,6 +7,7 @@ import { getErrorMessageFromAPI } from "@/helper";
 import { Button, Modal, Stack, Typography } from "../common";
 import { ButtonVariantEnum, TypographyVariantEnum } from "@/types";
 import { ChevronRightIcon } from "@/assets";
+
 
 const AssessmentSideBarDrawer = ({
   isExpanded,
@@ -78,12 +79,28 @@ function SubmitButton({
   //   tabSwitchCount: tabSwitchCount,
   //   is_completed: true,
   // };
+useEffect(() => {
+  if (timeForSubmit === 0) {
+    showNotification({
+      message: "Time is over! Auto-submitting your test...",
+    });
+    handleSubmitTest();
+  }
 
-  const answerMap: Record<string, number> = {
-    A: 0,
-    B: 1,
-    C: 2,
-    D: 3,
+  if (tabSwitchCount >= 3) {
+    showNotification({
+      message: "You switched tabs 3 times. Auto-submitting your test...",
+    });
+    handleSubmitTest();
+  }
+}, [timeForSubmit, tabSwitchCount]);
+
+
+  const answerMap: Record<string, string> = {
+    A: "option_1",
+    B: "option_2",
+    C: "option_3",
+    D: "option_4",
   };
 
   // convert userAnsweredData into required format
@@ -92,7 +109,7 @@ function SubmitButton({
   ).reduce((acc, [key, value]: any) => {
     const answer = answerMap[value.answer] ?? null;
     if (answer !== null) {
-      acc[key] = `1_${answer}`;
+      acc[key] = answer;
     }
     return acc;
   }, {} as Record<string, string>);
@@ -101,14 +118,21 @@ function SubmitButton({
     answers: transformedAnswers,
     timeLeft: timeForSubmit,
     tabSwitchCount: tabSwitchCount,
-    is_completed: false,
+    is_completed: true,
   };
 
   const createStudentTestAnsweredData = UseCreateStudentAnsweredData({
     mutationConfig: {
       onSuccess: () => {
-        router.push(`/dashboard/assessment-summary/${attemptId}`);
-      },
+          try {
+            if (attemptId) {
+              localStorage.setItem(`assessment_submitted_${attemptId}`, "1");
+            }
+          } catch (e) {
+            // ignore localStorage errors
+          }
+          router.replace(`/dashboard/assessment-summary/${attemptId}`);
+        },
       onError: (error) => {
         showNotification({
           ...getErrorMessageFromAPI(error),
@@ -124,19 +148,15 @@ function SubmitButton({
   }
   return (
     <React.Fragment>
-      <Button
-        buttonProps={{
-          children: "Submit",
-          variant: ButtonVariantEnum.CONTAINED,
-          endIcon: <ChevronRightIcon />,
-          sx: {
-            marginTop: "16px",
-            marginBottom: "16px",
-            marginLeft: "8px",
-          },
-        }}
-        onClick={() => setOpen(true)}
-      />
+      <div className="p-5 border-t border-slate-100 bg-slate-50/50 mt-auto">
+        <button
+          onClick={() => setOpen(true)}
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] transition-all"
+        >
+          Submit Test
+          <ChevronRightIcon fontSize="small" />
+        </button>
+      </div>
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <>

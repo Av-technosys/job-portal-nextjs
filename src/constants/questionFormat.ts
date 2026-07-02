@@ -15,6 +15,12 @@ import {
 } from "@/types";
 import { CITY_OPTIONS, QUESTION_OPTIONS } from "./common";
 
+const QUESTION_DIFFICULTY_OPTIONS = [
+  { label: "Easy", value: 1 },
+  { label: "Medium", value: 2 },
+  { label: "Difficult", value: 3 },
+];
+
 export const FIELD_WIDTHS = {
   EXTRA_LARGE: { width: "100%", flexBasis: "100%" },
   LARGE: { width: "100%", flexBasis: "45%" },
@@ -29,7 +35,7 @@ const HEADING_CONFIG = {
 
 export const QUESTION_CONFIG = {
   FORM_CONFIG: {
-    QUESTION_TEXT_FIELD: {
+	    QUESTION_TEXT_FIELD: {
       inputProps: {
         name: "question_text",
       },
@@ -39,6 +45,20 @@ export const QUESTION_CONFIG = {
       },
       formControlProps: {
         sx: FIELD_WIDTHS.EXTRA_LARGE,
+      },
+	    },
+    QUESTION_DIFFICULTY_FIELD: {
+      fieldType: FormikFieldsEnum.DROPDOWN,
+      options: QUESTION_DIFFICULTY_OPTIONS,
+      selectProps: {
+        label: "Difficulty",
+        name: "difficulty_level",
+      },
+      inputLabelProps: {
+        children: "Difficulty",
+      },
+      formControlProps: {
+        sx: FIELD_WIDTHS.LARGE,
       },
     },
     QUESTION_PARAGRAPH_FIELD: {

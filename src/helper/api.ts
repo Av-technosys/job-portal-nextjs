@@ -23,19 +23,28 @@ api.interceptors.response.use(
     return response?.data;
   },
   (error) => {
-    const message = error.response?.data?.message || error.message;
+    const status = error.response?.status;
+    const responseData = error.response?.data || {};
+    const message = responseData?.message || error.message;
+    const hasAccessToken = !!getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     console.error(message, "API Error");
-    // if (error.response?.status === 401) {
-    //   if (typeof window !== "undefined") {
-    //     const searchParams = new URLSearchParams();
-    //     const redirectTo = searchParams.get("redirectTo");
-    //     if (redirectTo) {
-    //       window.location.href = `/auth/login?redirectTo=${redirectTo}`;
-    //     } else {
-    //       window.location.href = "/auth/login";
-    //     }
-    //   }
-    // }
+    if (
+      status === 401 &&
+      typeof window !== "undefined" &&
+      (hasAccessToken ||
+        responseData?.force_logout ||
+        message === "Your account has been deactivated by admin.")
+    ) {
+      window.dispatchEvent(
+        new CustomEvent("force-logout", {
+          detail: {
+            message:
+              responseData?.message ||
+              "Your account has been deactivated by admin.",
+          },
+        })
+      );
+    }
 
     return Promise.reject(error);
   }

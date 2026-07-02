@@ -66,10 +66,10 @@ export const RECRUITER_PROFILE_SIDEBAR_CONFIG = [
     text: "Posted Jobs",
     listValue: MY_POSTED_JOBS_URL,
   },
-  {
-    text: "Subscription",
-    listValue: SUBSCRIPTION_URL,
-  },
+  // {
+  //   text: "Subscription",
+  //   listValue: SUBSCRIPTION_URL,
+  // },
   {
     text: "Recruiter's Profile",
     listValue: PROFILE_URL,
@@ -178,6 +178,7 @@ export const RECRUITER_COMPANY_PROFILE_CONFIG = {
     STATE_FIELD: {
       fieldType: FormikFieldsEnum.DROPDOWN,
       selectProps: {
+        label: "State",
         name: "state",
       },
       inputLabelProps: {
@@ -387,7 +388,7 @@ export const RECRUITER_SOCIAL_LINKS_CONFIG = {
     },
     SAVE_BUTTON: {
       buttonProps: {
-        children: "Finish Editing",
+        children: "Save",
         variant: ButtonVariantEnum.CONTAINED,
         color: ButtonColorEnum.PRIMARY,
         size: ButtonSizeEnum.LARGE,

@@ -1,16 +1,17 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiConstantsURL } from "@/constants";
-import { QueryConfig } from "@/types";
 import { api } from "@/helper";
 
 export type getAssessmentAttemptsInfoQueryParams = {
-  id: number | string | string[];
+  id?: number | string | string[];
 };
 
 export const getAssessmentAttemptsInfo = ({
   id,
 }: getAssessmentAttemptsInfoQueryParams) => {
-  return api.get(`${apiConstantsURL.assessment.getAssessmentAttempts}${id}`);
+  return api.get(
+    `${apiConstantsURL.assessment.getAssessmentAttempts}${id ?? ""}`
+  );
 };
 
 export const getAssessmentAttemptsInfoQueryOptions = (
@@ -19,22 +20,26 @@ export const getAssessmentAttemptsInfoQueryOptions = (
   const { id } = queryParams;
 
   return queryOptions({
-    queryKey: ["assessment_attempts_full_details", id],
+    queryKey: ["assessment_attempts_full_details", id ?? "all"],
     queryFn: () => getAssessmentAttemptsInfo({ id }),
   });
 };
 
 type useGetAssessmentAttemptsInfoQueryOptions = {
-  queryConfig?: QueryConfig<typeof getAssessmentAttemptsInfo>;
+  enabled?: boolean;
+  queryConfig?: any;
   queryParams: getAssessmentAttemptsInfoQueryParams;
 };
 
 export const useGetAssessmentAttemptsInfo = ({
+  enabled,
   queryConfig,
   queryParams,
 }: useGetAssessmentAttemptsInfoQueryOptions) => {
   return useQuery({
     ...getAssessmentAttemptsInfoQueryOptions(queryParams),
+    enabled:
+      enabled ?? (queryParams.id === undefined || Boolean(queryParams.id)),
     ...queryConfig,
   });
 };

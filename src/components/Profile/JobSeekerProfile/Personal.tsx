@@ -21,7 +21,7 @@ import {
 import { studentProfilePersonalInformationValidationSchema } from "@/validator";
 import { useMemo } from "react";
 
-function Personal() {
+function Personal({ onNextTab }: { onNextTab?: () => void }) {
   const { CORRESPONDENCE_ADDRESS_HEADING } =
     STUDENT_PROFILE_HEADING_DETAILS_CONFIG;
   const { FORM_CONFIG, NOTIFICATION_CONFIG } = STUDENT_PROFILE_PERSONAL_CONFIG;
@@ -49,6 +49,7 @@ function Personal() {
         onSuccess: () => {
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
           refetchCommonDetails();
+          onNextTab?.();
         },
         onError: (error) => {
           showNotification({

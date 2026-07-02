@@ -79,6 +79,9 @@ export const LOGIN_PAGE_CONFIG = {
     SUCCESS: {
       message: "Logged In Successfully",
     },
+    ADMIN_VERIFICATION_REQUIRED: {
+      message: "You are not verified via admin.",
+    },
   },
   SIGN_IN_DIVIDER_CONFIG: {
     children: "Or Sign In With",

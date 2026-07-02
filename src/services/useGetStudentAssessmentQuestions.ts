@@ -29,6 +29,7 @@ export const getStudentAssessmentQuestionsQueryOptions = (
 };
 
 type UseStudentAssessmentQuestionsQueryOptions = {
+  enabled?: boolean;
   queryConfig?: QueryConfig<typeof getStudentAssessmentQuestionsQueryOptions>;
   queryParams: getAssessmentQuestionQueryParams;
 };
@@ -38,6 +39,12 @@ export const useGetStudentAssessmentQuestions = (
 ) => {
   return useQuery({
     ...getStudentAssessmentQuestionsQueryOptions(queryConfig.queryParams),
+    enabled:
+      queryConfig.enabled ??
+      Boolean(
+        queryConfig.queryParams.assesment_session_id &&
+          queryConfig.queryParams.subject_id
+      ),
     ...queryConfig?.queryConfig,
   });
 };

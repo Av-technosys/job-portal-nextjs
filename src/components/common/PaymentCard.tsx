@@ -5,14 +5,19 @@ function PaymentCard({
   open,
   handleClose,
   setPaymentModalOpen,
+  amount,
+  isAmountLoading,
 }: {
   open: boolean;
   handleClose: () => void;
   setPaymentModalOpen: (open: boolean) => void;
+  amount?: number;
+  isAmountLoading?: boolean;
 }) {
   const {
     DESCRIPTION_TEXT,
     DESCRIPTION_TITLE,
+    AMOUNT,
     BUTTON_PROPS,
     CANCEL_PAYMENT_PROPS,
   } = PAYMENT_CARD_TEXT_CONFIG;
@@ -36,6 +41,15 @@ function PaymentCard({
           >
             <Typography {...DESCRIPTION_TITLE} />
             <Typography {...DESCRIPTION_TEXT} />
+            <Typography
+              {...AMOUNT(
+                isAmountLoading
+                  ? "Loading price..."
+                  : amount !== undefined
+                    ? `₹ ${amount}`
+                    : "Price unavailable"
+              )}
+            />
             <Stack
               stackProps={{
                 direction: "row",
@@ -46,7 +60,13 @@ function PaymentCard({
             >
               <Button {...CANCEL_PAYMENT_PROPS} onClick={handleClose} />
               <Button
-                {...BUTTON_PROPS}
+                {...{
+                  ...BUTTON_PROPS,
+                  buttonProps: {
+                    ...BUTTON_PROPS.buttonProps,
+                    disabled: isAmountLoading || amount === undefined,
+                  },
+                }}
                 onClick={() => setPaymentModalOpen(true)}
               />
             </Stack>

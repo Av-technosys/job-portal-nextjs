@@ -185,117 +185,89 @@ export default function PostedJobCard({
 
   return (
     <>
-      <Stack
-        stackProps={{
-          className: "my-2 mb-2 p-1 border hover:border capitalize",
-          direction: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 2,
-          sx: {
-            borderColor: colorStyles.cardBorderColor,
-            "&:hover": {
-              borderColor: colorStyles.filterTagsTextColor,
-            },
-          },
-        }}
-      >
-        <Stack
-          stackProps={{
-            direction: "row",
-            gap: 2,
-            width: "45%",
-          }}
-        >
-          <Stack
-            stackProps={{
-              className: "border rounded-lg",
-            }}
-          >
-            <Avatar {...IMAGE(job).avatarProps}>
-              {getInitials({ name: String(job.company_name || "") })}
-            </Avatar>
-          </Stack>
-          <Stack
-            stackProps={{
-              direction: "column",
-              gap: 1,
-              justifyContent: "flex-end",
-            }}
-          >
-            <Typography {...DESIGNATION(job)} />
-            <Stack
-              stackProps={{
-                direction: "row",
-              }}
-            >
-              {/* {postedJobDetails.map((detail, index) => (
-                <TextWithIcon
-                  key={`postedJobDetails-${index}`}
-                  icon={detail.icon}
-                  textProps={detail.textProps}
-                />
-              ))} */}
-            </Stack>
-          </Stack>
-        </Stack>
-
-        <Stack stackProps={{ direction: "row", gap: 10, alignItems: "center" }}>
-          <Typography {...JOB_TYPE(job)} />
-          <TextWithIcon
-            icon={
-              <PeopleIcon
-                sx={{
-                  color: colorStyles.listTitleTextColor,
-                  fontSize: "medium",
-                }}
-              />
-            }
-            textProps={APPLICANTS(job)}
-          />
-          <IconButton onClick={handleIconButtonClick}>
-            {JOB_STATUS_ICONS?.[job?.job_status as JobStatusEnum] || null}
-            <Typography {...STATUS(color, label)} />
-          </IconButton>
-          <Menu
-            handleClose={handleClose}
-            anchorEl={anchorEl}
-            styles={{
-              paperStyles: {
-                width: "250px",
-              },
-            }}
-          >
-            {(job.job_status === JobStatusEnum.ACTIVE
-              ? ACTIVE_MENU
-              : EXPIRED_MENU
-            ).map((item) => (
-              <MenuItem
-                key={`postedJobCardMenu-${item.key}`}
-                onClick={() =>
-                  handleMenuItemClick(item.key, Number(job.job_id))
-                }
-              >
-                {item.icon}
-                {item.label}
-              </MenuItem>
-            ))}
-          </Menu>
-          <IconButton
-            onClick={() => handleViewApplicationClick(job as CommonObjectType)}
-          >
-            <VisibilityOutlinedIcon
-              sx={{
-                color: colorStyles.listTitleTextColor,
-                "&:hover": {
-                  color: colorStyles.filterTagsTextColor,
+      <div className="flex flex-col bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+        
+        {/* Header Section */}
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex gap-3">
+            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex items-center justify-center bg-slate-50 border border-slate-100">
+              <Avatar {...IMAGE(job).avatarProps}>
+                {getInitials({ name: String(job.company_name || "") })}
+              </Avatar>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold text-slate-800 leading-tight line-clamp-2">
+                {DESIGNATION(job)?.typographyProps?.children || "N/A"}
+              </h3>
+              <p className="text-sm font-medium text-slate-500 mt-0.5">
+                {JOB_TYPE(job)?.typographyProps?.children || "N/A"}
+              </p>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <IconButton onClick={handleIconButtonClick} sx={{ padding: '4px' }}>
+               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400 hover:text-slate-600"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </IconButton>
+            <Menu
+              handleClose={handleClose}
+              anchorEl={anchorEl}
+              styles={{
+                paperStyles: {
+                  width: "250px",
+                  borderRadius: "12px",
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
                 },
               }}
-            />
-          </IconButton>
-        </Stack>
-      </Stack>
-      <Divider />
+            >
+              {(job.job_status === JobStatusEnum.ACTIVE
+                ? ACTIVE_MENU
+                : EXPIRED_MENU
+              ).map((item) => (
+                <MenuItem
+                  key={`postedJobCardMenu-${item.key}`}
+                  onClick={() =>
+                    handleMenuItemClick(item.key, Number(job.job_id))
+                  }
+                  sx={{ padding: '12px 16px', '&:hover': { backgroundColor: '#f8fafc' } }}
+                >
+                  {item.icon}
+                  <span className="font-medium text-sm text-slate-700">{item.label}</span>
+                </MenuItem>
+              ))}
+            </Menu>
+          </div>
+        </div>
+
+        {/* Status Pill & Meta */}
+        <div className="flex flex-col gap-3 mb-5 mt-auto">
+          <div className="flex items-center justify-between">
+             <span className={`px-3 py-1 text-xs font-bold rounded-full flex items-center gap-1 ${
+               job.job_status === JobStatusEnum.ACTIVE 
+                 ? "bg-emerald-100 text-emerald-800" 
+                 : "bg-rose-100 text-rose-800"
+             }`}>
+               {job.job_status === JobStatusEnum.ACTIVE ? <CheckCircleOutlinedIcon fontSize="small" /> : <CancelOutlinedIcon fontSize="small" />}
+               {STATUS(color, label)?.typographyProps?.children}
+             </span>
+             <div className="flex items-center gap-1 text-blue-600 text-sm font-semibold">
+               <PeopleIcon fontSize="small" />
+               <span>{APPLICANTS(job)?.typographyProps?.children || "0"} Applicants</span>
+             </div>
+          </div>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="pt-4 border-t border-slate-100 w-full mt-auto flex flex-col gap-2">
+          <button
+            onClick={() => handleViewApplicationClick(job as CommonObjectType)}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-xl text-sm font-bold transition-colors"
+          >
+            <VisibilityOutlinedIcon fontSize="small" />
+            View Applications
+          </button>
+        </div>
+      </div>
     </>
   );
 }

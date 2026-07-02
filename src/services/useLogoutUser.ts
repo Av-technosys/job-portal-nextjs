@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConstantsURL } from "@/constants";
 import { CommonAllDataType, MutationConfig } from "@/types";
 import { api } from "@/helper";
@@ -19,9 +19,11 @@ export const useLogoutUser = ({
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};
   const { ssoLogout } = useSSOAuth();
   const { isSSOData } = useSSOSession();
+  const queryClient = useQueryClient();
 
   return useMutation({
     onSuccess: (...args) => {
+      queryClient.clear();
       if (isSSOData) {
         ssoLogout().finally(() => {
           onSuccess?.(...args);
@@ -31,6 +33,7 @@ export const useLogoutUser = ({
       }
     },
     onError: (...args) => {
+      queryClient.clear();
       if (isSSOData) {
         ssoLogout().finally(() => {
           onError?.(...args);

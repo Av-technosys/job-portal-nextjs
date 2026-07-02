@@ -25,6 +25,16 @@ export const JOB_LISTING_DROPDOWN_SORT_OPTIONS = [
     key: "-created_date",
     value: JobListSortEnum.CREATED_DATE_DESC,
   },
+  {
+    label: "Salary (Low to High)",
+    key: "min_salary",
+    value: JobListSortEnum.SALARY_ASC,
+  },
+  {
+    label: "Salary (High to Low)",
+    key: "-max_salary",
+    value: JobListSortEnum.SALARY_DESC,
+  },
 ];
 
 export const LIST_JOB_PAGE_CONFIG = {
@@ -54,8 +64,8 @@ export const LIST_JOB_PAGE_CONFIG = {
       },
     },
     inputLabelProps: {
-      children: "Sort By ",
-      shrink: true,
+      children: "",
+      shrink: false,
     },
     options: JOB_LISTING_DROPDOWN_SORT_OPTIONS,
   },

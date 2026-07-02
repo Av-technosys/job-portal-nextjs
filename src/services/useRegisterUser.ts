@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiConstantsURL } from "@/constants";
 import { CommonObjectType, MutationConfig, UserType } from "@/types";
 import { api } from "@/helper";
@@ -32,9 +32,11 @@ export const useRegisterUser = ({
   mutationConfig,
 }: UseRegisterUserOptions = {}) => {
   const { onSuccess, onError, ...restConfig } = mutationConfig || {};
+  const queryClient = useQueryClient();
 
   return useMutation({
     onSuccess: (...args) => {
+      queryClient.clear();
       onSuccess?.(...args);
     },
     onError: (...args) => {
