@@ -47,3 +47,5 @@ export { default as AssessmentNavigation } from "./Assessments/Navigation";
 export { default as AdminAssessmentQuestion } from "./AdminAssessmentQuestion";
 export { default as AdminAssessmentEditQuestion } from "./AdminAssessmentEditQuestion";
 export * from "./AdminAssessmentQuestion";
+export { default as JobSearchBar } from "./JobSearchBar";
+export { default as JobFilterSidebar } from "./JobFilterSidebar";
