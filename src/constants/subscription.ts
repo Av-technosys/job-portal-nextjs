@@ -9,76 +9,51 @@ import {
 export const SUBSCRIPTION_PAGE_CONFIG = {
   HEADER_TEXT: {
     typographyProps: {
-      children: "Get Hired with Job Assured : Your Path to Success Success",
-      variant: TypographyVariantEnum.H6,
-      color: "text.secondary",
-      className: "text-center mt-4",
+      children: "Get Hired with Job Assured",
+      className: "text-center mb-4 pt-10 font-extrabold text-4xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-indigo-900 to-blue-700 tracking-tight leading-[1.25]",
     },
-    fontWeight: TypographyFontWeight.bold,
-    fontSize: TypographyFontSize.subtitle,
-    fontColor: TypographyFontColor.black12,
   },
   HEADER_SUB_TEXT: {
     typographyProps: {
       children:
-        "Job Assured connects you with top recruiters, offering personalized job matches and career support to help you secure the right job and grow your professionally.",
-      variant: TypographyVariantEnum.BODY2,
-      color: "text.secondary",
-      className: "text-center mt-4",
+        "Job Assured connects you with top recruiters, offering personalized job matches and career support to help you secure the right job and grow professionally.",
+      className: "text-center text-slate-600 mb-12 text-lg md:text-xl font-medium max-w-2xl mx-auto",
     },
-    fontWeight: TypographyFontWeight.bold,
-    fontSize: TypographyFontSize.extralarge,
-    fontColor: TypographyFontColor.black11,
   },
   BUTTON_CONFIG: {
     buttonProps: {
-      variant: ButtonVariantEnum.OUTLINED,
       children: "Free Practice Aptitude Test",
-      className: "mt-4",
-      sx: {
-        borderRadius: "50px",
-        backgroundColor: "#123a59",
-        padding: "10px 20px",
-        color: "#fff",
+      className: "w-full transition-all duration-200 border-0",
+      sx: { 
+        backgroundColor: "#3b82f6", 
+        color: "#fff", textTransform: "none", fontSize: "0.85rem", borderRadius: "8px", fontWeight: "600",
+        padding: "12px 16px",
+        "&:hover": { backgroundColor: "#2563eb" }
       },
     },
   },
   RESUME_BUTTON_CONFIG: {
     buttonProps: {
-      variant: ButtonVariantEnum.OUTLINED,
       children: "Resume Aptitude Test",
-      className: "mt-4",
-      sx: {
-        borderRadius: "50px",
-        backgroundColor: "#123a59",
-        padding: "10px 20px",
-        color: "#fff",
+      className: "w-full transition-all duration-200 border-0",
+      sx: { 
+        backgroundColor: "#3b82f6", 
+        color: "#fff", textTransform: "none", fontSize: "0.85rem", borderRadius: "8px", fontWeight: "600",
+        padding: "12px 16px",
+        "&:hover": { backgroundColor: "#2563eb" }
       },
     },
   },
   ACTUAL_APTITUDE_TEST_BUTTON_CONFIG: {
     buttonProps: {
-      variant: ButtonVariantEnum.OUTLINED,
       children: "Actual Aptitude Test",
-      className: "mt-4",
-      sx: {
-        borderRadius: "50px",
-        backgroundColor: "#123a59",
-        padding: "10px 20px",
-        color: "#fff",
+      className: "w-full transition-all duration-200 border-0",
+      sx: { 
+        backgroundColor: "#3b82f6", 
+        color: "#fff", textTransform: "none", fontSize: "0.85rem", borderRadius: "8px", fontWeight: "600",
+        padding: "12px 16px",
+        "&:hover": { backgroundColor: "#2563eb" }
       },
-    },
-  },
-
-  STACK_CONFIG: {
-    direction: "column",
-    alignItems: "center",
-    gap: 2,
-    sx: {
-      background: "#f5f9ff",
-      minHeight: "100px",
-      padding: "40px 20px",
-      width: "300px",
     },
   },
 };
