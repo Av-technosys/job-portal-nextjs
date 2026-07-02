@@ -47,7 +47,7 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
         direction: "column",
         width: "300px",
         minHeight: "300px",
-        className: "group cursor-pointer rounded-lg p-5",
+        className: "group cursor-pointer rounded-2xl p-6",
         onClick: handleJobDetailsClick,
         onKeyDown: (event) => {
           if (event.key === "Enter" || event.key === " ") {
@@ -61,10 +61,10 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
           position: "relative",
           overflow: "hidden",
           background: colorStyles.white,
-          border: "1px solid #E6EAF2",
-          boxShadow: "none",
+          border: "1px solid #E2E8F0",
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02)",
           transition:
-            "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+            "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           "&:before": {
             content: '""',
             position: "absolute",
@@ -73,19 +73,22 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
             right: 0,
             height: 4,
             background:
-              "linear-gradient(90deg, #0A65CC 0%, #22C55E 100%)",
+              "linear-gradient(90deg, #2563EB 0%, #4F46E5 50%, #10B981 100%)",
+            transition: "opacity 0.3s ease",
           },
           "&:hover": {
-            transform: "translateY(-4px)",
-            borderColor: colorStyles.cardHoverBorderColor,
-            boxShadow: "none",
+            transform: "translateY(-6px)",
+            borderColor: "#818CF8",
+            boxShadow: "0 20px 25px -5px rgba(79, 70, 229, 0.1), 0 10px 10px -5px rgba(79, 70, 229, 0.04)",
           },
           "&:focus-visible": {
-            outline: "3px solid rgba(0, 122, 255, 0.22)",
+            outline: "3px solid rgba(79, 70, 229, 0.3)",
             outlineOffset: 3,
           },
           "&:hover .card-arrow": {
-            transform: "translateX(3px)",
+            transform: "translateX(4px) scale(1.08)",
+            backgroundColor: "#4F46E5",
+            color: "#FFFFFF",
           },
         },
       }}
@@ -112,10 +115,11 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
           >
             <Typography {...DESIGNATION(job)} />
             <div
-              className="job-type rounded-3xl px-3 py-1"
+              className="job-type rounded-full px-3 py-1 font-medium shadow-sm"
               style={{
-                background: "#EEF6FF",
-                border: "1px solid #CFE3FF",
+                background: "#EEF2FF",
+                border: "1px solid #C7D2FE",
+                color: "#4338CA",
                 flexShrink: 0,
               }}
             >
@@ -189,17 +193,18 @@ function LatestJobCard({ job, index }: LatestJobCardProps) {
 
           <Stack
             stackProps={{
-              className: "card-arrow",
+              className: "card-arrow shadow-sm",
               alignItems: "center",
               justifyContent: "center",
               sx: {
-                width: 34,
-                height: 34,
+                width: 36,
+                height: 36,
                 flexShrink: 0,
                 borderRadius: "999px",
-                color: "#0A65CC",
-                backgroundColor: "#F0F7FF",
-                transition: "transform 0.2s ease",
+                color: "#4F46E5",
+                backgroundColor: "#EEF2FF",
+                border: "1px solid #E0E7FF",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               },
             }}
           >

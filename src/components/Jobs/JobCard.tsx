@@ -86,14 +86,14 @@ export default function JobCard({
     <Stack
       stackProps={{
         className:
-          "my-2 py-5 px-6 shadow-lg rounded-lg border hover:border capitalize",
+          "my-3 py-6 px-6 shadow-md rounded-2xl border bg-white capitalize transition-all duration-300 group hover:shadow-2xl hover:-translate-y-1.5",
         direction: "column",
         justifyContent: "space-between",
         alignItems: "center",
         sx: {
-          borderColor: colorStyles.cardBorderColor,
+          borderColor: "#E2E8F0",
           "&:hover": {
-            borderColor: colorStyles.cardHoverBorderColor,
+            borderColor: "#818CF8",
           },
         },
       }}
@@ -199,13 +199,17 @@ export default function JobCard({
               flexWrap: "wrap",
             }}
           >
-            {/* {jobDetails.map((detail, index) => (
-              <TextWithIcon
+            {jobDetails.map((detail, index) => (
+              <div
                 key={`jobDetails-${index}`}
-                icon={detail.icon}
-                textProps={detail.textProps}
-              />
-            ))} */}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200/80 text-slate-700 font-medium text-xs shadow-2xs group-hover:bg-indigo-50/50 group-hover:border-indigo-200/60 transition-colors"
+              >
+                <TextWithIcon
+                  icon={detail.icon}
+                  textProps={detail.textProps}
+                />
+              </div>
+            ))}
           </Stack>
 
           {/* Apply Button */}

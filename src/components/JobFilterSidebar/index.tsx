@@ -80,12 +80,8 @@ const JobFilterSidebar = ({
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 w-full hidden md:block">
       <div className="flex justify-between items-center mb-6">
-        <Typography typographyProps={{ variant: "h6", className: "font-bold text-gray-800" }}>
-          All Filters
-        </Typography>
-        <Typography typographyProps={{ variant: "body2", className: "text-blue-600 font-medium" }}>
-          Applied ({selectedFilters.length})
-        </Typography>
+        <Typography typographyProps={{ children: "All Filters", variant: "h6", className: "font-bold text-gray-800" }} />
+        <Typography typographyProps={{ children: `Applied (${selectedFilters.length})`, variant: "body2", className: "text-blue-600 font-medium" }} />
       </div>
 
       <Stack

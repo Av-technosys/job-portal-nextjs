@@ -4,9 +4,10 @@
 @import "../styles/colour.module";
 
 body,
-h1 {
+html {
   margin: 0px;
   padding: 0px;
+  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {

@@ -14,20 +14,27 @@ function CompanyCard({
   return (
     <Stack
       stackProps={{
-        className: "relative flex-shrink-0 w-[300px] h-[370px] overflow-hidden",
+        className: "relative flex-shrink-0 w-[300px] h-[370px] overflow-visible rounded-2xl group cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 border border-slate-200/60 bg-white",
       }}
     >
-      <Avatar
-        {...BACKGROUND_IMAGE(company.backgroundImage, company.companyName)}
-      />
+      <div className="absolute inset-0 overflow-hidden rounded-2xl">
+        <Avatar
+          {...BACKGROUND_IMAGE(company.backgroundImage, company.companyName)}
+        />
+      </div>
       <Stack
         stackProps={{
           className:
-            "absolute left-1/2 shadow-lg -translate-x-1/2 w-72 h-40 p-4 bottom-4",
-          bgcolor: "white",
+            "absolute left-1/2 -translate-x-1/2 w-[275px] h-[165px] p-4 bottom-3 z-10 transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:border-slate-300",
           direction: "row",
-          borderRadius: 2,
-          gap: 4,
+          gap: 3,
+          sx: {
+            background: "rgba(255, 255, 255, 0.95)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(255, 255, 255, 0.8)",
+            borderRadius: "16px",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)",
+          },
         }}
       >
         <CompanyInfo

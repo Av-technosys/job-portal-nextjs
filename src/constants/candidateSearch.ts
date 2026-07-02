@@ -38,8 +38,8 @@ export const CANDIDATE_SEARCH_PAGE_CONFIG = {
       },
     },
     inputLabelProps: {
-      children: "Sort By ",
-      shrink: true,
+      children: "",
+      shrink: false,
     },
     options: CANDIDATE_SEARCH_LISTING_DROPDOWN_SORT_OPTIONS,
   },
@@ -51,9 +51,9 @@ export const CANDIDATE_SEARCH_PAGE_CONFIG = {
           src: candidate?.company_profile_image, // Default image if none is provided
           alt: candidate?.company_name || "Company logo",
           sx: {
-            width: 100,
-            height: 100,
-            borderRadius: 1,
+            width: 64,
+            height: 64,
+            borderRadius: 3,
           },
         },
       };

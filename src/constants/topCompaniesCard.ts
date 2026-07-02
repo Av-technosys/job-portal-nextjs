@@ -17,7 +17,7 @@ export const TOP_COMPANY_CARD_CONFIG = {
         //   marginBottom: "32px",
         // },
         children: "Top Companies",
-        variant: TypographyVariantEnum.H5,
+        variant: TypographyVariantEnum.H4,
       },
       fontWeight: TypographyFontWeight.bold,
       fontSize: TypographyFontSize.largeTitle,
