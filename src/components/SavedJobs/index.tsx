@@ -164,7 +164,7 @@ function SavedJobs() {
           hasMore={hasMore}
           isFetchingMore={jobSaveAPIData?.isFetchingNextPage}
         >
-          <Stack>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
             {paginatedInfoData?.map((job) => (
               <SavedJobCard
                 job={job}
@@ -173,7 +173,7 @@ function SavedJobs() {
                 handleUnSaveClick={onUnSaveClick}
               />
             ))}
-          </Stack>
+          </div>
         </InfinitePagination>
       </When>
 

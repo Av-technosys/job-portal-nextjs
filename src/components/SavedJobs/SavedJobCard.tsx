@@ -1,14 +1,6 @@
 import React, { useMemo } from "react";
 import { CommonObjectType, JobStatusEnum } from "@/types";
-import {
-  Button,
-  Stack,
-  Typography,
-  Avatar,
-  TextWithIcon,
-  When,
-  Divider,
-} from "../common";
+import { Avatar, When } from "../common";
 import { SAVED_JOB_PAGE_COFIG } from "@/constants";
 import {
   FmdGoodOutlinedIcon,
@@ -16,7 +8,6 @@ import {
   TurnedInIcon,
   EventIcon,
 } from "@/assets";
-import { colorStyles } from "@/styles";
 import { getInitials } from "@/helper";
 
 export default function SavedJobCard({
@@ -42,133 +33,78 @@ export default function SavedJobCard({
   const jobDetails = useMemo(() => {
     return [
       {
-        icon: (
-          <FmdGoodOutlinedIcon
-            sx={{ color: colorStyles.listTitleTextColor, fontSize: "medium" }}
-          />
-        ),
-        textProps: LOCATION(job) || { typographyProps: { children: "N/A" } },
+        icon: <FmdGoodOutlinedIcon fontSize="small" className="text-slate-400" />,
+        text: LOCATION(job)?.typographyProps?.children || "N/A",
       },
       {
-        icon: (
-          <CurrencyRupeeIcon
-            sx={{ color: colorStyles.listTitleTextColor, fontSize: "medium" }}
-          />
-        ),
-        textProps: SALARY_RANGE(job) || {
-          typographyProps: { children: "N/A" },
-        },
+        icon: <CurrencyRupeeIcon fontSize="small" className="text-slate-400" />,
+        text: SALARY_RANGE(job)?.typographyProps?.children || "N/A",
       },
-      {
-        ...(job?.status !== JobStatusEnum.EXPIRED && {
-          icon: (
-            <EventIcon
-              sx={{ color: colorStyles.listTitleTextColor, fontSize: "medium" }}
-            />
-          ),
-          textProps: EXPIRY(job) || { typographyProps: { children: "N/A" } },
-        }),
-      },
+      ...(job?.status !== JobStatusEnum.EXPIRED
+        ? [
+            {
+              icon: <EventIcon fontSize="small" className="text-slate-400" />,
+              text: EXPIRY(job)?.typographyProps?.children || "N/A",
+            },
+          ]
+        : []),
     ];
   }, [LOCATION, SALARY_RANGE, EXPIRY, job]);
 
   return (
-    <>
-      <Stack
-        stackProps={{
-          className:
-            " mt-5 my-1  p-1 border border-white  rounded-lg  hover:border mb-3 capitalize",
-          direction: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          sx: {
-            borderColor: colorStyles.cardBorderColor,
-            "&:hover": {
-              borderColor: colorStyles.cardHoverBorderColor,
-            },
-          },
-        }}
-      >
-        <Stack
-          stackProps={{
-            direction: "row",
-            gap: 2,
-            alignItems: "center",
-          }}
-        >
-          <Stack
-            stackProps={{
-              className: "border rounded-lg",
-            }}
-          >
+    <div className="flex flex-col bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+      
+      {/* Header Section */}
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex gap-3">
+          <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex items-center justify-center bg-slate-50 border border-slate-100">
             <Avatar {...IMAGE(job).avatarProps}>
               {getInitials({ name: String(job?.company_name || "") })}
             </Avatar>
-          </Stack>
-          <Stack
-            stackProps={{
-              direction: "column",
-              gap: 2,
-            }}
+          </div>
+          <div className="flex flex-col">
+            <h3 className="text-lg font-bold text-slate-800 leading-tight line-clamp-2">
+              {DESIGNATION(job)?.typographyProps?.children || "N/A"}
+            </h3>
+            <div className="mt-1">
+              <span className="px-2 py-0.5 text-xs font-bold rounded-md bg-slate-100 text-slate-600">
+                {JOB_TYPE(job)?.typographyProps?.children || "N/A"}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Unsave Icon */}
+        <When condition={job?.id !== undefined}>
+          <button
+            onClick={() => handleUnSaveClick(job)}
+            className="p-1.5 rounded-full text-blue-500 bg-blue-50 hover:bg-blue-100 transition-colors"
+            title="Remove from saved"
           >
-            <Stack
-              stackProps={{
-                direction: "row",
-                gap: 1,
-              }}
-            >
-              <Typography {...DESIGNATION(job)} />
-              <Stack
-                stackProps={{
-                  className: "rounded-lg px-2 ",
-                  bgcolor: colorStyles.filterTagsBackgroundColor,
-                  color: colorStyles.filterTagsTextColor,
-                }}
-              >
-                <Typography {...JOB_TYPE(job)} />
-              </Stack>
-            </Stack>
-            <Stack
-              stackProps={{
-                direction: "row",
-                gap: 3,
-              }}
-            >
-              {jobDetails.map((detail, index) => (
-                <TextWithIcon
-                  key={`jobDeatils-${index}`}
-                  icon={detail.icon}
-                  textProps={detail.textProps}
-                />
-              ))}
-            </Stack>
-          </Stack>
-        </Stack>
-        <Stack
-          stackProps={{
-            className: "mr-7",
-            direction: "row",
-            gap: 3,
-            alignItems: "center",
-          }}
+            <TurnedInIcon fontSize="small" />
+          </button>
+        </When>
+      </div>
+
+      {/* Metadata Section */}
+      <div className="flex flex-col gap-2 mb-5 mt-auto">
+        {jobDetails.map((detail, index) => (
+          <div key={`jobDetails-${index}`} className="flex items-center gap-2 text-slate-500 text-sm font-medium">
+            {detail.icon}
+            <span className="truncate">{detail.text}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer Actions */}
+      <div className="pt-4 border-t border-slate-100 w-full mt-auto">
+        <button
+          onClick={() => handleApplyClick(job)}
+          className="w-full px-4 py-2.5 bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] rounded-xl text-sm font-bold transition-all"
         >
-          <When condition={job?.id !== undefined}>
-            <TurnedInIcon
-              onClick={() => {
-                handleUnSaveClick(job);
-              }}
-              sx={{
-                cursor: "pointer",
-              }}
-            />
-          </When>
-          <Button
-            {...APPLY_BUTTON(job)}
-            onClick={() => handleApplyClick(job)}
-          />
-        </Stack>
-      </Stack>
-      <Divider />
-    </>
+          {APPLY_BUTTON(job)?.buttonProps?.children || "Apply Now"}
+        </button>
+      </div>
+    </div>
   );
 }

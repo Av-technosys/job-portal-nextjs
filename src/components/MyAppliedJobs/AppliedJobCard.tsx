@@ -1,48 +1,20 @@
+import React, { useState } from "react";
 import { CommonObjectType } from "@/types";
-import {
-  Avatar,
-  Button,
-  Chip,
-  Divider,
-  IconButton,
-  Modal,
-  Stack,
-  Typography,
-  When,
-} from "../common";
 import { APPLIED_JOB_PAGE_CONFIG } from "@/constants";
-import Messaging from "../Messaging";
-import { getInitials } from "@/helper";
-import { colorStyles } from "@/styles";
-import { useState } from "react";
-import { CancelOutlinedIcon } from "@/assets";
+import { Avatar, Button, IconButton, Modal, Stack, Typography, When } from "../common";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import JobDetail from "../JobDetail";
-
-const APPLICATION_STATUS_COLORS: Record<
-  number,
-  "default" | "primary" | "secondary" | "success" | "warning" | "error" | "info"
-> = {
-  0: "default",
-  1: "info",
-  2: "warning",
-  3: "success",
-  4: "primary",
-  5: "error",
-  6: "secondary",
-  7: "success",
-  8: "success",
-};
+import { colorStyles } from "@/styles";
+import { getInitials } from "@/helper";
+import Messaging from "../Messaging";
+import { EventIcon } from "@/assets";
 
 export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
+
   const { APPLIED_JOB_CARD } = APPLIED_JOB_PAGE_CONFIG;
-  const {
-    DESIGNATION,
-    IMAGE,
-    JOB_TYPE,
-    TIME_STAMP,
-    VIEW_DETAILS_BUTTON,
-  } = APPLIED_JOB_CARD;
+  const { DESIGNATION, JOB_TYPE, TIME_STAMP, VIEW_DETAILS_BUTTON, IMAGE } =
+    APPLIED_JOB_CARD;
 
   function getJobDetailsId() {
     const nestedJob =
@@ -77,75 +49,73 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
     if (Number(job?.application_status ?? 0) === 0) {
       return "Submitted";
     }
-
     return String(job?.application_status_label || "Received");
   }
 
   function getApplicationStatusColor() {
     const status = Number(job?.application_status ?? 0);
-    return APPLICATION_STATUS_COLORS[status] || "default";
+    switch (status) {
+      case 0: return "bg-blue-100 text-blue-800";
+      case 1: return "bg-amber-100 text-amber-800"; 
+      case 2: return "bg-emerald-100 text-emerald-800"; 
+      case 3: return "bg-rose-100 text-rose-800";
+      default: return "bg-slate-100 text-slate-800";
+    }
   }
 
   return (
     <>
-      <Stack
-        stackProps={{
-          className: "my-2 mb-2 p-2 border hover:border capitalize",
-          direction: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 2,
-          sx: {
-            borderColor: colorStyles.cardBorderColor,
-            "&:hover": {
-              borderColor: colorStyles.filterTagsTextColor,
-            },
-          },
-        }}
-      >
-        <Stack stackProps={{ direction: "row", gap: 2 }}>
-          <Stack stackProps={{}}>
-            <Avatar {...IMAGE(job).avatarProps}>
-              {getInitials({ name: String(job?.company_name || "") })}
-            </Avatar>
-          </Stack>
-          <Stack
-            stackProps={{
-              direction: "column",
-              justifyContent: "center",
-              gap: 1,
-            }}
+      <div className="flex flex-col bg-white rounded-2xl border border-slate-100 p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+        
+        {/* Header Section */}
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex gap-3">
+            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex items-center justify-center bg-slate-50 border border-slate-100">
+              <Avatar {...IMAGE(job).avatarProps}>
+                {getInitials({ name: String(job?.company_name || "") })}
+              </Avatar>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold text-slate-800 leading-tight line-clamp-2">
+                {DESIGNATION(job)?.typographyProps?.children || "N/A"}
+              </h3>
+              <p className="text-sm font-medium text-slate-500 mt-0.5">
+                {JOB_TYPE(job)?.typographyProps?.children || "N/A"}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Status Pill & Meta */}
+        <div className="flex flex-col gap-3 mb-5 mt-auto">
+          <div className="flex items-center justify-between">
+             <span className={`px-3 py-1 text-xs font-bold rounded-full ${getApplicationStatusColor()}`}>
+              {getApplicationStatusLabel()}
+             </span>
+             <div className="flex items-center gap-1 text-slate-400 text-sm font-medium">
+               <EventIcon fontSize="small" />
+               <span>{TIME_STAMP(job)?.typographyProps?.children || "N/A"}</span>
+             </div>
+          </div>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="pt-4 border-t border-slate-100 w-full mt-auto flex flex-col gap-2">
+          <button
+            onClick={handleViewDetailsClick}
+            className="w-full px-4 py-2.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-xl text-sm font-bold transition-colors"
           >
-            <Typography {...DESIGNATION(job)} />
-          </Stack>
-        </Stack>
-        <Stack>
-          <Typography {...JOB_TYPE(job)} />
-        </Stack>
-        <Stack>
-          <Chip
-            label={getApplicationStatusLabel()}
-            color={getApplicationStatusColor()}
-            size="small"
-            sx={{ fontWeight: 600 }}
-          />
-        </Stack>
-        <Stack>
-          <Typography {...TIME_STAMP(job)} />
-        </Stack>
-        <Stack
-          stackProps={{
-            marginRight: 10,
-          }}
-        >
-          <Button {...VIEW_DETAILS_BUTTON} onClick={handleViewDetailsClick} />
-        </Stack>
-        {/* Only show messaging when job is posted by logged in user 28 */}
-        <When condition={job?.user === 28}>
-          <Messaging applicationId={job?.applicationId as number} />
-        </When>
-      </Stack>
-      <Divider />
+            View Details
+          </button>
+          
+          <When condition={job?.user === 28}>
+            <div className="mt-2">
+               <Messaging applicationId={job?.applicationId as number} />
+            </div>
+          </When>
+        </div>
+      </div>
+
       <Modal open={selectedJobId !== null} onClose={() => setSelectedJobId(null)}>
         <Stack
           stackProps={{
@@ -160,18 +130,13 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
               width: { xs: "92%", md: "80%" },
               maxHeight: "85vh",
               overflow: "auto",
+              borderRadius: "16px",
             },
           }}
         >
-          <Stack
-            stackProps={{
-              alignItems: "end",
-            }}
-          >
+          <Stack stackProps={{ alignItems: "end", mb: 2 }}>
             <IconButton onClick={() => setSelectedJobId(null)}>
-              <CancelOutlinedIcon
-                sx={{ color: colorStyles.filterTagsTextColor }}
-              />
+              <CancelOutlinedIcon sx={{ color: colorStyles.filterTagsTextColor }} />
             </IconButton>
           </Stack>
           {selectedJobId !== null && (

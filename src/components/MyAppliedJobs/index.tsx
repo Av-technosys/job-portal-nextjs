@@ -50,11 +50,11 @@ function AppliedJobs() {
           hasMore={hasMore}
           isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
         >
-          <Stack>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
             {paginatedInfoData?.map((job) => (
               <AppliedJobCard job={job} key={`appliedJobCard-${job?.id}`} />
             ))}
-          </Stack>
+          </div>
         </InfinitePagination>
       </When>
       <When condition={jobInfoAPIData?.isFetched && totalLength === 0}>

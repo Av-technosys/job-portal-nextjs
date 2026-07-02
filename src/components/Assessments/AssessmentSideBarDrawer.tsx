@@ -148,19 +148,15 @@ useEffect(() => {
   }
   return (
     <React.Fragment>
-      <Button
-        buttonProps={{
-          children: "Submit",
-          variant: ButtonVariantEnum.CONTAINED,
-          endIcon: <ChevronRightIcon />,
-          sx: {
-            marginTop: "16px",
-            marginBottom: "16px",
-            marginLeft: "8px",
-          },
-        }}
-        onClick={() => setOpen(true)}
-      />
+      <div className="p-5 border-t border-slate-100 bg-slate-50/50 mt-auto">
+        <button
+          onClick={() => setOpen(true)}
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] transition-all"
+        >
+          Submit Test
+          <ChevronRightIcon fontSize="small" />
+        </button>
+      </div>
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <>

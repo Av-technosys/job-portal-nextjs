@@ -357,127 +357,103 @@ if (assessmentAttemptsDetails.isLoading || allSubjectList.isLoading || assessmen
       <Stack
         stackProps={{
           direction: "column",
-          spacing: "16px",
           alignItems: "center",
-          className: "max-w-6xl mx-auto mt-10",
+          className: "max-w-6xl mx-auto mt-10 w-full px-4 md:px-8",
         }}
       >
-        <Stack stackProps={{ className: "w-full" }}>
+        <Stack stackProps={{ className: "w-full mb-8" }}>
           <Stack stackProps={{ className: "mr-auto" }}>
-            <Button onClick={() => router.push("/dashboard/assessment")} {...BACK_BUTTON} />
+            <button
+              onClick={() => router.push("/dashboard/assessment")}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors bg-white rounded-lg shadow-sm border border-slate-200 hover:bg-slate-50"
+            >
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back
+            </button>
           </Stack>
         </Stack>
 
-        <Typography {...SECTION_HEADER()} />
+        <h2 className="font-extrabold text-3xl md:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-indigo-900 to-blue-700 tracking-tight mb-10 text-center">
+          Start Your Test Now
+        </h2>
 
-        <Stack
-          stackProps={{
-            direction: "column",
-            spacing: "16px",
-            className: "w-full",
-          }}
-        >
+        <div className="flex flex-col gap-4 w-full">
           {data?.map((item) => {
-          const responseData = assessmentAttemptsDetails?.data as { data?: any[] } | undefined;
-          const attempt = responseData?.data?.find(
-            (att: any) => att?.subject_id === item?.id
-          );
+            const responseData = assessmentAttemptsDetails?.data as { data?: any[] } | undefined;
+            const attempt = responseData?.data?.find(
+              (att: any) => att?.subject_id === item?.id
+            );
             const isCurrentRetakeLoading = isLoadingRetake &&
               selectedRetakeData?.subject_id === item?.id;
 
             return (
-              <Paper key={item.id} paperProps={{ className: "p-3" }}>
-                <Stack
-                  stackProps={{
-                    direction: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Stack>
-                    <Stack>{item?.exam_name}</Stack>
-                    <Stack stackProps={{ direction: "row", spacing: "20px" }}>
-                      <Stack
-                        stackProps={{
-                          direction: "row",
-                          spacing: "1px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <TotalQuestionsIcon style={{ fontSize: "15px" }} />
-                        <Typography
-                          {...TOTAL_QUESTIONS(
-                            item?.easy_question_count +
-                            item?.medium_question_count +
-                            item?.difficult_question_count
-                          )}
-                        />
-                      </Stack>
-                      <Stack
-                        stackProps={{
-                          direction: "row",
-                          spacing: "1px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <StopWatchIcon style={{ fontSize: "15px" }} />
-                        <Typography {...MAX_TIME(item?.duration_minutes)} />
-                      </Stack>
-                    </Stack>
-                  </Stack>
+              <div 
+                key={item.id}
+                className="group flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl bg-white border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(37,99,235,0.06)] hover:border-blue-100 transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="flex flex-col mb-5 md:mb-0">
+                  <h3 className="font-bold text-slate-800 text-lg mb-3">{item?.exam_name}</h3>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700">
+                      <TotalQuestionsIcon style={{ fontSize: "14px" }} />
+                      {item?.easy_question_count +
+                        item?.medium_question_count +
+                        item?.difficult_question_count} Questions
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700">
+                      <StopWatchIcon style={{ fontSize: "14px" }} />
+                      {item?.duration_minutes} Min
+                    </span>
+                  </div>
+                </div>
 
+                <div className="flex items-center gap-3 w-full md:w-auto">
                   {attempt ? (
-                    <Stack
-                      stackProps={{
-                        direction: { xs: "column", sm: "row" },
-                        spacing: "8px",
-                      }}
-                    >
-                      <LoadingButton
-                        loading={isCurrentRetakeLoading}
-                        onClick={() =>
-                          handleRetakeTest(
-                            attempt.assessment_session,
-                            attempt.subject_id
-                          )
-                        }
-                        {...RETAKE_TEST}
-                        buttonProps={{
-                          ...(RETAKE_TEST as any).buttonProps,
-                          disabled: isCurrentRetakeLoading,
-                        }}
-                      />
-                      <Button
-                        onClick={() =>
-                          router.push(`/dashboard/assessment-score/${attempt?.id}`)
-                        }
-                        {...ANALYSIS_TEST}
-                      />
-                    </Stack>
+                    <div className="flex items-center gap-3 w-full">
+                      <button
+                        disabled={isCurrentRetakeLoading}
+                        onClick={() => handleRetakeTest(attempt.assessment_session, attempt.subject_id)}
+                        className={`w-full md:w-auto px-5 py-2.5 text-sm font-bold rounded-xl border-2 border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition-colors ${isCurrentRetakeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                      >
+                        {isCurrentRetakeLoading ? "Loading..." : "Retake Test"}
+                      </button>
+                      <button
+                        onClick={() => router.push(`/dashboard/assessment-score/${attempt?.id}`)}
+                        className="w-full md:w-auto px-5 py-2.5 text-sm font-bold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors"
+                      >
+                        Analysis
+                      </button>
+                    </div>
                   ) : assessmentType == "paid" ? (
-                    <Button
+                    <button
                       onClick={() =>
                         router.push(
                           `/assessment/get_all_test_question?assesment_session_id=${id}&subject_id=${item?.id}`
                         )
                       }
-                      {...START_TEST}
-                    />
+                      className="w-full md:w-auto px-8 py-3 text-sm font-bold rounded-xl bg-blue-500 text-white hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-500/20 active:scale-[0.98] transition-all"
+                    >
+                      Start Test
+                    </button>
                   ) : (
-                    <Button
+                    <button
                       onClick={() =>
                         router.push(
                           `/assessment/get_free_test_question/?subject_id=${item?.id}`
                         )
                       }
-                      {...START_TEST}
-                    />
+                      className="w-full md:w-auto px-8 py-3 text-sm font-bold rounded-xl bg-blue-500 text-white hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-500/20 active:scale-[0.98] transition-all"
+                    >
+                      Start Test
+                    </button>
                   )}
-                </Stack>
-              </Paper>
+                </div>
+              </div>
             );
           })}
-        </Stack>
+        </div>
       </Stack>
     </>
   );
