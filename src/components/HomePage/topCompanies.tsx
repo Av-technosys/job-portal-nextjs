@@ -161,44 +161,38 @@ function TopCompanies({
             gap: 1,
           }}
         >
-          <Stack
-            stackProps={{
-              direction: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              gap: 1,
-              className: "w-full overflow-visible py-8 -my-8",
-            }}
-          >
-            <When condition={topCompaniesAPIData.isLoading}>
-              {COMPANY_CARD_SKELETONS.map((_, index) => (
-                <TopCompanyCardSkeleton key={`top-company-skeleton-${index}`} />
-              ))}
-            </When>
-            <When condition={!topCompaniesAPIData.isLoading && topCompanies.length === 0}>
-              <Typography
-                typographyProps={{
-                  children: "No companies found",
-                  variant: TypographyVariantEnum.BODY2,
-                }}
-              />
-            </When>
-            <When condition={!topCompaniesAPIData.isLoading && topCompanies.length > 0}>
-              {topCompanies.map((company: Company, index: number) => (
-                <div
-                  key={index}
-                  className=" transition-transform duration-500"
-                  style={{ transform: `translateX(-${slideCount * 100}%)` }}
-                >
-                  <HomePage
-                    isAuthenticated={isAuthenticated}
-                    openForceLoginPopup={openForceLoginPopup}
-                    company={company}
-                  />
-                </div>
-              ))}
-            </When>
-          </Stack>
+          <div className="w-full overflow-x-auto md:overflow-visible">
+            <div className="flex flex-row gap-4 md:gap-2 pb-2 md:pb-0 md:flex-nowrap">
+              <When condition={topCompaniesAPIData.isLoading}>
+                {COMPANY_CARD_SKELETONS.map((_, index) => (
+                  <TopCompanyCardSkeleton key={`top-company-skeleton-${index}`} />
+                ))}
+              </When>
+              <When condition={!topCompaniesAPIData.isLoading && topCompanies.length === 0}>
+                <Typography
+                  typographyProps={{
+                    children: "No companies found",
+                    variant: TypographyVariantEnum.BODY2,
+                  }}
+                />
+              </When>
+              <When condition={!topCompaniesAPIData.isLoading && topCompanies.length > 0}>
+                {topCompanies.map((company: Company, index: number) => (
+                  <div
+                    key={index}
+                    className="transition-transform duration-500 flex-shrink-0"
+                    style={{ transform: `translateX(-${slideCount * 100}%)` }}
+                  >
+                    <HomePage
+                      isAuthenticated={isAuthenticated}
+                      openForceLoginPopup={openForceLoginPopup}
+                      company={company}
+                    />
+                  </div>
+                ))}
+              </When>
+            </div>
+          </div>
         </Stack>
       </div>
     </>
