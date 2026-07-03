@@ -105,14 +105,23 @@ function LogoAndSearchRibbon({
           sx: { px: { xs: 2, md: 4 }, height: 64 },
         }}
       >
-        <NextImage
-          props={{
-            alt: "ja_logo",
-            src: JA_LOGO,
-            onClick: () => handleClick(LANDING_URL),
-            style: { cursor: "pointer" },
-          }}
-        />
+        <div className="flex items-center justify-center flex-shrink-0 mr-6">
+          <NextImage
+            props={{
+              alt: "ja_logo",
+              src: JA_LOGO,
+              width: 220,
+              height: 56,
+              onClick: () => handleClick(LANDING_URL),
+              style: {
+                cursor: "pointer",
+                objectFit: "contain",
+                height: "56px",
+                width: "auto",
+              },
+            }}
+          />
+        </div>
         <Stack
           stackProps={{
             className: "w-full",

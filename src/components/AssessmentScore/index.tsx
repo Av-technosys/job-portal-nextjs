@@ -139,7 +139,7 @@ function AssessmentScore({ id }: paramID) {
           {/* Action Footer */}
           <div className="w-full">
             <Link href="/dashboard" passHref className="w-full block">
-              <button className="w-full flex items-center justify-center gap-2 px-8 py-4 text-base font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] transition-all">
+              <button className="w-full flex items-center justify-center gap-2 px-8 py-4 text-base font-bold rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98] transition-all">
                 Return to Dashboard
                 <ArrowForwardOutlinedIcon fontSize="small" />
               </button>

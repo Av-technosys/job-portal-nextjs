@@ -129,33 +129,40 @@ function UploadProfilePic() {
       <FormControl
         sx={{
           width: "100%",
-          flexBasis: isRecruiter ? "45%" : "25%",
-          height: "50px",
-          marginBottom: { xs: "0px", sm: "240px" },
+          flexBasis: "100%",
+          marginBottom: { xs: 4, sm: 6 },
         }}
       >
-        <InputLabel shrink className={"mb-4 label-shrink"}>
-          {isRecruiter
-            ? "Logo"
-            : "Profile Picture (Avoid using Casual Pictures)"}
-        </InputLabel>
+        <Typography
+          typographyProps={{
+            children: isRecruiter
+              ? "Company Logo"
+              : "Profile Picture (Avoid using Casual Pictures)",
+            variant: "body2",
+            className: "font-semibold text-slate-700 mb-3 block text-left",
+          }}
+        />
         <Stack
           stackProps={{
-            className: "md:absolute relative",
+            className: "relative w-full",
             sx: {
-              height: 250,
+              minHeight: 240,
+              py: 4,
+              px: 3,
               border: isProfileImageAvailable
-                ? "none"
+                ? "1px solid #E2E8F0"
                 : isDragOver
                 ? `2px dashed ${colorStyles.blue}`
                 : `2px dashed ${colorStyles.borderGreyColor}`,
-              borderRadius: 2,
+              borderRadius: 3,
+              backgroundColor: isProfileImageAvailable ? "#F8FAFC" : "#FFFFFF",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
               overflow: "hidden",
               width: "100%",
+              transition: "all 0.2s ease",
             },
             onDragOver: !isProfileImageAvailable ? handleDragOver : undefined,
             onDragLeave: !isProfileImageAvailable ? handleDragLeave : undefined,

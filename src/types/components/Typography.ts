@@ -49,6 +49,7 @@ export enum TypographyMargin {
 export enum TypographyFontColor {
   primary = "primary",
   secondary = "secondary",
+  indigo = "#4F46E5",
   red = "#dc2626",
   grey = "#989FA9",
   grey1 = "#574F4A",

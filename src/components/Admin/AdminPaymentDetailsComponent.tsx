@@ -300,7 +300,7 @@ function AdminPaymentDetailsComponent() {
   {/* Stats Cards */}
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
     <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
-      <div className="text-2xl font-bold text-blue-600">
+      <div className="text-2xl font-bold text-indigo-600">
         {totalOrdersCount}
       </div>
       <div className="text-sm text-gray-600">Total Orders</div>
@@ -325,7 +325,7 @@ function AdminPaymentDetailsComponent() {
   <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
     {paymentApi.isLoading && allOrders.length === 0 && (
       <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600" />
       </div>
     )}
 
@@ -368,7 +368,7 @@ function AdminPaymentDetailsComponent() {
                   <div className="text-sm text-gray-500 mt-1">
                     {order.gateway_order_id}
                   </div>
-                  <div className="text-sm text-blue-600 font-medium mt-1">
+                  <div className="text-sm text-indigo-600 font-medium mt-1">
                     {order.plan_type}
                   </div>
                 </td>
@@ -424,7 +424,7 @@ function AdminPaymentDetailsComponent() {
 
     {paymentApi.isFetching && visibleOrders.length > 0 && (
       <div className="flex justify-center items-center py-6 border-t border-gray-200">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600" />
         <span className="ml-3 text-gray-600">Loading more orders...</span>
       </div>
     )}

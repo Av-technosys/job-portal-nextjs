@@ -107,11 +107,10 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
       <Stack
         stackProps={{
           width: "100%",
-          bgcolor: "skyblue",
           direction: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: "130px",
+          marginBottom: "100px",
         }}
       >
         <AppBar

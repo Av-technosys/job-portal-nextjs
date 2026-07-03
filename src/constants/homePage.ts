@@ -418,7 +418,7 @@ export const LATEST_JOB_OPENINGS_CONFIG = {
       },
       fontWeight: TypographyFontWeight.bold,
       fontSize: TypographyFontSize.largeTitle,
-      fontColor: TypographyFontColor.primary,
+      fontColor: TypographyFontColor.indigo,
     };
   },
   HEADER_TEXT_2: () => {

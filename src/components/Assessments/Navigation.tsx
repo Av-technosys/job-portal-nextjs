@@ -20,7 +20,7 @@ function AssessmentStatusLegend() {
     { label: "Answered", status: 0 },
     { label: "Marked for Review", status: 1 },
     { label: "Not Answered", status: 2 },
-    { label: "Not Visited", status: 3 },
+    { label: "Visited", status: 3 },
   ];
 
   return (

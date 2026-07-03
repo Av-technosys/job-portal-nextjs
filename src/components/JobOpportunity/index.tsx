@@ -14,7 +14,7 @@ import {
 
 const MAX_LATEST_JOBS = 6;
 const EMPTY_JOB_ROLE_FILTERS: string[] = [];
-const LATEST_JOB_CARD_SKELETONS = Array.from({ length: 3 });
+const LATEST_JOB_CARD_SKELETONS = Array.from({ length: 4 });
 
 function LatestJobCardSkeleton() {
   return (
@@ -22,15 +22,14 @@ function LatestJobCardSkeleton() {
       stackProps={{
         direction: "column",
         width: "300px",
-        minHeight: "360px",
-        className: "rounded-lg p-5",
-        justifyContent: "space-between",
+        minHeight: "300px",
+        className: "rounded-2xl p-6",
         sx: {
           position: "relative",
           overflow: "hidden",
           background: "#FFFFFF",
-          border: "1px solid #E6EAF2",
-          boxShadow: "none",
+          border: "1px solid #E2E8F0",
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02)",
           "&:before": {
             content: '""',
             position: "absolute",
@@ -38,108 +37,134 @@ function LatestJobCardSkeleton() {
             left: 0,
             right: 0,
             height: 4,
-            background: "#E6EAF2",
+            background: "linear-gradient(90deg, #E2E8F0 0%, #CBD5E1 50%, #E2E8F0 100%)",
           },
         },
       }}
     >
       <Stack
         stackProps={{
-          gap: 2,
+          className: "w-full h-full",
+          justifyContent: "space-between",
+          gap: 3,
         }}
       >
         <Stack
           stackProps={{
-            direction: "row",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
             gap: 2,
           }}
         >
           <Stack
             stackProps={{
-              width: "100%",
-              gap: 1,
+              direction: "row",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              gap: 2,
             }}
           >
+            <Stack
+              stackProps={{
+                width: "100%",
+                gap: 1,
+              }}
+            >
+              <Skeleton
+                variant={SkeletonVariantEnum.TEXT}
+                width="82%"
+                height={26}
+              />
+              <Skeleton
+                variant={SkeletonVariantEnum.TEXT}
+                width="58%"
+                height={22}
+              />
+            </Stack>
             <Skeleton
-              variant={SkeletonVariantEnum.TEXT}
-              width="82%"
+              variant={SkeletonVariantEnum.RECTANGULAR}
+              width={78}
               height={28}
-            />
-            <Skeleton
-              variant={SkeletonVariantEnum.TEXT}
-              width="58%"
-              height={24}
+              sx={{ borderRadius: "999px", flexShrink: 0 }}
             />
           </Stack>
-          <Skeleton
-            variant={SkeletonVariantEnum.RECTANGULAR}
-            width={78}
-            height={30}
-          />
+
+          <Stack
+            stackProps={{
+              gap: 0.75,
+            }}
+          >
+            <Skeleton variant={SkeletonVariantEnum.TEXT} width="44%" height={16} />
+            <Skeleton variant={SkeletonVariantEnum.TEXT} width="68%" height={24} />
+          </Stack>
         </Stack>
 
-        <Stack
-          stackProps={{
-            gap: 0.75,
-          }}
-        >
-          <Skeleton variant={SkeletonVariantEnum.TEXT} width="44%" height={18} />
-          <Skeleton variant={SkeletonVariantEnum.TEXT} width="68%" height={28} />
-        </Stack>
-      </Stack>
-
-      <Skeleton variant={SkeletonVariantEnum.TEXT} width="42%" height={22} />
-
-      <Stack
-        stackProps={{
-          className: "pt-4",
-          direction: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 1.5,
-          sx: {
-            borderTop: "1px solid #EEF2F6",
-          },
-        }}
-      >
         <Stack
           stackProps={{
             direction: "row",
             alignItems: "center",
-            gap: 1.5,
-            width: "100%",
+            gap: 1,
           }}
         >
           <Skeleton
             variant={SkeletonVariantEnum.CIRCULAR}
-            width={40}
-            height={40}
+            width={18}
+            height={18}
+            sx={{ flexShrink: 0 }}
           />
+          <Skeleton variant={SkeletonVariantEnum.TEXT} width="42%" height={18} />
+        </Stack>
+
+        <Stack
+          stackProps={{
+            className: "pt-4",
+            direction: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 1.5,
+            sx: {
+              borderTop: "1px solid #EEF2F6",
+            },
+          }}
+        >
           <Stack
             stackProps={{
-              gap: 0.5,
+              direction: "row",
+              alignItems: "center",
+              gap: 1.5,
+              minWidth: 0,
               width: "100%",
             }}
           >
             <Skeleton
-              variant={SkeletonVariantEnum.TEXT}
-              width="62%"
-              height={20}
+              variant={SkeletonVariantEnum.CIRCULAR}
+              width={40}
+              height={40}
+              sx={{ flexShrink: 0 }}
             />
-            <Skeleton
-              variant={SkeletonVariantEnum.TEXT}
-              width="42%"
-              height={18}
-            />
+            <Stack
+              stackProps={{
+                gap: 0.5,
+                width: "100%",
+              }}
+            >
+              <Skeleton
+                variant={SkeletonVariantEnum.TEXT}
+                width="62%"
+                height={18}
+              />
+              <Skeleton
+                variant={SkeletonVariantEnum.TEXT}
+                width="42%"
+                height={16}
+              />
+            </Stack>
           </Stack>
+          <Skeleton
+            variant={SkeletonVariantEnum.CIRCULAR}
+            width={36}
+            height={36}
+            sx={{ flexShrink: 0 }}
+          />
         </Stack>
-        <Skeleton
-          variant={SkeletonVariantEnum.CIRCULAR}
-          width={34}
-          height={34}
-        />
       </Stack>
     </Stack>
   );

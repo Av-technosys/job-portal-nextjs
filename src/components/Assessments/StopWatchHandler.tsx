@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Typography } from "../common";
-import { TypographyVariantEnum } from "@/types";
-import { colorStyles } from "@/styles";
 
 type StopWatchHandlerProps = {
   getStopWatchTime: (time: number) => void;
@@ -42,52 +39,17 @@ const StopWatchHandler = ({
   // ⏳ Show loading UI while waiting for questions
   if (isLoading || stopwatchTime === null) {
     return (
-      <Stack
-        stackProps={{
-          alignItems: "center",
-          justifyContent: "center",
-          sx: {
-            width: "100%",
-            padding: "10px 10px",
-            backgroundColor: colorStyles.latestJobCardBackground,
-          },
-        }}
-      >
-        <Typography
-          typographyProps={{
-            children: "Loading questions...",
-            variant: TypographyVariantEnum.H6,
-            color: "text.secondary",
-            className: "text-center",
-          }}
-        />
-      </Stack>
+      <span className="font-mono font-semibold text-slate-400 text-sm animate-pulse">
+        Loading...
+      </span>
     );
   }
 
   // 🕒 Timer display
   return (
-    <Stack
-      stackProps={{
-        alignItems: "end",
-        sx: {
-          width: "100%",
-          padding: "10px 10px",
-          backgroundColor: colorStyles.latestJobCardBackground,
-        },
-      }}
-    >
-      <Typography
-        typographyProps={{
-          children: `Time left: ${String(
-            Math.floor(stopwatchTime / 60)
-          ).padStart(2, "0")}:${String(stopwatchTime % 60).padStart(2, "0")}`,
-          variant: TypographyVariantEnum.H5,
-          color: "text.secondary",
-          className: "text-center",
-        }}
-      />
-    </Stack>
+    <span className="font-mono font-bold text-slate-800 tracking-wide text-base">
+      Time left: {String(Math.floor(stopwatchTime / 60)).padStart(2, "0")}:{String(stopwatchTime % 60).padStart(2, "0")}
+    </span>
   );
 };
 

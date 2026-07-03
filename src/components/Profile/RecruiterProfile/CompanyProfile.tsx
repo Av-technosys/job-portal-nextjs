@@ -85,10 +85,9 @@ function RecruiterCompanyProfile() {
       validationSchema={recruiterProfileGeneralInformationValidationSchema}
       onSuccess={handleFormSuccess}
       fieldDetailsArray={[
-        COMPANY_NAME_FIELD,
         UPLOAD_PROFILE_CONFIG,
+        COMPANY_NAME_FIELD,
         COMPANY_ABOUT_US_FIELD,
-        EMPTY_FIELD_FOR_ABOUT,
         ADDRESS_LINE_1_FIELD,
         ADDRESS_LINE_2_FIELD,
         STATE_FIELD,

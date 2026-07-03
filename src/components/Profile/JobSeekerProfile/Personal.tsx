@@ -95,11 +95,10 @@ function Personal({ onNextTab }: { onNextTab?: () => void }) {
         validationSchema={studentProfilePersonalInformationValidationSchema}
         onSuccess={handleFormSuccess}
         fieldDetailsArray={[
+          JOB_SEEKER_UPLOAD_PROFILE_CONFIG,
           NAME_FIELD,
           DATE_OF_BIRTH_FIELD,
           GENDER_FIELD,
-          JOB_SEEKER_UPLOAD_PROFILE_CONFIG,
-          EMPTY_FIELD,
           EMAIL_FIELD,
           PHONE_NUMBER_FIELD,
           EMPTY_FIELD,

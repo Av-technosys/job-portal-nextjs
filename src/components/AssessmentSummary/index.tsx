@@ -63,7 +63,7 @@ function AssessmentSummary({ attemptId }: paramAttemptId) {
               You have completed the assessment. Click the button below to view your detailed performance report, score, and analytics.
             </p>
 
-            <div className="bg-blue-50/50 rounded-2xl p-5 border border-blue-100 mb-8">
+            <div className="bg-indigo-50/50 rounded-2xl p-5 border border-indigo-100 mb-8">
               <p className="text-slate-600 font-medium text-sm">
                 We&apos;d love to hear about your experience! If you faced any issues or have suggestions, please let us know.
               </p>
@@ -73,7 +73,7 @@ function AssessmentSummary({ attemptId }: paramAttemptId) {
             <div className="flex flex-col gap-3 mt-auto">
               <button
                 onClick={handleShowScoreClick}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 text-base font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] transition-all"
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 text-base font-bold rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98] transition-all"
               >
                 View Detailed Score
                 <ArrowForwardOutlinedIcon fontSize="small" />

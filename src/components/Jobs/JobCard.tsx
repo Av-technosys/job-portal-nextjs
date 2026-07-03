@@ -181,28 +181,12 @@ export default function JobCard({
         </Stack>
 
         {/* Footer Actions */}
-        <Stack
-          stackProps={{
-            className: "mt-3",
-            direction: "row",
-            gap: 2,
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-            flexWrap: "wrap",
-          }}
-        >
-          <Stack
-            stackProps={{
-              direction: "row",
-              gap: 2,
-              flexWrap: "wrap",
-            }}
-          >
+        <div className="mt-4 pt-4 border-t border-slate-100 w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-2 flex-wrap">
             {jobDetails.map((detail, index) => (
               <div
                 key={`jobDetails-${index}`}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200/80 text-slate-700 font-medium text-xs shadow-2xs group-hover:bg-indigo-50/50 group-hover:border-indigo-200/60 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200/80 text-slate-700 font-medium text-xs shadow-2xs group-hover:bg-indigo-50/50 group-hover:border-indigo-200/60 transition-colors"
               >
                 <TextWithIcon
                   icon={detail.icon}
@@ -210,20 +194,15 @@ export default function JobCard({
                 />
               </div>
             ))}
-          </Stack>
+          </div>
 
-          {/* Apply Button */}
-          <Stack
-            stackProps={{
-              marginTop: -1,
-            }}
-          >
+          <div className="w-full sm:w-auto shrink-0 flex justify-end">
             <Button
               {...APPLY_BUTTON}
               onClick={() => handleJobDetailsClick(job)}
             />
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </Stack>
     </Stack>
   );

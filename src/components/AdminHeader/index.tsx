@@ -36,15 +36,23 @@ function AdminHeader({ isAuthenticated }: { isAuthenticated: boolean }) {
               direction: "row",
             }}
           >
-            <NextImage
-              props={{
-                alt: "ja_logo",
-                src: JA_LOGO,
-                onClick: () => handleClick("/"),
-                style: { cursor: "pointer" },
-              }}
-            
-            />
+            <div className="flex items-center justify-center flex-shrink-0 mr-6">
+              <NextImage
+                props={{
+                  alt: "ja_logo",
+                  src: JA_LOGO,
+                  width: 220,
+                  height: 56,
+                  onClick: () => handleClick("/"),
+                  style: {
+                    cursor: "pointer",
+                    objectFit: "contain",
+                    height: "56px",
+                    width: "auto",
+                  },
+                }}
+              />
+            </div>
 
             <When condition={!isAuthenticated}>
               <Button
