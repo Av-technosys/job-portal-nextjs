@@ -161,7 +161,7 @@ function TopCompanies({
             gap: 1,
           }}
         >
-          <div className="w-full overflow-x-auto md:overflow-visible">
+          <div className="w-full overflow-x-auto md:overflow-hidden py-8 -my-8">
             <div className="flex flex-row gap-4 md:gap-2 pb-2 md:pb-0 md:flex-nowrap">
               <When condition={topCompaniesAPIData.isLoading}>
                 {COMPANY_CARD_SKELETONS.map((_, index) => (
