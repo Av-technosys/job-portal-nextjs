@@ -286,7 +286,7 @@ function JobOpportunity({
           </Stack>
         </div>
       </When>
-      <div className="w-full overflow-x-auto md:overflow-visible py-8 -my-8">
+      <div className="w-full overflow-x-auto md:overflow-hidden py-8 -my-8">
         <div className="flex flex-row gap-3 md:gap-2 pb-2 md:pb-0 min-w-0">
           <When condition={isLoading}>
             {LATEST_JOB_CARD_SKELETONS.map((_, index) => (
