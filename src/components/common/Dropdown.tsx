@@ -26,12 +26,13 @@ function Dropdown({
 
   const getSelectedOptionObject = useCallback(
     (valueToBeSearched: string) => {
+      // 1. Try exact value match first (handles "-created_date" vs "created_date" correctly)
+      const exactMatch = options?.find(({ value }) => value === valueToBeSearched);
+      if (exactMatch) return exactMatch;
+      // 2. Fallback: normalized label match for fuzzy search
       return options?.find(
-        ({ label, value }) =>
-          value === valueToBeSearched ||
-          normalizeOptionValue(value) === normalizeOptionValue(valueToBeSearched) ||
-          normalizeOptionValue(label as string) ===
-            normalizeOptionValue(valueToBeSearched)
+        ({ label }) =>
+          normalizeOptionValue(label as string) === normalizeOptionValue(valueToBeSearched)
       );
     },
     [options]

@@ -207,6 +207,20 @@ function Jobs() {
         </div>
         <div className="w-full md:w-3/4 flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full">
+            {/* Subtle "Updating" pill — shows only when re-fetching with existing data */}
+            {jobInfoAPIData.isFetching && paginatedInfoData.length > 0 && (
+              <div
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-indigo-600 bg-indigo-50 border border-indigo-100 w-fit"
+                style={{ animation: "pulse 1.5s cubic-bezier(0.4,0,0.6,1) infinite" }}
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full bg-indigo-400"
+                  style={{ animation: "ping 1s linear infinite", display: "inline-block" }}
+                />
+                Updating results…
+              </div>
+            )}
+
             {/* Job count - hidden on xs, visible on md+ */}
             <Stack
               stackProps={{
@@ -265,28 +279,57 @@ function Jobs() {
             </When>
             <Typography {...TITLE_HEADER(totalLength)} />
           </Stack>
-          {paginatedInfoData[0] != undefined ? (
-            <InfinitePagination
-              dataLength={paginatedInfoData?.length}
-              next={jobInfoAPIData?.fetchNextPage}
-              hasMore={hasMore}
-              isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
-            >
-              <Stack>
-                {paginatedInfoData?.map((job) => (
-                  <JobCard
-                    job={job}
-                    key={`jobs-${job?.id}-${job?.is_saved}`}
-                    handleSaveUnSave={handleSaveUnSave}
-                    showSaveUnSaveButton={showSaveUnSaveButton}
-                    handleJobDetailsClick={handleJobDetailsClick}
+          {jobInfoAPIData.isFetching && paginatedInfoData.length === 0 ? (
+            <Loader loaderProps={{ open: true }} />
+          ) : paginatedInfoData.length > 0 ? (
+            <div className="relative">
+              {/* Shimmer sweep bar — visible only during re-fetch */}
+              {jobInfoAPIData.isFetching && (
+                <div
+                  className="absolute top-0 left-0 right-0 h-[2px] z-10 overflow-hidden rounded-full"
+                  style={{ background: "#e0e7ff" }}
+                >
+                  <div
+                    className="h-full w-1/3 rounded-full"
+                    style={{
+                      background: "linear-gradient(90deg, transparent, #6366f1, transparent)",
+                      animation: "shimmerSweep 1.2s ease-in-out infinite",
+                    }}
                   />
-                ))}
-              </Stack>
-            </InfinitePagination>
-          ) : (
+                </div>
+              )}
+              <style>{`
+                @keyframes shimmerSweep {
+                  0%   { transform: translateX(-200%); }
+                  100% { transform: translateX(500%); }
+                }
+              `}</style>
+              <InfinitePagination
+                dataLength={paginatedInfoData?.length}
+                next={jobInfoAPIData?.fetchNextPage}
+                hasMore={hasMore}
+                isFetchingMore={jobInfoAPIData?.isFetchingNextPage}
+              >
+                <Stack
+                  stackProps={{
+                    sx: { opacity: jobInfoAPIData.isFetching ? 0.6 : 1, transition: "opacity 0.25s ease" },
+                  }}
+                >
+                  {paginatedInfoData?.map((job) => (
+                    <JobCard
+                      job={job}
+                      key={`jobs-${job?.id}-${job?.is_saved}`}
+                      handleSaveUnSave={handleSaveUnSave}
+                      showSaveUnSaveButton={showSaveUnSaveButton}
+                      handleJobDetailsClick={handleJobDetailsClick}
+                    />
+                  ))}
+                </Stack>
+              </InfinitePagination>
+            </div>
+          ) : jobInfoAPIData.isFetched ? (
             <div className="text-xl font-bold">No Job Found</div>
-          )}
+          ) : null}
         </div>
       </div>
     </>
