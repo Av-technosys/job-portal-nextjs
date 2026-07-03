@@ -21,7 +21,7 @@ function TestimonialCard({ card }: TestimonialCardProps) {
       key={card.id}
       stackProps={{
         gap: 3,
-        className: "h-80 w-80 rounded-2xl p-6 bg-white shadow-md hover:shadow-2xl transition-all duration-300 border border-slate-200/70 group cursor-pointer",
+        className: "w-full sm:w-80 h-auto sm:h-80 rounded-2xl p-6 bg-white shadow-md hover:shadow-2xl transition-all duration-300 border border-slate-200/70 group cursor-pointer",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",

@@ -17,8 +17,9 @@ function Sidebar() {
     }
   }, [isExtraSmallScreen, isExpanded]);
 
+  // On mobile, navigation is handled by the hamburger menu in the header
   return (
-    <>
+    <Box sx={{ display: { xs: "none", md: "block" } }}>
       <Drawer
         variant={"permanent"}
         sx={{
@@ -72,7 +73,7 @@ function Sidebar() {
           {isExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </Box>
-    </>
+    </Box>
   );
 }
 

@@ -206,21 +206,14 @@ function Jobs() {
           <JobFilterSidebar handleFilterChange={handleFilterChange} />
         </div>
         <div className="w-full md:w-3/4 flex flex-col gap-4">
-          <Stack
-            stackProps={{
-              direction: "row",
-              gap: 1,
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full">
+            {/* Job count - hidden on xs, visible on md+ */}
             <Stack
               stackProps={{
                 direction: "row",
                 gap: 1,
                 alignItems: totalLength === 0 ? "center" : "baseline",
-                visibility: { xs: "hidden", md: "visible" },
+                sx: { display: { xs: "none", md: "flex" } },
               }}
             >
               <When condition={totalLength !== 0}>
@@ -231,35 +224,37 @@ function Jobs() {
               </When>
               <Typography {...TITLE_HEADER(totalLength)} />
             </Stack>
-            <Stack
-              stackProps={{ direction: "row", gap: 1, alignItems: "center" }}
-            >
-              <div className="block md:hidden">
+
+            {/* Mobile: Filter button + Sort dropdown in a row */}
+            <div className="flex items-center gap-2 w-full sm:w-auto sm:ml-auto">
+              <div className="block md:hidden flex-shrink-0">
                 <FilterButton
                   isFilterOpen={isFilterOpen}
                   setIsFilterOpen={setIsFilterOpen}
                   handleFilterChange={handleFilterChange}
                 />
               </div>
-              <span className="text-xs font-semibold text-slate-600 shrink-0 self-center">
-                Sort by:
-              </span>
-              <Dropdown
-                {...JOB_LISTING_SORT_DROPDOWN}
-                onChange={handleSortChange}
-                value={selectedSort?.[0]}
-              />
-            </Stack>
-          </Stack>
+              <div className="flex items-center gap-2 flex-1 sm:flex-none min-w-0">
+                <span className="text-xs font-semibold text-slate-600 shrink-0 whitespace-nowrap">
+                  Sort by:
+                </span>
+                <div className="flex-1 min-w-0 max-w-[200px]">
+                  <Dropdown
+                    {...JOB_LISTING_SORT_DROPDOWN}
+                    onChange={handleSortChange}
+                    value={selectedSort?.[0]}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Job count visible on mobile */}
           <Stack
             stackProps={{
               direction: "row",
               gap: 1,
               alignItems: totalLength === 0 ? "center" : "baseline",
-              visibility: { xs: "visible", md: "hidden" },
-              justifyItems: "flex-end",
-              mt: "10px",
-              className: "w-full",
+              sx: { display: { xs: "flex", md: "none" }, mt: "4px" },
             }}
           >
             <When condition={totalLength !== 0}>

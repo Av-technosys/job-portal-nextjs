@@ -49,12 +49,12 @@ function DashboardLayout({
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", overflowX: "hidden", width: "100%" }}>
         <Header isAuthenticated={isAuthenticated} />
         <When condition={isSidebar}>
           <Sidebar />
         </When>
-        <Box component="main" sx={{ flexGrow: 1, px: 4, pb: 4, pt: 4 }}>
+        <Box component="main" sx={{ flexGrow: 1, px: { xs: 1.5, sm: 2, md: 4 }, pb: { xs: 3, md: 4 }, pt: { xs: 2, md: 4 }, minWidth: 0, overflowX: "hidden" }}>
           <Toolbar
             sx={{
               minHeight: "64px !important",

@@ -286,42 +286,36 @@ function JobOpportunity({
           </Stack>
         </div>
       </When>
-      <Stack
-        stackProps={{
-          direction: "row",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          gap: 1,
-          className: "w-full max-w-6xl mb-8 overflow-hidden py-8 -my-8",
-        }}
-      >
-        <When condition={isLoading}>
-          {LATEST_JOB_CARD_SKELETONS.map((_, index) => (
-            <LatestJobCardSkeleton key={`latest-job-skeleton-${index}`} />
-          ))}
-        </When>
-        <When condition={!isLoading && latestJobs.length === 0}>
-          <Typography
-            typographyProps={{
-              children: "No jobs found",
-              variant: TypographyVariantEnum.BODY2,
-            }}
-            fontSize={TypographyFontSize.small}
-            fontColor={TypographyFontColor.grey}
-          />
-        </When>
-        <When condition={!isLoading && latestJobs.length > 0}>
-          {latestJobs.map((job, jobIndex) => (
-            <div
-              key={String(job?.id || jobIndex)}
-              className=" transition-transform duration-500"
-              style={{ transform: `translateX(-${slideCount * 100}%)` }}
-            >
-              <LatestJobCard job={job} index={jobIndex} />
-            </div>
-          ))}
-        </When>
-      </Stack>
+      <div className="w-full overflow-x-auto md:overflow-visible py-8 -my-8">
+        <div className="flex flex-row gap-3 md:gap-2 pb-2 md:pb-0 min-w-0">
+          <When condition={isLoading}>
+            {LATEST_JOB_CARD_SKELETONS.map((_, index) => (
+              <LatestJobCardSkeleton key={`latest-job-skeleton-${index}`} />
+            ))}
+          </When>
+          <When condition={!isLoading && latestJobs.length === 0}>
+            <Typography
+              typographyProps={{
+                children: "No jobs found",
+                variant: TypographyVariantEnum.BODY2,
+              }}
+              fontSize={TypographyFontSize.small}
+              fontColor={TypographyFontColor.grey}
+            />
+          </When>
+          <When condition={!isLoading && latestJobs.length > 0}>
+            {latestJobs.map((job, jobIndex) => (
+              <div
+                key={String(job?.id || jobIndex)}
+                className="transition-transform duration-500 flex-shrink-0"
+                style={{ transform: `translateX(-${slideCount * 100}%)` }}
+              >
+                <LatestJobCard job={job} index={jobIndex} />
+              </div>
+            ))}
+          </When>
+        </div>
+      </div>
     </>
   );
 }

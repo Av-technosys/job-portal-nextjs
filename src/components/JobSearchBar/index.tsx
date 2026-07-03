@@ -25,9 +25,9 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
         alignItems: "center",
         className: "py-24 md:py-28 bg-gradient-to-b from-slate-50 via-slate-50/60 to-white relative overflow-hidden",
         sx: {
-          width: "calc(100% + 64px)",
-          mx: "-32px",
-          mt: { xs: "-54px", md: "-64px" },
+          width: { xs: "100%", md: "calc(100% + 64px)" },
+          mx: { xs: 0, md: "-32px" },
+          mt: { xs: "-32px", md: "-64px" },
         },
       }}
     >
