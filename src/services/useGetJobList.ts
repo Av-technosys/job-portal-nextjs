@@ -23,9 +23,14 @@ export const getJobList = ({
   sort = [],
   filterSearch = "",
 }: GetJobListParams): Promise<{ data: PaginationSuccessResponseType }> => {
-  return api.get(
-    `${apiConstantsURL.jobs.jobList}?page=${page}&page_size=${pageLimit}&sort=${sort}&search=${encodeURIComponent(search)}${filterSearch}`
-  );
+  // Build query params — Django's get_job_listing uses getlist("sort") for sorting
+  const params = new URLSearchParams();
+  params.set("page", String(page));
+  params.set("page_size", String(pageLimit));
+  if (search) params.set("search", search);
+  sort.forEach((s) => params.append("sort", s));
+  const baseUrl = `${apiConstantsURL.jobs.jobList}?${params.toString()}${filterSearch}`;
+  return api.get(baseUrl);
 };
 
 export const getInfiniteJobListQueryOptions = (metaData: GetJobListParams) => {

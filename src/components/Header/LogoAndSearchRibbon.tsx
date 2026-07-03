@@ -178,14 +178,15 @@ function LogoAndSearchRibbon({
             props={{
               alt: "ja_logo",
               src: JA_LOGO,
-              width: 220,
-              height: 56,
+              width: 260,
+              height: 64,
               onClick: () => handleClick(LANDING_URL),
               style: {
                 cursor: "pointer",
                 objectFit: "contain",
-                height: "46px",
+                height: "64px",
                 width: "auto",
+                maxHeight: "100%",
               },
             }}
           />
