@@ -206,7 +206,7 @@ function JobDetail({
     <div className="flex flex-col gap-6 font-sans">
       
       {/* Premium Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-blue-50/50 border border-blue-100 p-6 rounded-2xl shadow-sm gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-indigo-50/50 border border-indigo-100 p-6 rounded-2xl shadow-sm gap-4">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-xl overflow-hidden shadow-sm flex items-center justify-center bg-white border border-slate-200 shrink-0">
             <Avatar {...IMAGE(job).avatarProps} sx={{ width: 48, height: 48 }}>
@@ -221,7 +221,7 @@ function JobDetail({
               <span className="text-base font-bold text-slate-600">
                 {COMPANY_NAME(job)?.typographyProps?.children || "N/A"}
               </span>
-              <span className="px-2 py-0.5 text-xs font-bold rounded-md bg-blue-100 text-blue-700 uppercase tracking-wide">
+              <span className="px-2 py-0.5 text-xs font-bold rounded-md bg-indigo-100 text-indigo-700 uppercase tracking-wide">
                 {JOB_TYPE(job)?.typographyProps?.children || "N/A"}
               </span>
             </div>
@@ -232,7 +232,7 @@ function JobDetail({
           <button
             onClick={onApplyClick}
             disabled={jobApplyMutate.isPending}
-            className="w-full md:w-auto px-8 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-600/30 hover:bg-blue-700 hover:-translate-y-0.5 active:scale-95 transition-all disabled:opacity-50"
+            className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/25 hover:from-indigo-600 hover:to-indigo-700 hover:-translate-y-0.5 active:scale-95 transition-all disabled:opacity-50"
           >
             {jobApplyMutate.isPending ? "Applying..." : (APPLY_BUTTON?.buttonProps?.children || "Apply Now")}
           </button>

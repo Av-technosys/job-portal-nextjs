@@ -50,7 +50,7 @@ const AdminSideBarDrawer = ({
     <Stack
       stackProps={{
         className:
-          "p-5 h-full border-l border-gray-300 w-[390px] bg-slate-100 shadow-lg overflow-y-auto",
+          "p-6 h-full border-l border-slate-200 w-[400px] bg-white shadow-2xl overflow-y-auto",
         direction: "column",
       }}
     >
@@ -223,7 +223,7 @@ const AdminSideBarDrawer = ({
         <Typography {...MAIN_HEADING_TEXT("Organization Info")} />
         <Stack
           stackProps={{
-            className: "mt-2 bg-white p-2 text-sm text-blue-600 space-y-1",
+            className: "mt-2 bg-slate-50 border border-slate-100 rounded-xl p-3 text-sm text-indigo-600 font-medium space-y-1.5",
             direction: "column",
           }}
         >
@@ -271,7 +271,7 @@ const AdminSideBarDrawer = ({
           <Typography {...HEADING_TEXT("Social Profiles")} />
           <Stack
             stackProps={{
-              className: "mt-2 bg-white p-2 text-sm text-blue-600 space-y-1",
+              className: "mt-2 bg-slate-50 border border-slate-100 rounded-xl p-3 text-sm text-indigo-600 font-medium space-y-1.5",
               direction: "column",
             }}
           >

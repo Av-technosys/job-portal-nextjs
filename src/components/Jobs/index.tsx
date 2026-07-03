@@ -241,7 +241,7 @@ function Jobs() {
                   handleFilterChange={handleFilterChange}
                 />
               </div>
-              <span className="text-xs font-medium text-slate-500 shrink-0 self-center">
+              <span className="text-xs font-semibold text-slate-600 shrink-0 self-center">
                 Sort by:
               </span>
               <Dropdown

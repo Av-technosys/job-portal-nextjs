@@ -62,11 +62,12 @@ function LatestJobOpenings() {
       >
         <Stack
           stackProps={{
+            width: "100%",
             marginLeft: 2,
             marginBottom: 3,
             direction: "row",
             justifyContent: "space-between",
-            className: "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl",
+            className: "w-full",
           }}
         >
           <Stack
@@ -83,8 +84,8 @@ function LatestJobOpenings() {
 
         <Stack
           stackProps={{
-            className:
-              "max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto p-2",
+            width: "100%",
+            className: "w-full p-2",
           }}
         >
           <Tabs
@@ -92,6 +93,7 @@ function LatestJobOpenings() {
             tabsProps={{
               defaultValue: tabItems?.[0].key,
               orientation: "horizontal",
+              TabIndicatorProps: { style: { display: "none" } },
               sx: {
                 width: "100%",
                 "& .MuiTabs-flexContainer": {
@@ -100,6 +102,7 @@ function LatestJobOpenings() {
                 },
                 "& .MuiTab-root": {
                   borderRadius: "999px",
+                  overflow: "hidden",
                   padding: "8px 20px",
                   minHeight: "40px",
                   fontWeight: 600,
@@ -107,6 +110,10 @@ function LatestJobOpenings() {
                   backgroundColor: "#F8FAFC",
                   border: "1px solid #E2E8F0",
                   transition: "all 0.2s ease",
+                  outline: "none !important",
+                  "& .MuiTouchRipple-root": {
+                    display: "none !important",
+                  },
                   "&:hover": {
                     backgroundColor: "#EEF2FF",
                     borderColor: "#C7D2FE",
@@ -118,9 +125,14 @@ function LatestJobOpenings() {
                     borderColor: "#4F46E5",
                     boxShadow: "0 4px 12px rgba(79, 70, 229, 0.25)",
                   },
+                  "&.Mui-focusVisible": {
+                    outline: "none !important",
+                  },
                 },
                 "& .MuiTabs-indicator": {
-                  display: "none",
+                  display: "none !important",
+                  height: "0px !important",
+                  opacity: "0 !important",
                 },
               },
             }}

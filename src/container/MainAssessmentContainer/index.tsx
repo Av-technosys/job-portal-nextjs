@@ -264,8 +264,8 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
               {/* Top Info Bar */}
               <div className="flex flex-wrap items-center justify-between p-5 md:px-8 border-b border-slate-100 bg-slate-50/50">
                 <div className="flex items-center gap-4">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-1.5 text-sm font-bold text-blue-800">
-                    <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                  <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-4 py-1.5 text-sm font-bold text-indigo-800">
+                    <span className="w-2 h-2 rounded-full bg-indigo-600"></span>
                     Question {currentQIndex}
                   </span>
                   
@@ -340,7 +340,7 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
                 
                 <button
                   onClick={() => handleSaveAndNext(currentSelectedOption)}
-                  className="flex items-center gap-2 px-8 py-3 text-sm font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] transition-all"
+                  className="flex items-center gap-2 px-8 py-3 text-sm font-bold rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98] transition-all"
                 >
                   Save & Next
                   <ArrowForwardOutlinedIcon fontSize="small" />
@@ -404,10 +404,10 @@ const QuestionOptions = ({
           <label
             key={option.id}
             className={`
-              relative flex items-center p-4 md:p-5 cursor-pointer rounded-2xl border-2 transition-all duration-200
+              relative flex items-center gap-4 p-4 md:p-5 cursor-pointer rounded-2xl border-2 transition-all duration-200
               ${isSelected 
-                ? 'border-blue-500 bg-blue-50/50 shadow-sm' 
-                : 'border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50'
+                ? 'border-indigo-500 bg-indigo-50/50 shadow-sm' 
+                : 'border-slate-200 bg-white hover:border-indigo-200 hover:bg-slate-50'
               }
             `}
           >
@@ -422,8 +422,8 @@ const QuestionOptions = ({
             
             {/* Custom Radio Indicator */}
             <div className={`
-              flex-shrink-0 w-6 h-6 rounded-full border-2 mr-5 flex items-center justify-center transition-colors
-              ${isSelected ? 'border-blue-600 bg-blue-600' : 'border-slate-300 bg-white'}
+              flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors
+              ${isSelected ? 'border-indigo-600 bg-indigo-600' : 'border-slate-300 bg-white'}
             `}>
               {isSelected && (
                 <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
@@ -431,7 +431,7 @@ const QuestionOptions = ({
             </div>
 
             {/* Option Text */}
-            <span className={`text-lg font-medium ${isSelected ? 'text-blue-900' : 'text-slate-700'}`}>
+            <span className={`text-lg font-medium ${isSelected ? 'text-indigo-900' : 'text-slate-700'}`}>
               {option.text}
             </span>
           </label>

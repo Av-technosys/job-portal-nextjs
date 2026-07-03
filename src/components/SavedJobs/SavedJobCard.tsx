@@ -78,7 +78,7 @@ export default function SavedJobCard({
         <When condition={job?.id !== undefined}>
           <button
             onClick={() => handleUnSaveClick(job)}
-            className="p-1.5 rounded-full text-blue-500 bg-blue-50 hover:bg-blue-100 transition-colors"
+            className="p-1.5 rounded-full text-indigo-500 bg-indigo-50 hover:bg-indigo-100 transition-colors"
             title="Remove from saved"
           >
             <TurnedInIcon fontSize="small" />
@@ -100,7 +100,7 @@ export default function SavedJobCard({
       <div className="pt-4 border-t border-slate-100 w-full mt-auto">
         <button
           onClick={() => handleApplyClick(job)}
-          className="w-full px-4 py-2.5 bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] rounded-xl text-sm font-bold transition-all"
+          className="w-full px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-600/20 active:scale-[0.98] rounded-xl text-sm font-bold transition-all"
         >
           {APPLY_BUTTON(job)?.buttonProps?.children || "Apply Now"}
         </button>

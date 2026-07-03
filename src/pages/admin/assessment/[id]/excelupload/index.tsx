@@ -95,7 +95,7 @@ const ExcelUploader = () => {
       <Stack
         stackProps={{
           padding: 4,
-          className: "max-w-6xl mx-auto border border-gray-400 mt-4 rounded-md",
+          className: "max-w-4xl mx-auto bg-white border border-slate-200 shadow-xl mt-6 rounded-2xl",
         }}
       >
         <Stack stackProps={{ direction: "column", spacing: 3 }}>
@@ -104,7 +104,7 @@ const ExcelUploader = () => {
 
           <Stack stackProps={{ direction: "row", spacing: 2 }}>
             <button
-              className="px-2 py-1 rounded border border-blue-500 text-blue-500"
+              className="px-3 py-1.5 rounded-lg border border-indigo-500 text-indigo-600 font-medium hover:bg-indigo-50 transition-colors"
               onClick={() => {
                 const downloadUrl =
                   "https://docs.google.com/spreadsheets/d/1KpnKijVJ6aIOaWkwbaarwgKoAiRJ2UfGN2w22_91d7g/export?format=xlsx";
@@ -123,7 +123,7 @@ const ExcelUploader = () => {
               type="file"
               accept=".xlsx,.xls"
               onChange={handleFileUpload}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
             />
             {fileName && (
               <>

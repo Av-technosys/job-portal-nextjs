@@ -162,7 +162,7 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
           hasMore={hasMore}
           isFetchingMore={candidateApplicationAPIData?.isFetchingNextPage}
         >
-          <Stack>
+          <div className="flex flex-col gap-4 mt-2">
             {paginatedInfoData?.map((candidate) => (
               <CandidateApplicationCard
                 candidate={candidate}
@@ -173,7 +173,7 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
                 }
               />
             ))}
-          </Stack>
+          </div>
         </InfinitePagination>
       </When>
       <Menu

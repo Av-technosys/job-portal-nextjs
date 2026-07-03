@@ -100,8 +100,9 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
         <Stack
           stackProps={{
             direction: "row",
-            bgcolor: "#e8f5e9",
-            color: "#2e7d32",
+            bgcolor: "#eef2ff",
+            color: "#4f46e5",
+            border: "1px solid #e0e7ff",
             padding: "4px 12px",
             borderRadius: 4,
           }}
@@ -136,29 +137,29 @@ const AdminQuestionCard: React.FC<AdminQuestionCardProps> = ({
               elevation: 0,
               sx: {
                 p: { xs: 1.5, md: 2 },
-                border: "1px solid #e0e0e0",
-                backgroundColor: normalizeAnswer === key ? "#c8facc" : "white",
-                borderRadius: 1,
+                border: normalizeAnswer === key ? "1.5px solid #22c55e" : "1px solid #e2e8f0",
+                backgroundColor: normalizeAnswer === key ? "#f0fdf4" : "white",
+                borderRadius: 2,
               },
             }}
             key={key}
           >
-            {/* <Radio
-              formControlLabelProps={{
-                label: `${key}. ${value}`,
-                sx: { width: "100%", margin: 0 },
-              }}
-              checked={normalizeAnswer === key}
-              onChange={() => {}}
-              radioProps={{
-                name: questionData.id,
-                value: key,
-
-                disabled: normalizeAnswer !== key,
-              }}
-              helperText={value}
-            /> */}
-            <p>{`${value}`}</p>
+            <div className="flex items-center gap-3.5">
+              <div
+                className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                  normalizeAnswer === key
+                    ? "border-emerald-600 bg-emerald-600"
+                    : "border-slate-300 bg-white"
+                }`}
+              >
+                {normalizeAnswer === key && (
+                  <div className="w-2 h-2 rounded-full bg-white"></div>
+                )}
+              </div>
+              <span className={`text-base font-medium ${normalizeAnswer === key ? "text-emerald-900 font-semibold" : "text-slate-700"}`}>
+                {value}
+              </span>
+            </div>
           </Paper>
         ))}
       </Stack>

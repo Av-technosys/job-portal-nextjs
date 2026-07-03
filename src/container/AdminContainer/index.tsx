@@ -108,28 +108,32 @@ function AdminContainer() {
 
   const statsData = [
     {
-      icon: <PeopleIcon fontSize="large" />,
+      icon: <PeopleIcon sx={{ fontSize: 28, color: "#4f46e5" }} />,
       count: recruiterCount + jobSeekerCount,
       label: "Total Users",
-      bgColor: "#FFE2E5",
+      badgeBg: "#eef2ff",
+      borderColor: "#e0e7ff",
     },
     {
-      icon: <BusinessIcon fontSize="large" />,
+      icon: <BusinessIcon sx={{ fontSize: 28, color: "#16a34a" }} />,
       count: recruiterCount,
       label: "Recruiter Count",
-      bgColor: "#DCFCE7",
+      badgeBg: "#f0fdf4",
+      borderColor: "#dcfce7",
     },
     {
-      icon: <PersonIcon fontSize="large" />,
+      icon: <PersonIcon sx={{ fontSize: 28, color: "#2563eb" }} />,
       count: jobSeekerCount,
       label: "Job Seeker Count",
-      bgColor: "#DCFCE7",
+      badgeBg: "#eff6ff",
+      borderColor: "#dbeafe",
     },
     {
-      icon: <SchoolIcon fontSize="large" />,
+      icon: <SchoolIcon sx={{ fontSize: 28, color: "#9333ea" }} />,
       count: assessmentCount,
       label: "Total Assessment",
-      bgColor: "#FFC1B2",
+      badgeBg: "#faf5ff",
+      borderColor: "#f3e8ff",
     },
   ];
 
@@ -137,11 +141,10 @@ function AdminContainer() {
   const isAuthenticated = true;
 
   return (
-    <Stack>
+    <Stack stackProps={{ sx: { bgcolor: "#f8fafc", minHeight: "100vh", pb: 8 } }}>
       <Stack
         stackProps={{
           width: "100%",
-          bgcolor: "skyblue",
           direction: "row",
           alignItems: "center",
           justifyContent: "space-between",
@@ -186,7 +189,7 @@ function AdminContainer() {
           direction: "column",
           justifyContent: "space-between",
           gap: 4,
-          sx: { width: "100%" },
+          sx: { width: "100%", px: { xs: 2, md: 6 }, pt: 6 },
         }}
       >
         <Typography {...WELCOME_MESSAGE("Admin")} />
@@ -207,37 +210,70 @@ function AdminContainer() {
             >
               <Paper
                 paperProps={{
+                  elevation: 0,
                   sx: {
-                    padding: 4,
-                    background: item.bgColor,
-                    borderRadius: "12px",
-                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.15)",
+                    p: 3.5,
+                    background: "#ffffff",
+                    border: `1px solid ${item.borderColor}`,
+                    borderRadius: "16px",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02)",
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: "translateY(-3px)",
+                      boxShadow: "0 12px 20px -8px rgba(79, 70, 229, 0.12)",
+                      borderColor: "#818cf8",
+                    },
                   },
                 }}
               >
+                <Stack
+                  stackProps={{
+                    direction: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                    mb: 2.5,
+                  }}
+                >
+                  <Typography
+                    typographyProps={{
+                      children: item.label,
+                      sx: { color: "#64748b" },
+                    }}
+                    fontWeight={TypographyFontWeight.bold}
+                    fontSize={TypographyFontSize.normal}
+                  />
+                  <div
+                    style={{
+                      backgroundColor: item.badgeBg,
+                      padding: "10px",
+                      borderRadius: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {item.icon}
+                  </div>
+                </Stack>
                 <Typography
                   typographyProps={{
                     children: item.count,
+                    sx: { color: "#1e293b", lineHeight: 1 },
                   }}
+                  fontWeight={TypographyFontWeight.extrabold}
                   fontSize={TypographyFontSize.largeTitle}
-                />
-                <Typography
-                  typographyProps={{
-                    children: item.label,
-                  }}
-                  fontWeight={TypographyFontWeight.bold}
-                  fontSize={TypographyFontSize.normal}
                 />
               </Paper>
             </Grid>
           ))}
         </Grid>
       </Stack>
-      <Stack stackProps={{ width: "100%", className: "p-3" }}>
+      <Stack stackProps={{ width: "100%", className: "p-3", sx: { px: { xs: 2, md: 6 } } }}>
         <Typography {...TAB_TITLE} />
         <AdminTabs />
       </Stack>

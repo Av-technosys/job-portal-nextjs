@@ -80,7 +80,7 @@ function FindRecruiter() {
             </div>
 
             <div className="flex items-center gap-2 self-start sm:self-center">
-              <span className="text-xs font-medium text-slate-500 shrink-0 self-center">
+              <span className="text-xs font-semibold text-slate-600 shrink-0 self-center">
                 Sort by:
               </span>
               <Dropdown

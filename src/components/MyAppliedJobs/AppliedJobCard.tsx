@@ -103,7 +103,7 @@ export default function AppliedJobCard({ job }: { job: CommonObjectType }) {
         <div className="pt-4 border-t border-slate-100 w-full mt-auto flex flex-col gap-2">
           <button
             onClick={handleViewDetailsClick}
-            className="w-full px-4 py-2.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-xl text-sm font-bold transition-colors"
+            className="w-full px-4 py-2.5 bg-indigo-50 text-indigo-700 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-indigo-600 hover:text-white hover:shadow-md hover:shadow-indigo-500/20 rounded-xl text-sm font-bold transition-all duration-200"
           >
             View Details
           </button>

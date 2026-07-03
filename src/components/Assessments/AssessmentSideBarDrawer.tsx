@@ -151,7 +151,7 @@ useEffect(() => {
       <div className="p-5 border-t border-slate-100 bg-slate-50/50 mt-auto">
         <button
           onClick={() => setOpen(true)}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/20 active:scale-[0.98] transition-all"
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98] transition-all"
         >
           Submit Test
           <ChevronRightIcon fontSize="small" />

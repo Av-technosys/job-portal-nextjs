@@ -42,9 +42,9 @@ function AdminLayout({
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", bgcolor: "#f8fafc", minHeight: "100vh" }}>
         <AdminHeader isAuthenticated={isAuthenticated} />
-        <Box component="main" sx={{ flexGrow: 1, p: 3, pt: 13 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 4 }, pt: { xs: 11, md: 12 }, width: "100%", overflowX: "hidden" }}>
           {children}
         </Box>
       </Box>

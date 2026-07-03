@@ -23,36 +23,66 @@ export const SUBSCRIPTION_PAGE_CONFIG = {
   BUTTON_CONFIG: {
     buttonProps: {
       children: "Free Practice Aptitude Test",
-      className: "w-full transition-all duration-200 border-0",
+      className: "w-full transition-all duration-200 border-0 cursor-pointer",
       sx: { 
-        backgroundColor: "#3b82f6", 
-        color: "#fff", textTransform: "none", fontSize: "0.85rem", borderRadius: "8px", fontWeight: "600",
+        background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)", 
+        color: "#fff", 
+        textTransform: "none", 
+        fontSize: "0.85rem", 
+        borderRadius: "10px", 
+        fontWeight: "600",
         padding: "12px 16px",
-        "&:hover": { backgroundColor: "#2563eb" }
+        boxShadow: "0 4px 12px rgba(79, 70, 229, 0.25)",
+        transition: "all 0.25s ease-in-out",
+        "&:hover": { 
+          background: "linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)",
+          boxShadow: "0 6px 16px rgba(79, 70, 229, 0.35)",
+          transform: "translateY(-1px)",
+        }
       },
     },
   },
   RESUME_BUTTON_CONFIG: {
     buttonProps: {
       children: "Resume Aptitude Test",
-      className: "w-full transition-all duration-200 border-0",
+      className: "w-full transition-all duration-200 border-0 cursor-pointer",
       sx: { 
-        backgroundColor: "#3b82f6", 
-        color: "#fff", textTransform: "none", fontSize: "0.85rem", borderRadius: "8px", fontWeight: "600",
+        background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)", 
+        color: "#fff", 
+        textTransform: "none", 
+        fontSize: "0.85rem", 
+        borderRadius: "10px", 
+        fontWeight: "600",
         padding: "12px 16px",
-        "&:hover": { backgroundColor: "#2563eb" }
+        boxShadow: "0 4px 12px rgba(79, 70, 229, 0.25)",
+        transition: "all 0.25s ease-in-out",
+        "&:hover": { 
+          background: "linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)",
+          boxShadow: "0 6px 16px rgba(79, 70, 229, 0.35)",
+          transform: "translateY(-1px)",
+        }
       },
     },
   },
   ACTUAL_APTITUDE_TEST_BUTTON_CONFIG: {
     buttonProps: {
       children: "Actual Aptitude Test",
-      className: "w-full transition-all duration-200 border-0",
+      className: "w-full transition-all duration-200 border-0 cursor-pointer",
       sx: { 
-        backgroundColor: "#3b82f6", 
-        color: "#fff", textTransform: "none", fontSize: "0.85rem", borderRadius: "8px", fontWeight: "600",
+        background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)", 
+        color: "#fff", 
+        textTransform: "none", 
+        fontSize: "0.85rem", 
+        borderRadius: "10px", 
+        fontWeight: "600",
         padding: "12px 16px",
-        "&:hover": { backgroundColor: "#2563eb" }
+        boxShadow: "0 4px 12px rgba(79, 70, 229, 0.25)",
+        transition: "all 0.25s ease-in-out",
+        "&:hover": { 
+          background: "linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)",
+          boxShadow: "0 6px 16px rgba(79, 70, 229, 0.35)",
+          transform: "translateY(-1px)",
+        }
       },
     },
   },

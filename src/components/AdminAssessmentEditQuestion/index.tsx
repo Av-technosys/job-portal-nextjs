@@ -157,7 +157,7 @@ const Index = ({
         />
       )}
 
-      <Stack stackProps={{ className: "max-w-5xl border my-5 p-10 mx-auto" }}>
+      <Stack stackProps={{ className: "max-w-4xl bg-white border border-slate-200 shadow-xl rounded-2xl my-8 p-8 md:p-10 mx-auto" }}>
         <Button
           onClick={() => router.back()}
           {...QUESTION_CONFIG.FORM_CONFIG.BACK_BUTTON}
