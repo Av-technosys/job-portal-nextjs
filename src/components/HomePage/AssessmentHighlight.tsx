@@ -57,15 +57,15 @@ function AssessmentHighlight() {
     <Box
       component="section"
       sx={{
-        width: "calc(100% + 64px)",
-        mx: "-32px",
+        width: { xs: "100%", md: "calc(100% + 64px)" },
+        mx: { xs: 0, md: "-32px" },
         background: "linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #0F172A 100%)",
         borderTop: "1px solid #1E293B",
         borderBottom: "1px solid #1E293B",
         py: { xs: 6, md: 8 },
         my: { xs: 6, md: 8 },
         position: "relative",
-        overflow: "visible",
+        overflow: "hidden",
       }}
     >
       <Stack
@@ -73,7 +73,7 @@ function AssessmentHighlight() {
         spacing={{ xs: 4, md: 6 }}
         alignItems="center"
         justifyContent="space-between"
-        className="max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto"
+        className="max-w-[22rem] md:max-w-[45rem] lg:max-w-6xl mx-auto px-4 sm:px-6"
       >
         <Stack spacing={2.5} sx={{ maxWidth: 620 }}>
           <Chip
