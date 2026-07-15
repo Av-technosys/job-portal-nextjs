@@ -80,12 +80,20 @@ export const POSTED_JOB_PAGE_CONFIG = {
         },
       };
     },
-    DESIGNATION: (job: CommonObjectType) => {
+    TITLE: (job: CommonObjectType) => {
+      return {
+        typographyProps: {
+          children: job?.title,
+          variant: TypographyVariantEnum.H6,
+          className: "font-bold text-slate-800",
+        },
+      } as TypographyProps;
+    },
+    ROLE: (job: CommonObjectType) => {
       return {
         typographyProps: {
           children: job?.role,
-          variant: TypographyVariantEnum.H6,
-          className: "font-bold text-slate-800",
+          variant: TypographyVariantEnum.BODY2,
         },
       } as TypographyProps;
     },

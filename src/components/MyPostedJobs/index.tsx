@@ -40,7 +40,13 @@ function PostedJobs() {
           paddingBottom: 5,
         }}
       >
-        <Stack>
+        <Stack
+          stackProps={{
+            direction: "row",
+            gap: 1,
+            alignItems: "baseline",
+          }}
+        >
           <When condition={totalLength !== 0}>
             <>
               <Typography {...TITLE_COUNT(totalLength)} />

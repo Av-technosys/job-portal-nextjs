@@ -17,22 +17,18 @@ export const APPLIED_JOB_PAGE_CONFIG = {
     return {
       typographyProps: {
         children: totalLength,
-        variant: TypographyVariantEnum.H5,
+        variant: TypographyVariantEnum.H4,
+        className: "font-extrabold text-blue-700 mr-2",
       },
-      fontWeight: TypographyFontWeight.semibold,
-      fontSize: TypographyFontSize.subtitle,
-      fontColor: TypographyFontColor.black,
     } as TypographyProps;
   },
   TITLE_HEADER: (totalLength: number) => {
     return {
       typographyProps: {
-        children: `Job${getPluralForm({ totalLength })} applied`,
-        variant: TypographyVariantEnum.BODY2,
+        children: `Job${getPluralForm({ totalLength })} Applied`,
+        variant: TypographyVariantEnum.H4,
+        className: "font-extrabold text-slate-800 tracking-tight",
       },
-      fontWeight: TypographyFontWeight.bold,
-      fontSize: TypographyFontSize.extralarge,
-      fontColor: TypographyFontColor.black,
     } as TypographyProps;
   },
   TITLE_BAR_CONFIG: {

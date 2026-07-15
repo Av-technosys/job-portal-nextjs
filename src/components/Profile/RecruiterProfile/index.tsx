@@ -1,23 +1,25 @@
 import { Tabs } from "@/components/common";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import RecruiterCompanyProfile from "./CompanyProfile";
 import SocialLinks from "./SocialLinks";
 import RecruiterFoundingInfo from "./CompanyFoundingInfo";
 
 function RecruiterProfile() {
+  const [activeTab, setActiveTab] = useState("organizationInfo");
+
   const tabItems = useMemo(() => {
     return [
       {
         label: "Organization Info",
         value: "organizationInfo",
         key: "organizationInfo",
-        children: <RecruiterCompanyProfile />,
+        children: <RecruiterCompanyProfile onNextTab={() => setActiveTab("foundingInfo")} />,
       },
       {
         label: "Founding Info",
         value: "foundingInfo",
         key: "foundingInfo",
-        children: <RecruiterFoundingInfo />,
+        children: <RecruiterFoundingInfo onNextTab={() => setActiveTab("socialLinks")} />,
       },
       {
         label: "Social Links",
@@ -31,8 +33,9 @@ function RecruiterProfile() {
   return (
     <Tabs
       items={tabItems}
+      handleTabChange={(newTab) => setActiveTab(newTab)}
       tabsProps={{
-        defaultValue: tabItems?.[0].key,
+        defaultValue: activeTab,
         sx: {
           borderBottom: 1,
           borderColor: "transparent",

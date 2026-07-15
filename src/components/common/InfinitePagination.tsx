@@ -42,8 +42,12 @@ function InfinitePagination({
         }
         endMessage={null}
         inverse={inverse}
+        className="!overflow-visible"
+        style={{ overflow: 'visible' }}
       >
-        {children}
+        <div className="p-6 -m-6 sm:p-8 sm:-m-8">
+          {children}
+        </div>
       </InfiniteScroll>
     </>
   );

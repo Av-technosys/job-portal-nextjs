@@ -254,12 +254,12 @@ function Login() {
                         }}
                       /> */}
 
-                      <Checkbox
+                      {/* <Checkbox
                         key={`remember-me`}
                         label={"Remember Me"}
                         name="datePosted"
                         value={"remember-me"}
-                      />
+                      /> */}
                       <Link
                         {...FORGOT_PASSWORD_LINK({
                           onClick: () => router.push(FORGOT_PASSWORD),

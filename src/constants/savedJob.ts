@@ -18,23 +18,19 @@ export const SAVED_JOB_PAGE_COFIG = {
     return {
       typographyProps: {
         children: totalLength,
-        variant: TypographyVariantEnum.H5,
+        variant: TypographyVariantEnum.H4,
+        className: "font-extrabold text-blue-700 mr-2",
       },
-      fontWeight: TypographyFontWeight.normal,
-      fontSize: TypographyFontSize.subtitle,
-      fontColor: TypographyFontColor.black,
-    };
+    } as TypographyProps;
   },
   TITLE_HEADER: (totalLength: number) => {
     return {
       typographyProps: {
-        children: `Job${getPluralForm({ totalLength })} saved`,
-        variant: TypographyVariantEnum.BODY2,
+        children: `Job${getPluralForm({ totalLength })} Saved`,
+        variant: TypographyVariantEnum.H4,
+        className: "font-extrabold text-slate-800 tracking-tight",
       },
-      fontWeight: TypographyFontWeight.semibold,
-      fontSize: TypographyFontSize.subtitle,
-      fontColor: TypographyFontColor.black,
-    };
+    } as TypographyProps;
   },
   JOB_SAVE_CARD: {
     IMAGE: (job: CommonObjectType) => {

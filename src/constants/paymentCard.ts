@@ -21,7 +21,7 @@ export const PAYMENT_CARD_TEXT_CONFIG = {
   },
   DESCRIPTION_TITLE: {
     typographyProps: {
-      children: "You already have an ongoing test session.",
+      children: "Enroll For The Actual Aptitude Test",
       variant: TypographyVariantEnum.H6,
       className: "text-center ",
     },
@@ -31,7 +31,7 @@ export const PAYMENT_CARD_TEXT_CONFIG = {
   DESCRIPTION_TEXT: {
     typographyProps: {
       children:
-        "Would you like to resume your previous tests or purchase new ones to start fresh?",
+        "Get access to our premium aptitude test to showcase your skills and stand out to top recruiters.",
       variant: TypographyVariantEnum.H5,
       sx: {
         textAlign: "center",
