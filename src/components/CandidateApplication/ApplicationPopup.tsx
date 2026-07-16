@@ -212,7 +212,8 @@ ApplicationPopupProps) {
                         size: "small",
                         disabled:
                           updateCandidateStatusMutate.isPending ||
-                          applicationStatus === item.status,
+                          applicationStatus === item.status ||
+                          item.disabled,
                         sx: {
                           textTransform: "none",
                           minWidth: 0,

@@ -190,7 +190,7 @@ function CandidateDetails({ jobDetails }: { jobDetails: Job }) {
         ).map((item) => (
           <MenuItem
             key={`CandidateApplicationMenu-${item.key}`}
-            disabled={isMenuItemDisabled(item.key)}
+            disabled={item.disabled || isMenuItemDisabled(item.key)}
             onClick={() =>
               handleMenuItemClick(
                 item.key,

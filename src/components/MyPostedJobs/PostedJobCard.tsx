@@ -42,7 +42,8 @@ export default function PostedJobCard({
 }) {
   const { POSTED_JOB_CARD } = POSTED_JOB_PAGE_CONFIG;
   const {
-    DESIGNATION,
+    TITLE,
+    ROLE,
     IMAGE,
     SALARY_RANGE,
     LOCATION,
@@ -190,18 +191,23 @@ export default function PostedJobCard({
         {/* Header Section */}
         <div className="flex justify-between items-start mb-4">
           <div className="flex gap-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex items-center justify-center bg-slate-50 border border-slate-100">
+            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex items-center justify-center bg-slate-50 border border-slate-100 shrink-0">
               <Avatar {...IMAGE(job).avatarProps}>
                 {getInitials({ name: String(job.company_name || "") })}
               </Avatar>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-0.5">
               <h3 className="text-lg font-bold text-slate-800 leading-tight line-clamp-2">
-                {DESIGNATION(job)?.typographyProps?.children || "N/A"}
+                {TITLE(job)?.typographyProps?.children || "N/A"}
               </h3>
-              <p className="text-sm font-medium text-slate-500 mt-0.5">
-                {JOB_TYPE(job)?.typographyProps?.children || "N/A"}
+              <p className="text-sm font-medium text-slate-500">
+                {ROLE(job)?.typographyProps?.children || "N/A"}
               </p>
+              <div className="mt-1">
+                <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium text-xs">
+                  {JOB_TYPE(job)?.typographyProps?.children || "N/A"}
+                </span>
+              </div>
             </div>
           </div>
           

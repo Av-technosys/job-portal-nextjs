@@ -44,7 +44,7 @@ function RecruiterDashboard() {
           isLoading={isLoading || isRefetching}
         />
       </Stack>
-      <PaymentHistory />
+      {/* <PaymentHistory /> */}
     </>
   );
 }

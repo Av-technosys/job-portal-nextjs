@@ -104,48 +104,7 @@ function AdminAssessmentQuestion({ subjectId }: { subjectId: number }) {
 
   return (
     <>
-      <Stack
-        stackProps={{
-          width: "100%",
-          direction: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "100px",
-        }}
-      >
-        <AppBar
-          style={{
-            backgroundColor: theme.palette.background.paper,
-            zIndex: theme.zIndex.drawer + 1,
-            borderBottom: `1px solid ${colorStyles.topRibbonColor}`,
-          }}
-          elevation={0}
-        >
-          <Stack
-            stackProps={{
-              className: "items-center w-full justify-between px-2 md:px-20",
-              direction: "row",
-            }}
-          >
-            <NextImage
-              props={{
-                alt: "ja_logo",
-                src: JA_LOGO,
-              }}
-            />
 
-            <When condition={!isAuthenticated}>
-              <Button
-                {...LOGIN_BUTTON}
-                onClick={() => handleClick(LOGIN_URL)}
-              />
-            </When>
-            <When condition={isAuthenticated}>
-              <AccountPopover />
-            </When>
-          </Stack>
-        </AppBar>
-      </Stack>
       <Stack
         stackProps={{
           direction: { xs: "column", sm: "row" },

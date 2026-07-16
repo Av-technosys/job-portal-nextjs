@@ -674,30 +674,33 @@ export const getCandidateApplicationStatusLabel = (
   return CANDIDATE_APPLICATION_STATUS_LABELS[statusValue] || fallback;
 };
 
+export const ALLOWED_TRANSITIONS: Record<number, number[]> = {
+  0: [1, 2, 5], // Initial -> In Review, On Hold, Rejected
+  1: [2, 3, 5], // In Review -> On Hold, Shortlisted, Rejected
+  2: [1, 3, 5], // On Hold -> In Review, Shortlisted, Rejected
+  3: [4, 5],    // Shortlisted -> Interviewing, Rejected
+  4: [6, 7, 5], // Interviewing -> Salary Negotiation, Offered, Rejected
+  6: [7, 5],    // Salary Negotiation -> Offered, Rejected
+  7: [8, 5],    // Offered -> Joined, Rejected
+  8: [],        // Joined -> (Terminal)
+  5: [],        // Rejected -> (Terminal)
+};
+
 export const getCandidateApplicationStatusMenuItems = (
   currentStatus?: unknown
 ) => {
-  const statusValue = getCandidateApplicationStatusValue(currentStatus);
+  const statusValue = getCandidateApplicationStatusValue(currentStatus) || 0;
+  
+  // Get allowed next states based on the current status
+  const allowedNextStates = ALLOWED_TRANSITIONS[statusValue] || [];
 
-  if (!statusValue) {
-    return CANDIDATE_APPLICATION_MENU_ITEMS;
-  }
-
-  if (statusValue === 5) {
-    return CANDIDATE_APPLICATION_MENU_ITEMS.filter(
-      (item) => item.key === REJECTED
-    );
-  }
-
-  const currentStatusIndex = CANDIDATE_APPLICATION_MENU_ITEMS.findIndex(
-    (item) => item.status === statusValue
-  );
-
-  if (currentStatusIndex === -1) {
-    return CANDIDATE_APPLICATION_MENU_ITEMS;
-  }
-
-  return CANDIDATE_APPLICATION_MENU_ITEMS.slice(currentStatusIndex);
+  return CANDIDATE_APPLICATION_MENU_ITEMS.map((item) => {
+    // Disable if the item's status is not in the allowed next states
+    // We also consider it disabled if it is the current state
+    const disabled = !allowedNextStates.includes(item.status);
+    
+    return { ...item, disabled };
+  });
 };
 
 export const CANDIDATE_NOTIFICATION_CONFIG = {

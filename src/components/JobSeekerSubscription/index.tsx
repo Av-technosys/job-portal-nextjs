@@ -158,7 +158,7 @@ export default function Subscription() {
                     return;
                   }
 
-                  setPaymentModalOpen(true);
+                  setOpen(true);
                 }}
                 buttonConfig={ACTUAL_APTITUDE_TEST_BUTTON_CONFIG}
               />

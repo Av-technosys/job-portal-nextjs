@@ -17,7 +17,7 @@ import {
 import { CommonObjectType, CreateOrUpdateRecruiterProfileInput } from "@/types";
 import { recruiterProfileGeneralInformationValidationSchema } from "@/validator";
 
-function RecruiterCompanyProfile() {
+function RecruiterCompanyProfile({ onNextTab }: { onNextTab?: () => void }) {
   const { FORM_CONFIG, NOTIFICATION_CONFIG } = RECRUITER_COMPANY_PROFILE_CONFIG;
   const {
     COMPANY_NAME_FIELD,
@@ -42,6 +42,7 @@ function RecruiterCompanyProfile() {
         onSuccess: () => {
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
           refetchCommonDetails();
+          if (onNextTab) onNextTab();
         },
         onError: (error) => {
           showNotification({

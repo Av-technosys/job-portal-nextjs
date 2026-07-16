@@ -23,7 +23,11 @@ import {
   useCommonDetails,
   useGetFindRecruiterList,
   usePagination,
+  useLogoutUser,
+  useNotification,
+  useFirebaseNotification,
 } from "@/services";
+import { clearAllCookie, getErrorMessageFromAPI } from "@/helper";
 import React, { useMemo } from "react";
 
 import AdminTabs from "@/components/Admin";
@@ -59,6 +63,31 @@ function AdminContainer() {
   });
   const { totalLength: jobSeekerListCount } = usePagination({
     paginatedAPIData: jobSeekerCountData,
+  });
+
+  const { showNotification } = useNotification();
+  const { deleteFCMToken } = useFirebaseNotification();
+
+  function postLogoutAction() {
+    clearAllCookie();
+    router.push(LOGIN_URL);
+  }
+
+  const logoutUser = useLogoutUser({
+    mutationConfig: {
+      onSuccess: () => {
+        deleteFCMToken();
+        showNotification({ message: "Successfully Logged out" });
+        postLogoutAction();
+      },
+      onError: (error) => {
+        showNotification({
+          ...getErrorMessageFromAPI(error),
+        });
+        postLogoutAction();
+        console.error(error, "error");
+      },
+    },
   });
 
   function handleClick(url: string) {
@@ -144,47 +173,6 @@ function AdminContainer() {
     <Stack stackProps={{ sx: { bgcolor: "#f8fafc", minHeight: "100vh", pb: 8 } }}>
       <Stack
         stackProps={{
-          width: "100%",
-          direction: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <AppBar
-          style={{
-            backgroundColor: theme.palette.background.paper,
-            zIndex: theme.zIndex.drawer + 1,
-            borderBottom: `1px solid ${colorStyles.topRibbonColor}`,
-          }}
-          elevation={0}
-        >
-          <Stack
-            stackProps={{
-              className: "items-center w-full justify-between px-2 md:px-20",
-              direction: "row",
-            }}
-          >
-            <NextImage
-              props={{
-                alt: "ja_logo",
-                src: JA_LOGO,
-              }}
-            />
-
-            <When condition={!isAuthenticated}>
-              <Button
-                {...LOGIN_BUTTON}
-                onClick={() => handleClick(LOGIN_URL)}
-              />
-            </When>
-            <When condition={isAuthenticated}>
-              <AccountPopover />
-            </When>
-          </Stack>
-        </AppBar>
-      </Stack>
-      <Stack
-        stackProps={{
           className: "mt-8 mb-4 p-3",
           direction: "column",
           justifyContent: "space-between",
@@ -192,7 +180,16 @@ function AdminContainer() {
           sx: { width: "100%", px: { xs: 2, md: 6 }, pt: 6 },
         }}
       >
-        <Typography {...WELCOME_MESSAGE("Admin")} />
+        <Stack stackProps={{ direction: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Typography {...WELCOME_MESSAGE("Admin")} />
+          <button 
+            onClick={() => logoutUser.mutate({ data: {} })}
+            disabled={logoutUser.isPending}
+            className="px-6 py-2.5 bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-xl font-bold transition-all duration-300 shadow-sm border border-rose-100 disabled:opacity-50 flex items-center justify-center min-w-[120px]"
+          >
+            {logoutUser.isPending ? "Logging out..." : "Logout"}
+          </button>
+        </Stack>
 
         {/* Stats section */}
         <Grid

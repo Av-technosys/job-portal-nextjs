@@ -20,7 +20,7 @@ export const jobDetailsValidationSchema = yup.object({
 
   description: minMaxValidationSchema({
     min: 1,
-    max: 500,
+    max: 5000,
     fieldName: "Job Description",
   }),
 

@@ -42,6 +42,13 @@ function Input({
       disabled={formControlProps?.disabled || inputProps?.disabled}
       sx={[
         {
+          "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
+            transform: "translate(16px, 11px) scale(1)",
+            fontSize: "0.875rem",
+          },
+          "& .MuiInputLabel-shrink": {
+            fontSize: "0.875rem",
+          },
           "& .MuiOutlinedInput-root": {
             borderRadius: "12px !important",
             backgroundColor: "#ffffff !important",

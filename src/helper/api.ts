@@ -28,12 +28,15 @@ api.interceptors.response.use(
     const message = responseData?.message || error.message;
     const hasAccessToken = !!getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     console.error(message, "API Error");
+    const isDeactivated =
+      responseData?.force_logout === true ||
+      message === "Your account has been deactivated by admin." ||
+      responseData?.detail === "Your account has been deactivated by admin.";
+
     if (
       status === 401 &&
       typeof window !== "undefined" &&
-      (hasAccessToken ||
-        responseData?.force_logout ||
-        message === "Your account has been deactivated by admin.")
+      isDeactivated
     ) {
       window.dispatchEvent(
         new CustomEvent("force-logout", {

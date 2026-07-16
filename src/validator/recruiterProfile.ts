@@ -9,7 +9,7 @@ export const recruiterProfileGeneralInformationValidationSchema = yup.object({
   }),
   company_about_us: minMaxValidationSchema({
     min: 1,
-    max: 100,
+    max: 5000,
     fieldName: "Company About us",
   }),
 

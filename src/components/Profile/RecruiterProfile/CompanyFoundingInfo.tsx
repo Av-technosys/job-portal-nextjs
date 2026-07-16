@@ -25,7 +25,7 @@ import {
 } from "@/types";
 import { recruiterFoundingInfoValidationSchema } from "@/validator";
 
-function RecruiterFoundingInfo() {
+function RecruiterFoundingInfo({ onNextTab }: { onNextTab?: () => void }) {
   const { FORM_CONFIG, NOTIFICATION_CONFIG, UPLOAD_INFO_HEADING } =
     RECRUITER_COMPANY_ID_CONFIG;
   const {
@@ -52,6 +52,7 @@ function RecruiterFoundingInfo() {
       mutationConfig: {
         onSuccess: () => {
           showNotification(NOTIFICATION_CONFIG.SUCCESS);
+          if (onNextTab) onNextTab();
         },
         onError: (error) => {
           showNotification({

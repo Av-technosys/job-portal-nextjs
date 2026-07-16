@@ -139,6 +139,7 @@ function Registration() {
       <div>
         <Stack
           stackProps={{
+            className: "min-h-screen",
             direction: "row",
             justifyContent: "space-between",
             width: "100%",
@@ -168,7 +169,7 @@ function Registration() {
             <Container
               containerProps={{
                 maxWidth: "sm",
-                className: "flex justify-center items-center",
+                className: "min-h-screen flex justify-center items-center py-8",
               }}
             >
               <Paper

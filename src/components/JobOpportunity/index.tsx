@@ -191,23 +191,11 @@ function JobOpportunity({
     },
   });
 
-  const fallbackJobInfoAPIData = useGetJobList({
-    queryFnParams: {
-      pageLimit: MAX_LATEST_JOBS,
-      sort: [JobListSortEnum.CREATED_DATE_DESC],
-      enabled: hasCategoryFilter,
-    },
-  });
-
   const { paginatedInfoData: categoryJobs } = usePagination({
     paginatedAPIData: jobInfoAPIData,
   });
 
-  const { paginatedInfoData: fallbackJobs } = usePagination({
-    paginatedAPIData: fallbackJobInfoAPIData,
-  });
-
-  const categoryLatestJobs = useMemo(() => {
+  const latestJobs = useMemo(() => {
     return (categoryJobs as CommonObjectType[])
       .filter(Boolean)
       .filter((job) =>
@@ -218,40 +206,7 @@ function JobOpportunity({
       .slice(0, MAX_LATEST_JOBS);
   }, [categoryJobs, hasCategoryFilter, jobRoleFilters]);
 
-  const fallbackLatestJobs = useMemo(() => {
-    return (fallbackJobs as CommonObjectType[])
-      .filter(Boolean)
-      .slice(0, MAX_LATEST_JOBS);
-  }, [fallbackJobs]);
-
-  const latestJobs = useMemo(() => {
-    if (!hasCategoryFilter) {
-      return categoryLatestJobs;
-    }
-
-    const selectedJobIds = new Set(
-      categoryLatestJobs.map((job) => String(job?.id || job?.job_id || ""))
-    );
-
-    const topUpJobs = fallbackLatestJobs.filter((job) => {
-      const jobId = String(job?.id || job?.job_id || "");
-
-      if (!jobId || selectedJobIds.has(jobId)) {
-        return false;
-      }
-
-      selectedJobIds.add(jobId);
-      return true;
-    });
-
-    return [...categoryLatestJobs, ...topUpJobs].slice(0, MAX_LATEST_JOBS);
-  }, [categoryLatestJobs, fallbackLatestJobs, hasCategoryFilter]);
-
-  const isLoading =
-    jobInfoAPIData.isLoading ||
-    (hasCategoryFilter &&
-      categoryLatestJobs.length < MAX_LATEST_JOBS &&
-      fallbackJobInfoAPIData.isLoading);
+  const isLoading = jobInfoAPIData.isLoading;
 
   const handleSliderNext = () => {
     setSlideCount((prev) => (prev < latestJobs.length - 3 ? prev + 1 : prev));
@@ -263,8 +218,8 @@ function JobOpportunity({
 
   return (
     <>
-      <When condition={latestJobs.length > 3}>
-        <div className="w-full flex items-center justify-end pr-10 md:pr-0 mb-4">
+      <div className="w-full flex items-center justify-end pr-10 md:pr-0 mb-4 min-h-[40px]">
+        <When condition={latestJobs.length > 3}>
           <Stack
             stackProps={{
               direction: "row",
@@ -284,8 +239,8 @@ function JobOpportunity({
               <ChevronRightIcon />
             </IconButton>
           </Stack>
-        </div>
-      </When>
+        </When>
+      </div>
       <div className="w-full overflow-x-auto md:overflow-hidden py-8 -my-8">
         <div className="flex flex-row gap-3 md:gap-2 pb-2 md:pb-0 min-w-0">
           <When condition={isLoading}>

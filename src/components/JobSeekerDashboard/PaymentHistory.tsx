@@ -78,7 +78,9 @@ function PaymentHistory() {
         <div className="flex gap-4">
           <div className="flex flex-col rounded-2xl bg-gradient-to-br from-white to-slate-50 px-6 py-3 border border-slate-200/60 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Orders</span>
-            <span className="text-xl font-extrabold text-slate-800">{paymentApi.data?.total_orders_count || 0}</span>
+            <span className="text-xl font-extrabold text-slate-800">
+              {allPayments.filter(p => ["paid", "completed", "success"].includes(String(p.status || "").toLowerCase())).length}
+            </span>
           </div>
           <div className="flex flex-col rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50/50 px-6 py-3 border border-blue-100/60 shadow-[0_4px_12px_rgba(37,99,235,0.04)]">
             <span className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">Total Spent</span>
