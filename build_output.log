@@ -1,0 +1,362 @@
+
+> job-portal@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.11
+  - Environments: .env
+
+   Linting and checking validity of types ...
+
+./src/components/AboutUs/AboutBody.tsx
+2:32  Warning: 'Paper' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/AboutUs/Apply.tsx
+2:29  Warning: 'Paper' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/AboutUs/CompanyReview.tsx
+2:32  Warning: 'Paper' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/AboutUs/index.tsx
+6:8  Warning: 'Footer' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Admin/AdminAssessmentComponent.tsx
+5:10  Warning: 'Stack' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Admin/AdminPaymentDetailsComponent.tsx
+7:3  Warning: 'TypographyFontColor' is defined but never used.  @typescript-eslint/no-unused-vars
+8:3  Warning: 'TypographyFontSize' is defined but never used.  @typescript-eslint/no-unused-vars
+9:3  Warning: 'TypographyFontWeight' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Admin/AdminSideBarDrawer.tsx
+1:17  Warning: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+1:28  Warning: 'useState' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Admin/index.tsx
+65:6  Warning: React Hook useMemo has a missing dependency: 'router'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/AdminAssessmentQuestion/AdminQuestionCard.tsx
+1:17  Warning: 'use' is defined but never used.  @typescript-eslint/no-unused-vars
+5:3  Warning: 'Radio' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/AdminAssessmentQuestion/index.tsx
+4:3  Warning: 'LOGIN_URL' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'NextImage' is defined but never used.  @typescript-eslint/no-unused-vars
+24:3  Warning: 'AppBar' is defined but never used.  @typescript-eslint/no-unused-vars
+29:10  Warning: 'JA_LOGO' is defined but never used.  @typescript-eslint/no-unused-vars
+30:10  Warning: 'colorStyles' is defined but never used.  @typescript-eslint/no-unused-vars
+31:8  Warning: 'AccountPopover' is defined but never used.  @typescript-eslint/no-unused-vars
+37:11  Warning: 'LOGIN_BUTTON' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+38:11  Warning: 'theme' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+94:12  Warning: 'handleClick' is defined but never used.  @typescript-eslint/no-unused-vars
+103:9  Warning: 'isAuthenticated' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Assessments/AssessmentSection.tsx
+3:10  Warning: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+3:26  Warning: 'Paper' is defined but never used.  @typescript-eslint/no-unused-vars
+3:40  Warning: 'Typography' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'LoadingButton' is defined but never used.  @typescript-eslint/no-unused-vars
+13:10  Warning: 'colorStyles' is defined but never used.  @typescript-eslint/no-unused-vars
+40:3  Warning: 'SECTION_HEADER' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+41:3  Warning: 'START_TEST' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+42:3  Warning: 'RETAKE_TEST' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+43:3  Warning: 'ANALYSIS_TEST' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+44:3  Warning: 'BACK_BUTTON' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+45:3  Warning: 'MAX_TIME' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+46:3  Warning: 'TOTAL_QUESTIONS' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+66:7  Warning: 'TITLE' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+67:7  Warning: 'PLAN_TYPE_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+68:7  Warning: 'PRICING_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+69:7  Warning: 'AMOUNT_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+70:7  Warning: 'TOTAL_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+71:7  Warning: 'TOTAL_AMOUNT_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Assessments/AssessmentSideBarDrawer.tsx
+96:4  Warning: React Hook useEffect has missing dependencies: 'handleSubmitTest' and 'showNotification'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/CandidateSearch/CandidateCard.tsx
+4:3  Warning: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+5:3  Warning: 'Stack' is defined but never used.  @typescript-eslint/no-unused-vars
+20:10  Warning: 'colorStyles' is defined but never used.  @typescript-eslint/no-unused-vars
+40:5  Warning: 'APPLY_BUTTON' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/CandidateSearch/index.tsx
+6:3  Warning: 'Stack' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/DashboardLayout/index.tsx
+13:10  Warning: 'dimensionStyle' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/FindRecruiter/RecruiterCard.tsx
+26:9  Warning: 'recruiterDetails' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/FindRecruiter/RecruiterOverview.tsx
+5:10  Warning: 'CommonObjectType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/FindRecruiter/index.tsx
+7:3  Warning: 'Stack' is defined but never used.  @typescript-eslint/no-unused-vars
+38:12  Warning: 'showSearchedData' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Header/BreadcrumbRibbon.tsx
+12:3  Warning: 'useGetSearchDetailsAsPerURLOrUserType' is defined but never used.  @typescript-eslint/no-unused-vars
+45:10  Warning: 'searchString' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Header/LogoAndSearchRibbon.tsx
+44:10  Warning: 'UserType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/HomePage/footer.tsx
+1:17  Warning: 'useMemo' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/JobFilter/filterDrawer.tsx
+24:3  Warning: 'MIN_SALARY_RANGE_OPTIONS' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/JobFilter/index.tsx
+1:17  Warning: 'useState' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/JobFilterSidebar/index.tsx
+21:3  Warning: 'MIN_SALARY_RANGE_OPTIONS' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/JobSearchBar/index.tsx
+2:17  Warning: 'Typography' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Jobs/index.tsx
+33:8  Warning: 'BreadcrumbRibbon' is defined but never used.  @typescript-eslint/no-unused-vars
+63:11  Warning: 'pathname' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Login/index.tsx
+12:3  Warning: 'Checkbox' is defined but never used.  @typescript-eslint/no-unused-vars
+23:3  Warning: 'When' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/MyAppliedJobs/AppliedJobCard.tsx
+4:18  Warning: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+4:52  Warning: 'Typography' is defined but never used.  @typescript-eslint/no-unused-vars
+16:46  Warning: 'VIEW_DETAILS_BUTTON' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/MyAppliedJobs/index.tsx
+6:3  Warning: 'Skeleton' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/MyPostedJobs/PostedJobCard.tsx
+4:3  Warning: 'Divider' is defined but never used.  @typescript-eslint/no-unused-vars
+7:3  Warning: 'Stack' is defined but never used.  @typescript-eslint/no-unused-vars
+8:3  Warning: 'TextWithIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+9:3  Warning: 'Typography' is defined but never used.  @typescript-eslint/no-unused-vars
+140:9  Warning: 'postedJobDetails' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+167:9  Warning: 'JOB_STATUS_ICONS' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Profile/RecruiterProfile/CompanyProfile.tsx
+25:5  Warning: 'EMPTY_FIELD_FOR_ABOUT' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/RecruiterDashboard/index.tsx
+8:8  Warning: 'PaymentHistory' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/SavedJobSeeker/SavedJobSeekerCard.tsx
+3:45  Warning: 'TextWithIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+22:9  Warning: 'jobSeekerDetails' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/SavedJobSeeker/index.tsx
+17:10  Warning: 'filterSearch' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Score/index.tsx
+330:9  Warning: 'latestPercentage' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/common/DataGrid.tsx
+3:25  Warning: 'MUIDataGrid' is defined but never used.  @typescript-eslint/no-unused-vars
+7:24  Warning: 'columns' is defined but never used.  @typescript-eslint/no-unused-vars
+7:33  Warning: 'data' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/common/FormikFields.tsx
+3:3  Warning: 'CheckBoxProps' is defined but never used.  @typescript-eslint/no-unused-vars
+27:8  Warning: 'CheckBox' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/common/PaymentModal.tsx
+1:10  Warning: 'LoadingButton' is defined but never used.  @typescript-eslint/no-unused-vars
+1:39  Warning: 'Typography' is defined but never used.  @typescript-eslint/no-unused-vars
+2:26  Warning: 'MODAL_STYLES' is defined but never used.  @typescript-eslint/no-unused-vars
+36:5  Warning: 'TITLE' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+37:5  Warning: 'PLAN_TYPE_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+38:5  Warning: 'PRICING_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+39:5  Warning: 'TOTAL_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+40:5  Warning: 'PAY_BUTTON' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+41:5  Warning: 'AMOUNT_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+42:5  Warning: 'TOTAL_AMOUNT_LABEL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/common/SocialLogin.tsx
+4:10  Warning: 'FacebookIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+4:36  Warning: 'InstagramIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+4:51  Warning: 'TwitterIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/common/UploadProfilePic.tsx
+32:23  Warning: 'InputLabel' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/constants/common.ts
+27:3  Warning: 'HOW_IT_WORKS_URL' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/constants/paymentCard.ts
+3:3  Warning: 'ButtonSizeEnum' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/constants/questionFormat.ts
+1:10  Warning: 'getDefaultWorkExperienceData' is defined but never used.  @typescript-eslint/no-unused-vars
+6:3  Warning: 'CommonObjectType' is defined but never used.  @typescript-eslint/no-unused-vars
+12:3  Warning: 'TypographyMargin' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'TypographyProps' is defined but never used.  @typescript-eslint/no-unused-vars
+16:10  Warning: 'CITY_OPTIONS' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/constants/recruiterProfile.ts
+28:3  Warning: 'SUBSCRIPTION_URL' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/constants/subscription.ts
+2:3  Warning: 'ButtonVariantEnum' is defined but never used.  @typescript-eslint/no-unused-vars
+3:3  Warning: 'TypographyFontColor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:3  Warning: 'TypographyFontSize' is defined but never used.  @typescript-eslint/no-unused-vars
+5:3  Warning: 'TypographyFontWeight' is defined but never used.  @typescript-eslint/no-unused-vars
+6:3  Warning: 'TypographyVariantEnum' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/container/AdminContainer/index.tsx
+3:3  Warning: 'JA_LOGO' is defined but never used.  @typescript-eslint/no-unused-vars
+9:3  Warning: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+11:3  Warning: 'NextImage' is defined but never used.  @typescript-eslint/no-unused-vars
+15:3  Warning: 'When' is defined but never used.  @typescript-eslint/no-unused-vars
+38:10  Warning: 'AppBar' is defined but never used.  @typescript-eslint/no-unused-vars
+39:10  Warning: 'colorStyles' is defined but never used.  @typescript-eslint/no-unused-vars
+40:8  Warning: 'AccountPopover' is defined but never used.  @typescript-eslint/no-unused-vars
+46:11  Warning: 'theme' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+47:11  Warning: 'LOGIN_BUTTON' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+93:12  Warning: 'handleClick' is defined but never used.  @typescript-eslint/no-unused-vars
+170:9  Warning: 'isAuthenticated' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/container/AssessmentContainer/index.tsx
+3:28  Warning: 'Loader' is defined but never used.  @typescript-eslint/no-unused-vars
+6:11  Warning: 'userType' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+6:21  Warning: 'accessType' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/container/AssessmentSectionContainer/index.tsx
+1:10  Warning: 'DashboardLayout' is defined but never used.  @typescript-eslint/no-unused-vars
+3:8  Warning: 'Footer' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/container/MainAssessmentContainer/index.tsx
+7:3  Warning: 'FormControl' is defined but never used.  @typescript-eslint/no-unused-vars
+8:3  Warning: 'FormControlLabel' is defined but never used.  @typescript-eslint/no-unused-vars
+9:3  Warning: 'Radio' is defined but never used.  @typescript-eslint/no-unused-vars
+10:3  Warning: 'RadioGroup' is defined but never used.  @typescript-eslint/no-unused-vars
+35:27  Warning: 'setCurrentTabIndex' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+100:6  Warning: React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+134:6  Warning: React Hook useEffect has a missing dependency: 'getAllStudentAssessmentQuestions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+304:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/helper/api.ts
+29:11  Warning: 'hasAccessToken' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/pages/about-us.tsx
+1:31  Warning: 'useState' is defined but never used.  @typescript-eslint/no-unused-vars
+5:28  Warning: 'HomePageContainer' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/pages/admin/assessment/[id]/excelupload/index.tsx
+24:5  Warning: 'SAMPLE_EXCEL_BUTTON' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/pages/admin/assessment/index.tsx
+5:10  Warning: 'AdminAssessmentQuestionsContainer' is defined but never used.  @typescript-eslint/no-unused-vars
+6:8  Warning: 'AdminAssessmentContainer' is defined but never used.  @typescript-eslint/no-unused-vars
+7:10  Warning: 'DashboardLayout' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/pages/contact-us.tsx
+14:31  Warning: 'useState' is defined but never used.  @typescript-eslint/no-unused-vars
+18:30  Warning: 'HomePageContainer' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/pages/index.tsx
+1:31  Warning: 'useState' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/useGetAdminMetaData.ts
+3:23  Warning: 'SuccessResponseType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/useGetAssesmentQuestionDetails.tsx
+3:23  Warning: 'SuccessResponseType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/useGetFindSubject.ts
+3:23  Warning: 'SuccessResponseType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/useGetJobseekerFullInfo.ts
+3:23  Warning: 'SuccessResponseType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/useGetRecruiterFullInfo.ts
+3:23  Warning: 'SuccessResponseType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/useUploadQuestionPic.ts
+13:3  Warning: 'CreateOrUpdateProfilePicInput' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/types/components/Typography.ts
+1:29  Warning: 'MUITypographyProps' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/validator/assessmentEdit.ts
+2:10  Warning: 'examTimeValidationSchema' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+   Creating an optimized production build ...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Compiled successfully
+   Collecting page data ...
+   Generating static pages (0/17) ...
+   Generating static pages (4/17) 
+   Generating static pages (8/17) 
+   Generating static pages (12/17) 
+ ✓ Generating static pages (17/17)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (pages)                               Size     First Load JS
+┌ ƒ /                                       2.62 kB         445 kB
+├   /_app                                   0 B             433 kB
+├ ƒ /404                                    390 B           434 kB
+├ ƒ /about-us                               2.62 kB         445 kB
+├ ○ /admin                                  9.85 kB         443 kB
+├ ƒ /admin/assessment                       338 B           434 kB
+├ ○ /admin/assessment/[id]                  274 B           443 kB
+├ ○ /admin/assessment/[id]/create-question  337 B           434 kB
+├ ○ /admin/assessment/[id]/excelupload      111 kB          544 kB
+├ ƒ /admin/jobseeker                        2.64 kB         436 kB
+├ ƒ /admin/question                         290 B           443 kB
+├ ƒ /admin/question/[id]                    292 B           443 kB
+├ ○ /admin/recruiter                        2.29 kB         436 kB
+├ ƒ /api/auth/[...nextauth]                 0 B             433 kB
+├ ○ /assessment-score                       321 B           443 kB
+├ ƒ /assessment-submission                  346 B           443 kB
+├ ƒ /assessment/get_all_test_question       312 B           443 kB
+├ ƒ /assessment/get_free_test_question      310 B           443 kB
+├ ƒ /contact-us                             2.62 kB         445 kB
+├ ƒ /dashboard                              337 B           443 kB
+├ ƒ /dashboard/assessment                   346 B           443 kB
+├ ○ /dashboard/assessment-score/[id]        331 B           443 kB
+├ ƒ /dashboard/assessment-summary/[id]      357 B           443 kB
+├ ○ /dashboard/assessment/[id]              333 B           438 kB
+├ ○ /dashboard/assessment/free-test         335 B           438 kB
+├ ƒ /dashboard/candidate-applications/[id]  360 B           443 kB
+├ ƒ /dashboard/create-job                   347 B           443 kB
+├ ƒ /dashboard/my-applied-jobs              373 B           434 kB
+├ ƒ /dashboard/my-posted-jobs               352 B           443 kB
+├ ƒ /dashboard/profile                      343 B           443 kB
+├ ƒ /dashboard/saved-job                    346 B           443 kB
+├ ƒ /dashboard/score                        341 B           437 kB
+├ ƒ /dashboard/subscription                 346 B           443 kB
+├ ○ /forgot-password                        263 B           443 kB
+├ ○ /how-it-works                           283 B           434 kB
+├ ƒ /job-details/[id]                       413 B           434 kB
+├ ƒ /jobs                                   335 B           443 kB
+├ ○ /loading                                188 B           433 kB
+├ ○ /login                                  256 B           443 kB
+├ ○ /otp                                    253 B           443 kB
+├ ƒ /privacy-policy                         5.47 kB         439 kB
+├ ƒ /recruiters                             339 B           443 kB
+├ ○ /register                               257 B           443 kB
+├ ○ /reset-password                         261 B           443 kB
+├ ○ /sso                                    253 B           443 kB
+└ ƒ /terms-and-conditions                   6.06 kB         439 kB
++ First Load JS shared by all               443 kB
+  ├ chunks/framework-945b357d4a851f4b.js    44.9 kB
+  ├ chunks/main-232372476575da77.js         32.2 kB
+  ├ chunks/pages/_app-42ca0e9f7b43b7d3.js   355 kB
+  └ other shared chunks (total)             10.8 kB
+
+ƒ Middleware                                50.8 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

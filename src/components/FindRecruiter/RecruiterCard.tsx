@@ -6,6 +6,7 @@ import {
   FmdGoodOutlinedIcon,
   BusinessCenterOutlinedIcon,
   ArrowForwardOutlinedIcon,
+  AccessTimeOutlinedIcon,
 } from "@/assets";
 import { useMemo } from "react";
 
@@ -122,7 +123,7 @@ export default function FindRecruiterCard({
           {recruiter?.company_size && (
             <div className="flex items-center gap-2">
               <BusinessCenterOutlinedIcon sx={{ color: "#667085", fontSize: "16px", flexShrink: 0 }} />
-              <span>{recruiter.company_size}+ Employees</span>
+              <span>{String(recruiter.company_size)}+ Employees</span>
             </div>
           )}
         </div>
