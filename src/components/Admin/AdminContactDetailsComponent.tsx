@@ -151,6 +151,7 @@ const AdminContactDetailsComponent = () => {
       <InfinitePagination dataLength={null}>
         <Stack>
         <Table
+          isLoading={ContactDetails.isLoading && allContactDetails.length === 0}
           data={allContactDetails}
           tableType="Contact-details"
           columns={[

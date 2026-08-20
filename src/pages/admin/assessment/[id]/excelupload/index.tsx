@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@/components";
+import { Button, Stack, Typography, LoadingButton } from "@/components";
 import { ADMIN_QUESTION_URL } from "@/constants";
 import { EXCEL_UPLOAD_PAGE_CONFIG } from "@/constants/excelUpload";
 import { getErrorMessageFromAPI } from "@/helper";
@@ -52,9 +52,10 @@ const ExcelUploader = () => {
         }));
         setexceljsondata(updatedJsonData);
       } catch (error) {
-        alert(
-          "Error reading Excel file. Please make sure it's a valid Excel file."
-        );
+        showNotification({
+          message: "Error reading Excel file. Please make sure it's a valid Excel file.",
+          type: "error",
+        });
       }
     };
 
@@ -64,7 +65,11 @@ const ExcelUploader = () => {
   const CreateQuestionInfoMutate = useCreateQuestionInfo({
     mutationConfig: {
       onSuccess: () => {
-        alert("Excel File Send Successfully...");
+        showNotification({
+          message: "Excel File Send Successfully...",
+          type: "success",
+        });
+        router.push(ADMIN_QUESTION_URL(Number(id)));
       },
       onError: (error) => {
         showNotification({
@@ -138,7 +143,7 @@ const ExcelUploader = () => {
                 </Stack>
               </>
             )}
-            <Button onClick={submithandler} {...SUBMIT_BUTTON} />
+            <LoadingButton onClick={submithandler} loading={CreateQuestionInfoMutate.isPending} {...SUBMIT_BUTTON} />
           </Stack>
         </Stack>
       </Stack>

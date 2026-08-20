@@ -30,6 +30,7 @@ export { default as AccountBalanceWalletOutlinedIcon } from "@mui/icons-material
 export { default as BookmarkBorderIcon } from "@mui/icons-material/BookmarkBorder";
 export { default as TurnedInIcon } from "@mui/icons-material/TurnedIn";
 export { default as ArrowForwardOutlinedIcon } from "@mui/icons-material/ArrowForwardOutlined";
+export { default as ArrowBackOutlinedIcon } from "@mui/icons-material/ArrowBackOutlined";
 export { default as EventIcon } from "@mui/icons-material/Event";
 export { default as MoreVertIcon } from "@mui/icons-material/MoreVert";
 export { default as NotificationsActiveIcon } from "@mui/icons-material/NotificationsActive";

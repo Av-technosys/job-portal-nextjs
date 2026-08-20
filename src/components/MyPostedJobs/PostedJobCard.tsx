@@ -258,7 +258,7 @@ export default function PostedJobCard({
              </span>
              <div className="flex items-center gap-1 text-blue-600 text-sm font-semibold">
                <PeopleIcon fontSize="small" />
-               <span>{APPLICANTS(job)?.typographyProps?.children || "0"} Applicants</span>
+               <span>{APPLICANTS(job)?.typographyProps?.children || "0 Applicants"}</span>
              </div>
           </div>
         </div>

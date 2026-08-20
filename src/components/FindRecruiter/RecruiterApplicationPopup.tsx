@@ -9,7 +9,8 @@ import { colorStyles } from "@/styles";
 import { getInitials } from "@/helper";
 import { RecruiterContactCard } from "..";
 import RecruiterOverview from "./RecruiterOverview";
-import { useGetCompanyProfileById } from "@/services";
+import { useGetCompanyProfileById, useGetRecruiterFoundingById } from "@/services";
+import { useGetApplicantSocialLinks } from "@/services/useGetApplicantSocialLinks";
 
 interface RecruiterApplicationPopupProps {
   open: boolean;
@@ -37,7 +38,21 @@ export default function RecruiterApplicationPopup({
     },
   });
 
+  const recruiterFoundingQuery = useGetRecruiterFoundingById({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const socialLinksQuery = useGetApplicantSocialLinks({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
   const recruiter = companyProfileQuery?.data?.data || {};
+  
+  const isPopupLoading = companyProfileQuery?.isLoading || recruiterFoundingQuery?.isLoading || socialLinksQuery?.isLoading;
 
   return (
     <>
@@ -55,13 +70,20 @@ export default function RecruiterApplicationPopup({
                 />
               </IconButton>
             </Stack>
-            <Stack
-              stackProps={{
-                direction: { xs: "column", md: "row" },
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
+
+            {isPopupLoading ? (
+              <div className="flex justify-center items-center py-24">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600" />
+              </div>
+            ) : (
+              <>
+                <Stack
+                  stackProps={{
+                    direction: { xs: "column", md: "row" },
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
               <Stack
                 stackProps={{
                   direction: "row",
@@ -112,6 +134,8 @@ export default function RecruiterApplicationPopup({
                 />
               </Stack>
             </Stack>
+              </>
+            )}
           </Stack>
         </>
       </Modal>

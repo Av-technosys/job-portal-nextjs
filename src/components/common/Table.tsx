@@ -35,7 +35,8 @@ function Table({
   tableType,
   deleteHandler,
   isButtonDisabled,
-}: TableProps) {
+  isLoading,
+}: TableProps & { isLoading?: boolean }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -194,7 +195,16 @@ function Table({
                 />
               )}
 
-              {data?.map((row, index) => (
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={columns.length} sx={{ py: 6 }}>
+                    <div className="flex justify-center items-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : data && data.length > 0 ? (
+                data?.map((row, index) => (
                 <TableRow key={`ja_TableRow${index}`}>
                   {columns.map((column) => {
                     const cellValue = getCellValue(row, column.field);
@@ -242,7 +252,13 @@ function Table({
                     );
                   })}
                 </TableRow>
-              ))}
+              ))) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} sx={{ py: 6, textAlign: "center", color: "text.secondary" }}>
+                    No records found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </MUITable>
         </TableContainer>

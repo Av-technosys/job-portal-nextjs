@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowForwardOutlinedIcon } from "@/assets";
-import { Button, Grid, Stack, Typography } from "@/components";
+import { Button, Grid, Stack, Typography, Loader } from "@/components";
 
 import { ButtonVariantEnum, TypographyVariantEnum } from "@/types";
 import {
@@ -241,6 +241,10 @@ export default function MainAssessmentContainer({ testType }: testTypeProp) {
         />
       </Stack>
     );
+  }
+
+  if (isQuestionsLoading) {
+    return <Loader loaderProps={{ open: true }} />;
   }
 
   return (

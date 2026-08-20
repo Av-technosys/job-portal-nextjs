@@ -64,13 +64,13 @@ export const recruiterFoundingInfoValidationSchema = yup.object({
   }),
   mission: minMaxValidationSchema({
     min: 1,
-    max: 100,
+    max: 5000,
     fieldName: "Mission",
     required: false,
   }),
   vision: minMaxValidationSchema({
     min: 1,
-    max: 100,
+    max: 5000,
     fieldName: "Vision",
     required: false,
   }),

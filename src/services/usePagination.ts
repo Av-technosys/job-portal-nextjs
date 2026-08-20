@@ -16,14 +16,17 @@ export function usePagination({
     if (!paginatedAPIData?.data?.pages) return initialPagiantionInfoData;
     const pageArr = paginatedAPIData?.data?.pages;
     return {
-      paginatedInfoData: pageArr?.flatMap((page) =>
-        (page.data.data as CommonObjectType[])?.map((item) => {
-          return {
-            ...item,
-            pageIndex: page?.data?.current_page,
-          };
-        })
-      ) as CommonObjectType[],
+      paginatedInfoData: pageArr?.flatMap((page) => {
+        const items = Array.isArray(page?.data?.data)
+          ? page.data.data
+          : Array.isArray(page?.data)
+          ? page.data
+          : [];
+        return items.map((item: any) => ({
+          ...item,
+          pageIndex: page?.data?.current_page,
+        }));
+      }) as CommonObjectType[],
       hasMore: (pageArr?.[0]?.data?.total_pages || 0) > pageArr?.length,
       totalLength: pageArr?.[0]?.data?.total_count,
     };

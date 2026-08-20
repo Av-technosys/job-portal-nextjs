@@ -21,6 +21,7 @@ import {
   Stack,
   Typography,
   When,
+  Loader,
 } from "../common";
 import { useRouter } from "next/router";
 import { loginValidationSchema } from "@/validator";
@@ -154,6 +155,7 @@ function Login() {
 
   return (
     <>
+      <Loader loaderProps={{ open: validateUser?.isPending }} />
       <div>
         <Stack
           stackProps={{

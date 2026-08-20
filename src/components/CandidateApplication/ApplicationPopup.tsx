@@ -21,6 +21,11 @@ import CandidateProfessionalCard from "./CandidateProfessionalInfo";
 import { useNotification, useUpdateCandidateStatus } from "@/services";
 import { useRouter } from "next/router";
 import CandidateAssessmentScores from "./CandidateAssessmentScores";
+import { useGetApplicantSocialLinks } from "@/services/useGetApplicantSocialLinks";
+import { useGetApplicantDetails } from "@/services/useGetApplicantDetails";
+import { useGetApplicationAssessmentScores } from "@/services/useGetApplicationAssessmentScores";
+import { useGetApplicantAssessmentAttempts } from "@/services/useGetApplicantAssessmentAttempts";
+import { Loader } from "../common";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -80,6 +85,34 @@ ApplicationPopupProps) {
       UserId: userId,
     },
   });
+
+  const applicantDetailsQuery = useGetApplicantDetails({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const socialLinksQuery = useGetApplicantSocialLinks({
+    queryParams: {
+      UserId: userId,
+    },
+  });
+
+  const applicationScoresQuery = useGetApplicationAssessmentScores({
+    queryParams: { applicationId },
+  });
+
+  const attemptsQuery = useGetApplicantAssessmentAttempts({
+    enabled: !applicationId && Boolean(userId),
+    queryParams: { applicantId: userId },
+  });
+
+  const isPopupLoading =
+    ApplicantFullData.isLoading ||
+    applicantDetailsQuery.isLoading ||
+    socialLinksQuery.isLoading ||
+    applicationScoresQuery.isLoading ||
+    attemptsQuery.isLoading;
 
   const aplicantPersonalDetails = ApplicantFullData?.data?.data;
 
@@ -142,129 +175,137 @@ ApplicationPopupProps) {
                 />
               </IconButton>
             </Stack>
-            <Stack
-              stackProps={{
-                direction: { xs: "column", md: "row" },
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Stack
-                stackProps={{
-                  direction: "row",
-                  alignItems: "center",
-                  gap: 2,
-                }}
-              >
-                <Stack>
-                  <Avatar
-                    {...IMAGE(aplicantPersonalDetails?.profile_picture)
-                      .avatarProps}
-                  >
-                    {getInitials({
-                      name: String(aplicantPersonalDetails?.first_name || ""),
-                    })}
-                  </Avatar>
-                </Stack>
-                <Stack
-                  stackProps={{
-                    gap: 1,
-                  }}
-                >
-                  <Typography {...NAME(aplicantPersonalDetails?.first_name)} />
-                </Stack>
+            {isPopupLoading ? (
+              <Stack stackProps={{ alignItems: "center", justifyContent: "center", py: 10 }}>
+                <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
               </Stack>
-              <Stack
-                stackProps={{
-                  className: "mt-2",
-                  gap: 1,
-                  maxWidth: { xs: "100%", md: 560 },
-                }}
-              >
-                <Typography
-                  typographyProps={{
-                    children: "Application Status",
-                    variant: "body2",
-                  }}
-                />
+            ) : (
+              <>
                 <Stack
                   stackProps={{
-                    direction: "row",
-                    gap: 1,
-                    flexWrap: "wrap",
+                    direction: { xs: "column", md: "row" },
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  {getCandidateApplicationStatusMenuItems(
-                    applicationStatus
-                  ).map((item) => (
-                    <Button
-                      key={`ApplicationPopupStatus-${item.key}`}
-                      onClick={() =>
-                        updateCandidateStatus(Number(userId), item.status)
-                      }
-                      buttonProps={{
-                        children: item.label,
-                        variant:
-                          applicationStatus === item.status
-                            ? "contained"
-                            : "outlined",
-                        color: "primary",
-                        size: "small",
-                        disabled:
-                          updateCandidateStatusMutate.isPending ||
-                          applicationStatus === item.status ||
-                          item.disabled,
-                        sx: {
-                          textTransform: "none",
-                          minWidth: 0,
-                        },
+                  <Stack
+                    stackProps={{
+                      direction: "row",
+                      alignItems: "center",
+                      gap: 2,
+                    }}
+                  >
+                    <Stack>
+                      <Avatar
+                        {...IMAGE(aplicantPersonalDetails?.profile_picture)
+                          .avatarProps}
+                      >
+                        {getInitials({
+                          name: String(aplicantPersonalDetails?.first_name || ""),
+                        })}
+                      </Avatar>
+                    </Stack>
+                    <Stack
+                      stackProps={{
+                        gap: 1,
+                      }}
+                    >
+                      <Typography {...NAME(aplicantPersonalDetails?.first_name)} />
+                    </Stack>
+                  </Stack>
+                  <Stack
+                    stackProps={{
+                      className: "mt-2",
+                      gap: 1,
+                      maxWidth: { xs: "100%", md: 560 },
+                    }}
+                  >
+                    <Typography
+                      typographyProps={{
+                        children: "Application Status",
+                        variant: "body2",
                       }}
                     />
-                  ))}
+                    <Stack
+                      stackProps={{
+                        direction: "row",
+                        gap: 1,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {getCandidateApplicationStatusMenuItems(
+                        applicationStatus
+                      ).map((item) => (
+                        <Button
+                          key={`ApplicationPopupStatus-${item.key}`}
+                          onClick={() =>
+                            updateCandidateStatus(Number(userId), item.status)
+                          }
+                          buttonProps={{
+                            children: item.label,
+                            variant:
+                              applicationStatus === item.status
+                                ? "contained"
+                                : "outlined",
+                            color: "primary",
+                            size: "small",
+                            disabled:
+                              updateCandidateStatusMutate.isPending ||
+                              applicationStatus === item.status ||
+                              item.disabled,
+                            sx: {
+                              textTransform: "none",
+                              minWidth: 0,
+                            },
+                          }}
+                        />
+                      ))}
+                    </Stack>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </Stack>
-            {/* main Stack */}
-            <Stack
-              stackProps={{
-                className: "mt-6",
-                direction: { xs: "column", md: "row" },
-                alignItems: "flex-start",
-                gap: 3,
-              }}
-            >
-              {/* left Stack */}
-              <Stack
-                stackProps={{
-                  width: { xs: "100%", md: "50%" },
-                  gap: 2,
-                }}
-              >
-                <CandidateAcademicCard candidateId={userId} />
-                <CandidateAssessmentScores
-                  applicationId={applicationId}
-                  candidateId={userId}
-                />
-                <CandidateProfessionalCard candidateId={userId} />
-                <SocialLinksCard userId={userId} />
-              </Stack>
-              {/* right Stack */}
-              <Stack
-                stackProps={{
-                  className: "mt-4 md:mt-0",
-                  width: { xs: "100%", md: "50%" },
-                  gap: 2,
-                }}
-              >
-                <CandidateDetailOverviewCard
-                  aplicantPersonalDetails={aplicantPersonalDetails}
-                />
-                <ResumeDownloadCard candidateId={userId} />
-                <CandidateContactCard
-                  aplicantPersonalDetails={aplicantPersonalDetails}
-                />
-              </Stack>
-            </Stack>
+                {/* main Stack */}
+                <Stack
+                  stackProps={{
+                    className: "mt-6",
+                    direction: { xs: "column", md: "row" },
+                    alignItems: "flex-start",
+                    gap: 3,
+                  }}
+                >
+                  {/* left Stack */}
+                  <Stack
+                    stackProps={{
+                      width: { xs: "100%", md: "50%" },
+                      gap: 2,
+                    }}
+                  >
+                    <CandidateAcademicCard candidateId={userId} />
+                    <CandidateAssessmentScores
+                      applicationId={applicationId}
+                      candidateId={userId}
+                    />
+                    <CandidateProfessionalCard candidateId={userId} />
+                    <SocialLinksCard userId={userId} />
+                  </Stack>
+                  {/* right Stack */}
+                  <Stack
+                    stackProps={{
+                      className: "mt-4 md:mt-0",
+                      width: { xs: "100%", md: "50%" },
+                      gap: 2,
+                    }}
+                  >
+                    <CandidateDetailOverviewCard
+                      aplicantPersonalDetails={aplicantPersonalDetails}
+                    />
+                    <ResumeDownloadCard candidateId={userId} />
+                    <CandidateContactCard
+                      aplicantPersonalDetails={aplicantPersonalDetails}
+                    />
+                  </Stack>
+                </Stack>
+              </>
+            )}
           </Stack>
         </>
       </Modal>
