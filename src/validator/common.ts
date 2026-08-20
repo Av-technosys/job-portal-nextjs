@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const BUSINESS_EMAIL_REGEX =
   /^(?!.+@(gmail|google|yahoo|outlook|hotmail|msn)\..+)(.+@.+\..+)$/;
 
-export const PHONE_NUMBER_REGEX = /^[0-9+-]+$/;
+export const PHONE_NUMBER_REGEX = /^[0-9+\-\s]+$/;
 
 export const emailValidationSchema = yup
   .string()
@@ -35,8 +35,8 @@ export const phoneNumberValidationSchema = yup
   .string()
   .matches(PHONE_NUMBER_REGEX, "Phone number is not valid")
   .required("Phone number is required")
-  .min(10, "Please enter your 10 digit mobile number")
-  .max(10, "Please enter your 10 digit mobile numbe");
+  .min(10, "Please enter at least 10 digits")
+  .max(15, "Phone number cannot exceed 15 characters");
 
 export const nameValidationSchema = yup
   .string()

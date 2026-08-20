@@ -121,6 +121,7 @@ const AdminRecruiterComponent = () => {
         isFetchingMore={findRecruiterAPIData?.isFetchingNextPage}
       >
         <Table
+          isLoading={findRecruiterAPIData.isLoading && newRecruiterData.length === 0}
           data={newRecruiterData}
           tableType="recruiter"
           columns={[

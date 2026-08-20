@@ -2,7 +2,7 @@ import { Loader } from "../common";
 import { useGetAssessmentScoreInfo } from "@/services/useGetAssessmentScoreDetails";
 import Link from "next/link";
 import { useMemo, useEffect, useState } from "react";
-import { ArrowForwardOutlinedIcon } from "@/assets";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 
 type paramID = {
   id: string | number | string[];
@@ -138,10 +138,10 @@ function AssessmentScore({ id }: paramID) {
 
           {/* Action Footer */}
           <div className="w-full">
-            <Link href="/dashboard" passHref className="w-full block">
+            <Link href="/dashboard/assessment" passHref className="w-full block">
               <button className="w-full flex items-center justify-center gap-2 px-8 py-4 text-base font-bold rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98] transition-all">
-                Return to Dashboard
-                <ArrowForwardOutlinedIcon fontSize="small" />
+                <ArrowBackOutlinedIcon fontSize="small" />
+                Back to Assessments
               </button>
             </Link>
           </div>

@@ -12,7 +12,7 @@ import {
   TypographyVariantEnum,
 } from "@/types";
 
-const MAX_LATEST_JOBS = 6;
+const MAX_LATEST_JOBS = 15;
 const EMPTY_JOB_ROLE_FILTERS: string[] = [];
 const LATEST_JOB_CARD_SKELETONS = Array.from({ length: 4 });
 

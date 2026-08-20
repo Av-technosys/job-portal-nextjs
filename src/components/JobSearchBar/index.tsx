@@ -10,7 +10,7 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
   const [location, setLocation] = useState("");
 
   const handleSearch = () => {
-    onSearch({ skills, experience, location });
+    onSearch({ skills, experience: experience === "Any" ? "" : experience, location });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -85,8 +85,8 @@ const JobSearchBar = ({ onSearch }: { onSearch: (searchObj: any) => void }) => {
                 }
               }}
             >
-              <MenuItem value="" disabled sx={{ display: 'none' }}>Select experience</MenuItem>
-              <MenuItem value="">Any</MenuItem>
+              <MenuItem value="" disabled>Experience</MenuItem>
+              <MenuItem value="Any">Any</MenuItem>
               {EXPERIENCE_OPTIONS.map((opt) => (
                 <MenuItem key={opt.key} value={opt.value}>
                   {opt.label}

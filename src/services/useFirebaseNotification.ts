@@ -52,30 +52,47 @@ const firebaseConfig = {
 
 export const firebase = initializeApp(firebaseConfig);
 
+let messaging: any = null;
+
+if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+  try {
+    messaging = getMessaging(firebase);
+  } catch (error) {
+    console.error("Firebase Messaging is not supported in this browser/environment", error);
+  }
+}
+
 export const useFirebaseNotification = () => {
   const storeFCMToken = useStoreFCMToken();
 
   async function requestPermission() {
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      const messaging = getMessaging(firebase);
-
+    if (messaging && typeof window !== "undefined" && "serviceWorker" in navigator) {
       try {
         navigator.serviceWorker
-          .register("/firebase-messaging-sw.mjs", {
+          .register("/firebase-messaging-sw.js", {
             scope: "/",
           })
           .then(function (registration) {
+            if (Notification.permission === "denied") {
+              console.warn("Notification permission was denied.");
+              return;
+            }
+
             getToken(messaging, {
-              vapidKey:
-                "BKRYg-N8aEaYDhP_vP3FO81SKMQe09h_EbsCb19ieQpE-LYir4J-FKHHJznCR-1VodiK3q8qZfU7oCtcWayjGNw", // You can find this in Firebase Console > Cloud Messaging
+              vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY, // "BKRYg-N8aEaYDhP_vP3FO81SKMQe09h_EbsCb19ieQpE-LYir4J-FKHHJznCR-1VodiK3q8qZfU7oCtcWayjGNw"
               serviceWorkerRegistration: registration,
-            }).then((token: string) => {
-              storeFCMToken.mutate({
-                data: {
-                  fcm_token: token,
-                },
+            })
+              .then((token: string) => {
+                storeFCMToken.mutate({
+                  data: {
+                    fcm_token: token,
+                  },
+                });
+              })
+              .catch((err) => {
+                console.error("Firebase getToken error (permission might be blocked):", err);
               });
-            });
+              
             registration.update();
           })
           .catch((err) => {
@@ -88,12 +105,16 @@ export const useFirebaseNotification = () => {
   }
 
   function onMessage(cb: (payload: MessagePayload) => void) {
-    const messaging = getMessaging(firebase);
+    if (!messaging) {
+      return () => { };
+    }
     return fireBaseOnMessage(messaging, cb);
   }
 
   function deleteFCMToken() {
-    const messaging = getMessaging(firebase);
+    if (!messaging) {
+      return Promise.resolve(false);
+    }
     return deleteToken(messaging);
   }
 

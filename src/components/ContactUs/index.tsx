@@ -2,7 +2,7 @@ import {
   CONTACT_FORM_CONFIG,
   LEFT_SECTION_CONFIG,
 } from "@/constants/contactUs";
-import { Formik } from "../common";
+import { Formik, Loader } from "../common";
 import { useState } from "react";
 import { contactUsFormSchema } from "@/validator/contactUs";
 import { useCreateContactUsInfo } from "@/services/useCreateContactUs";
@@ -49,7 +49,19 @@ function ContactUs() {
   });
 
   function handleFormSuccess(values: any) {
-    CreateContactUsInfoMutate.mutate({ data: values.values as contactFormData });
+    const payload = { ...values.values } as contactFormData;
+
+    let phone = payload.phone_number?.trim() || "";
+    if (phone && !phone.startsWith("+")) {
+      if (phone.startsWith("91") && phone.length === 12) {
+        phone = "+" + phone;
+      } else {
+        phone = "+91" + phone;
+      }
+    }
+    payload.phone_number = phone;
+
+    CreateContactUsInfoMutate.mutate({ data: payload });
   }
 
   const contactItems = [
@@ -60,7 +72,7 @@ function ContactUs() {
         </svg>
       ),
       label: "Phone",
-      value: String(CONTACT?.typographyProps?.children ?? "+1 234-567-8901"),
+      value: String(CONTACT?.typographyProps?.children ?? "+91 234-567-8901"),
     },
     {
       icon: (
@@ -70,7 +82,7 @@ function ContactUs() {
         </svg>
       ),
       label: "Email",
-      value: String(EMAIL?.typographyProps?.children ?? "ourstudio@hello.com"),
+      value: String(EMAIL?.typographyProps?.children ?? "info@jobportal.com"),
     },
     {
       icon: (
@@ -80,7 +92,7 @@ function ContactUs() {
         </svg>
       ),
       label: "Address",
-      value: String(LOCATION?.typographyProps?.children ?? "1234 Ohio Street, South Gate London"),
+      value: String(LOCATION?.typographyProps?.children ?? "Jaipur, Rajasthan, India "),
     },
   ];
 
@@ -88,6 +100,7 @@ function ContactUs() {
     <div
       className="min-h-screen py-16 px-4 bg-white"
     >
+      <Loader loaderProps={{ open: CreateContactUsInfoMutate.isPending }} />
       <div className="max-w-[22rem] md:max-w-[45rem] lg:max-w-5xl mx-auto">
 
         {/* Page header */}

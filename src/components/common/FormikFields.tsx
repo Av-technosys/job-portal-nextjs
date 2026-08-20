@@ -90,9 +90,19 @@ function FormikFields({
       <When condition={fieldType === FormikFieldsEnum.TEXT_FIELD}>
         <Input
           {...rest}
-          onChange={(event) =>
-            setFieldValue(field?.name as string, event?.target?.value || "")
-          }
+          onChange={(event) => {
+            let val = event?.target?.value || "";
+            if (field?.name === "phone_number" || (typeof field?.name === "string" && field?.name?.includes("contact"))) {
+              if (/^\d{10}$/.test(val)) {
+                val = "+91 " + val;
+              } else if (/^91\d{10}$/.test(val)) {
+                val = "+91 " + val.slice(2);
+              } else if (/^\+91\d{10}$/.test(val)) {
+                val = "+91 " + val.slice(3);
+              }
+            }
+            setFieldValue(field?.name as string, val);
+          }}
           value={field.value as string}
         />
       </When>

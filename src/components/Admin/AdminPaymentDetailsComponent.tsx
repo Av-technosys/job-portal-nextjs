@@ -323,11 +323,7 @@ function AdminPaymentDetailsComponent() {
 
   {/* Table Container */}
   <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-    {paymentApi.isLoading && allOrders.length === 0 && (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600" />
-      </div>
-    )}
+
 
     {paymentApi.error && (
       <div className="text-center py-12">
@@ -358,7 +354,16 @@ function AdminPaymentDetailsComponent() {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {visibleOrders.map((order) => (
+            {paymentApi.isLoading && allOrders.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="py-12 text-center">
+                  <div className="flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600" />
+                  </div>
+                </td>
+              </tr>
+            ) : visibleOrders.length > 0 ? (
+              visibleOrders.map((order) => (
               <tr
                 key={order.id}
                 className="hover:bg-gray-50 transition-colors duration-150"
@@ -416,7 +421,13 @@ function AdminPaymentDetailsComponent() {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))) : (
+              <tr>
+                <td colSpan={5} className="py-12 text-center text-gray-500">
+                  No records found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

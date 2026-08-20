@@ -117,6 +117,7 @@ function AdminJobseekerComponent() {
         isFetchingMore={findStudentAPIData?.isFetchingNextPage}
       >
         <Table
+          isLoading={findStudentAPIData.isLoading && jobSeekerNewData.length === 0}
           data={jobSeekerNewData}
           tableType="jobseeker"
           columns={[

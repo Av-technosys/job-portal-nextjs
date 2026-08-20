@@ -1,16 +1,24 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { JA_LOGO_white } from "@/assets";
 import { NextImage } from "@/components/common";
+import { getItem } from "@/helper";
+import { UserType } from "@/types";
 import {
   FOOTER_QUICK_LINKS_MENU,
   JOB_SEEKER_MENU,
   RECRUITER_MENU,
   SUPPORT_MENU,
+  LOCAL_STORAGE_KEY,
 } from "@/constants";
 
 const Footer: React.FC = () => {
   const router = useRouter();
+  const [userType, setUserType] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserType(getItem(LOCAL_STORAGE_KEY.CURRENT_USER_TYPE));
+  }, []);
 
   const { HOME_TEXT, ABOUT_US_TEXT } = FOOTER_QUICK_LINKS_MENU;
   const { JOBSEERKER_DASHBOARD_TEXT, SAVED_JOBS_TEXT } = JOB_SEEKER_MENU;
@@ -20,6 +28,7 @@ const Footer: React.FC = () => {
   const navCols = [
     {
       heading: "Quick Links",
+      hide: false,
       links: [
         { label: HOME_TEXT?.typographyProps?.children ?? "Home", href: "/" },
         { label: ABOUT_US_TEXT?.typographyProps?.children ?? "About Us", href: "/about-us" },
@@ -27,6 +36,7 @@ const Footer: React.FC = () => {
     },
     {
       heading: "Job Seekers",
+      hide: userType === UserType.RECUITER_TYPE,
       links: [
         { label: JOBSEERKER_DASHBOARD_TEXT?.typographyProps?.children ?? "Dashboard", href: "/dashboard" },
         { label: SAVED_JOBS_TEXT?.typographyProps?.children ?? "Saved Jobs", href: "/dashboard/saved-job" },
@@ -34,6 +44,7 @@ const Footer: React.FC = () => {
     },
     {
       heading: "Recruiters",
+      hide: userType === UserType.JOB_SEEKER_TYPE,
       links: [
         { label: POST_JOB_TEXT?.typographyProps?.children ?? "Post a Job", href: "/dashboard/create-job" },
         { label: RECUITER_DASHBOARD_TEXT?.typographyProps?.children ?? "Dashboard", href: "/dashboard" },
@@ -42,6 +53,7 @@ const Footer: React.FC = () => {
     },
     {
       heading: "Support",
+      hide: false,
       links: [
         { label: CONTACT_US_TEXT?.typographyProps?.children ?? "Contact Us", href: "/contact-us" },
         { label: PRIVACY_POLICY_TEXT?.typographyProps?.children ?? "Privacy Policy", href: "/privacy-policy" },
@@ -49,6 +61,8 @@ const Footer: React.FC = () => {
       ],
     },
   ];
+
+  const visibleNavCols = navCols.filter((col) => !col.hide);
 
   const socialLinks = [
     {
@@ -183,7 +197,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Nav columns */}
-          {navCols.map((col) => (
+          {visibleNavCols.map((col) => (
             <div key={col.heading} className="flex flex-col gap-4">
               <h3
                 className="text-xs font-bold tracking-widest uppercase"
